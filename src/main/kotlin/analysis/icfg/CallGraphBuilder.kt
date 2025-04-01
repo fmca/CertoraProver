@@ -4267,19 +4267,20 @@ object CallGraphBuilder {
         timeRecorder: ElapsedTimeStats
     ): CallgraphBuilderResult {
         val commands = (m.code as CoreTACProgram).analysisCache.graph.commands
-        val ptaRunPurpose = if (commands.none { it.cmd is TACCmd.Simple.CallCore }) {
-            // if we also don't have anything disciplined-hash-model is looking for, we can simply skip
-            if (commands.none {
-                it.cmd is TACCmd.Simple.AssigningCmd.AssignSha3Cmd ||
-                    it.maybeNarrow<TACCmd.Simple.SummaryCmd>()?.takeIf {
-                        it.cmd.summ is ExternalMapGetterSummarization.ExternalGetterHash
-                    } != null }) {
+        val ptaRunPurpose =
+            if (commands.any { it.cmd is TACCmd.Simple.CallCore }) {
+                PTARunPurpose.CGB
+            } else if (commands.none {
+                    it.cmd is TACCmd.Simple.AssigningCmd.AssignSha3Cmd ||
+                        it.maybeNarrow<TACCmd.Simple.SummaryCmd>()?.takeIf {
+                            it.cmd.summ is ExternalMapGetterSummarization.ExternalGetterHash
+                        } != null
+                }) {
+                // if we also don't have anything disciplined-hash-model is looking for, we can simply skip
                 PTARunPurpose.CGB_INDIRECT
+            } else {
+                PTARunPurpose.HASHING
             }
-            PTARunPurpose.HASHING
-        } else {
-            PTARunPurpose.CGB
-        }
         timeRecorder.startMeasuringTimeOf(POINTSTO.toTimeTag())
         val pointsTo =
             PointerAnalysis.runAnalysis(m, ptaRunPurpose).apply {
