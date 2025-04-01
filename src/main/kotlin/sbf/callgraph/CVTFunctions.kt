@@ -26,7 +26,10 @@ import sbf.domains.MemSummaryArgumentType
 import sbf.domains.MemorySummaries
 import sbf.domains.MemorySummary
 
-const val CVT_nondet_solana_account_space = "CVT_nondet_solana_account_space"
+private const val CVT_save_scratch_registers = "CVT_save_scratch_registers"
+private const val CVT_restore_scratch_registers = "CVT_restore_scratch_registers"
+private const val CVT_nondet_account_info = "CVT_nondet_account_info"
+private const val CVT_nondet_solana_account_space = "CVT_nondet_solana_account_space"
 
 sealed class CVTFunction(val function: ExternalFunction) {
     data class Core(val value: CVTCore): CVTFunction(value.function)
@@ -72,8 +75,8 @@ enum class CVTCore(val function: ExternalFunction) {
     ASSERT(ExternalFunction(CvlrFunctions.CVT_assert, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
     SATISFY(ExternalFunction(CvlrFunctions.CVT_satisfy, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
     SANITY(ExternalFunction(CvlrFunctions.CVT_sanity, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
-    SAVE_SCRATCH_REGISTERS(ExternalFunction(CvlrFunctions.CVT_save_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
-    RESTORE_SCRATCH_REGISTERS(ExternalFunction(CvlrFunctions.CVT_restore_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
+    SAVE_SCRATCH_REGISTERS(ExternalFunction(CVT_save_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
+    RESTORE_SCRATCH_REGISTERS(ExternalFunction(CVT_restore_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
     NONDET_SOLANA_ACCOUNT_SPACE(ExternalFunction(CVT_nondet_solana_account_space,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG).map{ Value.Reg(it)}.toSet())
@@ -83,7 +86,7 @@ enum class CVTCore(val function: ExternalFunction) {
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG).map{ Value.Reg(it)}.toSet())
     ),
     /** Deprecated **/
-    NONDET_ACCOUNT_INFO(ExternalFunction(CvlrFunctions.CVT_nondet_account_info, setOf(),setOf(Value.Reg(SbfRegister.R1_ARG))));
+    NONDET_ACCOUNT_INFO(ExternalFunction(CVT_nondet_account_info, setOf(),setOf(Value.Reg(SbfRegister.R1_ARG))));
 
     companion object: ExternalLibrary<CVTCore>  {
         private val nameMap = values().associateBy { it.function.name }
