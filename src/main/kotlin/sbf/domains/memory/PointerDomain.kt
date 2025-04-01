@@ -4310,11 +4310,13 @@ class PTAGraph(/** Global node allocator **/
         // We cannot tell for sure whether a node is allocated in a particular region because we keep track of that as may information.
         // If a node might be allocated in more than one region we allocated first in external and then heap.
         if (baseC.node.isMayExternal) {
-            val returnedC = externAlloc.alloc(locInst).node.createSymCell(Constant(offset))
+            val allocC = externAlloc.alloc(locInst)
+            val returnedC = allocC.node.createSymCell(allocC.offset.add(Constant(offset)))
             baseC.node.copyFlags(returnedC.node)
             setRegCell(r0, returnedC)
         } else if (baseC.node.isMayHeap) {
-            val returnedC = heapAlloc.highLevelAlloc(locInst).node.createSymCell(Constant(offset))
+            val allocC = heapAlloc.highLevelAlloc(locInst)
+            val returnedC = allocC.node.createSymCell(allocC.offset.add(Constant(offset)))
             baseC.node.copyFlags(returnedC.node)
             setRegCell(r0, returnedC)
         } else {
