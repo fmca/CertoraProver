@@ -66,7 +66,6 @@ internal class EVMCallTraceGenerator(
                         when (val snippetCmd = value as SnippetCmd) {
                             is SnippetCmd.EVMSnippetCmd -> {
                                 when (snippetCmd) {
-                                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.AssertUnwindCond -> handleAssertSnippet(snippetCmd, cmd, currBlock, cmdIdx)
                                     is SnippetCmd.EVMSnippetCmd.StorageSnippet -> handleStorageSnippet(snippetCmd)
                                     is SnippetCmd.EVMSnippetCmd.ReadBalanceSnippet -> handleBalanceSnippet(snippetCmd)
                                     is SnippetCmd.EVMSnippetCmd.HavocBalanceSnippet -> handleHavocBalanceSnippet(currBlock, cmdIdx)
@@ -74,16 +73,14 @@ internal class EVMCallTraceGenerator(
                                     is SnippetCmd.EVMSnippetCmd.StorageGlobalChangeSnippet -> handleStorageGlobalChangeSnippet(snippetCmd, currBlock, cmdIdx)
                                     is SnippetCmd.EVMSnippetCmd.ContractSourceSnippet.AssignmentSnippet -> handleAssignmentSnippet(snippetCmd)
                                     is SnippetCmd.EVMSnippetCmd.EVMFunctionReturnWrite -> handleEVMFunctionReturnWrite(snippetCmd)
-                                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.StartLoopSnippet -> handleStartLoopSnippet(snippetCmd)
-                                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter -> handleEndIterSnippet(snippetCmd)
-                                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.StartIter -> handleStartIterSnippet(snippetCmd)
-                                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet -> handleEndLoopSnippet(snippetCmd)
-                                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.CopyLoop -> handleCopyLoop()
                                     is SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet -> handleStartBranchSnippet(snippetCmd)
                                     is SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet -> handleEndBranchSnippet(snippetCmd, blockIdx, cmdIdx)
                                     is SnippetCmd.EVMSnippetCmd.HaltSnippet -> handleHaltSnippet(snippetCmd)
                                     is SnippetCmd.EVMSnippetCmd.SourceFinderSnippet.LocalAssignmentSnippet -> handleLocalAssignmentSnippet(snippetCmd)
-                                    is SnippetCmd.EVMSnippetCmd.RawStorageAccess -> handleRawStorageSnippet(snippetCmd) }
+                                    is SnippetCmd.EVMSnippetCmd.RawStorageAccess -> handleRawStorageSnippet(snippetCmd)
+                                    is SnippetCmd.EVMSnippetCmd.CopyLoopSnippet -> handleCopyLoop()
+                                }
+
                             }
 
                             is SnippetCmd.CVLSnippetCmd -> {
@@ -178,6 +175,16 @@ internal class EVMCallTraceGenerator(
         idx: Int
     ): HandleCmdResult {
         globalState?.handleStorageGlobalChanges(snippetCmd, currBlock, idx)
+        return HandleCmdResult.Continue
+    }
+
+    private fun handleCopyLoop(): HandleCmdResult {
+        val snippetCallInstance = CallInstance.LoopInstance.CopyLoop()
+        Logger.regression {
+            snippetCallInstance.name
+        }
+        callTraceAppend(snippetCallInstance)
+
         return HandleCmdResult.Continue
     }
 
@@ -276,45 +283,6 @@ internal class EVMCallTraceGenerator(
         return HandleCmdResult.Continue
     }
 
-    private fun handleStartLoopSnippet(snippetCmd: SnippetCmd.EVMSnippetCmd.LoopSnippet.StartLoopSnippet): HandleCmdResult {
-        val snippetCallInstance = CallInstance.LoopInstance.Start(
-            snippetCmd.loopSource,
-            snippetCmd.loopIndex
-        )
-        Logger.regression {
-            snippetCmd.loopSource
-        }
-        callTracePush(snippetCallInstance)
-        return HandleCmdResult.Continue
-    }
-
-    private fun handleEndLoopSnippet(snippetCmd: SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet): HandleCmdResult {
-        return ensureStackState(
-            requirement = { it is CallInstance.LoopInstance.Start && it.id == snippetCmd.loopId },
-            eventDescription = "start of loop ${snippetCmd.loopId}",
-            allowedToPop = { it is CallInstance.BranchInstance.Start },
-        )
-    }
-
-    private fun handleStartIterSnippet(snippetCmd: SnippetCmd.EVMSnippetCmd.LoopSnippet.StartIter): HandleCmdResult {
-        val snippetCallInstance = CallInstance.LoopInstance.Iteration(
-            "Loop Iteration ${snippetCmd.iteration}",
-            snippetCmd.iteration
-        )
-        Logger.regression {
-            "Loop Iteration ${snippetCmd.iteration}"
-        }
-        callTracePush(snippetCallInstance)
-        return HandleCmdResult.Continue
-    }
-
-    private fun handleEndIterSnippet(snippetCmd: SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter): HandleCmdResult {
-        return ensureStackState(
-            requirement = { it is CallInstance.LoopInstance.Iteration && it.iteration == snippetCmd.iteration },
-            eventDescription = "start of loop iteration ${snippetCmd.iteration}",
-            allowedToPop = { it is CallInstance.BranchInstance.Start },
-        )
-    }
 
     private fun handleStartBranchSnippet(snippetCmd: SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet): HandleCmdResult {
         val snippetCallInstance = CallInstance.BranchInstance.Start(snippetCmd.branchSource, snippetCmd.branchIndex)
@@ -483,16 +451,6 @@ internal class EVMCallTraceGenerator(
             }
         }
         callTraceAppend(snippetCallInstance)
-        return HandleCmdResult.Continue
-    }
-
-    private fun handleCopyLoop(): HandleCmdResult {
-        val snippetCallInstance = CallInstance.LoopInstance.CopyLoop()
-        Logger.regression {
-            snippetCallInstance.name
-        }
-        callTraceAppend(snippetCallInstance)
-
         return HandleCmdResult.Continue
     }
 

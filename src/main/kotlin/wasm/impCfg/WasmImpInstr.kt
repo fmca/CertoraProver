@@ -72,7 +72,6 @@ val WASM_HOST_FUNC_SUMMARY_START = MetaKey<StraightLine.InlinedFuncStartAnnotati
 val WASM_HOST_FUNC_SUMMARY_END = MetaKey<StraightLine.InlinedFuncEndAnnotation.TAC>("wasm.host.func.end")
 val WASM_USER_ASSUME = MetaKey<String>("wasm.user.assume")
 val WASM_USER_ASSERT = MetaKey<String>("wasm.user.assert")
-val WASM_CALLTRACE_PRINT = MetaKey<StraightLine.CexPrintValues>("wasm.calltrace.print")
 val WASM_MEMORY_OP_WIDTH = MetaKey<Int>("wasm.memory.op.width")
 
 //meta that contains information about the original address of the bytecode instruction in the .wasm file
@@ -765,14 +764,6 @@ sealed class StraightLine(addr: WASMAddress? = null) : WasmImpCfgCmd(addr) {
         override fun wasmImpcfgToTacSimpleInternal(): WasmToTacInfo {
             return WasmToTacInfo(listOf(TACCmd.Simple.AnnotationCmd(toTacAnnot())), setOf())
         }
-    }
-
-    @KSerializable
-    data class CexPrintValues(val tag: String, val symbols: List<TACSymbol.Var>) :
-        TransformableVarEntityWithSupport<CexPrintValues> {
-        override val support: Set<TACSymbol.Var> get() = symbols.toSet()
-        override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var) =
-            CexPrintValues(tag = tag, symbols = symbols.map { f(it) })
     }
 }
 

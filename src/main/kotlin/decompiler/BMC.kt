@@ -180,7 +180,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
         } ?: "unknown loop source code"
         val patching = code.toPatchingProgram()
         val startCommands = listOf<TACCmd.Simple>(
-            SnippetCmd.EVMSnippetCmd.LoopSnippet.StartLoopSnippet(
+            SnippetCmd.LoopSnippet.StartLoopSnippet(
                 loopIndex = loopId,
                 loopHeadSource
             ).toAnnotation(code.destructiveOptimizations),
@@ -194,7 +194,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
             }
         }
         val endCommands = listOf<TACCmd.Simple>(
-            SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet(loopId).toAnnotation(code.destructiveOptimizations),
+            SnippetCmd.LoopSnippet.EndLoopSnippet(loopId).toAnnotation(code.destructiveOptimizations),
             TACCmd.Simple.AnnotationCmd(END_LOOP)
         )
         loop.body.forEach { node ->
@@ -414,7 +414,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
                         patching.insertAlongEdge(
                             block,
                             it,
-                            listOf(SnippetCmd.EVMSnippetCmd.LoopSnippet.StartIter(unrollCount, loopId).toAnnotation(code.destructiveOptimizations))
+                            listOf(SnippetCmd.LoopSnippet.StartIter(unrollCount, loopId).toAnnotation(code.destructiveOptimizations))
                         )
                     }
                 }
@@ -426,7 +426,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
                         patching.insertAlongEdge(
                             block,
                             it,
-                            listOf(SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter(unrollCount, loopId).toAnnotation(code.destructiveOptimizations))
+                            listOf(SnippetCmd.LoopSnippet.EndIter(unrollCount, loopId).toAnnotation(code.destructiveOptimizations))
                         )
                     }
                 }
@@ -496,7 +496,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
                             patching.insertAlongEdge(
                                 clone,
                                 remap(it),
-                                listOf(SnippetCmd.EVMSnippetCmd.LoopSnippet.StartIter(unrollCount - j, loopId).toAnnotation(code.destructiveOptimizations))
+                                listOf(SnippetCmd.LoopSnippet.StartIter(unrollCount - j, loopId).toAnnotation(code.destructiveOptimizations))
                             )
                         }
                     }
@@ -509,7 +509,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
                             patching.insertAlongEdge(
                                 clone,
                                 remap(it),
-                                listOf(SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter(unrollCount - j, loopId).toAnnotation(code.destructiveOptimizations))
+                                listOf(SnippetCmd.LoopSnippet.EndIter(unrollCount - j, loopId).toAnnotation(code.destructiveOptimizations))
                             )
                         }
                     }
@@ -518,7 +518,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
                         patching.insertAlongEdge(
                             clone,
                             prevHead,
-                            listOf(SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter(unrollCount - j, loopId).toAnnotation(code.destructiveOptimizations))
+                            listOf(SnippetCmd.LoopSnippet.EndIter(unrollCount - j, loopId).toAnnotation(code.destructiveOptimizations))
                         )
                     }
                 }
@@ -668,7 +668,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
             listOf(TACCmd.Simple.AssumeCmd(sym).mapMeta(terminusTag))
         } else {
             listOf(
-                SnippetCmd.EVMSnippetCmd.LoopSnippet.AssertUnwindCond(sym ,unwindingCondMsg())
+                SnippetCmd.LoopSnippet.AssertUnwindCond(sym ,unwindingCondMsg())
                     .toAnnotation(code.destructiveOptimizations),
                 TACCmd.Simple.AssertCmd(sym, unwindingCondMsg()).mapMeta(terminusTag),
                 TACCmd.Simple.AnnotationCmd(TACMeta.SCOPE_SNIPPET_END)

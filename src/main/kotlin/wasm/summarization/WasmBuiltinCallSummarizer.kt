@@ -20,6 +20,7 @@ package wasm.summarization
 import analysis.CommandWithRequiredDecls
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import com.certora.collect.*
+import cvlr.CvlrFunctions
 import datastructures.stdcollections.*
 import log.*
 import report.CVTAlertReporter
@@ -52,6 +53,7 @@ import java.math.BigInteger
  */
 
 private val wasmLogger = Logger(LoggerTypes.WASM)
+typealias MessageTag = String
 
 class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgram.WasmFuncDesc>, private val dataSegments: List<WasmData>): WasmCallSummarizer {
 
@@ -93,21 +95,21 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
      * @param ret the expected return type
      */
     enum class CVTBuiltin(val what: String, val from: String, val params: List<WasmPrimitiveType>, val ret: WasmPrimitiveType?): Builtin {
-        CVT_ASSERT("CVT_assert", "env", listOf(I32), null),
-        CVT_ASSUME("CVT_assume", "env", listOf(I32), null),
-        CVT_SATISFY("CVT_satisfy", "env", listOf(I32), null),
+        CVT_ASSERT(CvlrFunctions.CVT_assert, "env", listOf(I32), null),
+        CVT_ASSUME(CvlrFunctions.CVT_assume, "env", listOf(I32), null),
+        CVT_SATISFY(CvlrFunctions.CVT_satisfy, "env", listOf(I32), null),
 
-        CVT_NONDET_U8("CVT_nondet_u8", "env", listOf(), I32),
-        CVT_NONDET_U32("CVT_nondet_u32", "env", listOf(), I32),
-        CVT_NONDET_U64("CVT_nondet_u64", "env", listOf(), I64),
+        CVT_NONDET_U8(CvlrFunctions.CVT_nondet_u8, "env", listOf(), I32),
+        CVT_NONDET_U32(CvlrFunctions.CVT_nondet_u32, "env", listOf(), I32),
+        CVT_NONDET_U64(CvlrFunctions.CVT_nondet_u64, "env", listOf(), I64),
 
-        CVT_NONDET_I8("CVT_nondet_i8", "env", listOf(), I32),
-        CVT_NONDET_I32("CVT_nondet_i32", "env", listOf(), I32),
-        CVT_NONDET_I64("CVT_nondet_i64", "env", listOf(), I64),
+        CVT_NONDET_I8(CvlrFunctions.CVT_nondet_i8, "env", listOf(), I32),
+        CVT_NONDET_I32(CvlrFunctions.CVT_nondet_i32, "env", listOf(), I32),
+        CVT_NONDET_I64(CvlrFunctions.CVT_nondet_i64, "env", listOf(), I64),
 
-        CVT_NONDET_I128("CVT_nondet_i128", "env", listOf(I32), null),
+        CVT_NONDET_I128(CvlrFunctions.CVT_nondet_i128, "env", listOf(I32), null),
 
-        CVT_NONDET_MAP("CVT_nondet_map", "env", listOf(), I64),
+        CVT_NONDET_MAP(CvlrFunctions.CVT_nondet_map, "env", listOf(), I64),
 
         /*
          These functions in rust take a &str and a u32/i32/u64/i64. In wasm the
@@ -116,10 +118,14 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
             the length of the string and the third argument is the actual value of the variable.
             User writes this in rust: `cvlr::clog!(&"value of balance is ", balance);`
         */
-        CVT_CALLTRACE_U32("CVT_calltrace_print_u32_1", "env", listOf(I32, I32, I32), null),
-        CVT_CALLTRACE_U64("CVT_calltrace_print_u64_1", "env", listOf(I32, I32, I64), null),
-        CVT_CALLTRACE_I32("CVT_calltrace_print_i32_1", "env", listOf(I32, I32, I32), null),
-        CVT_CALLTRACE_I64("CVT_calltrace_print_i64_1", "env", listOf(I32, I32, I64), null),
+        CVT_CALLTRACE_U32(CvlrFunctions.CVT_calltrace_print_u32_1, "env", listOf(I32, I32, I32), null),
+        CVT_CALLTRACE_U64(CvlrFunctions.CVT_calltrace_print_u64_1, "env", listOf(I32, I32, I64), null),
+        CVT_CALLTRACE_U128(CvlrFunctions.CVT_calltrace_print_u128, "env", listOf(I32, I32, I64, I64), null),
+
+        CVT_CALLTRACE_I32(CvlrFunctions.CVT_calltrace_print_i32_1, "env", listOf(I32, I32, I32), null),
+        CVT_CALLTRACE_I64(CvlrFunctions.CVT_calltrace_print_i64_1, "env", listOf(I32, I32, I64), null),
+        CVT_CALLTRACE_I128(CvlrFunctions.CVT_calltrace_print_i128, "env", listOf(I32, I32, I64, I64), null),
+        CVT_CALLTRACE_PRINT_TAG(CvlrFunctions.CVT_calltrace_print_tag, "env", listOf(I32, I32), null),
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // for backwards compatibility with https://github.com/Certora/solana-cvt/tree/dev-soroban
@@ -256,6 +262,7 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
                 summarizeNondetMap(call.maybeRet)
             }
 
+            CVTBuiltin.CVT_CALLTRACE_PRINT_TAG -> summarizePrintTagCalltrace(call.args[0], call.args[1], dataSegments)
             CVTBuiltin.CALLTRACE_I32,
             CVTBuiltin.CALLTRACE_I64,
             CVTBuiltin.CALLTRACE_U32,
@@ -264,7 +271,8 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
             CVTBuiltin.CVT_CALLTRACE_I64,
             CVTBuiltin.CVT_CALLTRACE_U32,
             CVTBuiltin.CVT_CALLTRACE_U64 -> summarizeCalltrace(call.args[0], call.args[1], call.args[2], dataSegments)
-
+            CVTBuiltin.CVT_CALLTRACE_U128 -> summarize128BitCalltrace(call.args[0], call.args[1], call.args[2], call.args[3], dataSegments, false)
+            CVTBuiltin.CVT_CALLTRACE_I128 -> summarize128BitCalltrace(call.args[0], call.args[1], call.args[2], call.args[3], dataSegments, true)
             null ->
                 throw UnknownWasmBuiltin(call.id, tyDesc)
         }.let {
@@ -597,17 +605,15 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
     }
 
     context (WasmImpCfgContext)
-    private fun summarizeCalltrace(stringStartPointer: Arg, numBytes: Arg, value: Arg, dataSegments: List<WasmData>): CommandWithRequiredDecls<TACCmd.Simple> {
+    private fun createTag(stringStartPointer: Arg, numBytes: Arg, dataSegments: List<WasmData>): MessageTag {
         var tag = "Calltrace debug print"
-        val argSymTac = TACSymbol.Var(value.toString(), Tag.Bit256)
         fun reportConstantStringError() {
-            wasmLogger.error { "Debug statements must have a constant string (e.g., variable name) as the first argument." }
+            wasmLogger.error { "Debug statement usage: `clog!(var_value);`" }
             CVTAlertReporter.reportAlert(
                 CVTAlertType.GENERAL,
                 CVTAlertSeverity.ERROR,
                 jumpToDefinition = null,
-                "Debug statements must have a constant string (e.g., variable name) as the first argument.",
-                hint = "Example usage in rust: cvt_cex_print_i64!(&\"var_name \", var_value); "
+                "Debug statement usage: `clog!(var_value);`"
             )
         }
         for (data in dataSegments) {
@@ -629,15 +635,30 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
                 reportConstantStringError()
             }
         }
-        return CommandWithRequiredDecls(listOf(
-            TACCmd.Simple.AnnotationCmd(
-                TACCmd.Simple.AnnotationCmd.Annotation(
-                    WASM_CALLTRACE_PRINT,
-                    StraightLine.CexPrintValues(tag, listOf(argSymTac))
-                )
-            )
-        ), setOf())
+        return tag
     }
+
+    context (WasmImpCfgContext)
+    private fun summarizeCalltrace(stringStartPointer: Arg, numBytes: Arg, value: Arg, dataSegments: List<WasmData>): CommandWithRequiredDecls<TACCmd.Simple> {
+        val tag = createTag(stringStartPointer, numBytes, dataSegments)
+        val argSymTac = TACSymbol.Var(value.toString(), Tag.Bit256)
+        return CommandWithRequiredDecls(listOf(SnippetCmd.CvlrSnippetCmd.CexPrintValues(tag, listOf(argSymTac)).toAnnotation()), setOf())
+    }
+
+    context (WasmImpCfgContext)
+    private fun summarize128BitCalltrace(stringStartPointer: Arg, numBytes: Arg, low: Arg, high: Arg, dataSegments: List<WasmData>, signed: Boolean): CommandWithRequiredDecls<TACCmd.Simple> {
+        val tag = createTag(stringStartPointer, numBytes, dataSegments)
+        val highArgSymTac = TACSymbol.Var(high.toString(), Tag.Bit256)
+        val lowArgSymTac = TACSymbol.Var(low.toString(), Tag.Bit256)
+        return CommandWithRequiredDecls(listOf(SnippetCmd.CvlrSnippetCmd.CexPrint128BitsValue(tag, lowArgSymTac, highArgSymTac, signed).toAnnotation()), setOf())
+    }
+
+    context (WasmImpCfgContext)
+    private fun summarizePrintTagCalltrace(stringStartPointer: Arg, numBytes: Arg, dataSegments: List<WasmData>): CommandWithRequiredDecls<TACCmd.Simple> {
+        val tag = createTag(stringStartPointer, numBytes, dataSegments)
+        return CommandWithRequiredDecls(listOf(SnippetCmd.CvlrSnippetCmd.CexPrintTag(tag).toAnnotation()), setOf())
+    }
+
 
     context (WasmImpCfgContext)
     private fun summarizeAssumeAssert(

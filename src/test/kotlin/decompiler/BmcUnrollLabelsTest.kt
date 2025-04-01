@@ -478,22 +478,22 @@ fun validateLoopSnippetConsistency(unrolledTAC: CoreTACProgram) {
         for (cmd in code) {
             val lastAnnot = nbidState.lastOrNull()
             when (val annotationCmdVal = (cmd as? TACCmd.Simple.AnnotationCmd)?.annot?.v)  {
-                is SnippetCmd.EVMSnippetCmd.LoopSnippet.StartLoopSnippet -> {
+                is SnippetCmd.LoopSnippet.StartLoopSnippet -> {
                     nbidState = nbidState.plus(BmcUnrollLabelsTest.Annot.StartLoop(loopId = annotationCmdVal.loopIndex))
                 }
-                is SnippetCmd.EVMSnippetCmd.LoopSnippet.StartIter -> {
+                is SnippetCmd.LoopSnippet.StartIter -> {
                     Assertions.assertTrue(lastAnnot is BmcUnrollLabelsTest.Annot.StartLoop) {
                         "Expected the stack head to be a BmcUnrollLabelsTest.Annot.StartLoop) (found $lastAnnot)"
                     }
                     nbidState = nbidState.plus(BmcUnrollLabelsTest.Annot.StartIter(iteration = annotationCmdVal.iteration))
                 }
-                is SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter ->  {
+                is SnippetCmd.LoopSnippet.EndIter ->  {
                     Assertions.assertTrue(lastAnnot is BmcUnrollLabelsTest.Annot.StartIter && lastAnnot.iteration == annotationCmdVal.iteration) {
                         "Expected the stack head to be a BmcUnrollLabelsTest.Annot.StartIter (found $lastAnnot)"
                     }
                     nbidState = nbidState.dropLast(1)
                 }
-                is SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet -> {
+                is SnippetCmd.LoopSnippet.EndLoopSnippet -> {
                     Assertions.assertTrue(lastAnnot is BmcUnrollLabelsTest.Annot.StartLoop && lastAnnot.loopId == annotationCmdVal.loopId) {
                         "Expected the stack head to be a BmcUnrollLabelsTest.Annot.StartLoop) (found $lastAnnot)"
                     }

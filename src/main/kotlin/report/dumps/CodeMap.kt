@@ -521,16 +521,16 @@ data class CodeMap(
                     }
                     is SnippetCmd.CVLSnippetCmd.AssertCast -> colorText("$rarrow Assert cast:", Color.DARKBLUE)
                     is SnippetCmd.EVMSnippetCmd.StorageGlobalChangeSnippet.StorageHavocContract -> colorText("Havoc contract with ID ${metaValue.addr.toString(16)}", Color.DARKBLUE)
-                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.StartLoopSnippet -> colorText("$rarrow Loop #${metaValue.loopIndex}, with source `${metaValue.loopSource}`", Color.DARKBLUE)
-                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet -> colorText("$larrow Loop #${metaValue.loopId}", Color.DARKBLUE)
-                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.StartIter -> colorText("$rarrow$rarrow Iteration ${metaValue.iteration}", Color.DARKBLUE)
-                    is SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter -> colorText("$larrow$larrow Iteration ${metaValue.iteration}", Color.DARKBLUE)
+                    is SnippetCmd.LoopSnippet.StartLoopSnippet -> colorText("$rarrow Loop #${metaValue.loopIndex}, with source `${metaValue.loopSource}`", Color.DARKBLUE)
+                    is SnippetCmd.LoopSnippet.EndLoopSnippet -> colorText("$larrow Loop #${metaValue.loopId}", Color.DARKBLUE)
+                    is SnippetCmd.LoopSnippet.StartIter -> colorText("$rarrow$rarrow Iteration ${metaValue.iteration}", Color.DARKBLUE)
+                    is SnippetCmd.LoopSnippet.EndIter -> colorText("$larrow$larrow Iteration ${metaValue.iteration}", Color.DARKBLUE)
                     is SnippetCmd.SolanaSnippetCmd.ExternalCall -> colorText("SbfExt ${metaValue.symbols.joinToString(", ") { getHtmlRep(it) }} = ${metaValue.displayMessage.shortRustForHTML()} ", Color.DARKBLUE).withTitle(metaValue.toString())
-                    is SnippetCmd.SolanaSnippetCmd.CexPrintTag -> colorText("log(${metaValue.displayMessage.sanitize()})", Color.GREEN)
-                    is SnippetCmd.SolanaSnippetCmd.CexAttachLocation -> colorText("${metaValue.filepath.sanitize()}:${metaValue.lineNumber}", Color.DARKGREY)
-                    is SnippetCmd.SolanaSnippetCmd.CexPrintLocation -> colorText("${metaValue.filepath.sanitize()}:${metaValue.lineNumber}", Color.DARKGREY)
-                    is SnippetCmd.SolanaSnippetCmd.CexPrintValues -> colorText("${metaValue.displayMessage.sanitize()}: ${metaValue.symbols.joinToString(", ") { getHtmlRep(it) }}", Color.ORANGE)
-                    is SnippetCmd.SolanaSnippetCmd.CexPrintU64AsFixed -> colorText("${metaValue.displayMessage.sanitize()}: ${getHtmlRep(metaValue.unscaledVal)}/2^${getHtmlRep(metaValue.scale)}", Color.ORANGE)
+                    is SnippetCmd.CvlrSnippetCmd.CexPrintTag -> colorText("log(${metaValue.displayMessage.sanitize()})", Color.GREEN)
+                    is SnippetCmd.CvlrSnippetCmd.CexAttachLocation -> colorText("${metaValue.filepath.sanitize()}:${metaValue.lineNumber}", Color.DARKGREY)
+                    is SnippetCmd.CvlrSnippetCmd.CexPrintLocation -> colorText("${metaValue.filepath.sanitize()}:${metaValue.lineNumber}", Color.DARKGREY)
+                    is SnippetCmd.CvlrSnippetCmd.CexPrintValues -> colorText("${metaValue.displayMessage.sanitize()}: ${metaValue.symbols.joinToString(", ") { getHtmlRep(it) }}", Color.ORANGE)
+                    is SnippetCmd.CvlrSnippetCmd.CexPrintU64AsFixed -> colorText("${metaValue.displayMessage.sanitize()}: ${getHtmlRep(metaValue.unscaledVal)}/2^${getHtmlRep(metaValue.scale)}", Color.ORANGE)
                     is InternalFuncStartAnnotation -> colorText("$rarrow Method call ${wrapInternalFunStart(metaValue.id)} to ${
                         if (metaValue.args.isNotEmpty() && metaValue.args.size == metaValue.methodSignature.params.size) {
                             metaValue.methodSignature.let { sig ->

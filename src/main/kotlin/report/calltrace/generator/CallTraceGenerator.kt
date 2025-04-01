@@ -31,6 +31,7 @@ import log.*
 import report.*
 import report.calltrace.*
 import report.calltrace.formatter.CallTraceValueFormatter
+import report.calltrace.generator.CallTraceGenerator.HandleCmdResult
 import report.calltrace.printer.CallTracePrettyPrinter
 import report.calltrace.sarif.FmtArg
 import report.calltrace.sarif.SarifFormatter
@@ -47,9 +48,7 @@ import utils.Range
 import spec.cvlast.CVLType
 import spec.cvlast.PatternWithValue
 import tac.NBId
-import utils.associateNotNull
-import utils.firstMapped
-import utils.toValue
+import utils.*
 import vc.data.*
 import vc.data.state.TACValue
 import wasm.impCfg.*
@@ -612,6 +611,46 @@ internal sealed class CallTraceGenerator(
         return HandleCmdResult.Continue
     }
 
+    private fun handleStartLoopSnippet(snippetCmd: SnippetCmd.LoopSnippet.StartLoopSnippet): HandleCmdResult {
+        val snippetCallInstance = CallInstance.LoopInstance.Start(
+            snippetCmd.loopSource,
+            snippetCmd.loopIndex
+        )
+        Logger.regression {
+            snippetCmd.loopSource
+        }
+        callTracePush(snippetCallInstance)
+        return HandleCmdResult.Continue
+    }
+
+    private fun handleEndLoopSnippet(snippetCmd: SnippetCmd.LoopSnippet.EndLoopSnippet): HandleCmdResult {
+        return ensureStackState(
+            requirement = { it is CallInstance.LoopInstance.Start && it.id == snippetCmd.loopId },
+            eventDescription = "start of loop ${snippetCmd.loopId}",
+            allowedToPop = { it is CallInstance.BranchInstance.Start },
+        )
+    }
+
+    private fun handleStartIterSnippet(snippetCmd: SnippetCmd.LoopSnippet.StartIter): HandleCmdResult {
+        val snippetCallInstance = CallInstance.LoopInstance.Iteration(
+            "Loop Iteration ${snippetCmd.iteration}",
+            snippetCmd.iteration
+        )
+        Logger.regression {
+            "Loop Iteration ${snippetCmd.iteration}"
+        }
+        callTracePush(snippetCallInstance)
+        return HandleCmdResult.Continue
+    }
+
+    private fun handleEndIterSnippet(snippetCmd: SnippetCmd.LoopSnippet.EndIter): HandleCmdResult {
+        return ensureStackState(
+            requirement = { it is CallInstance.LoopInstance.Iteration && it.iteration == snippetCmd.iteration },
+            eventDescription = "start of loop iteration ${snippetCmd.iteration}",
+            allowedToPop = { it is CallInstance.BranchInstance.Start },
+        )
+    }
+
     /**
      * Creates a [CallInstance] for [snippetCmd] and adds it to the CallHierarchy starting at [callHierarchyRoot].
      */
@@ -652,7 +691,7 @@ internal sealed class CallTraceGenerator(
                 ) to "assert-cast check: $assertViolationOrErrorMsg"
             }
 
-            is SnippetCmd.EVMSnippetCmd.LoopSnippet.AssertUnwindCond -> {
+            is SnippetCmd.LoopSnippet.AssertUnwindCond -> {
                 CallInstance.LoopInstance.AssertUnwindCond(
                     "Assert 'loop has terminated' $assertViolationOrErrorMsg"
                 ) to "Assert 'loop has terminated' $assertViolationOrErrorMsg"
@@ -774,6 +813,10 @@ internal sealed class CallTraceGenerator(
 
                     TACMeta.SNIPPET -> {
                         when (val snippetCmd = value as SnippetCmd) {
+                            is SnippetCmd.LoopSnippet.StartLoopSnippet -> handleStartLoopSnippet(snippetCmd)
+                            is SnippetCmd.LoopSnippet.EndIter -> handleEndIterSnippet(snippetCmd)
+                            is SnippetCmd.LoopSnippet.StartIter -> handleStartIterSnippet(snippetCmd)
+                            is SnippetCmd.LoopSnippet.EndLoopSnippet -> handleEndLoopSnippet(snippetCmd)
                             is AssertSnippet<*> -> {
                                 handleAssertSnippet(snippetCmd, cmd, currBlock, cmdIdx)
                             }
@@ -784,6 +827,7 @@ internal sealed class CallTraceGenerator(
 
                             is SnippetCmd.EVMSnippetCmd,
                             is SnippetCmd.CVLSnippetCmd,
+                            is SnippetCmd.CvlrSnippetCmd,
                             is SnippetCmd.SolanaSnippetCmd -> {
                                 throw IllegalStateException("${snippetCmd::class.simpleName} snippet command handled in shared statement handler")
                             }
@@ -833,7 +877,7 @@ internal sealed class CallTraceGenerator(
                         handleInternalSummaryEnd(value as SummaryStack.SummaryEnd.Internal)
                     }
 
-                    SBF_INLINED_FUNCTION_START, SBF_INLINED_FUNCTION_END, WASM_CALLTRACE_PRINT,
+                    SBF_INLINED_FUNCTION_START, SBF_INLINED_FUNCTION_END,
                     WASM_INLINED_FUNC_START, WASM_INLINED_FUNC_END, WASM_USER_ASSUME, WASM_USER_ASSERT -> {
                         throw IllegalStateException("$meta handled in shared statement handler")
                     }
@@ -845,6 +889,7 @@ internal sealed class CallTraceGenerator(
             else -> HandleCmdResult.Continue
         }
     }
+
 }
 
 /** Returns a map from the word index to its [TACValue], if such a value exists in [model] */
@@ -906,3 +951,4 @@ private fun CVLHookPattern.toHookApplicationHeader(labelId: Int): CallInstance.L
 
     return CallInstance.LabelInstance("Apply hook $patternDescription", labelId = labelId)
 }
+

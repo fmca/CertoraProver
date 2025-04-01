@@ -17,6 +17,7 @@
 
 package sbf.callgraph
 
+import cvlr.CvlrFunctions
 import sbf.cfg.Value
 import sbf.disassembler.SbfRegister
 import datastructures.stdcollections.*
@@ -25,58 +26,7 @@ import sbf.domains.MemSummaryArgumentType
 import sbf.domains.MemorySummaries
 import sbf.domains.MemorySummary
 
-private const val CVT_nondet_u8 = "CVT_nondet_u8"
-private const val CVT_nondet_u16 = "CVT_nondet_u16"
-private const val CVT_nondet_u32 = "CVT_nondet_u32"
-private const val CVT_nondet_u64 = "CVT_nondet_u64"
-private const val CVT_nondet_u128 = "CVT_nondet_u128"
-private const val CVT_nondet_usize = "CVT_nondet_usize"
-private const val CVT_nondet_i8 = "CVT_nondet_i8"
-private const val CVT_nondet_i16 = "CVT_nondet_i16"
-private const val CVT_nondet_i32 = "CVT_nondet_i32"
-private const val CVT_nondet_i64 = "CVT_nondet_i64"
-private const val CVT_assume = "CVT_assume"
-private const val CVT_assert = "CVT_assert"
-private const val CVT_satisfy = "CVT_satisfy"
-private const val CVT_sanity = "CVT_sanity"
-private const val CVT_rule_location = "CVT_rule_location"
-private const val CVT_save_scratch_registers = "CVT_save_scratch_registers"
-private const val CVT_restore_scratch_registers = "CVT_restore_scratch_registers"
-private const val CVT_nondet_account_info = "CVT_nondet_account_info"
-private const val CVT_calltrace_print_u64_1 = "CVT_calltrace_print_u64_1"
-private const val CVT_calltrace_print_u64_2 = "CVT_calltrace_print_u64_2"
-private const val CVT_calltrace_print_u64_3 = "CVT_calltrace_print_u64_3"
-private const val CVT_calltrace_print_u128 = "CVT_calltrace_print_u128"
-private const val CVT_calltrace_print_u64_as_fixed = "CVT_calltrace_print_u64_as_fixed"
-private const val CVT_calltrace_print_i64_1 = "CVT_calltrace_print_i64_1"
-private const val CVT_calltrace_print_i64_2 = "CVT_calltrace_print_i64_2"
-private const val CVT_calltrace_print_i64_3 = "CVT_calltrace_print_i64_3"
-private const val CVT_calltrace_print_i128 = "CVT_calltrace_print_i128"
-private const val CVT_calltrace_print_string = "CVT_calltrace_print_string"
-private const val CVT_calltrace_print_tag = "CVT_calltrace_print_tag"
-private const val CVT_calltrace_print_location = "CVT_calltrace_print_location"
-private const val CVT_calltrace_attach_location = "CVT_calltrace_attach_location"
-private const val CVT_u128_leq = "CVT_u128_leq"
-private const val CVT_u128_gt0 = "CVT_u128_gt0"
-private const val CVT_u128_ceil_div = "CVT_u128_ceil_div"
-private const val CVT_nativeint_u64_eq = "CVT_nativeint_u64_eq"
-private const val CVT_nativeint_u64_lt = "CVT_nativeint_u64_lt"
-private const val CVT_nativeint_u64_le = "CVT_nativeint_u64_le"
-private const val CVT_nativeint_u64_add = "CVT_nativeint_u64_add"
-private const val CVT_nativeint_u64_sub = "CVT_nativeint_u64_sub"
-private const val CVT_nativeint_u64_mul = "CVT_nativeint_u64_mul"
-private const val CVT_nativeint_u64_div = "CVT_nativeint_u64_div"
-private const val CVT_nativeint_u64_div_ceil = "CVT_nativeint_u64_div_ceil"
-private const val CVT_nativeint_u64_muldiv = "CVT_nativeint_u64_muldiv"
-private const val CVT_nativeint_u64_muldiv_ceil = "CVT_nativeint_u64_muldiv_ceil"
-private const val CVT_nativeint_u64_nondet = "CVT_nativeint_u64_nondet"
-private const val CVT_nativeint_u64_from_u128 = "CVT_nativeint_u64_from_u128"
-private const val CVT_nativeint_u64_from_u256 = "CVT_nativeint_u64_from_u256"
-private const val CVT_nativeint_u64_u64_max = "CVT_nativeint_u64_u64_max"
-private const val CVT_nativeint_u64_u128_max = "CVT_nativeint_u64_u128_max"
-private const val CVT_nativeint_u64_u256_max = "CVT_nativeint_u64_u256_max"
-private const val CVT_nondet_solana_account_space = "CVT_nondet_solana_account_space"
-private const val CVT_alloc_slice = "CVT_alloc_slice"
+const val CVT_nondet_solana_account_space = "CVT_nondet_solana_account_space"
 
 sealed class CVTFunction(val function: ExternalFunction) {
     data class Core(val value: CVTCore): CVTFunction(value.function)
@@ -118,22 +68,22 @@ sealed class CVTFunction(val function: ExternalFunction) {
 }
 
 enum class CVTCore(val function: ExternalFunction) {
-    ASSUME(ExternalFunction(CVT_assume, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
-    ASSERT(ExternalFunction(CVT_assert, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
-    SATISFY(ExternalFunction(CVT_satisfy, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
-    SANITY(ExternalFunction(CVT_sanity, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
-    SAVE_SCRATCH_REGISTERS(ExternalFunction(CVT_save_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
-    RESTORE_SCRATCH_REGISTERS(ExternalFunction(CVT_restore_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
+    ASSUME(ExternalFunction(CvlrFunctions.CVT_assume, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
+    ASSERT(ExternalFunction(CvlrFunctions.CVT_assert, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
+    SATISFY(ExternalFunction(CvlrFunctions.CVT_satisfy, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
+    SANITY(ExternalFunction(CvlrFunctions.CVT_sanity, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
+    SAVE_SCRATCH_REGISTERS(ExternalFunction(CvlrFunctions.CVT_save_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
+    RESTORE_SCRATCH_REGISTERS(ExternalFunction(CvlrFunctions.CVT_restore_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
     NONDET_SOLANA_ACCOUNT_SPACE(ExternalFunction(CVT_nondet_solana_account_space,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    ALLOC_SLICE(ExternalFunction(CVT_alloc_slice,
+    ALLOC_SLICE(ExternalFunction(CvlrFunctions.CVT_alloc_slice,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG).map{ Value.Reg(it)}.toSet())
     ),
     /** Deprecated **/
-    NONDET_ACCOUNT_INFO(ExternalFunction(CVT_nondet_account_info, setOf(),setOf(Value.Reg(SbfRegister.R1_ARG))));
+    NONDET_ACCOUNT_INFO(ExternalFunction(CvlrFunctions.CVT_nondet_account_info, setOf(),setOf(Value.Reg(SbfRegister.R1_ARG))));
 
     companion object: ExternalLibrary<CVTCore>  {
         private val nameMap = values().associateBy { it.function.name }
@@ -167,27 +117,27 @@ enum class CVTCore(val function: ExternalFunction) {
 enum class CVTCalltrace(val function: ExternalFunction,
                         // From all registers (r1-r5), which registers contain the string or strings passed to the function
                         val strings: Set<CalltraceStr>) {
-    PRINT_U64_1(CexPrintValue(CVT_calltrace_print_u64_1, 3), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_U64_2(CexPrintValue(CVT_calltrace_print_u64_2, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_U64_3(CexPrintValue(CVT_calltrace_print_u64_3, 5), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_U128(CexPrintValue(CVT_calltrace_print_u128, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_I64_1(CexPrintValue(CVT_calltrace_print_i64_1, 3), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_I64_2(CexPrintValue(CVT_calltrace_print_i64_2, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_I64_3(CexPrintValue(CVT_calltrace_print_i64_3, 5), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_I128(CexPrintValue(CVT_calltrace_print_i128, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_U64_AS_FIXED(CexPrintValue(CVT_calltrace_print_u64_as_fixed, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_TAG(ExternalFunction(CVT_calltrace_print_tag, setOf(),
+    PRINT_U64_1(CexPrintValue(CvlrFunctions.CVT_calltrace_print_u64_1, 3), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_U64_2(CexPrintValue(CvlrFunctions.CVT_calltrace_print_u64_2, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_U64_3(CexPrintValue(CvlrFunctions.CVT_calltrace_print_u64_3, 5), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_U128(CexPrintValue(CvlrFunctions.CVT_calltrace_print_u128, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_I64_1(CexPrintValue(CvlrFunctions.CVT_calltrace_print_i64_1, 3), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_I64_2(CexPrintValue(CvlrFunctions.CVT_calltrace_print_i64_2, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_I64_3(CexPrintValue(CvlrFunctions.CVT_calltrace_print_i64_3, 5), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_I128(CexPrintValue(CvlrFunctions.CVT_calltrace_print_i128, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_U64_AS_FIXED(CexPrintValue(CvlrFunctions.CVT_calltrace_print_u64_as_fixed, 4), setOf(CalltraceStr(SbfRegister.R1_ARG))),
+    PRINT_TAG(ExternalFunction(CvlrFunctions.CVT_calltrace_print_tag, setOf(),
               listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet()),
               setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_LOCATION(ExternalFunction(CVT_calltrace_print_location, setOf(),
+    PRINT_LOCATION(ExternalFunction(CvlrFunctions.CVT_calltrace_print_location, setOf(),
                    listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG).map{ Value.Reg(it)}.toSet()),
                    setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    ATTACH_LOCATION(ExternalFunction(CVT_calltrace_attach_location, setOf(),
+    ATTACH_LOCATION(ExternalFunction(CvlrFunctions.CVT_calltrace_attach_location, setOf(),
                     listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG).map{ Value.Reg(it)}.toSet()),
                     setOf(CalltraceStr(SbfRegister.R1_ARG))),
-    PRINT_STRING(CexPrintValue(CVT_calltrace_print_string, 4),
+    PRINT_STRING(CexPrintValue(CvlrFunctions.CVT_calltrace_print_string, 4),
                  setOf(CalltraceStr(SbfRegister.R1_ARG), CalltraceStr(SbfRegister.R3_ARG))),
-    RULE_LOCATION(ExternalFunction(CVT_rule_location, setOf(),
+    RULE_LOCATION(ExternalFunction(CvlrFunctions.CVT_rule_location, setOf(),
                   listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG).map{ Value.Reg(it)}.toSet()),
                   setOf(CalltraceStr(SbfRegister.R1_ARG)));
 
@@ -217,15 +167,15 @@ data class CalltraceStr(val string: Value.Reg, val len: Value.Reg) {
 }
 
 enum class CVTU128Intrinsics(val function: ExternalFunction) {
-    U128_NONDET(ExternalFunction(CVT_nondet_u128, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
-    U128_LEQ(ExternalFunction(CVT_u128_leq,
+    U128_NONDET(ExternalFunction(CvlrFunctions.CVT_nondet_u128, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
+    U128_LEQ(ExternalFunction(CvlrFunctions.CVT_u128_leq,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG,
             SbfRegister.R3_ARG, SbfRegister.R4_ARG).map{ Value.Reg(it)}.toSet())),
-    U128_GT0(ExternalFunction(CVT_u128_gt0,
+    U128_GT0(ExternalFunction(CvlrFunctions.CVT_u128_gt0,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())),
-    U128_CEIL_DIV(ExternalFunction(CVT_u128_ceil_div,
+    U128_CEIL_DIV(ExternalFunction(CvlrFunctions.CVT_u128_ceil_div,
         setOf(),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG, SbfRegister.R4_ARG, SbfRegister.R5_ARG).map{ Value.Reg(it)}.toSet()));
 
@@ -254,67 +204,67 @@ enum class CVTU128Intrinsics(val function: ExternalFunction) {
 }
 
 enum class CVTNativeInt(val function: ExternalFunction) {
-    NATIVEINT_EQ(ExternalFunction(CVT_nativeint_u64_eq,
+    NATIVEINT_EQ(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_eq,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_LT(ExternalFunction(CVT_nativeint_u64_lt,
+    NATIVEINT_LT(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_lt,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_LE(ExternalFunction(CVT_nativeint_u64_le,
+    NATIVEINT_LE(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_le,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_ADD(ExternalFunction(CVT_nativeint_u64_add,
+    NATIVEINT_ADD(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_add,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_SUB(ExternalFunction(CVT_nativeint_u64_sub,
+    NATIVEINT_SUB(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_sub,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_MUL(ExternalFunction(CVT_nativeint_u64_mul,
+    NATIVEINT_MUL(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_mul,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_DIV(ExternalFunction(CVT_nativeint_u64_div,
+    NATIVEINT_DIV(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_div,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_CEIL_DIV(ExternalFunction(CVT_nativeint_u64_div_ceil,
+    NATIVEINT_CEIL_DIV(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_div_ceil,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_MULDIV(ExternalFunction(CVT_nativeint_u64_muldiv,
+    NATIVEINT_MULDIV(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_muldiv,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_MULDIV_CEIL(ExternalFunction(CVT_nativeint_u64_muldiv_ceil,
+    NATIVEINT_MULDIV_CEIL(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_muldiv_ceil,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_NONDET(ExternalFunction(CVT_nativeint_u64_nondet,
+    NATIVEINT_NONDET(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_nondet,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_FROM_U128(ExternalFunction(CVT_nativeint_u64_from_u128,
+    NATIVEINT_FROM_U128(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_from_u128,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_FROM_U256(ExternalFunction(CVT_nativeint_u64_from_u256,
+    NATIVEINT_FROM_U256(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_from_u256,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG, SbfRegister.R2_ARG, SbfRegister.R3_ARG, SbfRegister.R4_ARG).map{ Value.Reg(it)}.toSet())
     ),
-    NATIVEINT_U64_MAX(ExternalFunction(CVT_nativeint_u64_u64_max,
+    NATIVEINT_U64_MAX(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_u64_max,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         setOf())
     ),
-    NATIVEINT_U128_MAX(ExternalFunction(CVT_nativeint_u64_u128_max,
+    NATIVEINT_U128_MAX(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_u128_max,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         setOf())
     ),
-    NATIVEINT_U256_MAX(ExternalFunction(CVT_nativeint_u64_u256_max,
+    NATIVEINT_U256_MAX(ExternalFunction(CvlrFunctions.CVT_nativeint_u64_u256_max,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         setOf())
     );
@@ -334,15 +284,15 @@ enum class CVTNativeInt(val function: ExternalFunction) {
 }
 
 enum class CVTNondet(val function: ExternalFunction) {
-    NONDET_U8(ExternalFunction(CVT_nondet_u8,setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_U16(ExternalFunction(CVT_nondet_u16, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_U32(ExternalFunction(CVT_nondet_u32, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_U64(ExternalFunction(CVT_nondet_u64, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_USIZE(ExternalFunction(CVT_nondet_usize, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_I8(ExternalFunction(CVT_nondet_i8, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_I16(ExternalFunction(CVT_nondet_i16, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_I32(ExternalFunction(CVT_nondet_i32, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
-    NONDET_I64(ExternalFunction(CVT_nondet_i64, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf()));
+    NONDET_U8(ExternalFunction(CvlrFunctions.CVT_nondet_u8,setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_U16(ExternalFunction(CvlrFunctions.CVT_nondet_u16, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_U32(ExternalFunction(CvlrFunctions.CVT_nondet_u32, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_U64(ExternalFunction(CvlrFunctions.CVT_nondet_u64, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_USIZE(ExternalFunction(CvlrFunctions.CVT_nondet_usize, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_I8(ExternalFunction(CvlrFunctions.CVT_nondet_i8, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_I16(ExternalFunction(CvlrFunctions.CVT_nondet_i16, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_I32(ExternalFunction(CvlrFunctions.CVT_nondet_i32, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf())),
+    NONDET_I64(ExternalFunction(CvlrFunctions.CVT_nondet_i64, setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)), setOf()));
 
     companion object: ExternalLibrary<CVTNondet>  {
         private val nameMap = values().associateBy { it.function.name }
