@@ -122,6 +122,7 @@ enum class LoggerTypes : LoggerName {
     REPORT_UTILS,
     SBF,
     WASM,
+    CVLR,
     CONTRACT_CREATION,
     VM_INTEROP,
     QUANTIFIERS,

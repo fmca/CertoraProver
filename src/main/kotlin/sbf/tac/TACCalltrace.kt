@@ -43,7 +43,7 @@ object Calltrace {
     fun printValueOrTag(locInst: LocatedSbfInstruction, cexPrintFunction: CVTFunction): TACCmd.Simple {
         val tag = getString(locInst, SbfRegister.R1_ARG)
         return if (cexPrintFunction == CVTFunction.Calltrace(CVTCalltrace.PRINT_TAG)) {
-            SnippetCmd.SolanaSnippetCmd.CexPrintTag(tag).toAnnotation()
+            SnippetCmd.CvlrSnippetCmd.CexPrintTag(tag).toAnnotation()
         } else {
             val usedVars = mutableListOf<TACSymbol.Var>()
             var i = 0
@@ -52,7 +52,7 @@ object Calltrace {
                 usedVars.add(exprBuilder.mkVar(SbfRegister.getByValue((i + 3).toByte()))) // We start at R3
                 i++
             }
-            SnippetCmd.SolanaSnippetCmd.CexPrintValues(tag, usedVars).toAnnotation()
+            SnippetCmd.CvlrSnippetCmd.CexPrintValues(tag, usedVars).toAnnotation()
         }
     }
 
@@ -61,7 +61,7 @@ object Calltrace {
         val tag = getString(locInst, SbfRegister.R1_ARG)
         val low = exprBuilder.mkVar(SbfRegister.R3_ARG)
         val high = exprBuilder.mkVar(SbfRegister.R4_ARG)
-        return SnippetCmd.SolanaSnippetCmd.CexPrint128BitsValue(tag, low, high, signed).toAnnotation()
+        return SnippetCmd.CvlrSnippetCmd.CexPrint128BitsValue(tag, low, high, signed).toAnnotation()
     }
 
     context(SbfCFGToTAC)
@@ -69,19 +69,19 @@ object Calltrace {
         val tag = getString(locInst, SbfRegister.R1_ARG)
         val unscaledVar = exprBuilder.mkVar(SbfRegister.R3_ARG)
         val scaleVar = exprBuilder.mkVar(SbfRegister.R4_ARG)
-        return SnippetCmd.SolanaSnippetCmd.CexPrintU64AsFixed(tag, unscaledVar, scaleVar).toAnnotation()
+        return SnippetCmd.CvlrSnippetCmd.CexPrintU64AsFixed(tag, unscaledVar, scaleVar).toAnnotation()
     }
 
     context(SbfCFGToTAC)
     fun printLocation(locInst: LocatedSbfInstruction): TACCmd.Simple {
         val (filepath, lineNumber) = getFilepathAndLineNumber(locInst)
-        return SnippetCmd.SolanaSnippetCmd.CexPrintLocation(filepath, lineNumber).toAnnotation()
+        return SnippetCmd.CvlrSnippetCmd.CexPrintLocation(filepath, lineNumber).toAnnotation()
     }
 
     context(SbfCFGToTAC)
     fun attachLocation(locInst: LocatedSbfInstruction): TACCmd.Simple {
         val (filepath, lineNumber) = getFilepathAndLineNumber(locInst)
-        return SnippetCmd.SolanaSnippetCmd.CexAttachLocation(filepath, lineNumber).toAnnotation()
+        return SnippetCmd.CvlrSnippetCmd.CexAttachLocation(filepath, lineNumber).toAnnotation()
     }
 
     context(SbfCFGToTAC)
@@ -95,7 +95,7 @@ object Calltrace {
     fun printString(locInst: LocatedSbfInstruction): TACCmd.Simple {
         val tag = getString(locInst, SbfRegister.R1_ARG)
         val str = getString(locInst, SbfRegister.R3_ARG)
-        return SnippetCmd.SolanaSnippetCmd.CexPrintTag("$tag: $str").toAnnotation()
+        return SnippetCmd.CvlrSnippetCmd.CexPrintTag("$tag: $str").toAnnotation()
     }
 
 

@@ -759,7 +759,7 @@ object LoopCopyAnalysis {
                         guardBlock = patching.addBlock(
                             copyLoop.l.head.copy(freshCopy = Allocator.getFreshId(Allocator.Id.BLOCK_FRESH_COPY)),
                             listOf(
-                                SnippetCmd.EVMSnippetCmd.LoopSnippet.CopyLoop.toAnnotation(g.destructiveOptimizations),
+                                SnippetCmd.EVMSnippetCmd.CopyLoopSnippet.CopyLoop.toAnnotation(g.destructiveOptimizations),
                                 TACCmd.Simple.SummaryCmd(
                                     copyLoop.toSummary(setOf(finalWriteBlock), succBlock),
                                     MetaMap()
@@ -774,7 +774,7 @@ object LoopCopyAnalysis {
                             it !in fWrite.blocks
                         }.toSet().singleOrNull() ?: continue@outer
                         guardBlock = patching.addBlock(copyLoop.l.head, listOf(
-                            SnippetCmd.EVMSnippetCmd.LoopSnippet.CopyLoop.toAnnotation(g.destructiveOptimizations),
+                            SnippetCmd.EVMSnippetCmd.CopyLoopSnippet.CopyLoop.toAnnotation(g.destructiveOptimizations),
                           TACCmd.Simple.SummaryCmd(copyLoop.toSummary(fWrite.blocks, succBlock), MetaMap())
                         ))
                     }
@@ -785,7 +785,7 @@ object LoopCopyAnalysis {
                             it !in copyLoop.l.body && it !in g.analysisCache.revertBlocks
                         } ?: continue@outer
                         guardBlock = patching.addBlock(copyLoop.l.head, listOf(
-                            SnippetCmd.EVMSnippetCmd.LoopSnippet.CopyLoop.toAnnotation(g.destructiveOptimizations),
+                            SnippetCmd.EVMSnippetCmd.CopyLoopSnippet.CopyLoop.toAnnotation(g.destructiveOptimizations),
                           TACCmd.Simple.SummaryCmd(copyLoop.toSummary(setOf(), succBlock), MetaMap())
                         ))
                     }

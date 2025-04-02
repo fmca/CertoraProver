@@ -76,23 +76,23 @@ data class LoopStats(
             val g = prog.analysisCache.graph
             val endLoops = g.commands
                 .mapNotNull { lcmd ->
-                    lcmd.ptr `to?` lcmd.asSnippetCmd().let { it as? SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet }
+                    lcmd.ptr `to?` lcmd.asSnippetCmd().let { it as? SnippetCmd.LoopSnippet.EndLoopSnippet }
                 }
                 .toList()
             // for each end loop, try to find the last iteration.
             val endIters = g.commands
                 .mapNotNull { lcmd ->
-                    lcmd.ptr `to?` lcmd.asSnippetCmd().let { it as? SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter }
+                    lcmd.ptr `to?` lcmd.asSnippetCmd().let { it as? SnippetCmd.LoopSnippet.EndIter }
                 }.toList()
             val lastIters = endLoops
                 .mapNotNull { (_, endLoopSnip) ->
                     endIters.filter { it.second.loopId == endLoopSnip.loopId }.maxByOrNull { it.second.iteration }
                 }.toList()
 
-            fun getNumOfLoops(filter: (Pair<CmdPointer,SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet>) -> Boolean)
+            fun getNumOfLoops(filter: (Pair<CmdPointer,SnippetCmd.LoopSnippet.EndLoopSnippet>) -> Boolean)
                 = endLoops.filter(filter).size
 
-            fun getLongestLoop(filter: (Pair<CmdPointer, SnippetCmd.EVMSnippetCmd.LoopSnippet.EndIter>) -> Boolean)
+            fun getLongestLoop(filter: (Pair<CmdPointer, SnippetCmd.LoopSnippet.EndIter>) -> Boolean)
                 = lastIters.filter(filter).maxOfOrNull { it.second.iteration } ?: 0
 
             // global number of loops

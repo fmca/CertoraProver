@@ -608,9 +608,9 @@ class SolanaCallTraceTest {
     private fun getUserAsserts(
         ruleName: String,
         results: List<RuleCheckResult.Single>,
-    ): List<CallInstance.SolanaUserAssert> {
+    ): List<CallInstance.CvlrUserAssert> {
         val calltrace = getCalltraceOfRule(ruleName, results)
-        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.SolanaUserAssert> { true }
+        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.CvlrUserAssert> { true }
     }
 
     private fun ruleContainsSolanaPrintTagAt(
@@ -626,9 +626,9 @@ class SolanaCallTraceTest {
     private fun getPrintTags(
         ruleName: String,
         results: List<RuleCheckResult.Single>,
-    ): List<CallInstance.SolanaCexPrintTag> {
+    ): List<CallInstance.CvlrCexPrintTag> {
         val calltrace = getCalltraceOfRule(ruleName, results)
-        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.SolanaCexPrintTag> { true }
+        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.CvlrCexPrintTag> { true }
     }
 
     private fun ruleContainsSolanaPrintValuesAt(
@@ -642,7 +642,7 @@ class SolanaCallTraceTest {
     }
 
     /**
-     * Checks that it exists a [CallInstance.SolanaCexPrintValues] entry in the call trace at a specific range, and that
+     * Checks that there exists a [CallInstance.CvlrCexPrintValues] entry in the call trace at a specific range, and that
      * the first value in that entry corresponds to [expectedFirstValue].
      */
     private fun ruleContainsSolanaPrintValuesAtRangeWithFirstValue(
@@ -660,7 +660,7 @@ class SolanaCallTraceTest {
     }
 
     /**
-     * Checks that it exists a [CallInstance.SolanaCexPrintValues] entry in the call trace at a specific range, and that
+     * Checks that it exists a [CallInstance.CvlrCexPrintValues] entry in the call trace at a specific range, and that
      * the first value in Sarif in decimal representation in that entry corresponds to [expectedFirstValue].
      */
     private fun ruleContainsSolanaPrintValuesAtRangeWithFirstDecimalValueInSarif(
@@ -681,9 +681,9 @@ class SolanaCallTraceTest {
     private fun getPrintValues(
         ruleName: String,
         results: List<RuleCheckResult.Single>,
-    ): List<CallInstance.SolanaCexPrintValues> {
+    ): List<CallInstance.CvlrCexPrintValues> {
         val calltrace = getCalltraceOfRule(ruleName, results)
-        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.SolanaCexPrintValues> { true }
+        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.CvlrCexPrintValues> { true }
     }
 
     private fun ruleContainsSolanaExternalCallAt(
@@ -741,7 +741,7 @@ class SolanaCallTraceTest {
      * Sarif output must be [expectedFirstValue].
      */
     private fun existsPrintValuesAtRangeWithFirstValue(
-        printValues: Iterable<CallInstance.SolanaCexPrintValues>,
+        printValues: Iterable<CallInstance.CvlrCexPrintValues>,
         expectedRange: Range.Range,
         expectedFirstValue: String,
     ): Boolean {
@@ -757,7 +757,7 @@ class SolanaCallTraceTest {
      * Sarif output in decimal representation must be [expectedFirstValue].
      */
     private fun existsPrintValuesAtRangeWithFirstSarifDecimalValue(
-        printValues: Iterable<CallInstance.SolanaCexPrintValues>,
+        printValues: Iterable<CallInstance.CvlrCexPrintValues>,
         expectedRange: Range.Range,
         expectedFirstValue: BigInteger,
     ): Boolean {

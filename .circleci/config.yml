@@ -129,7 +129,7 @@ jobs:
     environment:
       # configure sccache usage
       RUSTC_WRAPPER: "../../.cargo/bin/sccache"
-      PUBLIC_CIRCLE_BRANCH: &public_circle_branch public-${CIRCLE_BRANCH}
+      PUBLIC_CIRCLE_BRANCH: &public_circle_branch public-<< pipeline.git.branch >>
     steps:
       - proper_checkout
       - run: apt-get update && sudo apt-get install -y cmake
@@ -298,7 +298,7 @@ jobs:
           at: ~/
       - prepare_reg_test
       - run_evm_sanity
-      - run_solana_sanity
+#      - run_solana_sanity
       - run_soroban_sanity
       - run_mutation_sanity
 

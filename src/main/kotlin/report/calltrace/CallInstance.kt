@@ -643,13 +643,12 @@ sealed class CallInstance : TreeViewReportable {
 
     // solana
     class SolanaExternalCall(override val sarif: Sarif, override val range: Range.Range?) : CallInstance()
-    class SolanaUserAssert(override val name: String, override val range: Range.Range?) : CallInstance()
-    class SolanaCexPrintTag(override val name: String, override val range: Range.Range?): CallInstance()
-    class SolanaCexPrintValues(override val sarif: Sarif, override  val range: Range.Range?): CallInstance()
 
-    // wasm
-    class WasmUserAssume(override val name: String, override val range: Range.Range?) : CallInstance()
-    class WasmUserAssert(override val name: String, override val range: Range.Range?) : CallInstance()
+    // rust
+    class CvlrUserAssert(override val name: String, override val range: Range.Range?) : CallInstance()
+    class CvlrUserAssume(override val name: String, override val range: Range.Range?) : CallInstance()
+    class CvlrCexPrintTag(override val name: String, override val range: Range.Range? = null): CallInstance()
+    class CvlrCexPrintValues(override val sarif: Sarif, override  val range: Range.Range? = null): CallInstance()
 }
 
 fun callInstanceTreeStructureException(errorMsg: () -> String): Nothing {

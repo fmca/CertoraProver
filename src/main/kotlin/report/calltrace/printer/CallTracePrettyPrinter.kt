@@ -18,7 +18,6 @@
 package report.calltrace.printer
 
 import analysis.LTACCmd
-import datastructures.*
 import datastructures.stdcollections.*
 import log.*
 import report.calltrace.CallInstance
@@ -236,9 +235,9 @@ fun CallInstance.prettyPrint(indent: Int): String {
         is CallInstance.InvokingInstance.CVLFunctionInstance -> "[CVLFunc, ${hashCode()}] $callIndex ; $name ; $paramNames; $paramTypes ; $paramValues : ${returnTypes.zip(returnValues.values)} $andDefault"
 //        is CallInstance.GhostValueInstance -> "[GhostVal] $name : $value$andDefault"
 //        is CallInstance.CVLExpInstance -> "[CVLExp] $name : $value$andDefault"
-        is CallInstance.SolanaCexPrintValues -> "[SlnCexPrintVal] ${sarif.flatten()}"
+        is CallInstance.CvlrCexPrintValues -> "[RstCexPrintVal] ${sarif.flatten()}"
         is CallInstance.SolanaExternalCall -> "[SlnExternalCall] ${sarif.flatten()}"
-        is CallInstance.SolanaCexPrintTag -> "[SlnCexPrintTag] $name"
+        is CallInstance.CvlrCexPrintTag -> "[RstCexPrintTag] $name"
         else -> "[${javaClass.simpleName}, ${hashCode()}] $this"
     }
 }

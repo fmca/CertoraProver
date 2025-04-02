@@ -117,7 +117,7 @@ class LExpVCSATResultPrettifier(
                             }
                             TACMeta.SNIPPET -> { // For solana
                                 when(val snippet = stmt.annot.v) {
-                                    is SnippetCmd.SolanaSnippetCmd.CexPrintValues -> {
+                                    is SnippetCmd.CvlrSnippetCmd.CexPrintValues -> {
                                         toPrettify.addAll(snippet.symbols)
                                     }
                                     is SnippetCmd.SolanaSnippetCmd.Assert -> {

@@ -105,7 +105,7 @@ object BranchSnippetInstrumenter {
                 // specifically: seeing a loop.end snippet should automatically close all open branches,
                 // and branch.end snippets will skip if the current stack top is not branch.start
                 block.commands.isNotEmpty() && block.commands.first()
-                    .maybeAnnotation(TACMeta.SNIPPET)?.takeIf { it is SnippetCmd.EVMSnippetCmd.LoopSnippet.EndLoopSnippet } == null
+                    .maybeAnnotation(TACMeta.SNIPPET)?.takeIf { it is SnippetCmd.LoopSnippet.EndLoopSnippet } == null
                     // to consider: check also EndIterSnippet?
             }.sortedBy { (ptr, _) ->
                 // sort by reverse topological order, as we wish to add the end snippet of the first-appearing start snippet _last_.

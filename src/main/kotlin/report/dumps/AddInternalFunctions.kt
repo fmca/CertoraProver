@@ -96,7 +96,7 @@ object AddInternalFunctions {
                     successCriteria = { true }
                 ).runAnalysis(inputProg)
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                logger.warn(e) {
+                logger.debug(e) {
                     "failed to expose internal functions for CodeMap of program \"${inputProg.name}\" (continuing " +
                         "with external calls only)"
                 }
