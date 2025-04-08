@@ -31,8 +31,7 @@ import parallel.coroutines.parallelMapOrdered
 import report.*
 import rules.CompiledRule
 import rules.RuleCheckResult
-import scene.IScene
-import scene.MethodAttribute
+import scene.*
 import solver.SolverResult
 import spec.*
 import spec.CVLCompiler.CallIdContext.Companion.toContext
@@ -94,6 +93,13 @@ class BoundedModelChecker(
         fun CoreTACProgram.optimize(scene: IScene): CoreTACProgram {
             val optimized = CompiledRule.optimize(scene.toIdentifiers(), this.withCoiOptimizations(false))
             return optimized
+        }
+
+        fun IContractClass.isLibrary(): Boolean {
+            return when(this){
+                is IContractWithSource -> this.src.isLibrary
+                else -> false
+            }
         }
 
         data class StateModificationFootprint(
@@ -272,35 +278,37 @@ class BoundedModelChecker(
                     .toList()
                     .wrapWithMessageLabel("Assume init_state axioms")
 
-                val invokeConstructors = scene.getNonPrecompiledContracts().flatMapIndexed { i, contract ->
-                    listOf(
-                        CVLCmd.Simple.Declaration(
-                            range,
-                            EVMBuiltinTypes.env,
-                            envParam(i) + "_constructor",
-                            scope
-                        ),
-                        CVLCmd.Simple.Declaration(
-                            range,
-                            CVLType.PureCVLType.VMInternal.RawArgs,
-                            argParam(i) + "_constructor",
-                            scope
-                        ),
-                        CVLCmd.Simple.contractFunction(
-                            range,
-                            scope,
-                            UniqueMethod(SolidityContract(contract.name), MethodAttribute.Unique.Constructor),
-                            listOf(
-                                CVLExp.VariableExp(envParam(i) + "_constructor", EVMBuiltinTypes.env.asTag()),
-                                CVLExp.VariableExp(argParam(i) + "_constructor", CVLType.PureCVLType.VMInternal.RawArgs.asTag())
+                val invokeConstructors = scene.getNonPrecompiledContracts()
+                    .filterNot { it.isLibrary() }
+                    .flatMapIndexed { i, contract ->
+                        listOf(
+                            CVLCmd.Simple.Declaration(
+                                range,
+                                EVMBuiltinTypes.env,
+                                envParam(i) + "_constructor",
+                                scope
                             ),
-                            true,
-                            CVLExp.VariableExp(CVLKeywords.lastStorage.keyword, CVLKeywords.lastStorage.type.asTag()),
-                            isWhole = false,
-                            isParametric = false,
-                            methodParamFilter = null
+                            CVLCmd.Simple.Declaration(
+                                range,
+                                CVLType.PureCVLType.VMInternal.RawArgs,
+                                argParam(i) + "_constructor",
+                                scope
+                            ),
+                            CVLCmd.Simple.contractFunction(
+                                range,
+                                scope,
+                                UniqueMethod(SolidityContract(contract.name), MethodAttribute.Unique.Constructor),
+                                listOf(
+                                    CVLExp.VariableExp(envParam(i) + "_constructor", EVMBuiltinTypes.env.asTag()),
+                                    CVLExp.VariableExp(argParam(i) + "_constructor", CVLType.PureCVLType.VMInternal.RawArgs.asTag())
+                                ),
+                                true,
+                                CVLExp.VariableExp(CVLKeywords.lastStorage.keyword, CVLKeywords.lastStorage.type.asTag()),
+                                isWhole = false,
+                                isParametric = false,
+                                methodParamFilter = null
+                            )
                         )
-                    )
                 }.wrapWithMessageLabel("invoke constructors")
 
                 listOf(
