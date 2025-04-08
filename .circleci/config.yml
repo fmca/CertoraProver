@@ -5,18 +5,12 @@ orbs:
   git-shallow-clone: guitarrapc/git-shallow-clone@2.8.0
 
 parameters:
-  run_certora_prover:
-    default: false
-    type: boolean
   certora_ci_name:
     default: "CertoraProver Sanity"
     type: string
   gambit_version:
     default: "v1.0.5"
     type: string
-  release_beta:
-    default: false
-    type: boolean
   release_prod_version:
     default: false
     type: boolean
@@ -331,27 +325,27 @@ jobs:
             --header "content-type: application/json" \
             --data '{"branch":"master"}'
 
+  # Beta mirror releases - tag based
+  release_cli_beta_mirror:
+    docker:
+      - image: *python
+    resource_class: small
+    working_directory: ~/repo/
+    steps:
+      - attach_workspace:
+          at: ~/
+      - release_certora_cli
+
 workflows:
   prover-sanity:
-    when: << pipeline.parameters.run_certora_prover >>
-    jobs:
-      - build
-      - jar_deploy:
-          context:
-            - aws_artifacts
-          requires:
-            - build
-      - certora_prover_sanity:
-          requires:
-            - jar_deploy
-
-  release-beta:
-    when: << pipeline.parameters.release_beta >>
     jobs:
       - build:
           filters:
             tags:
-              only: /.*/
+              ignore: &all /.*/
+            branches:
+              only:
+                - master
       - jar_deploy:
           context:
             - aws_artifacts
@@ -359,18 +353,65 @@ workflows:
             - build
           filters:
             tags:
-              only: /.*/
-      - release_cli_beta: # beta is released only on tags
-          context:
-            - opscertora
+              ignore: *all
+            branches:
+              only:
+                - master
+      - certora_prover_sanity:
           requires:
             - jar_deploy
           filters:
             tags:
-              only: /.*/
+              ignore: *all
             branches:
-              ignore: # ignore all
-                - /.*/
+              only:
+                - master
+
+  # Release a new certora-cli-beta, beta is released only on tags.
+  release-beta:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: &semver /^(\d|[1-9]\d)\.(\d|[1-9]\d)\.(\d|[1-9]\d)$/
+            branches:
+              ignore:
+                - *all
+      - jar_deploy:
+          context:
+            - aws_artifacts
+          requires:
+            - build
+          filters:
+            tags:
+              only: *semver
+            branches:
+              ignore:
+                - *all
+      - release_cli_beta:
+          context:
+            - opscertora
+          requires:
+            - build
+            - jar_deploy
+          filters:
+            tags:
+              only: *semver
+            branches:
+              ignore:
+                - *all
+      - release_cli_beta_mirror:
+          context:
+            - opscertora
+          requires:
+            - build
+            - jar_deploy
+          filters:
+            tags:
+              only: *semver
+            branches:
+              ignore:
+                - *all
 
   release_prod_version_certora_cli:
     when: << pipeline.parameters.release_prod_version >>
@@ -378,16 +419,16 @@ workflows:
       - build:
           filters:
             tags:
-              only: /^(\d|[1-9]\d)\.(\d|[1-9]\d)\.(\d|[1-9]\d)$/
+              only: *semver
             branches:
-              ignore: # ignore all
-                - /.*/
+              ignore:
+                - *all
       - release_cli:
           requires:
             - build
           filters:
             tags:
-              only: /^(\d|[1-9]\d)\.(\d|[1-9]\d)\.(\d|[1-9]\d)$/
+              only: *semver
             branches:
-              ignore: # ignore all
-                - /.*/
+              ignore:
+                - *all
