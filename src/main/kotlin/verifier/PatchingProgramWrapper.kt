@@ -310,8 +310,6 @@ class PatchingProgramWrapper(private val code: CoreTACProgram) {
                             delete(it.ptr)
                         }
                         setSuccs(block, treapSetOf())
-                    } else {
-                        setSuccs(b, treapSetOf())
                     }
                 }
 
