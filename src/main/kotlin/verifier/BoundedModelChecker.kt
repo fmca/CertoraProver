@@ -53,6 +53,7 @@ import utils.CollectingResult.Companion.map
 import utils.CollectingResult.Companion.safeForce
 import vc.data.*
 import vc.data.TACProgramCombiners.andThen
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -211,7 +212,7 @@ class BoundedModelChecker(
 
         private fun Collection<ContractFunction>.dispatchStr() =
             this.singleOrNull()?.abiWithContractStr() // avoids the prefix and postfix for the singleton case
-                ?: this.joinToString(" | ", prefix = "[ ", postfix = " ]") { it.abiWithContractStr() }
+                ?: this.sortedBy { it.abiWithContractStr() }.joinToString(" | ", prefix = "[ ", postfix = " ]") { it.abiWithContractStr() }
 
         private fun Collection<Collection<ContractFunction>>.sequenceStr() = this.joinToString(" -> ") { it.dispatchStr() }
     }
@@ -250,7 +251,7 @@ class BoundedModelChecker(
      * A mapping from a [ContractFunction] to the [CoreTACProgram] it compiles to along with the [CallId] of that
      * function in the program. See [compileFunction] for details of what these programs contain.
      */
-    private val compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>
+    private val compiledFuncs: SortedMap<ContractFunction, Pair<CoreTACProgram, CallId>>
 
     private val invProgs: Map<CVLInvariant, InvariantPrograms>
 
@@ -509,7 +510,7 @@ class BoundedModelChecker(
                 getAllWritesAndReads(prog, callId).first?.let { !it.isEmpty() } != false
             }.collect(Collectors.toMap({ it.first }, { it.second })).also {
                 logger.info { "bmc on ${it.size} functions" }
-            }
+            }.toSortedMap(compareBy<ContractFunction> { it.abiWithContractStr() })
 
 
         val funcWritesAndReads = compiledFuncs.mapValues { (_, progAndCallId) ->
@@ -577,7 +578,7 @@ class BoundedModelChecker(
                     acc
                 )
             }
-            val assumeInvProg = invProgs.assume.copyFunction()
+            val assumeInvProg = (invProgs.params andThen invProgs.assume).copyFunction()
             outerAcc andThen assumeInvProg andThen newDispatch
         }
 

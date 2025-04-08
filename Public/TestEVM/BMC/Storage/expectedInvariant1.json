@@ -1,0 +1,9 @@
+{
+  "assertMessages": {
+    "violatedLessThanFive-constructors-[ C.getAndAdd(uint40) | C.setBar() ]": "invariant assertion - Invariant.spec line 20"
+  },
+  "rules": {
+    "violatedLessThanFive-constructors": "SUCCESS",
+    "violatedLessThanFive-constructors-[ C.getAndAdd(uint40) | C.setBar() ]": "FAIL"
+  }
+}

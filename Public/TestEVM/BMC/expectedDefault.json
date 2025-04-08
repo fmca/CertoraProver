@@ -1,29 +1,29 @@
 {
 	"assertMessages": {
-		"mCurrentContractNonNegative-constructors-C.addM1(address)-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "invariant assertion - C.spec line 22",
-		"mCurrentContractNonNegative-constructors-C.addNandM1(address)-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "invariant assertion - C.spec line 22",
-		"mCurrentContractNonNegative-constructors-C.setNandM1(address)-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "invariant assertion - C.spec line 22",
-		"nNonNegative-constructors-C.addN1()-[ C.setN1() | C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "invariant assertion - C.spec line 20",
-		"nNonNegative-constructors-C.addNandM1(address)-[ C.setN1() | C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "invariant assertion - C.spec line 20",
-		"nNonNegative-constructors-C.setN1()-[ C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "invariant assertion - C.spec line 20",
-		"nNonNegative-constructors-C.setNandM1(address)-[ C.setN1() | C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "invariant assertion - C.spec line 20"
+		"mCurrentContractNonNegative-constructors-C.addM1(address)-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "invariant assertion - C.spec line 22",
+		"mCurrentContractNonNegative-constructors-C.addNandM1(address)-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "invariant assertion - C.spec line 22",
+		"mCurrentContractNonNegative-constructors-C.setNandM1(address)-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "invariant assertion - C.spec line 22",
+		"nNonNegative-constructors-C.addN1()-[ C.addN1() | C.addNandM1(address) | C.setN1() | C.setNandM1(address) | C.subN2() ]": "invariant assertion - C.spec line 20",
+		"nNonNegative-constructors-C.addNandM1(address)-[ C.addN1() | C.addNandM1(address) | C.setN1() | C.setNandM1(address) | C.subN2() ]": "invariant assertion - C.spec line 20",
+		"nNonNegative-constructors-C.setN1()-[ C.addN1() | C.addNandM1(address) | C.setNandM1(address) | C.subN2() ]": "invariant assertion - C.spec line 20",
+		"nNonNegative-constructors-C.setNandM1(address)-[ C.addN1() | C.addNandM1(address) | C.setN1() | C.setNandM1(address) | C.subN2() ]": "invariant assertion - C.spec line 20"
 	},
 	"rules": {
 		"mCurrentContractNonNegative-constructors": "SUCCESS",
-		"mCurrentContractNonNegative-constructors-C.addM1(address)-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "FAIL",
+		"mCurrentContractNonNegative-constructors-C.addM1(address)-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "FAIL",
 		"mCurrentContractNonNegative-constructors-C.addN1()-C.addNandM1(address)": "SUCCESS",
-		"mCurrentContractNonNegative-constructors-C.addNandM1(address)-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "FAIL",
-		"mCurrentContractNonNegative-constructors-C.setM1(address)-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "SUCCESS",
+		"mCurrentContractNonNegative-constructors-C.addNandM1(address)-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "FAIL",
+		"mCurrentContractNonNegative-constructors-C.setM1(address)-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "SUCCESS",
 		"mCurrentContractNonNegative-constructors-C.setN1()-C.addNandM1(address)": "SUCCESS",
-		"mCurrentContractNonNegative-constructors-C.setNandM1(address)-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "FAIL",
-		"mCurrentContractNonNegative-constructors-[ C.addM1(address) | C.setNandM1(address) | C.subM2(address) | C.setM1(address) | C.addNandM1(address) ]": "SUCCESS",
+		"mCurrentContractNonNegative-constructors-C.setNandM1(address)-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "FAIL",
+		"mCurrentContractNonNegative-constructors-[ C.addM1(address) | C.addNandM1(address) | C.setM1(address) | C.setNandM1(address) | C.subM2(address) ]": "SUCCESS",
 		"nNonNegative-constructors": "SUCCESS",
 		"nNonNegative-constructors-C.addM1(address)-C.addNandM1(address)": "SUCCESS",
-		"nNonNegative-constructors-C.addN1()-[ C.setN1() | C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "FAIL",
-		"nNonNegative-constructors-C.addNandM1(address)-[ C.setN1() | C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "FAIL",
+		"nNonNegative-constructors-C.addN1()-[ C.addN1() | C.addNandM1(address) | C.setN1() | C.setNandM1(address) | C.subN2() ]": "FAIL",
+		"nNonNegative-constructors-C.addNandM1(address)-[ C.addN1() | C.addNandM1(address) | C.setN1() | C.setNandM1(address) | C.subN2() ]": "FAIL",
 		"nNonNegative-constructors-C.setM1(address)-C.addNandM1(address)": "SUCCESS",
-		"nNonNegative-constructors-C.setN1()-[ C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "FAIL",
-		"nNonNegative-constructors-C.setNandM1(address)-[ C.setN1() | C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "FAIL",
-		"nNonNegative-constructors-[ C.setN1() | C.addN1() | C.setNandM1(address) | C.subN2() | C.addNandM1(address) ]": "SUCCESS"
+		"nNonNegative-constructors-C.setN1()-[ C.addN1() | C.addNandM1(address) | C.setNandM1(address) | C.subN2() ]": "FAIL",
+		"nNonNegative-constructors-C.setNandM1(address)-[ C.addN1() | C.addNandM1(address) | C.setN1() | C.setNandM1(address) | C.subN2() ]": "FAIL",
+		"nNonNegative-constructors-[ C.addN1() | C.addNandM1(address) | C.setN1() | C.setNandM1(address) | C.subN2() ]": "SUCCESS"
 	}
 }

@@ -1,0 +1,9 @@
+{
+  "assertMessages": {
+    "violatedLessThanFive-constructors-[ Summary.setFoo() | Summary.setFooConditionally((uint256)) | Summary.unresolvedCall(address) ]": "invariant assertion - SummaryDispatcher.spec line 37"
+  },
+  "rules": {
+    "violatedLessThanFive-constructors": "SUCCESS",
+    "violatedLessThanFive-constructors-[ Summary.setFoo() | Summary.setFooConditionally((uint256)) | Summary.unresolvedCall(address) ]": "FAIL"
+  }
+}
