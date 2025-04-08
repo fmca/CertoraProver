@@ -144,7 +144,7 @@ def get_local_run_cmd(context: CertoraContext) -> List[str]:
 
     java_cmd = ["java"]
 
-    if context.java_args is not None:
+    if context.java_args:
         java_cmd.extend(context.java_args.strip().split(' '))
 
     cmd = java_cmd + ["-jar", jar_path] + run_args
