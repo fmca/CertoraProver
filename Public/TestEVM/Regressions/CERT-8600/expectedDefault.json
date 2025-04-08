@@ -1,0 +1,8 @@
+{
+	"assertMessages": {
+		"should_fail": "false - test.spec line 5"
+	},
+	"rules": {
+		"should_fail": "FAIL"
+	}
+}
