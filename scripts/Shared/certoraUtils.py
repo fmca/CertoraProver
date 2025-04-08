@@ -31,7 +31,7 @@ import urllib3.util
 from collections import defaultdict
 from types import SimpleNamespace
 
-from typing import Any, Callable, Dict, List, Optional, Set, Union, Generator, Tuple, Iterable
+from typing import Any, Callable, Dict, List, Optional, Set, Union, Generator, Tuple, Iterable, Sequence, TypeVar
 from pathlib import Path
 
 scripts_dir_path = Path(__file__).parent.parent.resolve()  # containing directory
@@ -122,6 +122,8 @@ MAP_SUFFIX = '_map'
 SUPPRESS_HELP_MSG = "==SUPPRESS=="
 MAX_FLAG_LENGTH = 31
 HELP_TABLE_WIDTH = 97
+
+T = TypeVar('T')
 
 class CallOnce:
     def __init__(self, func: Callable):
@@ -1435,3 +1437,9 @@ def restore_backup(backup_path: Path) -> Optional[Path]:
         original_path = backup_path.with_name(backup_path.stem)
         backup_path.rename(original_path)
     return original_path
+
+def eq_by(f: Callable[[T, T], bool], a: Sequence[T], b: Sequence[T]) -> bool:
+    """
+    check if Sequences a and b are equal according to function f.
+    """
+    return len(a) == len(b) and all(map(f, a, b))

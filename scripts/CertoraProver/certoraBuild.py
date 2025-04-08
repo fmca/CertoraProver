@@ -825,7 +825,7 @@ class CertoraBuildGenerator:
                     ast_logger.debug(f"No body for {func_def} but ast claims it is implemented")
 
                 if original_contract is not None:
-                    if method := original_contract.find_method(func_name):
+                    if method := original_contract.find_method(func_name, solidity_type_args):
                         source_bytes = method.source_bytes
                         original_file = method.original_file
                     else:
@@ -3137,7 +3137,7 @@ class CertoraBuildGenerator:
                                                      f"for contract extension")
                 extension_contract = contracts_by_name[extension]
                 for f in ext["exclude"]:
-                    if extension_contract.find_method(f) is None:
+                    if not extension_contract.has_method_with_name(f):
                         raise Util.CertoraUserInputError(f"Can't find a method named {f} in contract "
                                                          f"{extension_contract.name}")
                 extended_contract.add_extension(ContractExtension(extension_contract, ext["exclude"]))

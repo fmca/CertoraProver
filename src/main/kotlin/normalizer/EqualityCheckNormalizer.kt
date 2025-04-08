@@ -19,9 +19,7 @@ package normalizer
 
 import analysis.*
 import analysis.PatternMatcher.Pattern.Companion.toBuildable
-import analysis.dataflow.StrictDefAnalysis
 import com.certora.collect.*
-import datastructures.stdcollections.*
 import tac.Tag
 import utils.mapNotNull
 import vc.data.*
@@ -48,8 +46,7 @@ object EqualityCheckNormalizer {
     private data class Rewrite(
         val jumpI: LTACCmdView<TACCmd.Simple.JumpiCmd>,
         val target: LTACSymbol,
-        val k: BigInteger,
-        val subLocation: LTACCmd,
+        val k: BigInteger
     )
 
     private val pattern = PatternDSL.build {
@@ -58,50 +55,26 @@ object EqualityCheckNormalizer {
                 LTACSymbol(where.ptr, sym)
             }
         )
-        ((locatedSymbol.toBuildable() - Const).withAction { subLoc, op, const ->
-            Triple(subLoc, op, const)
-        } lor (Const - locatedSymbol.toBuildable()).withAction { subLoc, const, op ->
-            Triple(subLoc, op, const)
+        ((locatedSymbol.toBuildable() - Const).withAction { op, const ->
+            op to const
+        } lor (Const - locatedSymbol.toBuildable()).withAction { const, op ->
+            op to const
         } gt Const(BigInteger.ZERO)).withAction { r, _ -> r }
     }
 
     fun rewrite(c: CoreTACProgram) : CoreTACProgram {
         val matcher = PatternMatcher.compilePattern(graph = c.analysisCache.graph, patt = pattern)
-        val def = c.analysisCache.strictDef
         val rewrites = c.parallelLtacStream().mapNotNull {
             it.maybeNarrow<TACCmd.Simple.JumpiCmd>()
         }.mapNotNull {
-            (it.cmd.cond as? TACSymbol.Var)?.let { v ->
+            (it.cmd.cond as? TACSymbol.Var)?.let {v ->
                 matcher.query(v, it.wrapped).toNullableResult()
-            }?.let { (subLoc, operand, const) ->
+            }?.let { (operand, const) ->
                 Rewrite(
                     jumpI = it,
                     target = operand,
-                    k = const,
-                    subLocation = subLoc
+                    k = const
                 )
-            }
-        }.filter { r ->
-            /**
-             * Exclude those subtractions that are *quite* likely to be part of a loop countdown.
-             *
-             * The above excludes the pattern:
-             * H:
-             * x = z - c
-             * if * goto L else L2
-             *
-             * L2:
-             *   z = x
-             *   goto H
-             */
-            val s = def.source(r.target.ptr, r.target.symbol) as? StrictDefAnalysis.Source.Defs ?: return@filter true
-            /*
-             * Check none of the definition sites for `z` come from `x`, that is, this isn't a loop variable being decremented
-             */
-            s.ptrs.none { subFromDef ->
-                subFromDef != null && c.analysisCache.graph.elab(subFromDef).maybeExpr<TACExpr.Sym.Var>()?.exp?.s?.let { rhs ->
-                    def.defSitesOf(rhs, subFromDef)
-                } == setOf(r.subLocation.ptr)
             }
         }.toList()
         if(rewrites.isEmpty()) {
