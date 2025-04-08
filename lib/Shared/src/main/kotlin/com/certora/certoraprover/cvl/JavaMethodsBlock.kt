@@ -395,8 +395,9 @@ sealed class CallSummary (
     class DispatchList(
         val range: Range,
         private val dispatcherList: List<PatternSig>,
-        val default: HavocingCallSummary,
-        val useFallback: Boolean
+        val default: HavocingCallSummary?,
+        val useFallback: Boolean,
+        val optimistic: Boolean
     ): Kotlinizable<SpecCallSummary.DispatchList> {
         sealed class PatternSig {
             abstract val range: Range
@@ -446,16 +447,20 @@ sealed class CallSummary (
                     }
                 }
             }
+            if(optimistic && default != null){
+                return OptimisticDispatchListHasNoDefault(this).asError()
+            }
             val kDefault =
-                default.kotlinize(resolver, scope, listOf(), null, SummarizationMode.UNRESOLVED_ONLY).bind {
+                default?.kotlinize(resolver, scope, listOf(), null, SummarizationMode.UNRESOLVED_ONLY)?.bind {
                     collectingErrors {
                         if (it !is SpecCallSummary.HavocSummary) {
                             collectError(NonHavocingSummary(default))
                         }
                         it as SpecCallSummary.HavocSummary
                     }
-                }
-            return kDefault.map(translatedFuns.flatten()) { d, t -> SpecCallSummary.DispatchList(this@DispatchList.range, t, d, useFallback) }
+                } ?: null.lift()
+
+            return kDefault.map(translatedFuns.flatten()) { d, t -> SpecCallSummary.DispatchList(this@DispatchList.range, t, d, useFallback, optimistic) }
         }
     }
 

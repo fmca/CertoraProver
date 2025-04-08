@@ -542,6 +542,9 @@ sealed class CallInstance : TreeViewReportable {
         override val name: String
             get() = "Define $lhs"
     }
+
+    class DispatcherSummaryDefaultInstance(override val range: Range.Range?, override val name: String): CallInstance()
+
     /**
      * Value in Storage.
      */

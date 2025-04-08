@@ -720,6 +720,66 @@ class CallTraceTest {
     }
 
     @Test
+    fun testSummarizationUnresolvedExternalDefaultCase() {
+        ConfigScope(Config.OptimisticUnboundedHashing, true).extend(Config.IsAssumeUnwindCondForLoops, true).use {
+            val confPath = Path("src/test/resources/solver/CallTraceTests/Summarization/Summarization.conf")
+            val specPath = Path("src/test/resources/solver/CallTraceTests/Summarization/Summarization.spec")
+
+            val callTrace = CallTraceInfra.runConfAndGetCallTrace(
+                confPath = confPath,
+                specFilename = specPath,
+                ruleName = "unresolvedExternalForcingDefaultCase",
+                methodName = null,
+                primaryContract = "Test",
+            )
+
+            /* checking that the call trace contains the items we expect */
+            val callTraceFlat = callTrace.callHierarchyRoot.allChildren().toList()
+
+            val summaryInstances =
+                callTraceFlat.filterIsInstance<CallInstance.InvokingInstance.SummaryInstance>().toList()
+            assertEquals(1, summaryInstances.size)
+
+            val defaultsToDispatcher =
+                callTraceFlat.filterIsInstance<CallInstance.DispatcherSummaryDefaultInstance>().toList()
+
+            assertEquals(1, defaultsToDispatcher.size)
+        }
+    }
+
+    @Test
+    fun testSummarizationUnresolvedExternal() {
+        ConfigScope(Config.OptimisticUnboundedHashing, true).extend(Config.IsAssumeUnwindCondForLoops, true).use {
+            val confPath = Path("src/test/resources/solver/CallTraceTests/Summarization/Summarization.conf")
+            val specPath = Path("src/test/resources/solver/CallTraceTests/Summarization/Summarization.spec")
+
+            val callTrace = CallTraceInfra.runConfAndGetCallTrace(
+                confPath = confPath,
+                specFilename = specPath,
+                ruleName = "unresolvedExternal",
+                methodName = null,
+                primaryContract = "Test",
+            )
+
+            checkViolatedAssert(callTrace) { ctv ->
+                assertTrue(TACMeta.CVL_USER_DEFINED_ASSERT in ctv.violatedAssert.cmd.meta)
+            }
+
+            /* checking that the call trace contains the items we expect */
+            val callTraceFlat = callTrace.callHierarchyRoot.allChildren().toList()
+
+            val summaryInstances =
+                callTraceFlat.filterIsInstance<CallInstance.InvokingInstance.SummaryInstance>().toList()
+
+            assertEquals(2, summaryInstances.size)
+            val defaultsToDispatcher =
+                callTraceFlat.filterIsInstance<CallInstance.DispatcherSummaryDefaultInstance>().toList()
+
+            assertEquals(0, defaultsToDispatcher.size)
+        }
+    }
+
+    @Test
     fun testInvRuleBankExample1() {
         val confPath = Path("src/test/resources/solver/CallTraceTests/BankTestConf/BankTestConf.conf")
         val specPath = Path("src/test/resources/solver/CallTraceTests/BankTestConf/Bank.spec")
@@ -765,7 +825,7 @@ class CallTraceTest {
 
 
     @Test
-    fun testInvRuleBankExample2(){
+    fun testInvRuleBankExample2() {
         val confPath = Path("src/test/resources/solver/CallTraceTests/BankTestConf/BankTestConf.conf")
         val specPath = Path("src/test/resources/solver/CallTraceTests/BankTestConf/Bank.spec")
 
@@ -838,7 +898,7 @@ class CallTraceTest {
 
 
     @Test
-    fun testSatisfyTest(){
+    fun testSatisfyTest() {
         val confPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest/satisfyTest.conf")
         val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest/Satisfy_a__0_LPsatisfyTest_spec_7_5RP")
 
@@ -851,7 +911,7 @@ class CallTraceTest {
     }
 
     @Test
-    fun testSatisfyTest2Satisfy(){
+    fun testSatisfyTest2Satisfy() {
         val confPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest2/satisfyTest.conf")
         val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest2/Satisfy_a__0_LPsatisfyTest_spec_8_5RP")
 
@@ -864,7 +924,7 @@ class CallTraceTest {
     }
 
     @Test
-    fun testSatisfyTest2Assertions(){
+    fun testSatisfyTest2Assertions() {
         val confPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest2/satisfyTest.conf")
         val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest2/Assertions")
 
@@ -877,7 +937,7 @@ class CallTraceTest {
     }
 
     @Test
-    fun testSatisfyTest3(){
+    fun testSatisfyTest3() {
         val confPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest3/satisfyTest.conf")
         val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/satisfyTest3/Satisfy_a__0_LPsatisfyTest_spec_8_5RP")
 
@@ -902,7 +962,7 @@ class CallTraceTest {
     /** Tests to check the parse tree of an assert command, displayed in the CallTrace, contains the correct value for
      * a struct's field access*/
     @Test
-    fun testStructFieldAccessFunctionCall(){
+    fun testStructFieldAccessFunctionCall() {
         val confPath = Path("src/test/resources/solver/CallTraceTests/StructAccess/FunctionCall/Basic.conf")
         val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/StructAccess/FunctionCall/StructAccessFuncCall")
 
@@ -980,7 +1040,7 @@ class CallTraceTest {
 
             /** we only try to output a range if all instantiated ranges agree */
             val expectedRange = when {
-                firstMethodSig == plusOneSig  && secondMethodSig == plusOneSig  -> plusOneRange
+                firstMethodSig == plusOneSig && secondMethodSig == plusOneSig -> plusOneRange
                 firstMethodSig == minusOneSig && secondMethodSig == minusOneSig -> minusOneRange
                 else -> Range.Empty()
             }
