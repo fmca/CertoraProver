@@ -189,6 +189,9 @@ operator fun <@Treapable K, V> Map<out K, V>.minus(keys: Array<out K>): Map<K, V
 operator fun <@Treapable K, V> Map<out K, V>.minus(keys: Sequence<K>): Map<K, V> =
     this.toTreapMap().mutate { it -= keys }
 
+operator fun <@Treapable K, V> Map<out K, V>.minus(otherMap: Map<K, V>): Map<K, V> =
+    this.toTreapMap().mutate { it -= otherMap.keys }
+
 fun <@Treapable K, V : Any> Map<K, V>.union(m: Map<K, V>, merger: (K, V, V) -> V): TreapMap<K, V> =
     this.toTreapMap().union(m, merger)
 

@@ -1045,6 +1045,36 @@ class CallTraceTest {
             assertTrue(n.children.isEmpty())
         }
     }
+
+    @Test
+    fun storageRevertsForPersistentGhosts() {
+        val callTrace = CallTraceInfra.runConfAndGetCallTrace(
+            confPath = Path("src/test/resources/solver/CallTraceTests/StorageRestore/run.conf"),
+            specFilename = Path("src/test/resources/solver/CallTraceTests/StorageRestore/Restore.spec"),
+            ruleName = "persistence",
+            methodName = "dummy()",
+            primaryContract = "Restore",
+        )
+
+        val ghostsStateAtInitial = callTrace
+            .callHierarchyRoot
+            .findChild { it.toString() == "f(e, args) at initial" }
+            ?.findChild { it.toString() == "initial" }
+            ?.findChild { it.toString() == "Ghosts State" }
+            ?: fail()
+
+        fun valueAtInitial(name: String) = ghostsStateAtInitial
+            .findChildOfType<CallInstance.GhostValueInstance> { it.value.storagePath.toString() == name }
+            ?.value
+            ?.observedValue
+            ?.scalarValue
+            ?: fail()
+
+        assertEquals(valueAtInitial("non_persi"), TACValue.PrimitiveValue.Bool.True)
+        assertEquals(valueAtInitial("persi"), TACValue.PrimitiveValue.Bool.False)
+
+        assertEquals(callTrace.assertMessage, "test should end here")
+    }
 }
 
 

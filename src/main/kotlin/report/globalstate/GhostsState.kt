@@ -42,7 +42,7 @@ import vc.data.state.TACValue
 import verifier.SKOLEM_VAR_NAME
 
 internal data class GhostId(val name: String, val sort: GhostSort)
-private typealias KnownValuesAtPath = MutableMap<InstantiatedDisplayPath, State>
+private typealias KnownValuesAtPath = MutableMap<InstantiatedDisplayPath.Root, State>
 @JvmInline
 private value class AllKnownValues(val map : MutableMap<GhostId, KnownValuesAtPath>)
     : MutableMap<GhostId, KnownValuesAtPath> by map {
@@ -58,11 +58,13 @@ private value class AllKnownValues(val map : MutableMap<GhostId, KnownValuesAtPa
  */
 internal class GhostsState(
     private val seqGen: SequenceGenerator,
-    private val formatter: CallTraceValueFormatter,
     private val model: CounterexampleModel,
     private val variablesState: VariablesState,
 ) {
-    private val idToKnownValues = AllKnownValues(mutableMapOf())
+    /* contains data of non-persistent ghosts, and may change from snapshot loads */
+    private val idToNonPersistent = AllKnownValues(mutableMapOf())
+    /* contains data of persistent ghosts, does not change from snapshots loads */
+    private val idToPersistent: MutableMap<GhostId, KnownValuesAtPath> = mutableMapOf()
 
     private val ghostAccessData = GhostAccessData(seqGen, model)
 
@@ -77,6 +79,22 @@ internal class GhostsState(
     }
 
     /**
+     * returns the values of a [id], as a [MutableMap].
+     * in other words, this returned map allows changing the stored values.
+     */
+    private fun valuesOf(id: GhostId): KnownValuesAtPath {
+        val target = if (this.ghostAccessData.isPersistent[id] == true) {
+            this.idToPersistent
+        } else {
+            this.idToNonPersistent
+        }
+
+        return target.getOrPut(id, ::mutableMapOf)
+    }
+
+    private val allIds get() = idToNonPersistent + idToPersistent
+
+        /**
      * the [InstantiatedDisplayPath] of each [GhostAccess] here is the "last" one seen in the code,
      * thus the only one we expect to be valid.
      * any [GhostAccess] that failed to instantiate will not appear in [ghostAccessData] and will be skipped.
@@ -84,8 +102,7 @@ internal class GhostsState(
      */
     private fun initializeAllPathsToDontCare() {
         for ((access, idp) in ghostAccessData.instantiatedDisplayPaths) {
-            val knownValuesOfGhost = idToKnownValues.getOrPut(access.toGhostId(), ::mutableMapOf)
-            knownValuesOfGhost[idp] = State.DontCare()
+            valuesOf(access.toGhostId()).put(idp, State.DontCare())
         }
     }
 
@@ -105,12 +122,17 @@ internal class GhostsState(
      * (if the ghost is read before the next time the ghost is havoced) or don't care (otherwise).
      * also preserves [State.changed] for each value.
      *
-     * for each ghost G in [idToKnownValues], the program code will be split by havocs of G.
+     * for each ghost G, the program code will be split by havocs of G.
      * the commands from program start up to the first havoc are processed by [invalidateToFirstHavoc].
      * additional sections will be dealt by [handleHavoc], as each havoc command is read by [CallTrace]
      */
     private fun invalidateToNextHavoc(ghostId: GhostId, afterPreviousHavoc: CmdPointer) {
-        val newValues: KnownValuesAtPath = mutableMapOf()
+        val oldValues = valuesOf(ghostId).toMap()
+
+        // take a mutable "pointer" to the values for this ghost ID,
+        // then wipe it and fill it with updated values
+        val newValues = valuesOf(ghostId)
+        newValues.clear()
 
         val accessesUntilHavoc = seqGen
             .snippets(afterPreviousHavoc)
@@ -142,13 +164,11 @@ internal class GhostsState(
         }
 
         /** fill the rest with [State.DontCare], also preserve previous [State.changed] value for entire map */
-        val oldValues = idToKnownValues[ghostId].orEmpty()
-        for ((idp, oldState) in oldValues) {
-            val state = newValues.getOrPut(idp, State::DontCare)
+        for ((idp, oldState) in oldValues - newValues) {
+            val state = State.DontCare()
             state.changed = oldState.changed
+            newValues[idp] = state
         }
-
-        idToKnownValues[ghostId] = newValues
     }
 
     private fun valueAndPureCVLType(v: TACSymbol.Var): Pair<TACValue, CVLType.PureCVLType>? =
@@ -162,10 +182,8 @@ internal class GhostsState(
     /** updates data for ghost from the observed value in snippet */
     fun handleGhostAccess(access: GhostAccess) {
         val idp = ghostAccessData.instantiatedDisplayPaths[access] ?: return
-
         val ghostId = access.toGhostId()
-        val knownValues = idToKnownValues[ghostId]
-            ?: error("display paths of $ghostId should be filled after class init")
+        val knownValues = valuesOf(ghostId)
 
         val computationalType = when (access) {
             is GhostAssignment -> variablesState.computationalTypeForRHS(setOf(access.accessed))
@@ -211,14 +229,14 @@ internal class GhostsState(
         val ghostId = sc.toGhostId()
 
         /** CERT-4155 it is possible that the havoc command matching this snippet has been removed due to some optimization */
-        if (ghostId in idToKnownValues) {
+        if (ghostId in idToNonPersistent) {
             invalidateToNextHavoc(ghostId, afterHavoc)
         }
     }
 
     fun handleAllHavocs(afterHavoc: CmdPointer) {
         // assumes already been populated
-        idToKnownValues.forEachEntry { (ghostId, _) ->
+        for (ghostId in this.allIds.keys) {
             invalidateToNextHavoc(ghostId, afterHavoc)
         }
     }
@@ -231,7 +249,7 @@ internal class GhostsState(
         when (sc) {
             is StorageGlobalChangeSnippet.StorageTakeSnapshot -> {
                 snapshots[sc.lhs.namePrefix] = if (sc.rhs == null || sc.rhs.namePrefix == CVLKeywords.lastStorage.keyword) {
-                    idToKnownValues.deepCopy()
+                    idToNonPersistent.deepCopy()
                 } else {
                     snapshots[sc.rhs.namePrefix]?.deepCopy()
                             ?: throw IllegalStateException("Failed to find the storage snapshot of ${sc.rhs} when handling its assignment to ${sc.lhs}")
@@ -240,15 +258,15 @@ internal class GhostsState(
             is StorageGlobalChangeSnippet.StorageRestoreSnapshot -> {
                 val snapshot = snapshots[sc.name.namePrefix]
                     ?: throw IllegalStateException("Failed to find the storage snapshot of ${sc.name} when restoring.")
-                idToKnownValues.overwriteWith(snapshot)
+                idToNonPersistent.overwriteWith(snapshot)
             }
             is StorageGlobalChangeSnippet.StorageBackupPoint -> {
-                backupSnapshots[sc.calleeTxId] = idToKnownValues.deepCopy()
+                backupSnapshots[sc.calleeTxId] = idToNonPersistent.deepCopy()
             }
             is StorageGlobalChangeSnippet.StorageRevert -> {
                 val snapshot = backupSnapshots[sc.calleeTxId]
                     ?: throw IllegalStateException("Failed to revert the storage to state before call #${sc.calleeTxId}.")
-                idToKnownValues.overwriteWith(snapshot)
+                idToNonPersistent.overwriteWith(snapshot)
             }
             is StorageGlobalChangeSnippet.StorageHavocContract,
             is StorageGlobalChangeSnippet.StorageResetContract -> { /** not my department */ }
@@ -262,11 +280,13 @@ internal class GhostsState(
     ) {
         printCounter += 1
 
-        val toPrint = if (storageToShowSym != null) {
+        val nonPersistent = if (storageToShowSym != null) {
             snapshots[storageToShowSym.namePrefix] ?: throw IllegalStateException("Unknown storage ${storageToShowSym.namePrefix}.")
         } else {
-            idToKnownValues
+            idToNonPersistent
         }
+
+        val toPrint = nonPersistent + this.idToPersistent
 
         val sorted = toPrint
             .values
@@ -290,7 +310,7 @@ internal class GhostsState(
             val range = ghostAccessData.idpToRange[idp] as? Range.Range
             val child = CallInstance.GhostValueInstance(state.compType.callEndStatus, range, value, changed, formatter)
             parent.addChild(child)
-            Logger.regression { "CallTrace: Ghosts State added access path for ${(idp as InstantiatedDisplayPath.Root).name} (at ${range})." }
+            Logger.regression { "CallTrace: Ghosts State added access path for ${idp.name} (at ${range})." }
         }
 
         if (parent.children.isNotEmpty()) {
@@ -319,7 +339,6 @@ internal class GhostsState(
             }
         }
     }
-
 }
 
 private fun GhostAccess.toGhostId() = GhostId(name, sort)
@@ -347,16 +366,12 @@ private sealed class State {
  * getting the model value can fail, if [TACValue]s contain unexpected values, or do not have a value in [CounterexampleModel].
  * the boilerplate of dealing with fallibility is kept within the scope of this class
  * */
-class GhostAccessData internal constructor(seqGen: SequenceGenerator, model: CounterexampleModel) {
-    internal val isPersistent: Map<GhostId, Boolean>
-    val instantiatedDisplayPaths: Map<GhostAccess, InstantiatedDisplayPath.Root>
-    val idpToRange: Map<InstantiatedDisplayPath.Root, Range>
+internal class GhostAccessData(seqGen: SequenceGenerator, model: CounterexampleModel) {
+    val isPersistent: MutableMap<GhostId, Boolean> = mutableMapOf()
+    val instantiatedDisplayPaths: MutableMap<GhostAccess, InstantiatedDisplayPath.Root> = mutableMapOf()
+    val idpToRange: MutableMap<InstantiatedDisplayPath.Root, Range> = mutableMapOf()
 
     init {
-        isPersistent = mutableMapOf()
-        instantiatedDisplayPaths = mutableMapOf()
-        idpToRange = mutableMapOf()
-
         val ghostAccesses = seqGen.snippets().filterIsInstance<GhostAccess>()
 
         for (access in ghostAccesses) {
@@ -391,8 +406,8 @@ class GhostAccessData internal constructor(seqGen: SequenceGenerator, model: Cou
  * this method can fail, if [TACValue]s contain unexpected values, or do not have a value in [model].
  * The boilerplate of dealing with fallibility is kept within the scope of this function.
  */
-fun GhostAccess.toInstantiatedDisplayPath(model: CounterexampleModel): Either<InstantiatedDisplayPath.Root, CounterexampleModel.ResolvingFailure> {
-    fun instantiateIndex(idx: TACSymbol.Var?): Either<Pair<TACValue, CVLType.PureCVLType>, CounterexampleModel.ResolvingFailure> =
+fun GhostAccess.toInstantiatedDisplayPath(model: CounterexampleModel): Either<InstantiatedDisplayPath.Root, ResolvingFailure> {
+    fun instantiateIndex(idx: TACSymbol.Var?): Either<Pair<TACValue, CVLType.PureCVLType>, ResolvingFailure> =
         if (idx != null) {
             model.valueAndPureCVLType(idx).bindRight { _ ->
                 val value = idx.meta[SKOLEM_VAR_NAME]?.let { vn ->
@@ -414,7 +429,7 @@ fun GhostAccess.toInstantiatedDisplayPath(model: CounterexampleModel): Either<In
 
     return indices.map { instantiateIndex(it) }
         .fold(
-            Either.Left<List<Pair<TACValue, CVLType.PureCVLType>>>(listOf()) as Either<List<Pair<TACValue, CVLType.PureCVLType>>, CounterexampleModel.ResolvingFailure>
+            Either.Left<List<Pair<TACValue, CVLType.PureCVLType>>>(listOf()) as Either<List<Pair<TACValue, CVLType.PureCVLType>>, ResolvingFailure>
         ) { acc, either -> acc.bindLeft { list -> either.mapLeft { list + it } }
         }.mapLeft { indices ->
             InstantiatedDisplayPath.Root(
