@@ -734,8 +734,8 @@ def validate_compiler_map(args: Dict[str, str]) -> None:
     first = list(values)[0]
 
     if all(x == first for x in values):
-        validation_logger.warning("All source files will be compiled with the same compiler."
-                                  "solc/vyper attribute  can be used instead")
+        validation_logger.warning("All source files will be compiled with the same compiler. "
+                                  "solc/vyper attribute can be used instead")
 
 
 def validate_git_hash(git_hash: str) -> str:
