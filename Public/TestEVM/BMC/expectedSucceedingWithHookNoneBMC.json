@@ -1,0 +1,29 @@
+{
+	"assertMessages": {},
+	"rules": {
+		"succeedingWithHook": {
+			"Induction base: After the constructor": "SUCCESS",
+			"Induction step: after external (non-view) methods": {
+				"Using general requirements": {
+					"FAIL": [],
+					"SANITY_FAIL": [],
+					"SUCCESS": [
+						"setBar(uint256)",
+						"setFoo()"
+					],
+					"TIMEOUT": [],
+					"UNKNOWN": []
+				},
+				"Using specific requirements": {
+					"FAIL": [],
+					"SANITY_FAIL": [],
+					"SUCCESS": [
+						"setFooConditionally(InvParams.Data)"
+					],
+					"TIMEOUT": [],
+					"UNKNOWN": []
+				}
+			}
+		}
+	}
+}

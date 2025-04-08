@@ -309,6 +309,7 @@ non terminal DispatchList unresolved_dynamic_summary;
 non terminal /* Nullable */ List<CVLParam> with_env_opt;
 non terminal ExpectClause expect_opt;
 non terminal /* Nullable */ SpecCallSummary.SummarizationMode resolution;
+non terminal /* Nullable */ HavocingCallSummary summary_or_null;
 non terminal Boolean optimism_flag;
 non terminal List<MethodEntry> method_dec_list;
 non terminal Boolean function_opt;
@@ -529,22 +530,32 @@ dispatch_pattern_list_or_empty ::=
   | LSQB dispatch_pattern_list:l comma_opt RSQB {: RESULT = l; :}
 ;
 
+summary_or_null ::=
+  /* empty */               {: RESULT = null; :}
+  | DEFAULT havoc_summary:s {: RESULT = s; :}
+;
+
+
 dispatch_pattern_list ::=
     catch_any_method_signature:m                               {: RESULT = singletonList(m); :}
   | dispatch_pattern_list:l COMMA catch_any_method_signature:m {: RESULT = append(l, m);     :}
 ;
 
 unresolved_dynamic_summary ::=
-    DISPATCH:d dispatch_pattern_list_or_empty:l DEFAULT havoc_summary:s {: RESULT = new DispatchList(range(dxleft, sxright), l, s, false); :}
-  | DISPATCH:d LP flag_list:fl RP dispatch_pattern_list_or_empty:l DEFAULT havoc_summary:s {:
+    DISPATCH:d dispatch_pattern_list_or_empty:l DEFAULT havoc_summary:s {: RESULT = new DispatchList(range(dxleft, sxright), l, s, false, false); :}
+  | DISPATCH:d LP flag_list:fl RP dispatch_pattern_list_or_empty:l summary_or_null:s {:
         Boolean useFallback = fl.remove("use_fallback");
         if (useFallback == null) {
             useFallback = false;
         }
+        Boolean optimistic = fl.remove("optimistic");
+        if (optimistic == null) {
+            optimistic = false;
+        }
         if (fl.size() > 0) {
             reportUnexpectedSummaryFlags(fl, (String) d, flxleft, flxright);
         }
-        RESULT = new DispatchList(range(dxleft, sxright), l, s, useFallback);
+        RESULT = new DispatchList(range(dxleft, sxright), l, s, useFallback, optimistic);
     :}
 ;
 

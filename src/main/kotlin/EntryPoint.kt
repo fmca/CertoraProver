@@ -406,8 +406,9 @@ fun main(args: Array<String>) {
 
 /** Sanity checks on tree view state on lockdown, including comparing it with [FinalResult]. */
 private fun checkTreeViewState(finalResultOld: FinalResult): FinalResult {
-    if (!Config.getUseVerificationResultsForExitCode()) {
+    if (!Config.getUseVerificationResultsForExitCode() || Config.BoundedModelChecking.getOrNull() != null) {
         // we're in test configuration that might clash with this check (exit codes can be bogus then) -- not checking
+        // or we are in BMC mode in which the reporting works differently as we manually construct the tree.
         return finalResultOld
     }
 

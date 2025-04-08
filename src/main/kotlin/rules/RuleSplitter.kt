@@ -198,8 +198,13 @@ object RuleSplitter {
         for (assertCmdWithMeta in topoSortedHashingBoundAssertsWithMeta) {
             val length = assertCmdWithMeta.cmd.meta.get(TACMeta.HASHING_BOUND_ASSERT)!!
             val maxBound = 1048576 // 2^20, guessed, hopefully large enough bound to enable the assume
+
+            val symbol = when (length) {
+                is TACSymbol.Var -> TACExpr.Sym.Var(length)
+                is TACSymbol.Const -> TACExpr.Sym.Const(length)
+            }
             val relaxedAssume = TACCmd.Simple.AssumeExpCmd(
-                txf {TACExpr.Sym.Var(length) le maxBound.asTACExpr},
+                txf {symbol le maxBound.asTACExpr},
                 MetaMap(TACMeta.HASHING_BOUND_ASSUME to length)
             )
 

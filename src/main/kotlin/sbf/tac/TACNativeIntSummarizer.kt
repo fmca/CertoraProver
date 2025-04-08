@@ -76,9 +76,9 @@ fun summarizeNativeInt(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
             CVTNativeInt.NATIVEINT_NONDET ->
                 TACCmd.Simple.AssigningCmd.AssignHavocCmd(r0)
             CVTNativeInt.NATIVEINT_FROM_U128 -> /* build a nativeint from u128 (two 64-bit registers) */
-                mergeU128(r0, r1, r2)
+                mergeU128Raw(r0, r1, r2)
             CVTNativeInt.NATIVEINT_FROM_U256 -> /* build a nativeint from u256 (four 64-bit registers) */
-                mergeU256(r0, r1, r2, r3, r4)
+                mergeU256Raw(r0, r1, r2, r3, r4)
             CVTNativeInt.NATIVEINT_U64_MAX ->
                 assign(r0, (BigInteger.TWO.pow(64) - BigInteger.ONE).asTACExpr())
             CVTNativeInt.NATIVEINT_U128_MAX ->

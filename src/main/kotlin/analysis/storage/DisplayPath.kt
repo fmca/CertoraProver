@@ -209,6 +209,7 @@ sealed class DisplayPath : AmbiSerializable, TransformableSymEntityWithRlxSuppor
  * [InstantiatedDisplayPath.Root] ("balances") -> [InstantiatedDisplayPath.ArrayAccess] (5) -> [InstantiatedDisplayPath.FieldAccess] ("b")
  */
 @KSerializable
+@Treapable
 sealed class InstantiatedDisplayPath : AmbiSerializable, Comparable<InstantiatedDisplayPath> {
     abstract val next: InstantiatedDisplayPath?
 

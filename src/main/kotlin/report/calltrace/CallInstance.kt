@@ -94,6 +94,7 @@ sealed class CallInstance : TreeViewReportable {
 
     /** attempts to find an immediate child of this instance (i.e. does not recurse deeper) */
     fun findChild(predicate: (CallInstance) -> Boolean) = children.find(predicate)
+    inline fun <reified T : CallInstance> findChildOfType(predicate: (T) -> Boolean): T? = children.filterIsInstance<T>().find(predicate)
 
     inline fun <reified T : CallInstance> ancestorOfType(allowedToSkip: (CallInstance) -> Boolean = { true }): T? {
         var curr: CallInstance? = this
@@ -541,6 +542,9 @@ sealed class CallInstance : TreeViewReportable {
         override val name: String
             get() = "Define $lhs"
     }
+
+    class DispatcherSummaryDefaultInstance(override val range: Range.Range?, override val name: String): CallInstance()
+
     /**
      * Value in Storage.
      */

@@ -18,6 +18,7 @@
 package report.calltrace.generator
 
 import analysis.CmdPointer
+import analysis.icfg.Summarization
 import config.Config
 import evm.EVM_BITWIDTH256
 import log.*
@@ -33,6 +34,7 @@ import scene.ISceneIdentifiers
 import solver.CounterexampleModel
 import utils.Range
 import spec.cvlast.CVLType
+import spec.cvlast.SpecCallSummary
 import spec.cvlast.StorageBasis
 import spec.cvlast.typedescriptors.EVMTypeDescriptor
 import spec.cvlast.typedescriptors.VMTypeDescriptor
@@ -94,6 +96,7 @@ internal class EVMCallTraceGenerator(
                                     is SnippetCmd.CVLSnippetCmd.CVLFunctionEnd -> handleCVLFunctionEnd(snippetCmd)
                                     is SnippetCmd.CVLSnippetCmd.CVLArg -> handleCVLFunctionArg(snippetCmd)
                                     is SnippetCmd.CVLSnippetCmd.CVLRet -> handleCVLFunctionRet(snippetCmd)
+                                    is SnippetCmd.CVLSnippetCmd.DispatcherSummaryDefault -> handleDispatchDefaultCase(snippetCmd)
                                     is SnippetCmd.CVLSnippetCmd.GhostRead -> handleGhostAccessSnippet(snippetCmd)
                                     is SnippetCmd.CVLSnippetCmd.GhostAssignment -> handleGhostAccessSnippet(snippetCmd)
                                     is SnippetCmd.CVLSnippetCmd.GhostHavocSnippet -> handleGhostHavocSnippet(snippetCmd, currBlock, cmdIdx)
@@ -563,6 +566,49 @@ internal class EVMCallTraceGenerator(
         val afterHavoc = CmdPointer(currBlock, idx + 1)
         globalState?.handleGhostHavoc(sc, afterHavoc)
 
+        return HandleCmdResult.Continue
+    }
+
+    private fun handleDispatchDefaultCase(
+        sc: SnippetCmd.CVLSnippetCmd.DispatcherSummaryDefault
+    ): HandleCmdResult {
+
+        val appliedSummary = sc.appliedSummary
+        val range = when(appliedSummary){
+            is Summarization.AppliedSummary.MethodsBlock -> appliedSummary.specCallSumm.range as? Range.Range
+            is Summarization.AppliedSummary.Prover,
+            Summarization.AppliedSummary.LateInliningDispatcher,
+            is Summarization.AppliedSummary.Config -> null
+        }
+
+        val msg = when(appliedSummary){
+            is Summarization.AppliedSummary.MethodsBlock ->
+            when(appliedSummary.specCallSumm){
+                is SpecCallSummary.DispatchList -> {
+                    check(!appliedSummary.specCallSumm.optimistic) { "Expected a summary with pessimistic dispatch" }
+                    "Applying default case of 'unresolved external' summary, using '${sc.havocType}'"
+                }
+                is SpecCallSummary.Dispatcher -> {
+                    check(!appliedSummary.specCallSumm.optimistic) { "Expected a call summary pessimistic dispatch" }
+                    "Applying default case of DISPATCHER(optimistic=false) summary, using '${sc.havocType}'"
+                }
+
+                is SpecCallSummary.Always,
+                is SpecCallSummary.Constant,
+                is SpecCallSummary.Exp,
+                is SpecCallSummary.HavocSummary,
+                is SpecCallSummary.PerCalleeConstant -> error("Excepting either DISPATCHER(optimistic=false) summary or an 'unresolved external', got ${appliedSummary.specCallSumm}")
+            }
+            is Summarization.AppliedSummary.LateInliningDispatcher,
+            is Summarization.AppliedSummary.Prover -> "As of internal Prover handling"
+            is Summarization.AppliedSummary.Config -> "As of setting config flag ${appliedSummary.configFlag.get()}"
+        }
+
+        val instance = CallInstance.DispatcherSummaryDefaultInstance(
+            range, msg
+        )
+
+        callTraceAppend(instance)
         return HandleCmdResult.Continue
     }
 
