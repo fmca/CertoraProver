@@ -412,9 +412,9 @@ class TestClient(unittest.TestCase):
         suite.expect_success(description='valid --msg with space',
                              run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--msg', 'rio de janeiro'])
         suite.expect_success(description='valid --protocol_name',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--protocol_name', 'Aave'])
+                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--protocol_name', 'protocol1'])
         suite.expect_success(description='valid --protocol_author',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--protocol_author', 'Stani'])
+                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--protocol_author', 'Joe'])
         suite.expect_success(description='valid --solc_evm_version',
                              run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_evm_version', 'Istanbul'])
         suite.expect_success(description='valid --solc_via_ir',
