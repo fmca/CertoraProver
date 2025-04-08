@@ -3419,6 +3419,8 @@ class CertoraBuildGenerator:
             sources.add(Path(context.bytecode_spec))
         if context.yul_abi:
             sources.add(Path(context.yul_abi))
+        if context.override_base_config:
+            sources.add(Path(context.override_base_config))
 
         if hasattr(context, Attrs.EvmProverAttributes.PROVER_RESOURCE_FILES.get_conf_key()) \
                 and context.prover_resource_files:

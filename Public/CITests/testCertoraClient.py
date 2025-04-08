@@ -34,12 +34,23 @@ scripts_dir_path = Path(__file__).parent.parent.parent / "scripts"
 scripts_dir_path = scripts_dir_path.resolve()
 sys.path.insert(0, str(scripts_dir_path))
 
-# if len(sys.argv) != 3:
-#     print(f"Usage: python {sys.argv[0]} <TestEVM path> <CITests path>")
-#     sys.exit(1)
+TestEVM_path = ''
+CITests_path = ''
 
-TestEVM_path = sys.argv[1]
-CITests_path = sys.argv[2]
+if sys.argv and len(sys.argv) == 3:
+    TestEVM_path = sys.argv[1]
+    CITests_path = sys.argv[2]
+else:
+    # Allowing getting test directories from env var instead of passing in argv for local debugging
+    test_paths = os.getenv("CERTORA_TEST_PATHS", None)
+    if test_paths:
+        TestEVM_path, CITests_path = test_paths.split(',')
+
+if not TestEVM_path or not CITests_path:
+    print(f"Usage: python {sys.argv[0]} <TestEVM path> <CITests path>")
+    sys.exit(1)
+
+
 os.environ["CERTORA_TEST_DATA_DIRECTORY"] = f"{CITests_path}/test_data"
 
 import CertoraProver.certoraContextAttributes as Attrs
@@ -148,7 +159,7 @@ class TestClient(unittest.TestCase):
         # not simple value verifications (auth_data key is not a simple copy of the input)
         if 'runName' in result:
             run_name = result['runName']
-            assert len(run_name) == 32, f"'runName' {run_name} length is not 32"
+            assert len(run_name) == 32, f"'runName' {run_name} length is not 32, got {len(run_name)}"
         else:
             assert False, "'runName' is not in auth_data"
 
@@ -1245,7 +1256,7 @@ class TestClient(unittest.TestCase):
             commands_rule.add(command[command.index('--rule') + 1])
             group_ids.add(command[command.index('--group_id') + 1])
         assert commands_rule == rules, "test_split_rules: expecting each rule in a separate run"
-        assert len(group_ids) == 1, "test_split_rules: expecting 1 value of group_id"
+        assert len(group_ids) == 1, f"test_split_rules: expecting length of group ids to be 1 got {len(group_ids)}"
         assert Vf.validate_uuid(group_ids.pop()), "test_split_rules: not a valid uuid"
         commands = suite.expect_checkpoint(description='split to 3 runs', run_flags=['--split_rules', '*true'])
         assert commands[0][commands[0].index('--rule') + 1] == 'always_true', "test_split_rules: bad rule for first run"
@@ -1357,6 +1368,86 @@ class TestClient(unittest.TestCase):
                    f"Error! rule subsection in general section is incorrect!\n" \
                    f"expected: dummy_rule in value, flag_type: list and 'prover/cli' in doc_link,\n" \
                    f"actual: '{rule_data}'"
+
+    def test_override_base_config(self) -> None:
+
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+
+        # creating 2 conf files: a base and a child
+        base_data = {
+            "solc": "solc5.11"
+        }
+
+        child_data = {
+            "files": ["Test/CITests/test_data/A.sol"],
+            "verify": "A:Test/CITests/test_data/spec1.spec",
+            "override_base_config": "base.conf"
+        }
+
+        with open("base.conf", "w") as f: json.dump(base_data, f, indent=4)
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+
+        # Normal case solc is defined in base
+        result = suite.expect_checkpoint(description="override base: simple", run_flags=['child.conf'])
+        assert result.solc == "solc5.11", f"test_override_base_config: expecting solc5.11, got {result.solc}"
+
+        # base conf has bad attribute
+        base_data_bad = {
+            "solc": "solc5.11",
+            "no_such_key": "base.conf"
+        }
+        with open("base.conf", "w") as f: json.dump(base_data_bad, f, indent=4)
+        suite.expect_failure(description="override base: override_base_config in base", run_flags=['child.conf'],
+                             expected="is not a known attribute")
+        with open("base.conf", "w") as f: json.dump(base_data, f, indent=4)  # restore to valid
+
+        # base conf cannot have override_base_config
+        base_data_cycle = {
+            "solc": "solc5.11",
+            "override_base_config": "base.conf"
+        }
+        with open("base.conf", "w") as f: json.dump(base_data_cycle, f, indent=4)
+        suite.expect_failure(description="override base: override_base_config in base", run_flags=['child.conf'],
+                             expected="base config cannot include 'override_base_config'")
+        with open("base.conf", "w") as f: json.dump(base_data, f, indent=4)  # restore to valid
+
+
+        # solc is defined in base and in child - value in child shadows base
+        child_data['solc'] = "solc6.12"
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+        result = suite.expect_checkpoint(description="override base: child override", run_flags=['child.conf'])
+        assert result.solc == "solc6.12", f"test_override_base_config: expecting solc6.12, got {result.solc}"
+
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.AFTER_BUILD))  # build to get source tree
+        # solc is defined also in CLI - - value in CLI shadows confs
+        result = suite.expect_checkpoint(description="override base: CLI override",
+                                         run_flags=['child.conf', '--solc', 'solc5.11'])
+        assert result.solc == "solc5.11", f"test_override_base_config: expecting solc5.11, got {result.solc}"
+        # verifing both base and child are in the source tree
+        root = Path(".certora_internal/latest/.certora_sources")
+        assert (root / "base.conf").exists(), "test_override_base_config: base conf does not exist"
+        assert (root / "child.conf").exists(), "test_override_base_config: child conf does not exist"
+
+        # making sure 'override_base_config' not in run.conf and 'solc' got the CLI value
+        with open(Util.get_last_conf_file(), "r") as f:
+            last_run_context = json.load(f)
+            assert 'override_base_config' not in last_run_context, "'override_base_config' should not be in run.conf"
+            assert last_run_context['solc'] == 'solc5.11', (f"run.conf should get the value from CLI (solc5.11)"
+                                                            f", got {last_run_context['solc']}")
+
+        # base conf does not exist
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+        child_data['override_base_config'] = "does_not_exist.conf"
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+        suite.expect_failure(description="override base: base does not exist", run_flags=['child.conf'],
+                             expected="read_from_conf_file: child.conf: not found")
+
+        # base conf is not a valid JSON
+        with open("base_bad.conf", "w") as f: f.write("Not JSON")
+        child_data['override_base_config'] = "base_bad.conf"
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+        suite.expect_failure(description="override base: base does not exist", run_flags=['child.conf'],
+                             expected="Error when reading child.conf: Cannot load base config: base_bad.conf")
 
 
 if __name__ == '__main__':

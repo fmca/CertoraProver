@@ -197,6 +197,17 @@ class CommonAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    OVERRIDE_BASE_CONFIG = AttrUtil.AttributeDefinition(
+        attr_validation_func=Vf.validate_conf_file,
+        help_msg="Path to parent conf",
+        default_desc="",
+        argparse_args={
+            'action': AttrUtil.UniqueStore
+        },
+        affects_build_cache_key=True,
+        disables_build_cache=False
+    )
+
 
 class DeprecatedAttributes(AttrUtil.Attributes):
     AUTO_NONDET_DIFFICULT_INTERNAL_FUNCS = AttrUtil.AttributeDefinition(
