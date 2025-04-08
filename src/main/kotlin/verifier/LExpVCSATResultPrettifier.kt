@@ -50,7 +50,7 @@ class LExpVCSATResultPrettifier(
     fun getHashingBoundConstraintsToPrettify() =
         vc.tacProgram.ltacStream().mapNotNull {
             it.cmd.meta[TACMeta.HASHING_BOUND_ASSUME] ?: it.cmd.meta[TACMeta.HASHING_BOUND_ASSERT]
-        }.toList().filterIsInstance<TACSymbol.Var>()
+        }.toList()
 
     /**
      * Identifies the terms that should be prettified. We try
