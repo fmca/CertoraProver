@@ -112,6 +112,11 @@ fun getNextUseInterBlock(bb: SbfBasicBlock, start: Int, reg: Value.Reg, maxNumLe
                     // reg is used
                     return locInst
                 }
+
+                if (inst.writeRegister.contains(reg)) {
+                    // reg is redefined
+                    return null
+                }
             }
         }
         if (curB.getSuccs().size == 1) {
