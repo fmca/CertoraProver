@@ -18,6 +18,7 @@
 import copy
 import json
 import os
+import stat
 import shutil
 import sys
 import random
@@ -822,7 +823,7 @@ class TestClient(unittest.TestCase):
         )
         suite.expect_failure(
             description="run soroban without files or build script",
-            expected="Mandatory 'build_script' or 'files' attribute is missing from the configuration",
+            expected="'files' or 'build script' must be set for Soroban runs",
         )
 
         suite = SorobanProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
@@ -1449,6 +1450,26 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="override base: base does not exist", run_flags=['child.conf'],
                              expected="Error when reading child.conf: Cannot load base config: base_bad.conf")
 
+    def test_solana_build(self) -> None:
+        suite = SolanaProverTestSuite(
+            conf_file_template=_p("rust.conf"),
+            test_attribute=str(Util.TestValue.SOLANA_BUILD_CMD)
+        )
+        open("build_script.py", "a").close()
+        os.chmod("build_script.py", os.stat("build_script.py").st_mode | stat.S_IXUSR)
+
+        result = suite.expect_checkpoint(description="solana build with build script",
+                                         run_flags=["--build_script", "./build_script.py",
+                                                    "--cargo_features", "feature1",
+                                                    "--cargo_tools_version", "v1.41"])
+        expected = ['./build_script.py', '--cargo_features', 'feature1', '--json']
+        assert result == expected, f"with --build_script: expected {expected}, got {result}"
+
+        result = suite.expect_checkpoint(description="solana build with cargo flags",
+                                         run_flags=["--cargo_features", "feature1",
+                                                    "--cargo_tools_version", "v1.41"])
+        expected = ['cargo', 'certora-sbf', '--tools-version', 'v1.41', '--features', 'feature1', '--json']
+        assert result == expected, f"without  --build_script: expected {expected}, got {result}"
 
 if __name__ == '__main__':
     test_argv = [f"{sys.argv[1]}, {sys.argv[2]}"]

@@ -1623,6 +1623,15 @@ class RustAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    CARGO_TOOLS_VERSION = AttrUtil.AttributeDefinition(
+        help_msg="Platform tools version to use",
+        default_desc="Platform tools version is chosen automatically",
+        argparse_args={
+            'action': AttrUtil.UniqueStore
+        },
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
 
 class EvmProverAttributes(CommonAttributes, DeprecatedAttributes, EvmAttributes, InternalUseAttributes,
                           BackendAttributes):
@@ -1679,7 +1688,6 @@ class SolanaProverAttributes(CommonAttributes, InternalUseAttributes, BackendAtt
     SOLANA_INLINING = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_readable_file,
         arg_type=AttrUtil.AttrArgType.LIST,
-        jar_flag='-solanaInlining',
         help_msg="a list of paths for the inlining files of Solana contracts",
         argparse_args={
             'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
@@ -1692,7 +1700,6 @@ class SolanaProverAttributes(CommonAttributes, InternalUseAttributes, BackendAtt
     SOLANA_SUMMARIES = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_readable_file,
         arg_type=AttrUtil.AttrArgType.LIST,
-        jar_flag='-solanaSummaries',
         help_msg="a list of paths for the summaries files of Solana contracts",
         argparse_args={
             'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
