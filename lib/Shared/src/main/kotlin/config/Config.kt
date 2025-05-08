@@ -170,6 +170,16 @@ object Config {
         pythonName = "--auto_dispatcher"
     ) {}
 
+    val SourceFilesInCallResolution: ConfigType.BooleanCmdLine = object : ConfigType.BooleanCmdLine(
+        false,
+        Option(
+            "sourceFilesInCallResolution",
+            true,
+            "If this option is true, the call resolution lists the source files a dispatcher summary resolves to. " +
+                "This option is off by default as this information is automatically presented in the Call Resolution Tab in the Rule Report [default: false]"
+        )
+    ), RuleCacheAgnosticConfig {}
+
     /* If not given, the typechecker will only check the syntax of the specification files.
     using this option requires the existence of a build JSON file in the build directory.
     */

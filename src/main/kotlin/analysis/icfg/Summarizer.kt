@@ -458,8 +458,9 @@ object Summarizer {
                     SummaryStack.SummaryStart.External(
                         callNode = callSumm,
                         callResolutionTableInfo = CallResolutionTableSummaryInfo.FallbackDispatched(
-                            nonTrivialFallback.values.map { fallbackMethod ->
-                                fallbackMethod.getContainingContract().name
+                            nonTrivialFallback.values.associate { method ->
+                                val c = method.getContainingContract()
+                                c.name to (c as? IContractWithSource)?.src?.sourceSegment()?.range
                             }
                         ),
                         appliedSummary = Summarization.AppliedSummary.Config.OptimisticFallback

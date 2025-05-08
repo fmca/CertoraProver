@@ -90,9 +90,11 @@ sealed class CallResolutionTableSummaryInfo : Serializable {
         val alternativeCalleesHeader: String
 
         @Treapable
-        data class PossibleCallee(val contractName: String, val displaySig: String): Serializable {
-            constructor(method: ITACMethod):
-                this(method.getContainingContract().name, method.soliditySignature ?: method.name)
+        data class PossibleCallee(val contractName: String, val displaySig: String, val range: Range.Range?): Serializable {
+            constructor(method: ITACMethod) :
+                this(method.getContainingContract().name,
+                    method.soliditySignature ?: method.name,
+                    (method.getContainingContract() as? IContractWithSource)?.src?.sourceSegment()?.range)
         }
 
         val alternativeCallees: Collection<PossibleCallee>
@@ -114,8 +116,18 @@ sealed class CallResolutionTableSummaryInfo : Serializable {
                 vacuousDispatcherMsgOrNull ?: alternativeCallees
                     .joinToString(separator = " | ", prefix = "[", postfix = "]") {
                         "${it.contractName}.${it.displaySig}"
-                }
+                    }
             )
+
+            if(Config.SourceFilesInCallResolution.get()) {
+                // For each callee that a call dispatches to, output the file name the callee method is
+                // contained within
+                put(
+                    "filenames of dispatched contracts",
+                    alternativeCallees.mapNotNull { it.range?.specFile }
+                        .joinToString(separator = ",")
+                )
+            }
         }
     }
 
@@ -142,18 +154,18 @@ sealed class CallResolutionTableSummaryInfo : Serializable {
         override val vacuousDispatcherMsgOrNull: String?
             get() = (applicationReason as? SummaryApplicationReason.Spec)?.loc
                 ?.let { "in $it " }.orEmpty().let { loc ->
-                if (alternativeCallees.isEmpty()) {
-                    "empty dispatcher ${loc}${
-                        if (isOptimisticDispatcher) {
-                            "that makes all statements that follow it unreachable ('else' case is 'assume false')"
-                        } else {
-                            "that is effectively an AUTO havoc summary ('else' case is havoc)"
-                        }
-                    }"
-                } else {
-                    null
+                    if (alternativeCallees.isEmpty()) {
+                        "empty dispatcher ${loc}${
+                            if (isOptimisticDispatcher) {
+                                "that makes all statements that follow it unreachable ('else' case is 'assume false')"
+                            } else {
+                                "that is effectively an AUTO havoc summary ('else' case is havoc)"
+                            }
+                        }"
+                    } else {
+                        null
+                    }
                 }
-            }
 
 
         override fun MutableMap<String, String>.buildSummaryInfoMap() {
@@ -252,10 +264,10 @@ sealed class CallResolutionTableSummaryInfo : Serializable {
     }
 
     data class FallbackDispatched(
-        val contractsWithExplicitFallback: Collection<String>
+        val contractsWithExplicitFallback: Map<String, Range.Range?>
     ) : CallResolutionTableSummaryInfo(), WithDispatchedCalleesInfo {
         override val alternativeCallees: Collection<WithDispatchedCalleesInfo.PossibleCallee>
-            get() = contractsWithExplicitFallback.map { WithDispatchedCalleesInfo.PossibleCallee(it, "fallback") }
+            get() = contractsWithExplicitFallback.map { WithDispatchedCalleesInfo.PossibleCallee(it.key, "fallback", it.value) }
         override val alternativeCalleesHeader: String
             get() = "alternative explicit fallbacks"
         override val applicationReason: SummaryApplicationReason.Cli
