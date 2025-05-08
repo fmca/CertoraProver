@@ -2406,7 +2406,7 @@ class PTAGraph(/** Global node allocator **/
         }
 
         val pointerType: SbfType.PointerType? = when(type) {
-            is SbfType.NumType -> castNumToPtr(type, globalsMap)
+            is SbfType.NumType -> type.castToPtr(globalsMap)
             is SbfType.PointerType -> type
             else -> null
         }

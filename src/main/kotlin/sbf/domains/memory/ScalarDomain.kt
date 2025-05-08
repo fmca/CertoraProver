@@ -354,7 +354,7 @@ class ScalarDomain(// Model stack's contents
                 setRegister(dst, ScalarValue(op1Type.withOffset(newOffset)))
             }
             is SbfType.PointerType -> {
-                if (samePointerType(op1Type, op2Type)) {
+                if (op1Type.samePointerType(op2Type)) {
                     if (op == BinOp.SUB) {
                         // subtraction of pointers of the same type is okay
                         val diff = op1Type.offset.sub(op2Type.offset)
@@ -614,7 +614,7 @@ class ScalarDomain(// Model stack's contents
     private fun castNumToString(reg: Value.Reg, globals: GlobalVariableMap) {
         val oldType = getRegister(reg).get()
         if (oldType is SbfType.NumType) {
-            val newType = castNumToPtr(oldType, globals)
+            val newType = oldType.castToPtr(globals)
             if (newType is SbfType.PointerType.Global && newType.global is SbfConstantStringGlobalVariable) {
                 setRegister(reg, ScalarValue(newType))
             }
@@ -795,7 +795,7 @@ class ScalarDomain(// Model stack's contents
 
     private fun analyzeAssumePtrPtr(op: CondOp, left: Value.Reg, leftType: SbfType.PointerType,
                                     right: Value.Reg, rightType: SbfType.PointerType) {
-        if (samePointerType(leftType, rightType)) {
+        if (leftType.samePointerType(rightType)) {
             val leftOffset = leftType.offset
             val rightOffset = rightType.offset
             when (op) {
@@ -1002,7 +1002,7 @@ class ScalarDomain(// Model stack's contents
                 setToBottom()
                 return null
             }
-            val castedPtrType = castNumToPtr(baseRegType, globalsMap)
+            val castedPtrType = baseRegType.castToPtr(globalsMap)
             if (castedPtrType != null) {
                 /**
                  * IMPLICIT CASTS TO A POINTER: override the type for baseReg if possible

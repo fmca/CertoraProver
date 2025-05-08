@@ -60,6 +60,58 @@ sealed class SbfType {
 
     // Numerical type
     data class NumType(val value: ConstantNum): SbfType() {
+
+        /**
+         *  Cast a number to a pointer only if the number is a valid heap address or the address of a global variable.
+         *  We don't try to cast a number to a pointer if the number can be a valid address in the stack or input regions.
+         *  In that case, we will return null.
+         **/
+        fun castToPtr(globalsMap: GlobalVariableMap): PointerType? {
+            fun findLowerBound(key: Long): Pair<Long, SbfGlobalVariable>? {
+                // globalsMap is sorted
+                var lb: Pair<Long, SbfGlobalVariable> ? = null
+                for (kv in globalsMap) {
+                    if (kv.key <= key) {
+                        lb = Pair(kv.key, kv.value)
+                    } else {
+                        break
+                    }
+                }
+                return lb
+            }
+
+            val n = value.get()
+            if (n != null) {
+                if (n in SBF_HEAP_START until SBF_HEAP_END) {
+                    val offset = n - SBF_HEAP_START
+                    check(offset >= 0) {"Offsets of pointers to the Heap region heap cannot be negative"}
+                    return PointerType.Heap(ConstantOffset(offset))
+                } else {
+                    // We check if n can be a valid address assigned to a global variable.
+                    val lb = findLowerBound(n)
+                    if (lb != null) {
+                        val globalVar = lb.second
+                        if (globalVar.size == 0L) {
+                            // The global might have been inferred by GlobalInferenceAnalysis.
+                            // We assume that offset is the start of the global
+                            val offset = ConstantOffset(n)
+                            return PointerType.Global(offset, globalVar)
+                        }
+                        else if (n >= globalVar.address && (n < (globalVar.address + globalVar.size))) {
+                            // Note that in case of an array, `offset` might not be the start address of the global.
+                            // That is, it's not always true that offset == globalVar.address
+                            val offset = ConstantOffset(n)
+                            return PointerType.Global(offset, globalVar)
+                        }
+                    }
+                }
+            }
+            /// We are here if the number cannot be either the address of a global or a valid address
+            /// in the heap.
+            return null
+        }
+
+
         override fun toString(): String {
             return if (value.isTop()) {
                 "num"
@@ -73,6 +125,8 @@ sealed class SbfType {
     sealed class PointerType: SbfType() {
         abstract val offset : ConstantOffset
         abstract fun withOffset(newOffset: ConstantOffset): PointerType
+
+        fun samePointerType(other: PointerType) = this::class == other::class
 
         data class Stack(override val offset: ConstantOffset): PointerType() {
             override fun toString(): String {
@@ -179,61 +233,6 @@ sealed class SbfType {
             }
         }
     }
-}
-
-fun samePointerType(t1: SbfType.PointerType, t2: SbfType.PointerType) = t1::class == t2::class
-
-/**
- *  Cast a number type to a pointer type
- *
- *  We cast a number only if the number is a valid heap address or the address of a global variable.
- *  We don't try to cast a number to a pointer if the number can be a valid address in the stack or input regions.
- *  In that case, we will return null.
- * **/
-fun castNumToPtr(src: SbfType.NumType, globalsMap: GlobalVariableMap): SbfType.PointerType? {
-    fun findLowerBound(key: Long): Pair<Long, SbfGlobalVariable>? {
-        // globalsMap is sorted
-        var lb: Pair<Long, SbfGlobalVariable> ? = null
-        for (kv in globalsMap) {
-            if (kv.key <= key) {
-                lb = Pair(kv.key, kv.value)
-            } else {
-                break
-            }
-        }
-        return lb
-    }
-
-    val n = src.value.get()
-    if (n != null) {
-        if (n in SBF_HEAP_START until SBF_HEAP_END) {
-            val offset = ConstantOffset(n).sub(ConstantOffset(SBF_HEAP_START))
-            check(!offset.assume(CondOp.SLT, Constant(0L)).isTrue())
-            {"Offsets of pointers to the Heap region heap cannot be negative"}
-            return SbfType.PointerType.Heap(offset)
-        } else {
-            // We check if n can be a valid address assigned to a global variable.
-            val lb = findLowerBound(n)
-            if (lb != null) {
-                val globalVar = lb.second
-                if (globalVar.size == 0L) {
-                    // The global might have been inferred by GlobalInferenceAnalysis.
-                    // We assume that offset is the start of the global
-                    val offset = ConstantOffset(n)
-                    return SbfType.PointerType.Global(offset, globalVar)
-                }
-                else if (n >= globalVar.address && (n < (globalVar.address + globalVar.size))) {
-                    // Note that in case of an array, `offset` might not be the start address of the global.
-                    // That is, it's not always true that offset == globalVar.address
-                    val offset = ConstantOffset(n)
-                    return SbfType.PointerType.Global(offset, globalVar)
-                }
-            }
-        }
-    }
-    /// We are here if the number cannot be either the address of a global or a valid address
-    /// in the heap.
-    return null
 }
 
 /**
