@@ -1373,7 +1373,11 @@ sealed class TACCmd : Serializable, ITACCmd {
             override fun hashCode() = hashObject(this)
 
             override fun withMeta(metaMap: MetaMap): Simple {
-                throw UnsupportedOperationException("Cannot annotate NOP")
+                if (metaMap.isEmpty()) {
+                    return this
+                } else {
+                    throw UnsupportedOperationException("Cannot annotate NOP")
+                }
             }
 
             override val meta: MetaMap

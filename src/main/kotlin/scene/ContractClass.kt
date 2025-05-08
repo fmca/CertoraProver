@@ -221,10 +221,6 @@ class ContractClass(
 
             // start updating the list
 
-            transforms.add(ReportTypes.ADHOC_INTERNAL_RETURN_FIXUP) { c: CoreTACProgram ->
-                InternalReturnFixup.transform(c)
-            }
-
             val internalSummaries = cvl?.internal
             if(internalSummaries != null) {
                 // if we have internal summaries, let's apply those early on and save time

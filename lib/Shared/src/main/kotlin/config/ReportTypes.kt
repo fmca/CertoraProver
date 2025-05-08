@@ -70,6 +70,7 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
     MORE_META_SRC(LoggerTypes.UI),
     INTERNAL_FUNCTION_ANNOTATED(LoggerTypes.FUNCTION_BUILDER),
     INTERNAL_FUNCTION_VALIDATED(LoggerTypes.FUNCTION_BUILDER),
+    DEDUPLICATED(LoggerTypes.OPTIMIZE),
     SOURCE_FINDER_ANNOTATOR(LoggerTypes.FUNCTION_BUILDER),
     INLINED(LoggerTypes.INLINER),
     CALLEE_ANALYSIS(LoggerTypes.INLINER),
