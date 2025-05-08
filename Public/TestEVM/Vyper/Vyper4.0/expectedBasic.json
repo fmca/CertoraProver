@@ -1,0 +1,19 @@
+{
+	"assertMessages": {},
+	"rules": {
+		"trivial": {
+			"FAIL": [],
+			"SANITY_FAIL": [],
+			"SUCCESS": [
+				"greeting()",
+				"greeting_history(uint256)",
+				"language_to_greeting(address)",
+				"owner()",
+				"supported_languages(uint256,uint256)",
+				"user_favorite_language(address)"
+			],
+			"TIMEOUT": [],
+			"UNKNOWN": []
+		}
+	}
+}
