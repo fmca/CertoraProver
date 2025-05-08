@@ -76,7 +76,7 @@ object InfeasibleBranchPruning {
             return CoreTACProgram(
                 blockgraph = BlockGraph(entry to treapSetOf()),
                 code = mapOf(entry to listOf(
-                    TACCmd.Simple.AssumeCmd(TACSymbol.False, "pruneBranches")
+                    TACCmd.Simple.AssumeCmd(TACSymbol.False)
                 )),
                 name = p.name,
                 check = true,
@@ -158,7 +158,7 @@ object InfeasibleBranchPruning {
                         assumeVar,
                         it.assumeExp
                     ),
-                    TACCmd.Simple.AssumeCmd(assumeVar, "pruneBranches", meta = (jumpiCmd.cmd.cond as? TACSymbol.Var)?.let { cond ->
+                    TACCmd.Simple.AssumeCmd(assumeVar, meta = (jumpiCmd.cmd.cond as? TACSymbol.Var)?.let { cond ->
                         conditionalCmd.cmd.meta.plus(
                             PRUNED_BRANCH_KEY to BranchCondition(
                                 takenBranch = it.takenBranch,
@@ -170,7 +170,7 @@ object InfeasibleBranchPruning {
                 ))
             } else if(it is KillBlock && patching.isBlockStillInGraph(it.id)) {
                 val newBlock = patching.addBlock(it.id, listOf(
-                    TACCmd.Simple.AssumeCmd(TACSymbol.False, "pruneBranches")
+                    TACCmd.Simple.AssumeCmd(TACSymbol.False)
                 ))
                 patching.consolidateEdges(newBlock, listOf(it.id))
             }

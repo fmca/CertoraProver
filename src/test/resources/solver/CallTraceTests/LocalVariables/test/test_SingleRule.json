@@ -915,7 +915,6 @@
                                         }
                                     }
                                 },
-                                "description": null,
                                 "scope": {
                                     "scopeStack": [
                                         {
@@ -2625,7 +2624,6 @@
                     }
                 }
             },
-            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -2799,7 +2797,6 @@
                     }
                 }
             },
-            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -2972,7 +2969,7 @@
                     }
                 }
             },
-            "description": null,
+            "description": "r2 == 9",
             "scope": {
                 "scopeStack": [
                     {
@@ -3145,7 +3142,7 @@
                     }
                 }
             },
-            "description": null,
+            "description": "r3 == 14",
             "scope": {
                 "scopeStack": [
                     {
@@ -3318,7 +3315,7 @@
                     }
                 }
             },
-            "description": null,
+            "description": "r4 == 1",
             "scope": {
                 "scopeStack": [
                     {
@@ -3492,7 +3489,7 @@
                     }
                 }
             },
-            "description": null,
+            "description": "t == num",
             "scope": {
                 "scopeStack": [
                     {

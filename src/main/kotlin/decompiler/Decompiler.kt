@@ -1245,7 +1245,7 @@ class Decompiler private constructor(
                         popVar() // jump target
                         val cond = popVar()
                         listOf(
-                            TACCmd.Simple.AssumeCmd(cond, "JUMPI"),
+                            TACCmd.Simple.AssumeCmd(cond),
                             TACCmd.Simple.JumpCmd(jumpTarget, meta)
                         )
                     }
@@ -1678,7 +1678,7 @@ class Decompiler private constructor(
                                 TACCmd.EVM.StopCmd
                             )
                             else -> listOf(
-                                TACCmd.Simple.AssumeCmd(TACSymbol.False, "RecursionLimitReached"),
+                                TACCmd.Simple.AssumeCmd(TACSymbol.False),
                                 TACCmd.EVM.StopCmd
                             )
                         }

@@ -146,16 +146,15 @@ private val emptyExpTag = CVLExpTag(AstScope, emptyRange)
 object CVLCmdFactory {
     operator fun invoke(build: (CVLExpFactory.() -> CVLCmd.Simple)): CVLCmd.Simple = build.invoke(CVLExpFactory)
 
-    fun requireCmd(exp: CVLExpFactory.() -> CVLExp) = requireCmd(exp, "")
     fun assertCmd(exp: CVLExpFactory.() -> CVLExp) = assertCmd(exp, "")
 
-    fun requireCmd(exp: CVLExpFactory.() -> CVLExp, desc: String) =
-        CVLCmd.Simple.AssumeCmd.Assume(
+    fun requireCmd(exp: CVLExpFactory.() -> CVLExp): CVLCmd.Simple.AssumeCmd.Assume {
+        return CVLCmd.Simple.AssumeCmd.Assume(
             emptyRange,
             CVLExpFactory.invoke(exp),
-            description = desc,
             scope = AstScope
         )
+    }
 
     fun assertCmd(exp: CVLExpFactory.() -> CVLExp, desc: String) =
         CVLCmd.Simple.Assert(

@@ -125,7 +125,7 @@ class EVMStorageMapping(val callId: CallId, private val mappingSlot: TACSymbol) 
              * assume compResult
              */
             TACCmd.Simple.AssumeCmd(
-                compResult, "hashBlobKey"
+                compResult
             ),
             /**
              * `buffer[len] = mappingSlot`

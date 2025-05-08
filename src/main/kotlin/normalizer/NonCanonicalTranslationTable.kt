@@ -139,10 +139,6 @@ class NonCanonicalTranslationTable(val logger: Logger) {
             super.mapAssertCmd(t)
                 .mapMeta { annotateNonCanonValue(it, NonCanonValue.Message(t.msg)) }
 
-        override fun mapAssumeCmd(t: TACCmd.Simple.AssumeCmd): TACCmd.Simple =
-            super.mapAssumeCmd(t)
-                .mapMeta { annotateNonCanonValue(it, NonCanonValue.Message(t.msg)) }
-
         override fun mapLabelCmd(t: TACCmd.Simple.LabelCmd): TACCmd.Simple =
             super.mapLabelCmd(t)
                 .mapMeta { annotateNonCanonValue(it, NonCanonValue.Message(t._msg)) }
@@ -167,9 +163,6 @@ class NonCanonicalTranslationTable(val logger: Logger) {
 
         override fun mapAssertCmd(t: TACCmd.Simple.AssertCmd): TACCmd.Simple =
             super.mapAssertCmd(getMsg(t)?.let { t.copy(description = it) } ?: t)
-
-        override fun mapAssumeCmd(t: TACCmd.Simple.AssumeCmd): TACCmd.Simple =
-            super.mapAssumeCmd(getMsg(t)?.let { t.copy(msg = it) } ?: t)
 
         override fun mapLabelCmd(t: TACCmd.Simple.LabelCmd): TACCmd.Simple =
             super.mapLabelCmd(getMsg(t)?.let { t.copy(_msg = it) } ?: t)

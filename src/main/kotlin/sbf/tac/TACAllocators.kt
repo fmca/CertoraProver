@@ -33,7 +33,7 @@ sealed class TACAllocator {
             val b = mkFreshBoolVar()
             listOf(
                 assign(b, exprBuilder.mkBinRelExp(CondOp.EQ, ptr.asSym() , address.toLong())),
-                TACCmd.Simple.AssumeCmd(b, "mkEq")
+                TACCmd.Simple.AssumeCmd(b)
             )
         } else {
             listOf(assign(ptr, exprBuilder.mkConst(Value.Imm(address)).asSym()))

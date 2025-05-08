@@ -15,7 +15,7 @@
         "type": "vc.data.TACCmd.Simple.AssertCmd",
         "o": {
             "type": "vc.data.TACSymbol.Var.Full",
-            "namePrefix": "B37",
+            "namePrefix": "B48",
             "tag": {
                 "type": "tac.Tag.Bool"
             },

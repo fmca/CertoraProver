@@ -192,9 +192,9 @@ class TACTypeChecker(private val symbolTable: TACSymbolTable, private val allowT
                         return super.mapAssertCmd(o, description, metaMap)
                     }
 
-                    override fun mapAssumeCmd(cond: TACSymbol, description: String, metaMap: MetaMap): TACCmd.Simple {
+                    override fun mapAssumeCmd(cond: TACSymbol, metaMap: MetaMap): TACCmd.Simple {
                         checkIsBoolean(cond)
-                        return super.mapAssumeCmd(cond, description, metaMap)
+                        return super.mapAssumeCmd(cond, metaMap)
                     }
 
                     override fun mapAssumeNotCmd(cond: TACSymbol, metaMap: MetaMap): TACCmd.Simple {

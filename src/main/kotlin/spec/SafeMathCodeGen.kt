@@ -50,7 +50,7 @@ interface SafeMathCodeGen {
                     lhs = noOverflow,
                     rhs = TACExpr.Apply(bif, listOf(op1.asSym(), op2.asSym()), Tag.Bool)
                 ),
-                TACCmd.Simple.AssumeCmd(noOverflow, "noOverflow"),
+                TACCmd.Simple.AssumeCmd(noOverflow),
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(
                     lhs = lhs,
                     rhs = mk(

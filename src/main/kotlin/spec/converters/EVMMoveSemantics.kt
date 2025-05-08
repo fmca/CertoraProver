@@ -334,7 +334,7 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
                 )
                 ) {
                     TACCmd.Simple.AssumeCmd(
-                        it.s, "constrainNumericOutput for Int"
+                        it.s
                     )
                 }
             }
@@ -343,7 +343,7 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
                     outVar.asSym(),
                     SignUtilities.maxUnsignedValueOfBitwidth(srcVMType.bitwidth).asTACExpr
                 )) {
-                    TACCmd.Simple.AssumeCmd(it.s, "constrainNumericOutput for UInt")
+                    TACCmd.Simple.AssumeCmd(it.s)
                 }
             }
         }
@@ -496,7 +496,7 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
         /**
          * Assume compResult to be true
          */
-        val assumeCmd = TACCmd.Simple.AssumeCmd(cond = compResult, msg = "moveHashedArray")
+        val assumeCmd = TACCmd.Simple.AssumeCmd(cond = compResult)
 
         /**
          * Copy all data, i.e. the [havocBuffer] and [havocLength] into the [toVarNarrowed] array for the user to access after applying the hook.

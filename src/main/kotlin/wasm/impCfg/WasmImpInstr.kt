@@ -232,7 +232,7 @@ sealed class Control(addr: WASMAddress? = null) : WasmImpCfgCmd(addr) {
             if (isAssert) {
                 return listOf(TACCmd.Simple.AssertCmd(false.asTACSymbol(), message)).withDecls()
             } else {
-                return listOf(TACCmd.Simple.AssumeCmd(false.asTACSymbol(), message)).withDecls()
+                return listOf(TACCmd.Simple.AssumeCmd(false.asTACSymbol())).withDecls()
             }
         }
     }

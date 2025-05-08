@@ -35,31 +35,31 @@
                                         "text": "a['{0}']['{1}'].bar['{2}']: '{3}'",
                                         "arguments": [
                                             {
-                                                "value": "HavocStorage",
+                                                "value": "0x28d2",
                                                 "values": [
-                                                    "HavocStorage",
-                                                    "HavocStorage",
-                                                    "0x2711"
+                                                    "0x28d2",
+                                                    "0x28d2",
+                                                    "0x28d2"
                                                 ],
                                                 "tooltip": "key",
-                                                "truncatable": false
+                                                "truncatable": true
                                             },
                                             {
-                                                "value": "0x0",
+                                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                                 "values": [
-                                                    "0x0",
-                                                    "0",
-                                                    "0x0"
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                                 ],
                                                 "tooltip": "accessed index",
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "0x0",
+                                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                                 "values": [
-                                                    "0x0",
-                                                    "0",
-                                                    "0x0"
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                                 ],
                                                 "tooltip": "accessed index",
                                                 "truncatable": true
@@ -377,31 +377,31 @@
                         "text": "Load from HavocStorage.a['{0}']['{1}'].bar['{2}'] ↪ '{3}'",
                         "arguments": [
                             {
-                                "value": "HavocStorage",
+                                "value": "0x28d2",
                                 "values": [
-                                    "HavocStorage",
-                                    "HavocStorage",
-                                    "0x2711"
+                                    "0x28d2",
+                                    "0x28d2",
+                                    "0x28d2"
                                 ],
                                 "tooltip": "key",
-                                "truncatable": false
+                                "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
@@ -457,31 +457,31 @@
                         "text": "Load from HavocStorage.a['{0}']['{1}'].bar['{2}'] ↪ '{3}'",
                         "arguments": [
                             {
-                                "value": "HavocStorage",
+                                "value": "0x28d2",
                                 "values": [
-                                    "HavocStorage",
-                                    "HavocStorage",
-                                    "0x2711"
+                                    "0x28d2",
+                                    "0x28d2",
+                                    "0x28d2"
                                 ],
                                 "tooltip": "key",
-                                "truncatable": false
+                                "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
@@ -537,31 +537,31 @@
                         "text": "Havoc of HavocStorage.a['{0}']['{1}'].bar['{2}'] ↪ '{3}'",
                         "arguments": [
                             {
-                                "value": "HavocStorage",
+                                "value": "0x28d2",
                                 "values": [
-                                    "HavocStorage",
-                                    "HavocStorage",
-                                    "0x2711"
+                                    "0x28d2",
+                                    "0x28d2",
+                                    "0x28d2"
                                 ],
                                 "tooltip": "key",
-                                "truncatable": false
+                                "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
@@ -617,31 +617,31 @@
                         "text": "Load from HavocStorage.a['{0}']['{1}'].bar['{2}'] ↪ '{3}'",
                         "arguments": [
                             {
-                                "value": "HavocStorage",
+                                "value": "0x28d2",
                                 "values": [
-                                    "HavocStorage",
-                                    "HavocStorage",
-                                    "0x2711"
+                                    "0x28d2",
+                                    "0x28d2",
+                                    "0x28d2"
                                 ],
                                 "tooltip": "key",
-                                "truncatable": false
+                                "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                    "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                 ],
                                 "tooltip": "accessed index",
                                 "truncatable": true
@@ -700,31 +700,31 @@
                                                 "text": "a['{0}']['{1}'].bar['{2}']: '{3}' (changed)",
                                                 "arguments": [
                                                     {
-                                                        "value": "HavocStorage",
+                                                        "value": "0x28d2",
                                                         "values": [
-                                                            "HavocStorage",
-                                                            "HavocStorage",
-                                                            "0x2711"
+                                                            "0x28d2",
+                                                            "0x28d2",
+                                                            "0x28d2"
                                                         ],
                                                         "tooltip": "key",
-                                                        "truncatable": false
+                                                        "truncatable": true
                                                     },
                                                     {
-                                                        "value": "0x0",
+                                                        "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                                         "values": [
-                                                            "0x0",
-                                                            "0",
-                                                            "0x0"
+                                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                                            "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                                         ],
                                                         "tooltip": "accessed index",
                                                         "truncatable": true
                                                     },
                                                     {
-                                                        "value": "0x0",
+                                                        "value": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
                                                         "values": [
-                                                            "0x0",
-                                                            "0",
-                                                            "0x0"
+                                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922",
+                                                            "115792089237316195423570985008687907853269984665640564039457584007913129634082",
+                                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe922"
                                                         ],
                                                         "tooltip": "accessed index",
                                                         "truncatable": true

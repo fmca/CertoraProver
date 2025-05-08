@@ -274,7 +274,7 @@ class BoundedModelChecker(
                     .filterIsInstance<CVLGhostWithAxiomsAndOldCopy>()
                     .flatMap { it.axioms }
                     .filterIsInstance<CVLGhostAxiom.Initial>()
-                    .map { CVLCmd.Simple.AssumeCmd.Assume(range, it.exp, "init_state axiom", scope) }
+                    .map { CVLCmd.Simple.AssumeCmd.Assume(range, it.exp, scope) }
                     .toList()
                     .wrapWithMessageLabel("Assume init_state axioms")
 
@@ -561,7 +561,7 @@ class BoundedModelChecker(
                 return@foldIndexed outerAcc
             }
             val selectorVar = TACKeyword.TMP(Tag.Int, "SelectorVar$idx")
-            val dispatchProg = CommandWithRequiredDecls(TACCmd.Simple.AssumeCmd(TACSymbol.False, "dispatch")).toCore("dispatch", scene)
+            val dispatchProg = CommandWithRequiredDecls(TACCmd.Simple.AssumeCmd(TACSymbol.False)).toCore("dispatch", scene)
             val newDispatch = contractFunctions.fold(dispatchProg) { acc, contractFunction ->
                 val condVar = TACKeyword.TMP(Tag.Bool, "selectorCondVar")
                 val condProg = CommandWithRequiredDecls(
@@ -656,7 +656,6 @@ class BoundedModelChecker(
                 CVLCmd.Simple.AssumeCmd.Assume(
                     inv.range,
                     inv.exp,
-                    "assume invariant",
                     inv.scope
                 ).wrapWithMessageLabel("Assume invariant"),
                 "the assumption of ${inv.id}"
