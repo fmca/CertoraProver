@@ -230,14 +230,14 @@ object EthereumVariables {
     fun simplifyNumber(c: TACCmd.EVM.AssignNumberCmd) =
         CommandWithRequiredDecls(
 
-            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs.withMeta(TACMeta.FOUNDRY_PROTECTED), number, c.meta)),
+            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs, number, c.meta)),
             setOf(number)
         )
 
     fun simplifyTimestamp(c: TACCmd.EVM.AssignTimestampCmd) =
         CommandWithRequiredDecls(
 
-            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs.withMeta(TACMeta.FOUNDRY_PROTECTED), timestamp, c.meta)),
+            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs.withMeta(TACMeta.FOUNDRY_PROTECTED), timestamp, c.meta + TACMeta.FOUNDRY_PROTECTED)),
             setOf(timestamp)
         )
 

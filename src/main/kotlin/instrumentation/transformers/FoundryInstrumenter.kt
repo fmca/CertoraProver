@@ -31,7 +31,6 @@ import datastructures.stdcollections.*
 import log.*
 import spec.CVLKeywords
 import spec.toVar
-import tac.CallId
 import tac.Tag
 import utils.lazy
 import vc.data.*
@@ -50,36 +49,6 @@ object FoundryInstrumenter {
         val startEndPairs = lazy {
             MetaKeyPairDetector(g, MetaKeyPairDetector.isMetaKey(STACK_PUSH), MetaKeyPairDetector.isMetaKey(STACK_POP), MetaKeyPairDetector.stackPushPopMatcher).getResultsAtSinkBlock() +
                 MetaKeyPairDetector(g, MetaKeyPairDetector.isMetaKey(START_EXTERNAL_SUMMARY), MetaKeyPairDetector.isMetaKey(END_EXTERNAL_SUMMARY), MetaKeyPairDetector.externalSummaryStartEndMatcher).getResultsAtSinkBlock()
-        }
-
-        fun updateEnvElement(
-            cheatLcmd: LTACCmdView<TACCmd.Simple.AnnotationCmd>,
-            updatedValue: TACSymbol.Var,
-            keyword: TACKeyword,
-            varToResolve: (TACSymbolTable, CallId) -> TACSymbol.Var
-        ) {
-            // First, update the keyword variable of all calls in the current callstack...
-            p.replaceCommand(cheatLcmd.ptr,
-                listOf(cheatLcmd.cmd) +
-                    methodCallStack.value.activationRecordsAt(cheatLcmd.ptr).map {
-                        TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                            lhs = varToResolve(code.symbolTable, it.ptr.block.calleeIdx),
-                            rhs = updatedValue.asSym()
-                        )
-                    }
-            )
-
-            // Then, update it for all of the future calls.
-            g.iterateFrom(cheatLcmd.ptr, topoSorted).filter {
-                it.maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()?.cmd?.lhs?.meta?.get(KEYWORD_ENTRY)?.name == keyword.getName()
-            }.forEach {
-                p.replaceCommand(it.ptr,
-                    listOf(cheatLcmd.cmd, TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                        lhs = it.narrow<TACCmd.Simple.AssigningCmd>().cmd.lhs,
-                        rhs = updatedValue.asSym()
-                    ))
-                )
-            }
         }
 
         // iterate in order
@@ -147,11 +116,28 @@ object FoundryInstrumenter {
                 is FoundryCheatcodes.StopPrank -> Unit // Nothing to do here, we use this meta in the startPrank handling
 
                 is FoundryCheatcodes.Warp -> {
-                    updateEnvElement(cheatLcmd, cheatcode.newTimestamp, TACKeyword.TIMESTAMP) { symbolTable, callId -> VarResolver(symbolTable, callId).timestamp}
-                }
+                    // First, update the timestamp of all calls in the current callstack...
+                    p.replaceCommand(cheatLcmd.ptr,
+                        listOf(cheatLcmd.cmd) +
+                            methodCallStack.value.activationRecordsAt(cheatLcmd.ptr).map {
+                                TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                                    lhs = VarResolver(code.symbolTable, it.ptr.block.calleeIdx).timestamp,
+                                    rhs = cheatcode.newTimestamp.asSym()
+                                )
+                            }
+                    )
 
-                is FoundryCheatcodes.Roll -> {
-                    updateEnvElement(cheatLcmd, cheatcode.newBlockNumber, TACKeyword.NUMBER) { symbolTable, callId -> VarResolver(symbolTable, callId).blocknum}
+                    // Then, update the timestamp of all of the future calls.
+                    g.iterateFrom(cheatLcmd.ptr, topoSorted).filter {
+                        it.maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()?.cmd?.lhs?.meta?.get(KEYWORD_ENTRY)?.name == TACKeyword.TIMESTAMP.getName()
+                    }.forEach {
+                        p.replaceCommand(it.ptr,
+                            listOf(cheatLcmd.cmd, TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                                lhs = it.narrow<TACCmd.Simple.AssigningCmd>().cmd.lhs,
+                                rhs = cheatcode.newTimestamp.asSym()
+                            ))
+                        )
+                    }
                 }
 
                 is FoundryCheatcodes.MockCall -> {
@@ -318,8 +304,6 @@ sealed class FoundryCheatcodes : Serializable {
     }
 
     data class Warp(val newTimestamp: TACSymbol.Var) : FoundryCheatcodes()
-
-    data class Roll(val newBlockNumber: TACSymbol.Var) : FoundryCheatcodes()
 
     data class MockCall(
         val callee: TACSymbol.Var,
