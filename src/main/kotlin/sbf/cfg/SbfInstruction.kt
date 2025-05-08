@@ -200,13 +200,11 @@ private fun toString(v: Value, type:SbfType?): String {
     return str
 }
 
-private fun toString(type: SbfType?) = if (type!= null) {":$type"} else {""}
-
 data class Condition(val op: CondOp,
                      val left: Value.Reg,
                      val right: Value,
-                     val leftType: SbfType? = null,
-                     val rightType: SbfType? = null): ReadRegister {
+                     private val leftType: SbfType? = null,
+                     private val rightType: SbfType? = null): ReadRegister {
     override val readRegisters: Set<Value.Reg>
         get() = (right as? Value.Reg)?.let { setOf(it, left) } ?: setOf(left)
 
@@ -220,8 +218,10 @@ data class Condition(val op: CondOp,
 data class Deref(val width: Short,
                  val baseReg: Value.Reg,
                  val offset: Short,
-                 val baseRegType: SbfType? = null) {
+                 private val baseRegType: SbfType? = null) {
     override fun toString(): String {
+        fun toString(type: SbfType?) = if (type != null) {":$type"} else {""}
+
         if (baseRegType != null) {
             if (baseRegType is SbfType.PointerType.Stack) {
                 val baseOffset = baseRegType.offset.get()
@@ -253,9 +253,9 @@ sealed class SbfInstruction: ReadRegister, WriteRegister  {
                    val dst: Value.Reg,
                    val v: Value,
                    val is64: Boolean,
-                   val preDstType: SbfType? = null,
-                   val postDstType: SbfType? = null,
-                   val vType: SbfType? = null,
+                   private val preDstType: SbfType? = null,
+                   private val postDstType: SbfType? = null,
+                   private val vType: SbfType? = null,
                    override val metaData: MetaData = MetaData())
         : SbfInstruction() {
 
@@ -307,7 +307,7 @@ sealed class SbfInstruction: ReadRegister, WriteRegister  {
     }
 
     data class Havoc(val dst: Value.Reg,
-                     val dstType: SbfType? = null,
+                     private val dstType: SbfType? = null,
                      override val metaData: MetaData = MetaData())
         : SbfInstruction() {
         override fun copyInst(metadata: MetaData) = copy(metaData = metadata)
@@ -323,8 +323,8 @@ sealed class SbfInstruction: ReadRegister, WriteRegister  {
     data class Un(val op: UnOp,
                   val dst: Value.Reg,
                   val is64: Boolean,
-                  val preDstType: SbfType? = null,
-                  val postDstType: SbfType? = null,
+                  private val preDstType: SbfType? = null,
+                  private val postDstType: SbfType? = null,
                   override val metaData: MetaData = MetaData())
         : SbfInstruction() {
 
@@ -425,7 +425,7 @@ sealed class SbfInstruction: ReadRegister, WriteRegister  {
     data class Mem(val access: Deref,
                    val value: Value,
                    val isLoad: Boolean,
-                   val valueType: SbfType? = null,
+                   private val valueType: SbfType? = null,
                    override val metaData: MetaData = MetaData())
         : SbfInstruction() {
 
