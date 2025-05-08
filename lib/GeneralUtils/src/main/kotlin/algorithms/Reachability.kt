@@ -70,3 +70,14 @@ fun <V> reachableSubgraph(g: MultiMap<V, V>, roots: Set<V>, cond: (V) -> Boolean
     }
     return vertices to newG
 }
+
+/**
+ * unit returning versions of getReachable to make clear when we are using it only for side effects of [nexts]
+ */
+inline fun <V> traverseBFS(start: Iterable<V>, nexts: (V) -> Iterable<V>?): Unit {
+    getReachable(start, nexts)
+}
+
+inline fun <V> traverseBFS1(start: V, nexts: (V) -> Iterable<V>?): Unit {
+    traverseBFS(listOf(start), nexts)
+}

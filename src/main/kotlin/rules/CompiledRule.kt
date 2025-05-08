@@ -72,6 +72,7 @@ import java.io.IOException
 import java.util.*
 import java.util.stream.Collectors
 import analysis.controlflow.checkIfAllPathsAreLastReverted
+import rules.genericrulecheckers.collectRequireWithoutReasonNotifications
 
 
 private val logger = Logger(LoggerTypes.COMMON)
@@ -161,7 +162,8 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             } else {
                 null
             }
-            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert))
+            val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule.tac)
+            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts)
             if (!Config.CoinbaseFeaturesMode.get()) {
                 generateSingleResult(scene, compiledRule.rule, res, time, isOptimizedRuleFromCache, isSolverResultFromCache, alerts)
             } else {
@@ -633,7 +635,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             verifyTime: VerifyTime,
             isOptimizedRuleFromCache: IsFromCache,
             isSolverResultFromCache: IsFromCache,
-            ruleAlerts: RuleAlertReport<RuleAlertReport.Info>?,
+            ruleAlerts: RuleAlertReport<RuleAlertReport.Single<*>>?,
         ): RuleCheckResult.Single {
             val origProgWithAssertIdMeta = addAssertIDMetaToAsserts(vResult.simpleSimpleSSATAC, rule)
             val callResolutionTableFactory = CallResolutionTable.Factory(origProgWithAssertIdMeta, scene, rule)

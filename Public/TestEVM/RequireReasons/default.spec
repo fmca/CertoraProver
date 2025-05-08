@@ -1,5 +1,5 @@
 methods {
-    function foo(uint) external envfree;
+    function foo(uint) external returns bool envfree;
 }
 
 function sqrtCVLPostcondition(uint256 x) returns uint256 {

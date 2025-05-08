@@ -1,0 +1,7 @@
+Function-Input-Require (`require a != 0;`) without Reason at functionInputRequires.spec:10:2
+Function-Input-Require (`require a != 0;`) without Reason at functionInputRequires.spec:15:2
+Non-Function-Input-Require (`require a != 0;`) without Reason at functionInputRequires.spec:21:2
+Function-Input-Require (`require a != 0;`) without Reason at functionInputRequires.spec:21:2
+Non-Function-Input-Require (`require currentContract.n == factor(a, a);`) without Reason at functionInputRequires.spec:26:2
+Non-Function-Input-Require (`require a != 0;`) without Reason at functionInputRequires.spec:36:2
+Non-Function-Input-Require (`require a != 0;`) without Reason at functionInputRequires.spec:45:2

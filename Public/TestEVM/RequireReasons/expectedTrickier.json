@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "envfreeFuncsStaticCheck": {
+      "FAIL": [],
+      "SANITY_FAIL": [],
+      "SUCCESS": [
+        "foo(uint256)"
+      ],
+      "TIMEOUT": [],
+      "UNKNOWN": []
+    },
+    "inParallel": "SUCCESS",
+    "orderDoesNotMatter": "SUCCESS",
+    "moreComplicated": "SUCCESS",
+    "moreComplicatedOutOfOrder": "SUCCESS",
+    "moreComplicated2": "SUCCESS",
+    "moreComplicated2OutOfOrder": "SUCCESS",
+    "nowWeAreJustMean": "SUCCESS"
+  }
+}

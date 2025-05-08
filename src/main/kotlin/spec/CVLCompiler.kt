@@ -593,7 +593,7 @@ class CVLCompiler(
             }
 
             is CVLCmd.Simple.AssumeCmd.Assume -> {
-                compileAssumeCmd(cmd.exp, cmd.descriptionOrDefault, allocatedTACSymbols, compilationEnvironment, null)
+                compileAssumeCmd(cmd, allocatedTACSymbols, compilationEnvironment)
             }
 
             is CVLCmd.Simple.Assert -> {
@@ -1629,18 +1629,13 @@ class CVLCompiler(
      * @param allocatedTACSymbols is imperatively extended with additional symbols
      */
     private fun compileAssumeCmd(
-        exp: CVLExp,
-        description: String,
+        cmd: CVLCmd.Simple.AssumeCmd.Assume,
         allocatedTACSymbols: TACSymbolAllocation,
-        env: CompilationEnvironment,
-        generatedForSatisfy: Int?
+        env: CompilationEnvironment
     ): ParametricInstantiation<CVLTACProgram> {
-        val meta = if (generatedForSatisfy != null) {
-            MetaMap(SATISFY_ID to generatedForSatisfy)
-        } else {
-            MetaMap()
-        }
-        return assumeExp(exp, description, allocatedTACSymbols, compilerEnv = env, meta = meta)
+        var meta = MetaMap(TACMeta.CVL_USER_DEFINED_ASSUME to (cmd.description != null))
+        if (cmd.range !is Range.Empty) meta += MetaMap(TACMeta.CVL_RANGE to cmd.range)
+        return assumeExp(cmd.exp, cmd.descriptionOrDefault, allocatedTACSymbols, compilerEnv = env, meta = meta)
     }
 
     /**
@@ -1701,7 +1696,8 @@ class CVLCompiler(
         env: CompilationEnvironment
     ): ParametricInstantiation<CVLTACProgram> {
         val satisfyUUID = Allocator.getFreshId(allocator.Allocator.Id.SATISFIES)
-        val requireCmd = compileAssumeCmd(cmd.exp, "assume generated for satisfy: ${cmd.descriptionOrDefault}", allocatedTACSymbols, env, satisfyUUID)
+        val requireCmd = assumeExp(cmd.exp, "assume generated for satisfy: ${cmd.descriptionOrDefault}", allocatedTACSymbols, compilerEnv = env, meta = MetaMap(
+            SATISFY_ID to satisfyUUID))
 
         val boolType = CVLType.PureCVLType.Primitive.Bool
         val falseLit = CVLExp.Constant.BoolLit(false, CVLExpTag(cmd.scope, boolType, cmd.range))
