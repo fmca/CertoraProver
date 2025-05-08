@@ -3,6 +3,7 @@ import com.google.devtools.ksp.gradle.KspTaskJvm
 import java.io.ByteArrayOutputStream
 import java.nio.file.Files
 import java.util.Properties as Prop
+import java.time.Duration
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.bundling.Jar
@@ -94,6 +95,7 @@ allprojects {
 	}
 
 	tasks.withType<Test> {
+		timeout.set(Duration.ofHours(1))
         useJUnitPlatform {
 			includeTags(project.findProperty("test.filter")?.toString() ?: "!expensive")
 		}
@@ -587,7 +589,7 @@ fun DependencyHandlerScope.applyCommon(projectName: String) {
 
 	testImplementation("net.jqwik:jqwik:1.7.1")
 	testImplementation("net.jqwik:jqwik-kotlin:1.7.1")
-	testImplementation("io.mockk:mockk:1.12.4")
+	testImplementation("io.mockk:mockk:1.14.2")
 
 	testImplementation("org.jetbrains.kotlin:kotlin-reflect:${property("kotlin.version")}")
 
@@ -786,6 +788,7 @@ val scripts = project.fileTree("scripts") {
 		"certoraSolanaProver.py",
 		"certoraSorobanProver.py",
 		"certoraEVMProver.py",
+		"certoraRanger.py",
 		"certoraMutate.py",
 		"rustMutator.py",
 		"certoraEqCheck.py",

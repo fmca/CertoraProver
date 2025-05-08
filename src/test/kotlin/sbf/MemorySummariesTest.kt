@@ -17,75 +17,34 @@
 
 package sbf
 
-import com.certora.collect.*
 import sbf.cfg.*
 import sbf.disassembler.SbfRegister
 import sbf.disassembler.Label
 import sbf.disassembler.newGlobalVariableMap
 import sbf.domains.*
 import sbf.support.CannotParseSummaryFile
-import log.*
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 import org.junit.jupiter.api.*
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
+private val sbfTypesFac = ConstantSbfTypeFactory()
+
 class MemorySummariesTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
 
     // Return node pointed by *([baseR] + [offset])
-    private fun getNode(g: PTAGraph, baseR: Value.Reg, offset: Short, width: Short): PTANode {
+    private fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> getNode(g: PTAGraph<TNum, TOffset>, baseR: Value.Reg, offset: Short, width: Short): PTANode {
         val lhs = Value.Reg(SbfRegister.R7)
         check(baseR != lhs)
         val inst = SbfInstruction.Mem(Deref(width, baseR, offset, null), lhs, true, null)
         val locInst = LocatedSbfInstruction(Label.fresh(), 0, inst)
-        g.doLoad(locInst, lhs, baseR, offset, width, SbfType.Top, newGlobalVariableMap())
+        g.doLoad(locInst, lhs, baseR, offset, width, SbfType.top(), newGlobalVariableMap())
         val sc = g.getRegCell(lhs)
         check(sc != null)
-        return sc.node
+        return sc.getNode()
     }
 
     @Test
     fun test01() {
-        sbfLogger.info { "====== TEST 1 =======" }
+        println("====== TEST 1 =======")
         /**
          * The *(r1+0) and *(r2+0) points to the same cell before the summary is applied.
          * The summary tells that *(r1+0) is a number after the call.
@@ -96,10 +55,10 @@ class MemorySummariesTest {
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         // Create abstract state
-        val absVal = MemoryDomain(PTANodeAllocator(),true)
+        val absVal = MemoryDomain(PTANodeAllocator(), sbfTypesFac, true)
         val stackC = absVal.getRegCell(r10, newGlobalVariableMap())
         check(stackC != null) { "memory domain cannot find the stack node" }
-        stackC.node.setWrite()
+        stackC.getNode().setWrite()
         val g = absVal.getPTAGraph()
         val n1 = g.mkNode()
         n1.setWrite()
@@ -107,8 +66,8 @@ class MemorySummariesTest {
         n2.setWrite()
         val n3 = g.mkNode()
         n3.setWrite()
-        stackC.node.mkLink(4040, 8, n1.createCell(0))
-        stackC.node.mkLink(4048, 8, n2.createCell(0))
+        stackC.getNode().mkLink(4040, 8, n1.createCell(0))
+        stackC.getNode().mkLink(4048, 8, n2.createCell(0))
         n1.mkLink(0, 8, n3.createCell(0))
         n2.mkLink(0, 8, n3.createCell(0))
 
@@ -121,12 +80,12 @@ class MemorySummariesTest {
 
         val call = SbfInstruction.Call(name = "foo")
 
-        sbfLogger.info {"Before $call: $g"}
+        println("Before $call: $g")
         // before the call *(r1+0) == *(r2+0)
         val oldN = getNode(g, r1, 0, 8)
         Assertions.assertEquals(true,  oldN == getNode(g, r2, 0, 8))
         g.doCall(LocatedSbfInstruction(Label.fresh(), 0, call), newGlobalVariableMap(), memSummaries, absVal.getScalars())
-        sbfLogger.info {"After $call with ${memSummaries.getSummary("foo")}: $g"}
+        println("After $call with ${memSummaries.getSummary("foo")}: $g")
 
         // after the call *(r1+0) != *(r2+0)
         Assertions.assertEquals(true, getNode(g, r1, 0, 8) != getNode(g, r2, 0, 8))
@@ -135,7 +94,7 @@ class MemorySummariesTest {
         // *(r1+0) changed
         Assertions.assertEquals(true, getNode(g, r1, 0, 8).mustBeInteger())
         // This assertion is provable after commit "fix(sbf): do not remove predecessors when applying summary (pta domain)"
-        Assertions.assertEquals(true, stackC.node.getSucc(PTAField(4040, 8)) != null)
+        Assertions.assertEquals(true, stackC.getNode().getSucc(PTAField(4040, 8)) != null)
     }
 
     @Test
@@ -151,7 +110,7 @@ class MemorySummariesTest {
             "#[type((*i64)(r1+8):ptr_heap(32))]",
             "^foo$")
         val memSummaries = MemorySummaries.readSpecFile(configFileContents,"unknown")
-        sbfLogger.warn {"Parsed successfully summaries $memSummaries" }
+        println("Parsed successfully summaries $memSummaries")
     }
 
     @Test

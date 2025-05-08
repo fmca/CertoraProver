@@ -24,5 +24,5 @@ import vc.data.tacexprutil.TACExprUtils
 
 class VarSubstitutor(private val substitutions: Map<TACSymbol.Var, TACExpr>) : DefaultTACCmdMapper() {
     override val exprMapper = TACExprUtils.SubstitutorVar(substitutions.map { (v, e) -> v.asSym() to e }.toMap())
-    override fun mapExpr(expr: TACExpr): TACExpr = exprMapper.transformOuter(expr)
+    override fun mapExpr(expr: TACExpr): TACExpr = exprMapper.transform(expr)
 }

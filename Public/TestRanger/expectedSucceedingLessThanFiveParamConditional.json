@@ -1,0 +1,10 @@
+{
+	"assertMessages": {},
+	"rules": {
+		"succeedingLessThanFiveParamConditional-Initial State": "SUCCESS",
+		"succeedingLessThanFiveParamConditional-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "SUCCESS",
+		"succeedingLessThanFiveParamConditional-Initial State-InvParams.setBar(uint256)-InvParams.setFooConditionally": "SUCCESS",
+		"succeedingLessThanFiveParamConditional-Initial State-InvParams.setFoo()-InvParams.setFooConditionally": "SUCCESS",
+		"succeedingLessThanFiveParamConditional-Initial State-InvParams.setFooConditionally((uint256))-InvParams.setFoo": "SUCCESS"
+	}
+}

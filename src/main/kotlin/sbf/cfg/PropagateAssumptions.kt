@@ -17,13 +17,19 @@
 
 package sbf.cfg
 
-import sbf.analysis.ScalarAnalysisRegisterTypes
+import sbf.analysis.AnalysisRegisterTypes
+import sbf.domains.*
 
 /**
  * This pass adds annotations in the CFG to propagate certain equalities.
  * This pass would not be needed if scalar domain would be relational.
  */
-fun propagateAssumptions(cfg: MutableSbfCFG, registerTypes: ScalarAnalysisRegisterTypes) {
+fun <D, TNum, TOffset> propagateAssumptions(
+    cfg: MutableSbfCFG,
+    registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>
+) where TNum: INumValue<TNum>,
+        TOffset: IOffset<TOffset>,
+        D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     for (bb in cfg.getMutableBlocks().values) {
         val firstLocInst = bb.getLocatedInstructions().firstOrNull()
         check(firstLocInst != null) { "CFG should not have empty blocks" }
@@ -82,7 +88,12 @@ private fun getRegFromUnaryConditionOrNull(cond: Condition): Value.Reg? {
     }
 }
 
-private fun resolveStackAccessOrNull(locatedInst: LocatedSbfInstruction, regTypes: ScalarAnalysisRegisterTypes): StackContentMeta? {
+private fun <D, TNum, TOffset> resolveStackAccessOrNull(
+    locatedInst: LocatedSbfInstruction,
+    regTypes: AnalysisRegisterTypes<D, TNum, TOffset>): StackContentMeta?
+where TNum: INumValue<TNum>,
+      TOffset: IOffset<TOffset>,
+      D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val inst = locatedInst.inst
     check(inst is SbfInstruction.Mem) { "normalizeLoad expects a memory instruction instead of $inst" }
     val base = inst.access.baseReg

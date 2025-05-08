@@ -1,0 +1,22 @@
+{
+  "CALLGRAPH": {
+    "constructor()": false,
+    "externalOne(Test_LocalVars)": true,
+    "externalTwo(Test_LocalVars)": true,
+    "doThings(bytes[],bool)": true
+  },
+  "INIT": {
+    "Test-externalTwo((bytes[3],uint256,bool))": true,
+    "Test-externalOne((bytes[3],uint256,bool))": true,
+    "Test-doThings(bytes[],bool)": true
+  },
+  "POINTSTO": {
+    "Test-externalTwo((bytes[3],uint256,bool))": true,
+    "Test-externalOne((bytes[3],uint256,bool))": false,
+    "Test-doThings(bytes[],bool)": true,
+    "constructor()": false,
+    "externalOne(Test_LocalVars)": false,
+    "externalTwo(Test_LocalVars)": true,
+    "doThings(bytes[],bool)": true
+  }
+}

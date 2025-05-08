@@ -85,6 +85,9 @@ internal open class CvlrCallTraceGenerator(
                                     is SnippetCmd.CvlrSnippetCmd.CexPrintLocation -> handleCvlrCexPrintLocation(
                                         snippetCmd,
                                     )
+
+                                    is SnippetCmd.CvlrSnippetCmd.ScopeStart -> handleCvlrScopeStart(snippetCmd, cmd)
+                                    is SnippetCmd.CvlrSnippetCmd.ScopeEnd -> handleCvlrScopeEnd(snippetCmd)
                                 }
                             }
 
@@ -100,6 +103,24 @@ internal open class CvlrCallTraceGenerator(
         }
     }
 
+    private fun handleCvlrScopeStart(snippetCmd: SnippetCmd.CvlrSnippetCmd.ScopeStart,
+                                     stmt: TACCmd.Simple.AnnotationCmd? = null
+    ): HandleCmdResult {
+        val range = stmt?.let { consumeAttachedRangeOrResolve(it) }
+        val newInstance = CallInstance.InvokingInstance.CVLRScope(
+            name = snippetCmd.scopeName,
+            range = range
+        )
+        callTracePush(newInstance)
+        return HandleCmdResult.Continue
+    }
+
+    private fun handleCvlrScopeEnd(snippetCmd: SnippetCmd.CvlrSnippetCmd.ScopeEnd): HandleCmdResult {
+        return ensureStackState(
+            requirement = { it is CallInstance.InvokingInstance.CVLRScope && it.name == snippetCmd.scopeName },
+            eventDescription = "end of cvlr scope"
+        )
+    }
     /**
      * If [rangesFromAttachLocation] has at least one entry, pops the range and returns it.
      * If [rangesFromAttachLocation] is empty, reads the range from the debug information from the executable.

@@ -36,7 +36,7 @@ open class DefaultTACExprTransformer : TACExprTransformer<TACExpr>() {
         quantifiedVars: List<TACSymbol.Var>,
         body: TACExpr,
         tag: Tag?
-    ): TACExpr = TACExprFactSimple.QuantifiedFormula(isForall, quantifiedVars, transform(body), tag)
+    ): TACExpr = TACExprFactSimple.QuantifiedFormula(isForall, quantifiedVars.map { transform(it.asSym()).asVar }, transform(body), tag)
 
     override fun transformVar(exp: TACExpr.Sym.Var): TACExpr = exp
 
@@ -184,7 +184,7 @@ open class DefaultTACExprTransformer : TACExprTransformer<TACExpr>() {
         TACExprFactSimple.MultiDimStore(transform(base), locs.map { transform(it) }, transform(value), tag)
 
     override fun transformMapDefinition(defParams: List<TACExpr.Sym.Var>, definition: TACExpr, tag: Tag.Map): TACExpr =
-        TACExprFactSimple.MapDefinition(defParams, definition, tag)
+        TACExprFactSimple.MapDefinition(defParams.map { transformVar(it) as TACExpr.Sym.Var }, transform(definition), tag)
 
     override fun transformUnconstrained(tag: Tag): TACExpr =
         TACExprFactSimple.Unconstrained(tag)

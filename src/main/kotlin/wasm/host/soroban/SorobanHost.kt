@@ -65,6 +65,7 @@ object SorobanHost : WasmHost {
         tac
         .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE) { ConstantPropagator.propagateConstants(it, setOf()) })
         .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE_SOROBAN_MEMORY) { optimizeSorobanMemory(it) })
+        .mapIfAllowed(CoreToCoreTransformer(ReportTypes.CANONICALIZE_SCALARSET, CanonicalizeObjectValAllocations::canonicalize))
 
     private data class SorobanImport(
         val import: WasmImport<ImportFunc>,

@@ -61,13 +61,6 @@ class CertoraFoundViolations(Exception):
         super().__init__(message)
         self.results = results
 
-
-class ExitException(Exception):
-    def __init__(self, message: str, exit_code: int):
-        super().__init__(message)
-        self.exit_code = exit_code  # Store the integer data
-
-
 def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]] = None,
                 prover_cmd: Optional[str] = None) -> Optional[CertoraRunResult]:
     """
@@ -133,14 +126,18 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
         rule_handler = splitRules.SplitRulesHandler(context)
         exit_code = rule_handler.generate_runs()
         CloudVerification(context).print_group_id_url()
-        raise ExitException(f"Split Rules {'succeeded' if exit_code == 0 else 'failed'}", exit_code)
+        if exit_code == 0:
+            print("Split rules succeeded")
+        else:
+            raise Util.ExitException("Split rules failed", exit_code)
 
     if Attrs.is_rust_app():
         build_rust_app(context)
 
         if context.local:
             check_cmd = Ctx.get_local_run_cmd(context)
-            print(f"Verifier run command:\n {check_cmd}", flush=True)
+            check_cmd_string = " ".join(check_cmd)
+            print(f"Verifier run command:\n {check_cmd_string}", flush=True)
 
             compare_with_tool_output = False
             run_result = Util.run_jar_cmd(check_cmd, compare_with_tool_output, logger_topic="verification",
@@ -151,7 +148,7 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
                 exit_code = 1
             else:
                 Util.print_completion_message("Finished running verifier:")
-                print(f"\t{check_cmd}")
+                print(f"\t{check_cmd_string}")
         else:
             validate_version_and_branch(context)
             context.key = Cv.validate_certora_key()
@@ -196,9 +193,10 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
                 compare_with_expected_file = Path(context.expected_file).exists()
 
                 check_cmd = Ctx.get_local_run_cmd(context)
+                check_cmd_string = " ".join(check_cmd)
 
                 # In local mode, this is reserved for Certora devs, so let the script print it
-                print(f"Verifier run command:\n {' '.join(check_cmd)}", flush=True)
+                print(f"Verifier run command:\n {check_cmd_string}", flush=True)
                 run_result = \
                     Util.run_jar_cmd(check_cmd, compare_with_expected_file,
                                      logger_topic="verification", print_output=True)
@@ -209,7 +207,7 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
                     exit_code = run_result
                 else:
                     Util.print_completion_message("Finished running verifier:")
-                    print(f"\t{check_cmd}")
+                    print(f"\t{check_cmd_string}")
                     if compare_with_expected_file:
                         print("Comparing tool output to the expected output:")
                         output_path = (context.tool_output if context.tool_output else
@@ -309,7 +307,7 @@ def entry_point() -> None:
         Console().print(f"[bold red]\n{e}\n")
         sys.exit(1)
 
-    except ExitException as e:
+    except Util.ExitException as e:
         Console().print(f"[bold red]{e}")
         sys.exit(e.exit_code)
 

@@ -1857,12 +1857,13 @@ sealed class CVLCmd : AmbiSerializable {
         data class Assert(
             override val range: Range,
             val exp: CVLExp,
-            val description: String,
+            val description: String?,
             override val scope: CVLScope,
             // is this assert command used as an invariant's postcondition
             val invariantPostCond: Boolean = false
         ) : Simple(), RuleFinalCommand {
             override fun toPrintString() = "assert $exp"
+            val descriptionOrDefault get() = description ?: defaultAssertDescription(exp)
         }
 
         @Serializable
@@ -1870,12 +1871,13 @@ sealed class CVLCmd : AmbiSerializable {
         data class Satisfy(
             override val range: Range,
             val exp: CVLExp,
-            val description: String,
+            val description: String?,
             override val scope: CVLScope,
             // is this satisfy command used as an invariant's postcondition
             val invariantPostCond: Boolean = false
         ) : Simple(), RuleFinalCommand {
             override fun toPrintString() = "satisfy $exp"
+            val descriptionOrDefault get() = description ?: defaultAssertDescription(exp)
         }
 
         @Serializable
@@ -1885,12 +1887,14 @@ sealed class CVLCmd : AmbiSerializable {
             data class Assume(
                 override val range: Range,
                 val exp: CVLExp,
+                val description: String?,
                 override val scope: CVLScope,
                 // is this assume command used as an invariant's precondition
                 val invariantPreCond: Boolean = false
             ) :
                 AssumeCmd() {
                 override fun toPrintString() = "require $exp"
+                val descriptionOrDefault get() = description ?: defaultAssertDescription(exp)
             }
 
             /** Comes from a "requireInvariant" command. */
@@ -2483,8 +2487,10 @@ enum class CVLBuiltInName(val bifName: String) {
     FOUNDRY_START_PRANK("__certora_foundry_startPrank"),
     FOUNDRY_STOP_PRANK("__certora_foundry_stopPrank"),
     FOUNDRY_WARP("__certora_foundry_warp"),
+    FOUNDRY_ROLL("__certora_foundry_roll"),
     FOUNDRY_MOCK_CALL("__certora_foundry_mockCall"),
     FOUNDRY_CLEAR_MOCKED_CALLS("__certora_foundry_clearMockedCalls"),
+    FOUNDRY_EXPECT_EMIT("__certora_foundry_expectEmit"),
     ;
 
     override fun toString() = this.bifName
@@ -3820,7 +3826,9 @@ sealed class CVLExp : HasCVLExpTag, AmbiSerializable {
                             CVLBuiltInName.FOUNDRY_STOP_PRANK,
                             CVLBuiltInName.FOUNDRY_MOCK_CALL,
                             CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS,
-                            CVLBuiltInName.FOUNDRY_WARP -> acc + exp
+                            CVLBuiltInName.FOUNDRY_WARP,
+                            CVLBuiltInName.FOUNDRY_ROLL,
+                            CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> acc + exp
                         }
                     }
 
@@ -4004,3 +4012,6 @@ sealed class StorageBasis: ComparisonBasis() {
 
 // todo remove me
 class CVLTODO(msg: String) : Exception(msg)
+
+/** we use this to get non-null descriptions for [CVLCmd.Simple.Assert] and [CVLCmd.Simple.Satisfy] */
+private fun defaultAssertDescription(asserted: CVLExp) = CVLReportLabel.Exp(asserted).toString()

@@ -66,12 +66,13 @@ import utils.*
 import vc.data.*
 import vc.data.ParametricMethodInstantiatedCode.toCheckableTACs
 import vc.data.parser.serializeTAC
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import verifier.*
 import java.io.IOException
 import java.util.*
 import java.util.stream.Collectors
 import analysis.controlflow.checkIfAllPathsAreLastReverted
+import rules.genericrulecheckers.collectRequireWithoutReasonNotifications
 
 
 private val logger = Logger(LoggerTypes.COMMON)
@@ -161,7 +162,8 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             } else {
                 null
             }
-            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert))
+            val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule.tac)
+            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts)
             if (!Config.CoinbaseFeaturesMode.get()) {
                 generateSingleResult(scene, compiledRule.rule, res, time, isOptimizedRuleFromCache, isSolverResultFromCache, alerts)
             } else {
@@ -333,8 +335,8 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
         CompiledRule.optimizeNonLocal(tacToCheck)
 
     companion object {
-        fun optimize(scene: SceneIdentifiers, tacToCheck: CoreTACProgram) = inCode(tacToCheck) {
-            val fullOptimizationPass = with(CTPOptimizationPass) {
+        fun optimize(scene: SceneIdentifiers, tacToCheck: CoreTACProgram, bmcMode: Boolean = false) = inCode(tacToCheck) {
+            with(CTPOptimizationPass) {
                 listOf(
                     snippetRemoval,
                     constantPropagatorAndSimplifier(mergeBlocks = true),
@@ -349,7 +351,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     removeUnusedWrites,
                     rewriteCopyLoops,
                     removeDeadPartitions,
-                    optimizeAssignments(keepRevertManagement = true, bmcAware = true),
+                    optimizeAssignments(keepRevertManagement = true, bmcAware = bmcMode),
                     pruner(1),
                     infeasiblePaths,
                     simpleSummaries(1),
@@ -359,7 +361,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     negationNormalizer,
                     globalInliner(1),
                     constantPropagatorAndSimplifier(mergeBlocks = true),
-                    optimizeAssignments(keepRevertManagement = true, bmcAware = true),
+                    optimizeAssignments(keepRevertManagement = true, bmcAware = bmcMode),
                     overflowPatternRewriter,
                     patternRewriter(PatternRewriter::basicPatternsList),
                     globalInliner(2),
@@ -370,15 +372,12 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     pruner(2),
                     blockMerger,
                     quantifierAnnotator
-                )
+                ).runOn(tacToCheck)
             }
-            fullOptimizationPass.fold(CoreTACProgram.Linear(tacToCheck)) { acc, opt ->
-                acc.mapIfAllowed(CoreToCoreTransformer(opt.reportType) { c -> opt.optimize(c) })
-            }.ref
         }
 
         fun optimizeNonLocal(tacToCheck: CoreTACProgram) = inCode(tacToCheck) {
-            val nonLocalOptimizationPass = with(CTPOptimizationPass) {
+            with(CTPOptimizationPass) {
                 listOf(
                     optimizeAssignments(keepRevertManagement = true, bmcAware = false),
                     infeasiblePaths,
@@ -386,12 +385,8 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     globalInliner(2),
                     ternarySimplifier,
                     constantPropagatorAndSimplifier(mergeBlocks = true)
-                )
+                ).runOn(tacToCheck)
             }
-
-            nonLocalOptimizationPass.fold(CoreTACProgram.Linear(tacToCheck)) { acc, opt ->
-                acc.mapIfAllowed(CoreToCoreTransformer(opt.reportType) { c -> opt.optimize(c) })
-            }.ref
         }
 
         /**
@@ -567,10 +562,10 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     }
                 }
                 fun hasMoreThan1QuantVars(tac: CoreTACProgram): Boolean {
-                    val quantFinder = object : QuantDefaultTACExprTransformer() {
+                    val quantFinder = object : DefaultTACExprTransformer() {
                         var hasQuantExprWithMoreThan1Var = false
-                        override fun transformQuantifiedFormula(acc: QuantVars, exp: TACExpr.QuantifiedFormula): TACExpr {
-                            super.transform(acc, exp.body)
+                        override fun transformQuantifiedFormula(exp: TACExpr.QuantifiedFormula): TACExpr {
+                            super.transform(exp.body)
                             return exp.also {
                                 if (it.quantifiedVars.size > 1) {
                                     hasQuantExprWithMoreThan1Var = true
@@ -579,7 +574,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                         }
                     }
                     val mapper =  object : DefaultTACCmdSpecMapper() {
-                        override val exprMapper: QuantDefaultTACExprTransformer = quantFinder
+                        override val exprMapper: DefaultTACExprTransformer = quantFinder
                     }
                     return tac.analysisCache.graph.commands.any {
                         mapper.map(it.cmd)
@@ -640,7 +635,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             verifyTime: VerifyTime,
             isOptimizedRuleFromCache: IsFromCache,
             isSolverResultFromCache: IsFromCache,
-            ruleAlerts: RuleAlertReport<RuleAlertReport.Info>?,
+            ruleAlerts: RuleAlertReport<RuleAlertReport.Single<*>>?,
         ): RuleCheckResult.Single {
             val origProgWithAssertIdMeta = addAssertIDMetaToAsserts(vResult.simpleSimpleSSATAC, rule)
             val callResolutionTableFactory = CallResolutionTable.Factory(origProgWithAssertIdMeta, scene, rule)

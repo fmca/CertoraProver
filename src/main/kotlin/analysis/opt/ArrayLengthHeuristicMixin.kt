@@ -47,7 +47,7 @@ interface ArrayLengthHeuristicMixin {
         }?.let {
             matcher.queryFrom(start = it).toNullableResult()
         }?.let {
-            it.elemSym == where to v
+            it.lengthSym == where to v
         } == true
     }
 }

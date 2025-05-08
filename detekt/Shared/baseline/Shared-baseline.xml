@@ -27,8 +27,6 @@
         <ID>CVLErrorsNeedDocs:CVLError.kt$CVLError.Exp$Exp</ID>
         <ID>CVLErrorsNeedDocs:CVLError.kt$CVLError.General$General</ID>
         <ID>CVLErrorsNeedDocs:CVLError.kt$CVLError.Lhs$Lhs</ID>
-        <ID>DataClassShouldBeImmutable:CVLAst.kt$CVLDefinition$var modifies: Set&lt;CVLGhostFunction&gt;</ID>
-        <ID>DataClassShouldBeImmutable:CVLAst.kt$CVLDefinition$var reads: Set&lt;CVLGhostFunction&gt;</ID>
         <ID>Deprecation:AbstractTypeResolver.kt$AbstractTypeResolver$General</ID>
         <ID>Deprecation:CVLASTBuilder.kt$CVLAstBuilder$General</ID>
         <ID>Deprecation:CVLASTBuilder.kt$CVLAstBuilder.&lt;no name provided&gt;$General</ID>

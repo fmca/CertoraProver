@@ -38,8 +38,8 @@ import utils.*
  *  <rule_name>_<sanity_rule_name>
  */
 @KSerializable
-data class RuleIdentifier private constructor(
-    override val parentIdentifier: DisplayableIdentifier?,
+class RuleIdentifier private constructor(
+    override val parentIdentifier: RuleIdentifier?,
     override val displayName: String,
     override val counter: Int
 ) : DisplayableIdentifier() {
@@ -89,6 +89,20 @@ data class RuleIdentifier private constructor(
 
     override fun toString(): String{
         return ite(parentIdentifier == null, "", parentIdentifier.toString() + "-" ) + displayName
+    }
+
+    override fun hashCode(): Int = hash { it + parentIdentifier + displayName + counter }
+
+    override fun equals(other: Any?): Boolean {
+        return if (this === other) {
+            true
+        } else if (other !is RuleIdentifier) {
+            false
+        } else {
+            this.counter == other.counter
+                    && this.parentIdentifier == other.parentIdentifier
+                    && this.displayName == other.displayName
+        }
     }
 }
 

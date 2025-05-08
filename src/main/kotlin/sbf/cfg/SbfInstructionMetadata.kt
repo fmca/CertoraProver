@@ -48,18 +48,20 @@ object SbfMeta {
     val INLINED_FUNCTION_NAME = MetaKey<String>("inlined_function_name")
     // number of instructions of the inlined function before any slicing/optimization
     val INLINED_FUNCTION_SIZE = MetaKey<ULong>("inlined_function_size")
+    // mangled name of called function
+    val MANGLED_NAME = MetaKey<String>("mangled_name")
     // number of registers used by the call
     val KNOWN_ARITY = MetaKey<Int>("external_function_arity")
     // keep track of some equalities
     val EQUALITY_REG_AND_STACK = MetaKey<Pair<Value.Reg, StackContentMeta>>("equality_reg_and_stack")
     // type of a register (used by the pointer analysis)
-    val REG_TYPE =  MetaKey<Pair<Value.Reg, SbfType>>("reg_type")
+    val REG_TYPE =  MetaKey<Pair<Value.Reg, SbfRegisterType>>("reg_type")
     // Address of the instruction
     val SBF_ADDRESS = MetaKey<ULong>("sbf_bytecode_address")
     // The value is true if the loaded register affects the control flow of the program
     val LOADED_AS_NUM_FOR_PTA = MetaKey<Boolean>("loaded_as_number_for_pta")
     //  Promoted overflow check condition
-    val PROMOTED_ADD_WITH_OVERFLOW_CHECK = MetaKey<Condition>("promoted_add_overflow_check")
+    val PROMOTED_OVERFLOW_CHECK = MetaKey<Condition>("promoted_overflow_check")
     // The MOV instruction sets the address of a global variable to a register
     val SET_GLOBAL = MetaKey<String>("set_global")
 
@@ -74,8 +76,9 @@ object SbfMeta {
     val LOWERED_SELECT = MetaKey<String>("lowered_select")
     val REMOVED_MEMMOVE = MetaKey<String>("sol_memmove_")
     val LOWERED_ASSUME = MetaKey<String>("lowered_assume")
+    val LOWERED_OR = MetaKey<String>("lowered_or")
     val UNREACHABLE_FROM_COI = MetaKey<String>("unreachable_from_coi")
-    val ADD_WITH_OVERFLOW = MetaKey<String>("add_overflow")
+    val SAFE_MATH = MetaKey<String>("safe_math")
 }
 
 data class MetaKey<T>(val name: String)
@@ -93,8 +96,8 @@ fun toString(metaData: MetaData): String {
             SbfMeta.HINT_OPTIMIZED_WIDE_STORE, SbfMeta.MEMCPY_PROMOTION,
             SbfMeta.UNHOISTED_STORE, SbfMeta.UNHOISTED_LOAD,
             SbfMeta.UNHOISTED_MEMCPY, SbfMeta.UNHOISTED_MEMCMP, SbfMeta.UNHOISTED_STACK_POP,
-            SbfMeta.LOWERED_SELECT, SbfMeta.LOADED_AS_NUM_FOR_PTA, SbfMeta.REMOVED_MEMMOVE,
-            SbfMeta.ADD_WITH_OVERFLOW, SbfMeta.SET_GLOBAL -> {
+            SbfMeta.LOWERED_SELECT, SbfMeta.LOWERED_OR, SbfMeta.LOADED_AS_NUM_FOR_PTA, SbfMeta.REMOVED_MEMMOVE,
+            SbfMeta.SAFE_MATH, SbfMeta.SET_GLOBAL -> {
                 strB.append(" /*${k.name}*/")
             }
             SbfMeta.CALL_ID, SbfMeta.INLINED_FUNCTION_NAME, SbfMeta.INLINED_FUNCTION_SIZE -> {
@@ -112,7 +115,7 @@ fun toString(metaData: MetaData): String {
             SbfMeta.KNOWN_ARITY, SbfMeta.EQUALITY_REG_AND_STACK -> {}
             SbfMeta.UNREACHABLE_FROM_COI -> {}
             SbfMeta.COMMENT -> {}
-            SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK-> {
+            SbfMeta.PROMOTED_OVERFLOW_CHECK-> {
                 metaData.getVal(k)?.let {
                     val cond: Condition = it.uncheckedAs()
                     strB.append(" /*${k.name}: $cond*/")
@@ -120,10 +123,11 @@ fun toString(metaData: MetaData): String {
             }
             SbfMeta.REG_TYPE -> {
                 metaData.getVal(k)?.let {
-                    val (reg, type) = it.uncheckedAs<Pair<Value.Reg, SbfType>>()
+                    val (reg, type) = it.uncheckedAs<Pair<Value.Reg, SbfRegisterType>>()
                     strB.append(" /* type($reg)=$type */")
                 }
             }
+            SbfMeta.MANGLED_NAME -> {}
         }
     }
     return strB.toString()

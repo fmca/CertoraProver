@@ -25,7 +25,7 @@ import analysis.icfg.Summarizer
 import analysis.narrow
 import com.certora.collect.*
 import config.Config
-import config.Config.MethodChoices
+import config.Config.containsMethodFilteredByConfig
 import config.ReportTypes
 import datastructures.stdcollections.*
 import diagnostics.*
@@ -38,6 +38,7 @@ import rules.VerifyTime
 import scene.IContractClass
 import scene.IScene
 import scene.ITACMethod
+import scene.TACMethod
 import solver.SolverResult
 import spec.CVLKeywords
 import spec.rules.AssertRule
@@ -171,11 +172,14 @@ open class SolidityVerifier(val scene: IScene) : Verifier() {
 
     private fun getFunctions(contractClass: IContractClass): Collection<ITACMethod> {
         val functionsOfContract = contractClass.getDeclaredMethods()
-        val methodChoices = MethodChoices
-        val functions = if (methodChoices != null) {
-            functionsOfContract.filter { methodChoices.any { m -> m == it.soliditySignature } }
-        } else {
-            functionsOfContract
+        val functions = functionsOfContract.filter {
+            val f = (it as TACMethod)
+            if (f.evmExternalMethodInfo == null) {
+                true
+            } else {
+                functionsOfContract.mapNotNull { (it as TACMethod).evmExternalMethodInfo?.toExternalABINameWithContract() }
+                    .containsMethodFilteredByConfig(f.evmExternalMethodInfo.toExternalABINameWithContract(), contractClass.name)
+            }
         }
 
         return functions
@@ -257,7 +261,8 @@ open class SolidityVerifier(val scene: IScene) : Verifier() {
                                     },
                                     rule = assertRule,
                                     model = exampleInfo.model,
-                                    dumpGraphLink = null
+                                    dumpGraphLink = null,
+                                    localAssignments = null,
                                 )
                             },
                             isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,

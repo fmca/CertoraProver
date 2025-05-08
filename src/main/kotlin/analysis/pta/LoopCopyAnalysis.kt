@@ -232,7 +232,7 @@ object LoopCopyAnalysis {
                         v.asSym() to it
                     }
                 }?.toMap()?.let {
-                    TACExprUtils.SubstitutorVar(it).transformOuter(defining)
+                    TACExprUtils.SubstitutorVar(it).transform(defining)
                 }
             }
         }

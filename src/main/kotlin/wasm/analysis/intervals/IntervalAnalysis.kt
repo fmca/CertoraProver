@@ -26,11 +26,14 @@ import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StatefulWorklistIteration
 import analysis.worklist.StepResult
 import com.certora.collect.*
+import log.*
 import tac.NBId
 import utils.*
 import vc.data.TACCmd
 import vc.data.TACSymbol
 import java.math.BigInteger
+
+private val logger = Logger(LoggerTypes.ABSTRACT_INTERPRETATION)
 
 /** A worklist-based interval analysis */
 class IntervalAnalysis(private val graph: TACCommandGraph) {
@@ -54,9 +57,28 @@ class IntervalAnalysis(private val graph: TACCommandGraph) {
             if (cmd.ptr == ptr) {
                 return st
             }
-            st = interpreter.step(cmd, st)
+            try {
+                st = interpreter.step(cmd, st)
+            } catch (_: UnreachableState) {
+                return null
+            }
         }
-        `impossible!`
+        throw IllegalArgumentException("No in state for $ptr")
+    }
+
+    fun outState(ptr: CmdPointer): State? {
+        var st = inState[ptr.block] ?: return null
+        for (cmd in graph.elab(ptr.block).commands) {
+            try {
+                st = interpreter.step(cmd, st)
+            } catch (_ : UnreachableState) {
+                return null
+            }
+            if (cmd.ptr == ptr) {
+                return st
+            }
+        }
+        throw IllegalArgumentException("No out state for $ptr")
     }
 
     init {
@@ -80,7 +102,14 @@ class IntervalAnalysis(private val graph: TACCommandGraph) {
         val next = mutableSetOf<NBId>()
 
         for (cmd in commands) {
-            state = interpreter.step(cmd, state)
+            try {
+                state = interpreter.step(cmd, state)
+            } catch (unreachable : UnreachableState) {
+                logger.debug {
+                    "Unreachable found while stepping $cmd: $unreachable"
+                }
+                return next
+            }
         }
 
         // Avoid cluttering the state with nondets

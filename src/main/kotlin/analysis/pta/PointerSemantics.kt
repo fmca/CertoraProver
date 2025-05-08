@@ -2590,7 +2590,30 @@ class PointerSemantics(
                                     if(written !is INT) {
                                         throw AnalysisFailureException("Write of unsafe value $written to the byte pointer ${upcast.v}")
                                     } else {
-                                        heap
+                                        // handle the case where we are expecting a 0 write, but we have proven that the
+                                        // length is 0, so 0 write just looks like another write into the init buffer
+                                        val isEmptyArrayZero = (pState.arrayState[loc] as? ArrayStateAnalysis.Value.ElementPointer)?.let { initElem ->
+                                            /*
+                                             * Is this variable an element pointer with index 0 and the length of the array is itself 0 AND
+                                             * we're writing zero? Then, yes, we've somehow deduced this array must be
+                                             * empty, and the `endOfArray` addition got confused.
+                                             */
+                                            val lenQuals = initElem.arrayPtr.mapToTreapSet(IntQualifier::LengthOfArray)
+                                            initElem.index == IntValue.Constant(BigInteger.ZERO) && pState.boundsAnalysis.any { (_, iq) ->
+                                                iq is QualifiedInt && iq.x.mustEqual(BigInteger.ZERO) && iq.qual.containsAny(lenQuals)
+                                            }
+                                        } == true
+                                        if(heap.ignoreNextZeroWrite == upcast.initAddr && numericAnalysis.interpAsConstant(
+                                                pState,
+                                                ltacCmd,
+                                                value
+                                            ) == BigInteger.ZERO && upcast.mustAdded && isEmptyArrayZero) {
+                                            heap.copy(
+                                                ignoreNextZeroWrite = null
+                                            )
+                                        } else {
+                                            heap
+                                        }
                                     }
                                 }
                                 is InitializationPointer.BlockInitPointer -> {
@@ -2678,7 +2701,7 @@ class PointerSemantics(
                 }
             }
         }
-                             }
+    }
 
     override fun assignUninterpExpr(lhs: TACSymbol.Var, rhs: Set<TACSymbol>, target: PointsToGraph,
                                     pstate: PointsToDomain, where: LTACCmd): PointsToGraph =
@@ -2943,26 +2966,19 @@ class PointerSemantics(
                             IndexMap(m = mapOf(), sz = abstractLocation.sort.sz, mustNotBeEmptyArray = abstractLocation.sort.sz != 32.toBigInteger())
                         }
                     }
-                    is AllocationAnalysis.Alloc.PackedByteArray -> {
-                        byteAlloc()
-                    }
-                    is AllocationAnalysis.Alloc.ConstantArrayAlloc -> {
-                        if(abstractLocation.sort.eSz == 0x1.toBigInteger()) {
+                    is AllocationAnalysis.WithElementSize -> {
+                        if(abstractLocation.sort.getElementSize() == BigInteger.ONE) {
                             byteAlloc()
                         } else {
                             arrayAlloc()
                         }
                     }
-                    is AllocationAnalysis.Alloc.DynamicBlock -> {
-                        if (abstractLocation.sort.eSz == 0x1.toBigInteger()) {
-                            byteAlloc()
-                        } else {
-                            arrayAlloc()
-                        }
-                    }
+                    is AllocationAnalysis.Alloc.PackedByteArray,
+                    is AllocationAnalysis.Alloc.ConstantArrayAlloc,
+                    is AllocationAnalysis.Alloc.DynamicBlock,
                     is AllocationAnalysis.Alloc.ConstantStringAlloc,
                     is AllocationAnalysis.Alloc.StorageUnpack -> {
-                        byteAlloc()
+                        `impossible!`
                     }
                 }
             }
@@ -3382,28 +3398,27 @@ class PointerSemantics(
     override fun pointerFor(abstractLocation: AllocationAnalysis.AbstractLocation): VPointsToValue {
         return when(abstractLocation.sort) {
             is AllocationAnalysis.Alloc.ConstBlock -> InitializationPointer.BlockInitPointer(L(abstractLocation), BigInteger.ZERO)
-            is AllocationAnalysis.Alloc.DynamicBlock -> {
+            is AllocationAnalysis.WithElementSize -> {
                 val iAddr = InitAddress(abstractLocation)
-                if (abstractLocation.sort.eSz == BigInteger.ONE) {
+                if(abstractLocation.sort.getElementSize() == BigInteger.ONE) {
                     InitializationPointer.ByteInitPointer(iAddr, mustAdded = false, mayAdded = false)
                 } else {
-
                     InitializationPointer.ArrayInitPointer(iAddr, mayAdded = false, mustAdded = false)
                 }
             }
-            is AllocationAnalysis.Alloc.PackedByteArray -> InitializationPointer.ByteInitPointer(InitAddress(abstractLocation), mustAdded = false, mayAdded = false)
+
+            /**
+             * These are statically impossible, but the compiler *refuses* to believe this and insists these be here...
+             *
+             *
+             * ... but will warn that they are redundant. clbuttic kotlin
+             */
+            is AllocationAnalysis.Alloc.ConstantArrayAlloc,
             is AllocationAnalysis.Alloc.ConstantStringAlloc,
+            is AllocationAnalysis.Alloc.DynamicBlock,
+            is AllocationAnalysis.Alloc.PackedByteArray,
             is AllocationAnalysis.Alloc.StorageUnpack -> {
-                InitializationPointer.ByteInitPointer(InitAddress(abstractLocation), mayAdded = false, mustAdded = false)
-            }
-            is AllocationAnalysis.Alloc.ConstantArrayAlloc -> {
-                val iAddr = InitAddress(abstractLocation)
-                if (abstractLocation.sort.eSz == BigInteger.ONE) {
-                    InitializationPointer.ByteInitPointer(iAddr, mustAdded = false, mayAdded = false)
-                } else {
-
-                    InitializationPointer.ArrayInitPointer(iAddr, mayAdded = false, mustAdded = false)
-                }
+                `impossible!`
             }
         }
     }

@@ -25,6 +25,7 @@ import config.ReportTypes
 import datastructures.NonEmptyList
 import instrumentation.transformers.*
 import instrumentation.transformers.FilteringFunctions.Companion.default
+import instrumentation.transformers.tracing.BufferTraceInstrumentation
 import log.*
 import optimizer.SinkOptimizer
 import report.LiveStatsReporter
@@ -165,7 +166,8 @@ abstract class AbstractTACChecker {
 
                     simpleSimpleObj.symbolTable.tags.keys.filterToSet { v ->
                         // CVL now ensures most variables will only appear on lhs once, and in any case previous incarnation won't be read
-                        v in singleDefVars && (TACMeta.CVL_VAR in v.meta || TACMeta.IS_CALLDATA in v.meta)
+                        v in singleDefVars && (TACMeta.CVL_VAR in v.meta || TACMeta.IS_CALLDATA in v.meta ||
+                            BufferTraceInstrumentation.BUFFER_INSTRUMENTATION in v.meta)
                     }
                     // (Yoav) I'm not that happy with this thing. It seems pretty fragile. Why not always maintain variable
                     // names when we can? i.e., when they have just one assignment and it dominates all their usages?

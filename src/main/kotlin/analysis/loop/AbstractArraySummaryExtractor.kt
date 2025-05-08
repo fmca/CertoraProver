@@ -219,7 +219,7 @@ open class AbstractArraySummaryExtractor {
         /**
          * XXX(jtoman): I *swear* I have written something like this
          */
-        private fun TACExpr.Vec.Add.simplify() : TACExpr.Vec.Add {
+        fun TACExpr.Vec.Add.simplify() : TACExpr.Vec.Add {
             if(this.ls.size != 2) {
                 return this
             } else {
@@ -272,7 +272,7 @@ open class AbstractArraySummaryExtractor {
                             }
                             continue@outer
                         }
-                        val extracted = extractValue(vSimple.ls, k)
+                        val extracted = extractConstantOperand(vSimple.ls, k)
                         if(extracted == null && d(vSimple)) {
                             interp[k] = Interpolation.MonotoneTransformation
                         } else if(extracted != null) {
@@ -284,10 +284,10 @@ open class AbstractArraySummaryExtractor {
                             continue@outer
                         }
                         val subExprs = v.ls
-                        interp[k] = Interpolation.Linear(extractValue(subExprs, k) ?: continue@outer)
+                        interp[k] = Interpolation.Linear(extractConstantOperand(subExprs, k) ?: continue@outer)
                     }
                     is TACExpr.BinOp.Sub -> {
-                        interp[k] = Interpolation.Linear(extractValue(listOf(v.o1, v.o2), k)?.negate() ?: continue@outer)
+                        interp[k] = Interpolation.Linear(extractConstantOperand(listOf(v.o1, v.o2), k)?.negate() ?: continue@outer)
                     }
                     is TACExpr.Sym -> {
                         if(v.s is TACSymbol.Var) {
@@ -325,7 +325,7 @@ open class AbstractArraySummaryExtractor {
             return interp
         }
 
-        private fun extractValue(subExprs: List<TACExpr>, preLoopVersion: TACSymbol.Var): BigInteger? {
+        fun extractConstantOperand(subExprs: List<TACExpr>, preLoopVersion: TACSymbol.Var): BigInteger? {
             val operands = subExprs.filter {
                 it !is TACExpr.Sym || it.s != preLoopVersion
             }

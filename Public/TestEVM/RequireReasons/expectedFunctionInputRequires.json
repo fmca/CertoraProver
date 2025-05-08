@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "envfreeFuncsStaticCheck": {
+      "FAIL": [],
+      "SANITY_FAIL": [],
+      "SUCCESS": [
+        "foo(uint256)",
+        "callBar(uint256)",
+        "callBaz(uint256)"
+      ],
+      "TIMEOUT": [],
+      "UNKNOWN": []
+    },
+    "directRequire": "SUCCESS",
+    "transitiveRequire": "SUCCESS",
+    "helperStorageRequire": "SUCCESS",
+    "helperFunctionRequire": "SUCCESS",
+    "callWithSummaryIn": "SUCCESS",
+    "callWithExternalSummaryIn": "SUCCESS"
+  }
+}

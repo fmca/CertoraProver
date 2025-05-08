@@ -19,11 +19,14 @@ package report
 import allocator.Allocator
 import bridge.Method
 import config.Config
+import config.Config.TreeViewReportUpdateInterval
 import datastructures.mutableMultiMapOf
 import datastructures.stdcollections.*
+import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import log.*
 import org.jetbrains.annotations.TestOnly
+import parallel.coroutines.launchMaybeBackground
 import report.SolverResultStatusToTreeViewStatusMapper.computeFinalStatus
 import report.callresolution.GlobalCallResolutionReportView
 import rules.RuleCheckResult
@@ -40,9 +43,18 @@ import utils.*
 import verifier.RuleAndSplitIdentifier
 import java.io.IOException
 import java.math.BigInteger
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 private val logger = Logger(LoggerTypes.TREEVIEW_REPORTER)
 
+/**
+ * A time rate for which the [TreeViewReporter] hot-updates
+ * its results, in milliseconds.
+ */
+private val HOT_UPDATE_TIME_RATE: Duration
+    get() = TreeViewReportUpdateInterval.get().seconds
 
 object SolverResultStatusToTreeViewStatusMapper{
     private fun getStatusForSatisfyRule(result: SolverResult): TreeViewReporter.TreeViewStatusEnum {
@@ -85,6 +97,7 @@ object SolverResultStatusToTreeViewStatusMapper{
                 } else {
                     getStatusForRegularRule(solverResult)
                 }
+            is EquivalenceRule,
             is StaticRule,
             is AssertRule -> if (rule.isSatisfyRule) {
                 getStatusForSatisfyRule(solverResult)
@@ -186,7 +199,7 @@ class TreeViewReporter(
     enum class TreeViewStatusEnum {
 
         /**
-         *  This status is the initial status a node will be created in upon registering the node in the tree with [addChildNode].
+         *  This status is the initial status a node will be created in upon registering the node in the tree with [TreeViewTree.addChildNode].
          *
          *  The node's is present in the tree, but the actual solving process associated to it has not been started yet.
          *  This will always be the status of any [GroupRule], but also for nodes grouping parametric contracts (see [spec.cvlast.SpecType.Group.ContractRuleType]).
@@ -299,6 +312,7 @@ class TreeViewReporter(
         val outputFiles: List<String> = listOf(),
         val ruleAlerts: List<RuleAlertReport.Single<*>> = listOf(),
         val location: TreeViewLocation? = null,
+        val displayName: String,
         /**
          *  The uuid is a unique Id for the node as Integer type. It's used in the rule report for tracking points
          *  and expanding the tree when switching between tabs or during polling.
@@ -368,6 +382,7 @@ class TreeViewReporter(
         private val identifierToNode: MutableMap<DisplayableIdentifier, TreeViewNodeResult> = mutableMapOf()
 
         private val parentToChild = mutableMultiMapOf<DisplayableIdentifier, DisplayableIdentifier>()
+        private val childToParent = mutableMapOf<DisplayableIdentifier, DisplayableIdentifier>()
 
         private fun getTopLevelNodes(): List<DisplayableIdentifier> =
             parentToChild[ROOT_NODE_IDENTIFIER]?.toList() ?: listOf()
@@ -377,18 +392,25 @@ class TreeViewReporter(
             return identifierToNode.values
         }
 
-        fun addChildNode(child: DisplayableIdentifier, parent: DisplayableIdentifier, nodeType: NodeType, rule: IRule?) {
+        fun addChildNode(
+            child: DisplayableIdentifier,
+            parent: DisplayableIdentifier,
+            nodeType: NodeType,
+            rule: IRule?,
+        ) {
             synchronized(this) {
                 identifierToNode[child] = TreeViewNodeResult(
                     nodeType = nodeType,
                     rule = rule,
                     status = TreeViewStatusEnum.REGISTERED,
                     isRunning = false,
+                    displayName = child.displayName,
                     uuid = Allocator.getFreshId(Allocator.Id.TREE_VIEW_NODE_ID)
                 )
                 val children = parentToChild[parent] ?: mutableSetOf()
                 children.add(child)
                 parentToChild[parent] = children
+                childToParent[child] = parent
                 sanityCheck()
             }
         }
@@ -401,6 +423,7 @@ class TreeViewReporter(
                         rule = null,
                         status = TreeViewStatusEnum.REGISTERED,
                         isRunning = false,
+                        displayName = identifier.displayName,
                         uuid = Allocator.getFreshId(Allocator.Id.TREE_VIEW_NODE_ID)
                     ).also {
                         logger.warn { "Could not find a tree view node for $identifier - there is a call to addChildNode missing." }
@@ -413,6 +436,10 @@ class TreeViewReporter(
             return parentToChild[node]?.asSequence().orEmpty()
         }
 
+        fun updateDisplayName(node: RuleIdentifier, displayName: String) {
+            updateStatus(node) { it.copy(displayName = displayName) }
+        }
+
         fun signalStart(ruleId: RuleIdentifier) {
             updateStatus(ruleId){ it.copy(status = TreeViewStatusEnum.SOLVING)}
         }
@@ -423,7 +450,7 @@ class TreeViewReporter(
         }
 
         fun signalEnd(ruleId: RuleIdentifier, solverResult: RuleCheckResult.Leaf, ruleOutput: List<String>) {
-            updateStatus(ruleId){ treeViewNodeResult ->
+            updateStatus(ruleId) { treeViewNodeResult ->
                 when(solverResult){
                     is RuleCheckResult.Single ->
                         treeViewNodeResult.copy(
@@ -505,6 +532,7 @@ class TreeViewReporter(
 
         private fun timestamp() = System.currentTimeMillis()
 
+        private val bmcDisplayedSequencesCounter = ConcurrentHashMap<String, Map<DisplayableIdentifier, Int>>()
         /**
          * This function (recursively) calls itself and first computes the final result for all children of [curr]
          * and then merges the results with the result at the [curr] node.
@@ -512,9 +540,23 @@ class TreeViewReporter(
         private fun toJson(curr: DisplayableIdentifier): JSONSerializableTreeNode {
             val childJsonResults =
                 getChildren(curr)
-                    // we need the TreeViewNodeResults here only so we can filter out the BENIGN_SKIPPED ones
                     .map { childDI -> childDI to getResultForNode(childDI) }
                     .filter { (_, treeViewResult) -> treeViewResult.status != TreeViewStatusEnum.BENIGN_SKIPPED }
+                    .filter { (_, treeViewResult) ->
+                        // In BMC mode we want to show only:
+                        // * The "initial state rule" (has type SpecType.Single.BMC.Range(0))
+                        // * The vacuity of the initial state rule if it's vacuous (has the same type but is marked as a sanity check)
+                        // * All the Range N rules
+                        // * Sequences that failed in some way
+                        treeViewResult.rule?.let { rule ->
+                            when (val type = rule.ruleType) {
+                                is SpecType.Single.BMC.Sequence -> !treeViewResult.status.isRunning() && treeViewResult.status != TreeViewStatusEnum.VERIFIED
+                                is SpecType.Single.BMC.Range -> type.len != 0 || !(rule as CVLSingleRule).isSanityCheck() || treeViewResult.status != TreeViewStatusEnum.VERIFIED
+                                else -> true
+                            }
+                        } ?: true
+                    }
+
                     .map { (childDI, _) -> toJson(childDI) }
 
             val currTreeViewResult = getResultForNode(curr)
@@ -523,8 +565,16 @@ class TreeViewReporter(
             val duration = currTreeViewResult.verifyTime.timeSeconds
             val isRunning = currTreeViewResult.isRunning
 
+            val displayName = (getResultForNode(curr).rule?.ruleType as? SpecType.Single.BMC.Sequence)?.inv?.let { inv ->
+                val count = bmcDisplayedSequencesCounter.compute(inv.id) { _, m ->
+                    val mapping = m ?: mapOf()
+                    mapping.update(curr, mapping.size + 1) { it }
+                }!![curr]!!
+                "$count: ${currTreeViewResult.displayName}"
+            } ?: currTreeViewResult.displayName
+
             return JSONSerializableTreeNode(
-                name = curr.displayName,
+                name = displayName,
                 children = childJsonResults.toList(),
                 output = { currTreeViewResult.outputFiles.forEach { add(it) } },
                 uiId = currTreeViewResult.uuid,
@@ -660,7 +710,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         return when(child.ruleType){
             //All these rules are top-level elements in the tree.
             SpecType.Group.StaticEnvFree,
-            SpecType.Single.BMC,
+            SpecType.Single.BMC.Invariant,
             is SpecType.Group.InvariantCheck.Root,
             is SpecType.Single.BuiltIn,
             is SpecType.Single.FromUser,
@@ -669,10 +719,12 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
 
 
             //Logic related to Invariants
+            is SpecType.Single.BMC.Range,
             is SpecType.Single.InvariantCheck.TransientStorageStep,
             is SpecType.Single.InvariantCheck.InductionBase,
             is SpecType.Group.InvariantCheck.InductionSteps -> NodeType.INVARIANT_SUBCHECK
 
+            is SpecType.Single.BMC.Sequence,
             is SpecType.Single.InvariantCheck.ExplicitPreservedInductionStep,
             is SpecType.Single.InvariantCheck.GenericPreservedInductionStep -> NodeType.INDUCTION_STEPS
             is SpecType.Group.InvariantCheck.CustomInductionSteps -> NodeType.CUSTOM_INDUCTION_STEP
@@ -682,6 +734,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             is SpecType.Group.ContractRuleType -> NodeType.CONTRACT
 
             //Logic related to Asserts
+            is SpecType.Single.EquivalenceCheck,
             SpecType.Single.InCodeAssertions,
             is SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule -> NodeType.ASSERT_SUBRULE_AUTO_GEN
             is SpecType.Single.GeneratedFromBasicRule.SanityRule -> NodeType.SANITY
@@ -694,11 +747,6 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
     }
 
-    fun addChildNode(childRuleIdentifier: DisplayableIdentifier, parentRuleIdentifier: DisplayableIdentifier, nodeType: NodeType) {
-        synchronized(this) {
-            tree.addChildNode(childRuleIdentifier, parentRuleIdentifier, nodeType, null)
-        }
-    }
     fun signalStart(rule: IRule) {
         synchronized(this) {
             logger.info { "Signaled start of rule ${rule.ruleIdentifier.displayName}" }
@@ -723,6 +771,10 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
         // Increment version of output file
         fileVersion++
+    }
+
+    fun updateDisplayName(rule: IRule, displayName: String) {
+        tree.updateDisplayName(rule.ruleIdentifier, displayName)
     }
 
     /**
@@ -752,6 +804,23 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
     fun signalSkip(rule: IRule) {
         tree.signalSkip(rule.ruleIdentifier)
     }
+
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    fun startAutoHotUpdate(): Job = launchMaybeBackground("TreeView Reporting", newSingleThreadContext("Reporting")) {
+        logger.debug { "SpecChecker: TreeView periodic reporting job started; " +
+            "hotUpdate every ${HOT_UPDATE_TIME_RATE.inWholeSeconds} seconds" }
+        while (true) {
+            delay(HOT_UPDATE_TIME_RATE.inWholeMilliseconds)
+            try {
+                hotUpdate()
+            } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+                logger.error { "Tree view reporting failed: $e" }
+            }
+        }
+    }
+
+    fun stopAutoHotUpdate(job: Job) = job.cancel()
+
     /**
      * Hot-updates [perAssertReporter]. Then hot-updates this [TreeViewReporter], which leads to a creation
      * of treeViewStatus.json files, based on [tree] (which is constructed itself each time [addResults]
@@ -791,7 +860,14 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 return
             }
 
-        liveStatsReporter.ruleToLiveCheckData.forEachEntry { (rule, data) ->
+        for ((rule, data) in liveStatsReporter.ruleToLiveCheckData) {
+            /** n.b. this expects a stable hashcode. make sure the definition of [LiveCheckData] supports this */
+            val hash = data.hashCode()
+
+            if (hashOfLastDumpedLiveCheckData[rule] == hash) {
+                continue
+            }
+
             val key = RuleOutputArtifactsKey(rule)
             val artifacts = manager
                 .getOrRegisterRuleOutputArtifacts(key)
@@ -814,12 +890,14 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 ArtifactFileUtils
                     .getWriterForFile(path, overwrite = true)
                     .use { it.write(json) }
+                hashOfLastDumpedLiveCheckData[rule] = hash
             } catch (e: IOException) {
                 logger.error("Write of live statistics for ${key.ruleIdentifier} failed: $e")
             }
         }
     }
 
+    private val hashOfLastDumpedLiveCheckData: ConcurrentHashMap<RuleIdentifier, Int> = ConcurrentHashMap()
 
     /**
      * This class generates rule_output.json files for results of asserts in rules. The call trace in the rule report uses these files.
@@ -858,9 +936,17 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                                     val assertMeta = example.toViolatedAssertFailureMeta()
                                         ?: error("Could not find meta for node")
 
+                                    val nodeResult = tree.getResultForNode(node)
+                                    val breadcrumbs = if (nodeResult.rule?.ruleType is SpecType.Single.BMC.Sequence) {
+                                        assertMeta.identifier.parentIdentifier!!.parentIdentifier!!.freshDerivedIdentifier(nodeResult.displayName).toString() +
+                                            "-" +
+                                            assertMeta.identifier.displayName
+                                    } else {
+                                        assertMeta.identifier.toString()
+                                    }
                                     val ruleOutputReportView = results.toOutputReportView(
                                         location,
-                                        assertMeta.identifier,
+                                        breadcrumbs,
                                         example
                                     )
                                     val outputFileName = ruleOutputReportView

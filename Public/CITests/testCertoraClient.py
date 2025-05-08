@@ -18,6 +18,7 @@
 import copy
 import json
 import os
+import stat
 import shutil
 import sys
 import random
@@ -58,6 +59,8 @@ from Mutate import mutateAttributes as MutAttrs
 import CITests.testCertoraUtils as TestUtil
 from certoraSolanaProver import run_solana_prover
 from certoraSorobanProver import run_soroban_prover
+from certoraRanger import run_ranger
+
 
 from certoraRun import run_certora
 from Shared import certoraUtils as Util
@@ -96,6 +99,10 @@ class SorobanProverTestSuite(TestUtil.TestSuite):
 class SolanaProverTestSuite(TestUtil.TestSuite):
     def __init__(self, **kwargs: Any):
         super().__init__(run_solana_prover, **kwargs)
+
+class RangerTestSuite(TestUtil.TestSuite):
+    def __init__(self, **kwargs: Any):
+        super().__init__(run_ranger, **kwargs)
 
 
 class ProverTestSuite(TestUtil.TestSuite):
@@ -487,9 +494,9 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="unrecognized contract in 'address'",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--address', 'C:2', 'A:3'],
                              expected="unrecognized contract in 'address'")
-        suite.expect_failure(description="only one option of 'assert_contracts' and 'verify' can be used",
+        suite.expect_failure(description="only one option of 'assert_contracts', 'verify', 'equivalence' can be used",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--assert_contracts', 'A'],
-                             expected="only one option of 'assert_contracts' and 'verify' can be used")
+                             expected="only one option of 'assert_contracts', 'verify', 'equivalence' can be used")
         suite.expect_failure(description="Must use 'bytecode' together with 'bytecode_spec'",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--bytecode_jsons',
                                         f"{_p('empty.json')}"],
@@ -822,7 +829,7 @@ class TestClient(unittest.TestCase):
         )
         suite.expect_failure(
             description="run soroban without files or build script",
-            expected="Mandatory 'build_script' or 'files' attribute is missing from the configuration",
+            expected="'files' or 'build script' must be set for Soroban runs",
         )
 
         suite = SorobanProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
@@ -1273,11 +1280,27 @@ class TestClient(unittest.TestCase):
 
         suite.expect_failure(description="Overwrite an existing target slot",
                              run_flags=['--storage_extension_harnesses', 'Test=Overwrite'],
-                             expected="Slot 0 added to Test by Overwrite already mapped by Test")
+                             expected="Slot 0 added to Test by Overwrite is already mapped by Test")
 
         suite.expect_failure(description="Overwrite an existing extension slot",
                              run_flags=['--storage_extension_harnesses', 'Test=Spec1', 'Test=Spec'],
                              expected="Slot 9619688881439974453 added to Test")
+
+        suite.expect_failure(description="Overwrite an existing target field name",
+                             run_flags=['--storage_extension_harnesses', 'Test=OverwriteVar'],
+                             expected="Var 'existing' added to Test by OverwriteVar is already declared by Test")
+
+        suite.expect_failure(description="Overwrite an existing extension field name",
+                             run_flags=['--storage_extension_harnesses', 'Test=Spec1', 'Test=Spec2'],
+                             expected="Var 'b1' added to Test")
+
+    @staticmethod
+    def get_card_object(parent, nested):
+        return next((section for section in parent if section.card_title == nested), None)
+
+    @staticmethod
+    def get_inner_object(parent, nested):
+        return next((section for section in parent if section.inner_title == nested), None)
 
     def test_solidity_configuration_layout_data(self) -> None:
         """
@@ -1289,50 +1312,42 @@ class TestClient(unittest.TestCase):
             run_certora(args)
             raise AssertionError(f"__test_main_spec: No Test Result for {args}")
         except Util.TestResultsReady as e:
+            layout = e.data.configuration_layout
+
             # Validating files section in RunConfigurationLayout
-            assert getattr(e.data, 'files'), \
-                f"Error! files section is expected to exist in configuration layout data!\n{e.data}"
-            assert _p('A.sol') in e.data.files.get('value'), \
-                f"Error! files in configuration layout is {e.data.files.get('value')}, expected {_p('A.sol')}"
-            assert 'prover/cli' in e.data.files.get('doc_link') and 'files' in e.data.files.get('doc_link'), \
-                f"Error! doc_link in configuration layout is {e.data.files.get('doc_link')}\n" \
+            files = self.get_card_object(layout, 'files')
+            assert files, f"Error! files section is expected to exist in configuration layout data!\n{layout}"
+            assert _p('A.sol') in files.content[0].content, \
+                f"Error! files in configuration layout is {files.content[0].content}, expected {_p('A.sol')}"
+            assert 'prover/cli' in files.content[0].doc_link and 'files' in files.content[0].doc_link, \
+                f"Error! doc_link in configuration layout is {files.content[0].doc_link}\n" \
                 f"expected 'prover/cli' and '#files' in link!"
 
             # Validating general section in RunConfigurationLayout
-            assert getattr(e.data, 'general') and getattr(e.data, 'general').get('flags'), \
-                f"Error! flags in general section are expected to exist in configuration layout data!\n{e.data}"
+            assert (general := self.get_card_object(layout, 'general')) and \
+                   (general_flags := self.get_inner_object(general.content, 'flags')), \
+                   f"Error! flags in general section are expected to exist in configuration layout data!\n{layout}"
 
-            verify_data = e.data.general.get('flags').get('verify')
-            assert verify_data and f"A:{_p('spec1.spec')}" == verify_data.get('value'), \
+            verify_data = self.get_inner_object(general.content, 'Verify')
+            assert verify_data and f"A:{_p('spec1.spec')}" == verify_data.content, \
                 f"Error! verify flag in general section is incorrect!\n" \
                 f"expected: 'A:{_p('spec1.spec')}', actual: '{verify_data}'"
 
-            server_data = e.data.general.get('flags').get('server')
-            assert server_data and "production" == server_data.get('value'), \
+            server_data = self.get_inner_object(general_flags.content, 'server')
+            assert server_data and "production" == server_data.content, \
                 f"Error! server flag in general section is incorrect!\n" \
-                f"expected: 'production', actual: '{server_data.get('value')}'"
-
-            # Validating metadata section in RunConfigurationLayout
-            assert getattr(e.data, 'metadata'), \
-                f"Error! metadata section is expected to exist in configuration layout data!\n{e.data}"
-
-            main_spec_data = e.data.metadata.get('main_spec')
-            assert main_spec_data and f"{_p('spec1.spec')}" == main_spec_data.get('value'), \
-                f"Error! main_spec in metadata section is incorrect!\n" \
-                f"expected: '{_p('spec1.spec')}', actual: '{main_spec_data}'"
-
-            assert e.data.metadata.get('solc_version') and e.data.metadata.get('verify'), \
-                f"Error! 'solc_version' and 'verify' must exist on metadata section!\nmetadata: {e.data.metadata}"
+                f"expected: 'production', actual: '{server_data.content}'"
 
             # Validating solidity compiler section in RunConfigurationLayout
-            assert getattr(e.data, 'solidity_compiler') and getattr(e.data, 'solidity_compiler').get('flags'), \
-                f"Error! flags in solidity_compiler section are expected to exist in configuration layout data!\n" \
-                f"{e.data}"
+            assert (solidity_compiler := self.get_card_object(layout, 'solidity_compiler')) \
+                   and (solc_flags := self.get_inner_object(solidity_compiler.content, 'flags')), \
+                   f"Error! flags in solidity_compiler section is expected to exist in configuration layout data!\n" \
+                   f"{layout}"
 
-            solc_data = getattr(e.data, 'solidity_compiler').get('flags').get('solc')
-            assert solc_data and "solc8.28" == solc_data.get('value') and "value" == solc_data.get('flag_type'), \
+            solc_data = self.get_inner_object(solc_flags.content, 'solc')
+            assert solc_data and "solc8.28" == solc_data.content and "FLAG" == solc_data.content_type, \
                 f"Error! solc flag in solidity_compiler section is incorrect!\n" \
-                f"expected: 'solc8.28' of flag_type 'value', actual: '{solc_data}'"
+                f"expected: 'solc8.28' of content_type 'FLAG', actual: '{solc_data}'"
 
     def test_solana_configuration_layout_data(self) -> None:
         """
@@ -1344,29 +1359,32 @@ class TestClient(unittest.TestCase):
             run_solana_prover(args)
             raise AssertionError(f"__test_main_spec: No Test Result for {args}")
         except Util.TestResultsReady as e:
+            layout = e.data.configuration_layout
+
             # Validating files section in RunConfigurationLayout
-            assert getattr(e.data, 'files'), \
-                f"Error! files section is expected to exist in configuration layout data!\n{e.data}"
-            assert _p('empty.so') in e.data.files.get('value'), \
-                f"Error! files in configuration layout is {e.data.files.get('value')}, expected {_p('empty.so')}"
-            assert 'solana' in e.data.files.get('doc_link') and 'files' in e.data.files.get('doc_link'), \
-                f"Error! doc_link in configuration layout is {e.data.files.get('doc_link')}\n" \
+            files = self.get_card_object(layout, 'files')
+            assert files, f"Error! files section is expected to exist in configuration layout data!\n{layout}"
+            assert _p('empty.so') in files.content[0].content, \
+                f"Error! files in configuration layout is {files.content[0].content}, expected {_p('empty.so')}"
+            assert 'solana' in files.content[0].doc_link and 'files' in files.content[0].doc_link, \
+                f"Error! doc_link in configuration layout is {files.content[0].doc_link}\n" \
                 f"expected 'solana' and '#files' in link!"
 
             # Validating general section in RunConfigurationLayout
-            assert getattr(e.data, 'general') and getattr(e.data, 'general').get('flags'), \
-                f"Error! flags in general section are expected to exist in configuration layout data!\n{e.data}"
+            assert (general := self.get_card_object(layout, 'general')) and \
+                   (general_flags := self.get_inner_object(general.content, 'flags')), \
+                   f"Error! flags in general section are expected to exist in configuration layout data!\n{layout}"
 
-            server_data = e.data.general.get('flags').get('server')
-            assert server_data and "production" == server_data.get('value'), \
+            server_data = self.get_inner_object(general_flags.content, 'server')
+            assert server_data and "production" == server_data.content, \
                 f"Error! server flag in general section is incorrect!\n" \
-                f"expected: 'production', actual: '{server_data}'"
+                f"expected: 'production', actual: '{server_data.content}'"
 
-            rule_data = e.data.general.get('rule')
-            assert rule_data and "dummy_rule" in rule_data.get('value') and "list" == rule_data.get('flag_type') \
-                   and "prover/cli" in rule_data.get('doc_link'), \
+            rule_data = self.get_inner_object(general.content, 'rule')
+            assert rule_data and "dummy_rule" in rule_data.content and "SIMPLE" == rule_data.content_type \
+                   and "prover/cli" in rule_data.doc_link, \
                    f"Error! rule subsection in general section is incorrect!\n" \
-                   f"expected: dummy_rule in value, flag_type: list and 'prover/cli' in doc_link,\n" \
+                   f"expected: dummy_rule in content, content_type: SIMPLE and 'prover/cli' in doc_link,\n" \
                    f"actual: '{rule_data}'"
 
     def test_override_base_config(self) -> None:
@@ -1375,11 +1393,11 @@ class TestClient(unittest.TestCase):
 
         # creating 2 conf files: a base and a child
         base_data = {
+            "files": ["Test/CITests/test_data/A.sol"],
             "solc": "solc5.11"
         }
 
         child_data = {
-            "files": ["Test/CITests/test_data/A.sol"],
             "verify": "A:Test/CITests/test_data/spec1.spec",
             "override_base_config": "base.conf"
         }
@@ -1448,6 +1466,53 @@ class TestClient(unittest.TestCase):
         with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
         suite.expect_failure(description="override base: base does not exist", run_flags=['child.conf'],
                              expected="Error when reading child.conf: Cannot load base config: base_bad.conf")
+
+    def test_solana_build(self) -> None:
+        suite = SolanaProverTestSuite(
+            conf_file_template=_p("rust.conf"),
+            test_attribute=str(Util.TestValue.SOLANA_BUILD_CMD)
+        )
+        open("build_script.py", "a").close()
+        os.chmod("build_script.py", os.stat("build_script.py").st_mode | stat.S_IXUSR)
+
+        result = suite.expect_checkpoint(description="solana build with build script",
+                                         run_flags=["--build_script", "./build_script.py",
+                                                    "--cargo_features", "feature1",
+                                                    "--cargo_tools_version", "v1.41"])
+        expected = ['./build_script.py', '--cargo_features', 'feature1', '--json', '-l']
+        assert result == expected, f"with --build_script: expected {expected}, got {result}"
+
+        result = suite.expect_checkpoint(description="solana build with cargo flags",
+                                         run_flags=["--cargo_features", "feature1",
+                                                    "--cargo_tools_version", "v1.41"])
+        expected = ['cargo', 'certora-sbf', '--tools-version', 'v1.41', '--features', 'feature1', '--json', '-l']
+        assert result == expected, f"without  --build_script: expected {expected}, got {result}"
+
+    def test_ranger(self) -> None:
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+        suite.expect_success(description='run certoraRun with ranger attributes',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", "--range", "8",
+                                        "--ranger_failure_limit", "7"])
+        suite = RangerTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+
+        result = suite.expect_checkpoint(description='run certoraRun with ranger attributes',
+                                         run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}",
+                                                    "--rule_sanity",
+                                                    "--coverage_info",
+                                                    "--independent_satisfy",
+                                                    "--multi_assert_check",
+                                                    "--multi_example"])
+        assert result.loop_iter == Util.DEFAULT_RANGER_LOOP_ITER, ("test_ranger: expect default loop iter "
+                                                                   f"{Util.DEFAULT_RANGER_LOOP_ITER} got {result.loop_iter}")
+        assert result.range == Util.DEFAULT_RANGER_RANGE, ("test_ranger: expect default range "
+                                                                   f"{Util.DEFAULT_RANGER_RANGE} got {result.range}")
+        assert result.ranger_failure_limit == Util.DEFAULT_RANGER_FAILURE_LIMIT, ("test_ranger: expect default "
+                                                                                  "ranger_failure_limit "
+                                                                                  f"{Util.DEFAULT_RANGER_FAILURE_LIMIT}"
+                                                                                  f" got {result.ranger_failure_limit}")
+        for attr in Attrs.RangerAttributes.ranger_unsupported_attributes():
+            attr_name = attr.get_conf_key()
+            assert not getattr(result, attr_name), f"test_ranger: {attr_name} should not be in set during Ranger run"
 
 
 if __name__ == '__main__':

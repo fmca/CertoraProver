@@ -204,8 +204,6 @@ private fun postProcessCFG(cfg: MutableSbfCFG, globalsMap: GlobalVariableMap) {
     cfg.verify(false, "[after simplifying builtin calls]")
     cfg.simplify(globalsMap)
     cfg.verify(false, "[after simplify]")
-    markAddWithOverflow(cfg)
-    cfg.verify(false, "[after markAddWithOverflow]")
     cfg.normalize()
     cfg.verify(true, "[after normalize]")
 }
@@ -356,9 +354,11 @@ private class Demangler(private val cfgs: List<MutableSbfCFG>) {
             for (block in demangledCFG.getMutableBlocks().values) {
                 for ((i, inst) in block.getInstructions().withIndex()) {
                     if (inst is SbfInstruction.Call) {
+                        val mangledName = inst.name
+                        val demangledName = demanglerMap.getOrDefault(mangledName, mangledName)
+                        val newMetadata = inst.metaData.plus(SbfMeta.MANGLED_NAME to mangledName)
                         block.replaceInstruction(
-                            i,
-                            inst.copy(name = demanglerMap.getOrDefault(inst.name, inst.name))
+                            i, inst.copy(name = demangledName, metaData = newMetadata)
                         )
                     }
                 }

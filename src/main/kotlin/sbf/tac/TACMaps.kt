@@ -21,10 +21,12 @@ import sbf.domains.PTAOffset
 import vc.data.TACCmd
 import vc.data.TACSymbol
 import datastructures.stdcollections.*
+import sbf.domains.INumValue
+import sbf.domains.IOffset
 
 /** Return instructions that havoc the indexes [loc] + [indexes] of the byte map [base] **/
-context(SbfCFGToTAC)
-fun havocByteMapLocation(indexes: List<PTAOffset>, base: TACByteMapVariable, loc: TACSymbol.Var): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>>  havocByteMapLocation(indexes: List<PTAOffset>, base: TACByteMapVariable, loc: TACSymbol.Var): List<TACCmd.Simple> {
     val values = ArrayList<TACSymbol.Var>()
     val cmds = mutableListOf<TACCmd.Simple>()
     indexes.forEach { _ ->
@@ -37,8 +39,8 @@ fun havocByteMapLocation(indexes: List<PTAOffset>, base: TACByteMapVariable, loc
 }
 
 /** Emit TAC code for index = [base] + [offset] **/
-context(SbfCFGToTAC)
-fun computeTACMapIndex(base: TACSymbol.Var, offset: Long, cmds: MutableList<TACCmd.Simple>): TACSymbol.Var {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> computeTACMapIndex(base: TACSymbol.Var, offset: Long, cmds: MutableList<TACCmd.Simple>): TACSymbol.Var {
     val index = mkFreshIntVar(bitwidth = 256)
     cmds.add(assign(index, exprBuilder.mkAddExpr(base.asSym(), exprBuilder.mkConst(offset).asSym(), useMathInt = false)))
     return index
@@ -48,8 +50,9 @@ fun computeTACMapIndex(base: TACSymbol.Var, offset: Long, cmds: MutableList<TACC
  * Emit TAC code that writes [values] in [byteMap] starting at [base] with [offsets]
  * [offsets] must be relative to [base]
  */
-context(SbfCFGToTAC)
-fun mapStores(byteMap: TACByteMapVariable,
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>>  mapStores(
+              byteMap: TACByteMapVariable,
               base: TACSymbol.Var,
               offsets: List<PTAOffset>,
               values: List<TACSymbol>): List<TACCmd.Simple> {
@@ -69,8 +72,9 @@ fun mapStores(byteMap: TACByteMapVariable,
  * Emit TAC code that writes [value] in [byteMap] starting at [base] with [offset]
  * [offset] must be relative to [base]
  */
-context(SbfCFGToTAC)
-fun mapStores(byteMap: TACByteMapVariable,
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> mapStores(
+              byteMap: TACByteMapVariable,
               base: TACSymbol.Var,
               offset: PTAOffset,
               value: TACSymbol): List<TACCmd.Simple> =
@@ -79,8 +83,9 @@ fun mapStores(byteMap: TACByteMapVariable,
 /**
  * Emit TAC code that loads each word from [byteMap] starting at [base] up to [length]
  */
-context(SbfCFGToTAC)
-fun mapLoads(byteMap: TACByteMapVariable,
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> mapLoads(
+             byteMap: TACByteMapVariable,
              base: TACSymbol.Var,
              wordSize: Byte, length: Long,
              cmds: MutableList<TACCmd.Simple>): List<TACSymbol.Var> {

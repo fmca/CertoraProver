@@ -31,7 +31,6 @@ import report.dumps.CmdPtrMapping
 import scene.PatchableProgram
 import tac.*
 import utils.*
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
 import vc.data.tacexprutil.TACExprUtils
 import vc.data.tacexprutil.tempVar
 import java.util.*
@@ -480,7 +479,7 @@ open class PatchingTACProgram<T : TACCmd> protected constructor(
                     val newAxioms = axioms.map { axiom ->
                         TACAxiom(
                             TACExprUtils.SubstitutorVar(replacedUfsAsTACExprs)
-                                .transform(QuantDefaultTACExprTransformer.QuantVars.Empty, axiom.exp)
+                                .transform(axiom.exp)
                         )
                     }
                     newFis to newAxioms
@@ -760,6 +759,9 @@ open class PatchingTACProgram<T : TACCmd> protected constructor(
         }
 
     open fun toCode(empty: T? = null): Pair<BlockNodes<T>, BlockGraph> {
+        if(deferredDropBlocks.isNotEmpty()) {
+            removeSubgraph(deferredDropBlocks)
+        }
         if (openBlocks.isNotEmpty()) {
             throw IllegalStateException("cannot finalize program patch if there are open blocks: $openBlocks")
         }
@@ -925,6 +927,20 @@ open class PatchingTACProgram<T : TACCmd> protected constructor(
     }
 
     fun isBlockStillInGraph(b: NBId): Boolean = b in blockgraph
+
+    private val deferredDropBlocks = mutableSetOf<NBId>()
+
+    /**
+     * Schedule blocks for removal when the patching program is materialized. This is helpful if it is complicated/impossible
+     * to prevent mutations in blocks that have been removed; this allows (pointless) mutations in a block that is ultimately
+     * scheduled for removal.
+     *
+     * NB that the behavior of this function w.r.t. block *splitting* might be confusing; if you split a block and then
+     * remove the original ID via this method, the successor split will still remain in the graph.
+     */
+    fun deferRemoveSubgraph(b: Set<NBId>) {
+        deferredDropBlocks.addAll(b)
+    }
 
     fun removeSubgraph(b: Set<NBId>) {
         val toRemove = ArrayHashSet<NBId>(blockgraph.keys)

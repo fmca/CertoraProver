@@ -19,15 +19,8 @@ package rules
 
 import bridge.NamedContractIdentifier
 import config.Config
-import config.Config.MethodChoices
-import config.Config.TreeViewReportUpdateInterval
 import datastructures.stdcollections.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.newSingleThreadContext
 import log.*
-import parallel.coroutines.launchMaybeBackground
 import report.*
 import rules.dpgraph.TrivialRuleDependencies
 import scene.IScene
@@ -40,17 +33,8 @@ import spec.rules.StaticRule
 import utils.*
 import verifier.mus.UnsatCoreVisualisation
 import verifier.mus.UnsatCoresStats
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 private val logger = Logger(LoggerTypes.COMMON)
-
-/**
- * A time rate for which the [TreeViewReporter] hot-updates
- * its results, in milliseconds.
- */
-val HOT_UPDATE_TIME_RATE: Duration
-    get() = TreeViewReportUpdateInterval.get().seconds
 
 class SpecChecker(
     val contractName: NamedContractIdentifier,
@@ -67,7 +51,7 @@ class SpecChecker(
      * Additionally, when in foundry mode there are many summaries for different cheatcodes, and likely most of them
      * will be unused in a specific test run, so disable it in this case as well.
      */
-    private val summaryMonitor = if (MethodChoices == null && !Config.areRulesFiltered() && !Config.Foundry.get()) {
+    private val summaryMonitor = if (!Config.methodsAreFiltered && !Config.areRulesFiltered() && !Config.Foundry.get()) {
         SummaryMonitor(cvl.external, cvl.internal, cvl.unresolvedSummaries)
     } else {
         null
@@ -171,7 +155,6 @@ class SpecChecker(
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
     suspend fun checkAll(): List<RuleCheckResult> {
         val allRules = cvl.rules
         if (allRules.isEmpty()) {
@@ -188,18 +171,7 @@ class SpecChecker(
 
         val dependencyGraph = TrivialRuleDependencies.generate(chosenRules)
 
-        val reportingJob = launchMaybeBackground("TreeView Reporting", newSingleThreadContext("Reporting")) {
-            logger.debug { "SpecChecker: TreeView periodic reporting job started; " +
-                "hotUpdate every ${HOT_UPDATE_TIME_RATE.inWholeSeconds} seconds" }
-            while (true) {
-                delay(HOT_UPDATE_TIME_RATE.inWholeMilliseconds)
-                try {
-                    treeViewReporter.hotUpdate()
-                } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
-                    logger.error { "Tree view reporting failed: ${e}" }
-                }
-            }
-        }
+        val reportingJob = treeViewReporter.startAutoHotUpdate()
         val results = try {
             logger.info { "Checking rules $allRules" }
             dependencyGraph.resultComputation(
@@ -209,7 +181,7 @@ class SpecChecker(
                 summaryMonitor?.reportUnusedSumm()
             }
         } finally {
-            reportingJob.cancel()
+            treeViewReporter.stopAutoHotUpdate(reportingJob)
         }
 
         checkEnvfreeRuleResults(results)

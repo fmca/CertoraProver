@@ -18,6 +18,7 @@
 package solver
 
 
+import datastructures.stdcollections.*
 import handleSolanaFlow
 import infra.CertoraBuildKind
 import infra.CertoraBuild
@@ -119,6 +120,12 @@ class SolanaCallTraceTest {
                 "rule_attach_location_satisfy_main_body",
                 "rule_attach_location_satisfy_nested_call",
                 "rule_attach_location_satisfy_other_module",
+                "rule_function_call_in_main_body",
+                "rule_nested_function_call_in_main_body",
+                "rule_print_simple_struct",
+                "rule_print_nested_struct",
+                "rule_print_incorrectly_balanced_struct1",
+                "rule_print_incorrectly_balanced_struct2",
             )
 
         /**
@@ -595,6 +602,63 @@ class SolanaCallTraceTest {
         )
     }
 
+    @Test
+    fun functionCallInMainBody() {
+        ruleContainsSolanaFunctionInstanceAt(
+            "rule_function_call_in_main_body",
+            results,
+            callInstanceRange("src/functions.rs", 4U, 1U)
+        )
+    }
+
+    @Test
+    fun nestedFunctionCallInMainBody() {
+        ruleContainsSolanaFunctionInstanceAt(
+            "rule_nested_function_call_in_main_body",
+            results,
+            callInstanceRange("src/functions.rs", 4U, 1U)
+        )
+        ruleContainsSolanaFunctionInstanceAt(
+            "rule_nested_function_call_in_main_body",
+            results,
+            callInstanceRange("src/functions.rs", 9U, 1U)
+        )
+    }
+
+    @Test
+    fun printSimpleStruct() {
+        val calltrace = getCalltraceOfRule("rule_print_simple_struct", results)
+        callTraceContainsScopesWithPrints(calltrace, mapOf(
+            CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 6U, 1U)) to setOf("fieldOfStruct")
+        ))
+    }
+
+    @Test
+    fun printNestedStruct() {
+        val calltrace = getCalltraceOfRule("rule_print_nested_struct", results)
+        callTraceContainsScopesWithPrints(calltrace,
+            mapOf(
+                CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 16U, 1U)) to setOf("fieldOfStruct"),
+                CallInstance.InvokingInstance.CVLRScope("nestedStruct", callInstanceRange("src/print_structs.rs", 18U, 1U)) to setOf("fieldOfNestedStruct")
+            )
+        )
+    }
+
+    @Test
+    fun printIncorrectlyBalancedStruct1() {
+        val calltrace = getCalltraceOfRule("rule_print_incorrectly_balanced_struct1", results)
+        callTraceContainsScopesWithPrints(calltrace,
+            mapOf(CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 29U, 1U))  to setOf("fieldOfStruct")))
+    }
+
+    @Test
+    fun printIncorrectlyBalancedStruct2() {
+        val calltrace = getCalltraceOfRule("rule_print_incorrectly_balanced_struct2", results)
+        callTraceContainsScopesWithPrints(calltrace,
+            mapOf(CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 40U, 1U))  to setOf("fieldOfStruct"))
+        )
+    }
+
     private fun ruleContainsSolanaUserAssertAt(
         ruleName: String,
         results: List<RuleCheckResult.Single>,
@@ -603,6 +667,38 @@ class SolanaCallTraceTest {
         val solanaUserAsserts = getUserAsserts(ruleName, results)
         val existsAssertWithExpectedRange = existsCallInstanceAtRange(solanaUserAsserts, expectedRange)
         assert(existsAssertWithExpectedRange) { "Did not find any asserts with range ${expectedRange.file}:${expectedRange.lineNumber}" }
+    }
+
+
+    private fun callTraceContainsScopesWithPrints(
+        callTrace: CallTrace,
+        expectedScopeNamesToPrints: Map<CallInstance.InvokingInstance.CVLRScope, Set<String>>
+    ) {
+        val actualEntry = callTrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.InvokingInstance.CVLRScope> { true }.toSet()
+        assertEquals(expectedScopeNamesToPrints.keys, actualEntry, "Did not find expected scopes\n" +
+            expectedScopeNamesToPrints.keys.filter { actualEntry.contains(it) }.let {
+                if (it.isNotEmpty()) {
+                    "Missing expected entries: $it\n"
+                } else {
+                    ""
+                }
+            } +
+            actualEntry.filter { expectedScopeNamesToPrints.containsKey(it) }.let {
+                if (it.isNotEmpty()) {
+                    "Missing actual entries: $it\n"
+                } else {
+                    ""
+                }
+            })
+
+        expectedScopeNamesToPrints.forEachEntry { (expectedStructName, expectedFieldNames) ->
+            val actualToBePrinted = actualEntry.filter { it.name == expectedStructName.name }.single().children.filterIsInstance<CallInstance.CvlrCexPrintValues>().map { it.name }
+            actualToBePrinted.forEach { actualStructFieldName ->
+                expectedFieldNames.forEach { expected ->
+                    assert(actualStructFieldName.contains(expected)) { "Did not expect to find a field with name $actualStructFieldName" }
+                }
+            }
+        }
     }
 
     private fun getUserAsserts(
@@ -692,8 +788,8 @@ class SolanaCallTraceTest {
         expectedRange: Range.Range
     ) {
         val solanaExternalCalls = getExternalCalls(ruleName, results)
-        val existsAssertWithExpectedRange = existsCallInstanceAtRange(solanaExternalCalls, expectedRange)
-        assert(existsAssertWithExpectedRange) { "Did not find any external call with range ${expectedRange.file}:${expectedRange.lineNumber}" }
+        val existsExternalCallWithExpectedRange = existsCallInstanceAtRange(solanaExternalCalls, expectedRange)
+        assert(existsExternalCallWithExpectedRange) { "Did not find any external call with range ${expectedRange.file}:${expectedRange.lineNumber}" }
     }
 
     private fun getExternalCalls(
@@ -702,6 +798,24 @@ class SolanaCallTraceTest {
     ): List<CallInstance.SolanaExternalCall> {
         val calltrace = getCalltraceOfRule(ruleName, results)
         return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.SolanaExternalCall> { true }
+    }
+
+    private fun ruleContainsSolanaFunctionInstanceAt(
+        ruleName: String,
+        results: List<RuleCheckResult.Single>,
+        expectedRange: Range.Range
+    ) {
+        val solanaFunctionInstances = getSolanaFunctionInstance(ruleName, results)
+        val existsSolanaFunctionInstanceWithExpectedRange = existsCallInstanceAtRange(solanaFunctionInstances, expectedRange)
+        assert(existsSolanaFunctionInstanceWithExpectedRange) { "Did not find any Solana function instance with range ${expectedRange.file}:${expectedRange.lineNumber}" }
+    }
+
+    private fun getSolanaFunctionInstance(
+        ruleName: String,
+        results: List<RuleCheckResult.Single>,
+    ): List<CallInstance.InvokingInstance.SolanaFunctionInstance> {
+        val calltrace = getCalltraceOfRule(ruleName, results)
+        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.InvokingInstance.SolanaFunctionInstance> { true }
     }
 
     private fun getCalltraceOfRule(

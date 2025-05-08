@@ -47,6 +47,7 @@ import logging
 cloud_logger = logging.getLogger("cloud")
 
 MAX_FILE_SIZE = 25 * 1024 * 1024
+SOLANA_MAX_FILE_SIZE = 2 * MAX_FILE_SIZE
 NO_OUTPUT_LIMIT_MINUTES = 15
 MAX_POLLING_TIME_MINUTES = 150
 LOG_READ_FREQUENCY = 10
@@ -264,7 +265,9 @@ def compress_files(zip_file_path: Path, *resource_paths: Path, short_output: boo
                     cloud_logger.error(f"{GENERAL_ERR_PREFIX}"  f"Could not compress {path}")
                     return False
 
-    if zip_file_path.stat().st_size > MAX_FILE_SIZE:
+    # Solana binary files can become heavy, thus we need to increase size limit.
+    max_file_size = MAX_FILE_SIZE if not Attrs.is_rust_app() else SOLANA_MAX_FILE_SIZE
+    if zip_file_path.stat().st_size > max_file_size:
         cloud_logger.error(f"{GENERAL_ERR_PREFIX} Max 25MB file size exceeded.")
         return False
 
@@ -592,43 +595,25 @@ class CloudVerification:
 
         jar_settings = Ctx.collect_jar_args(self.context)
 
-        if Attrs.is_solana_app():
-            # We need to strip "../" path component from all file paths because
-            # unzip will also do that.
-            solana_jar_settings = []
-            if hasattr(self.context, 'build_script') and self.context.build_script:
-                solana_jar_settings.append(Path(self.context.rust_executables).name)
+        if Attrs.is_rust_app():
+            rust_jar_settings = [Path(self.context.files[0]).name]
 
-            else:
-                for file in self.context.files:
-                    solana_jar_settings.append(file.split('../')[-1])
+            if Attrs.is_solana_app():
+                def paths_in_source_dir(attr_values: List[str]) -> str:
+                    cwd_rel_in_sources = Util.get_certora_sources_dir() / self.context.cwd_rel_in_sources
+                    values: list[str] = \
+                        [os.path.relpath(cwd_rel_in_sources / value, Util.get_build_dir()) for value in attr_values]
+                    return ','.join(values)
 
-            is_file = False
-            for arg in jar_settings:
-                if is_file:
-                    solana_jar_settings.append(arg.split('../')[-1])
-                    is_file = False
-                else:
-                    solana_jar_settings.append(arg)
+                if self.context.solana_summaries:
+                    rust_jar_settings.append('-solanaSummaries')
+                    rust_jar_settings.append(paths_in_source_dir(self.context.solana_summaries))
 
-                if arg == '-solanaInlining':
-                    is_file = True
-                elif arg == '-solanaSummaries':
-                    is_file = True
-            auth_data["jarSettings"] = solana_jar_settings
-        elif Attrs.is_soroban_app():
-            # We need to strip "../" path component from all file paths because
-            # unzip will also do that.
-            soroban_jar_settings = []
-            # not needed - should be in files
-            if hasattr(self.context, 'build_script') and self.context.build_script:
-                soroban_jar_settings.append(Path(self.context.rust_executables).name)
-            else:
-                for file in self.context.files:
-                    soroban_jar_settings.append(file.split('../')[-1])
-            for arg in jar_settings:
-                soroban_jar_settings.append(arg)
-            auth_data["jarSettings"] = soroban_jar_settings
+                if self.context.solana_inlining:
+                    rust_jar_settings.append('-solanaInlining')
+                    rust_jar_settings.append(paths_in_source_dir(self.context.solana_inlining))
+
+            auth_data["jarSettings"] = rust_jar_settings + jar_settings
         else:
             auth_data["jarSettings"] = jar_settings
 
@@ -747,7 +732,10 @@ class CloudVerification:
             result = compress_files(self.ZipFilePath, *paths,
                                     short_output=Ctx.is_minimal_cli_output(self.context))
         elif Attrs.is_rust_app():
-            files_list = [Util.get_certora_metadata_file(), Util.get_configuration_layout_data_file()]
+            files_list = [Util.get_certora_metadata_file(),
+                          Util.get_configuration_layout_data_file(),
+                          Util.get_build_dir() / Path(self.context.files[0]).name]
+
             if Util.get_certora_sources_dir().exists():
                 files_list.append(Util.get_certora_sources_dir())
 
@@ -759,17 +747,10 @@ class CloudVerification:
                     return False
                 files_list.append(self.logZipFilePath)
 
-                files_list.append(Util.get_build_dir() / Path(self.context.rust_executables).name)
-
                 # Create a .RustExecution file to classify zipInput as a rust source code
                 rust_execution_file = Util.get_build_dir() / ".RustExecution"
                 rust_execution_file.touch(exist_ok=True)
                 files_list.append(rust_execution_file)
-
-                additional_files = (getattr(self.context, 'solana_inlining', None) or []) + \
-                                   (getattr(self.context, 'solana_summaries', None) or [])
-                for file in additional_files:
-                    files_list.append(Util.get_build_dir() / Path(file).name)
 
                 if attr_file := getattr(self.context, 'rust_logs_stdout', None):
                     files_list.append(Util.get_build_dir() / Path(attr_file).name)
@@ -779,29 +760,10 @@ class CloudVerification:
                 result = compress_files(self.ZipFilePath, *files_list,
                                         short_output=Ctx.is_minimal_cli_output(self.context))
 
-            elif Attrs.is_solana_app():
-                # We zip the ELF files and the two configuration files
-                jar_args = Ctx.collect_jar_args(self.context)
-
+            elif Attrs.is_solana_app() or Attrs.is_soroban_app():
                 for file in self.context.files:
                     files_list.append(Path(file))
-                is_file = False
-                for arg in jar_args:
-                    if is_file:
-                        files_list.append(Path(arg))
-                        is_file = False
 
-                    if arg == '-solanaInlining':
-                        is_file = True
-                    elif arg == '-solanaSummaries':
-                        is_file = True
-                result = compress_files(self.ZipFilePath, *files_list,
-                                        short_output=Ctx.is_minimal_cli_output(self.context))
-
-            elif Attrs.is_soroban_app():
-                # We zip the wat file
-                for file in self.context.files:
-                    files_list.append(Path(file))
                 result = compress_files(self.ZipFilePath, *files_list,
                                         short_output=Ctx.is_minimal_cli_output(self.context))
             else:
@@ -829,6 +791,8 @@ class CloudVerification:
         Util.flush_stdout()
         if not result:
             return False
+        if self.context.test == str(Util.TestValue.CHECK_ZIP):
+            raise Util.TestResultsReady(self.ZipFilePath)
 
         cloud_logger.debug("Uploading files...")
         if self.upload(self.presigned_url, self.ZipFilePath):
@@ -866,6 +830,7 @@ class CloudVerification:
             return False
 
         file_upload_success = self.__compress_and_upload_zip_files()
+
         if not file_upload_success:
             return False
 

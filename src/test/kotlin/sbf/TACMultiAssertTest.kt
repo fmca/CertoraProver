@@ -18,62 +18,20 @@
 package sbf
 
 import analysis.maybeNarrow
-import com.certora.collect.*
 import config.Config
 import config.ConfigScope
 import datastructures.stdcollections.*
 import sbf.cfg.*
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
 import spec.cvlast.RuleIdentifier
 import spec.rules.EcosystemAgnosticRule
 import spec.cvlast.SpecType
-import utils.*
 import vc.data.CoreTACProgram
 import vc.data.TACCmd
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
+
 class TACMultiAssertTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
 
     private fun numberOfAsserts(code: CoreTACProgram): Int {
         var counter = 0
@@ -108,7 +66,7 @@ class TACMultiAssertTest {
         }
 
         val tacProg = toTAC(cfg)
-        sbfLogger.warn { "=== Original TAC ===\n${dumpTAC(tacProg)}" }
+        println("=== Original TAC ===\n${dumpTAC(tacProg)}")
 
         ConfigScope(Config.MultiAssertCheck, true).use {
             val rules = multiAssertChecks(listOf(CompiledSolanaRule(
@@ -122,7 +80,7 @@ class TACMultiAssertTest {
             rules.forEach {
                 counter++
                 val code = it.code
-                sbfLogger.warn { "=== TAC for assert === $counter\n${dumpTAC(code)}" }
+                println("=== TAC for assert === $counter\n${dumpTAC(code)}")
                 Assertions.assertEquals(true, numberOfAsserts(code) == 1)
                 Assertions.assertEquals(true, verify(code))
             }

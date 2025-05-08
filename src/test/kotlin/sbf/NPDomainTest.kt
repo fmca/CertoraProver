@@ -17,65 +17,22 @@
 
 package sbf
 
-import com.certora.collect.*
 import config.ConfigScope
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.analysis.NPAnalysis
 import sbf.cfg.*
 import sbf.disassembler.Label
 import sbf.disassembler.newGlobalVariableMap
-import sbf.domains.MemorySummaries
-import sbf.domains.VariableFactory
-import sbf.domains.NPDomain
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import org.junit.jupiter.api.*
+import sbf.analysis.AnalysisRegisterTypes
+import sbf.domains.*
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
+private val sbfTypesFac = ConstantSbfTypeFactory()
+private val top = NPDomain.mkTrue<ScalarDomain<Constant, Constant>, Constant, Constant>()
+
 class NPDomainTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
 
     @Test
     fun test01() {
@@ -98,15 +55,15 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
-        sbfLogger.info{"absVal=$absVal\n$b\n newAbsVal=$newAbsVal"}
+        println("absVal=$absVal\n$b\n newAbsVal=$newAbsVal")
         Assertions.assertEquals(true, newAbsVal.isBottom())
     }
 
@@ -138,16 +95,16 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
 
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
-        sbfLogger.info{"absVal=$absVal\n$b\n newAbsVal=$newAbsVal"}
+        println("absVal=$absVal\n$b\n newAbsVal=$newAbsVal")
         Assertions.assertEquals(true, newAbsVal.isBottom())
     }
 
@@ -175,15 +132,15 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
-        sbfLogger.info{"absVal=$absVal\n$b\nnewAbsVal=$newAbsVal"}
+        println("absVal=$absVal\n$b\nnewAbsVal=$newAbsVal")
         Assertions.assertEquals(true, newAbsVal.isBottom())
     }
 
@@ -202,15 +159,15 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
-        sbfLogger.info{"absVal=$absVal\n$b\nnewAbsVal=$newAbsVal"}
+        println("absVal=$absVal\n$b\nnewAbsVal=$newAbsVal")
         Assertions.assertEquals(true, newAbsVal.isBottom())
     }
 
@@ -229,15 +186,15 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
-        sbfLogger.info{"absVal=$absVal\n$b\nnewAbsVal=$newAbsVal"}
+        println("absVal=$absVal\n$b\nnewAbsVal=$newAbsVal")
         Assertions.assertEquals(true, newAbsVal.isBottom())
     }
 
@@ -256,15 +213,15 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
-        sbfLogger.info{"absVal=$absVal\n$b\nnewAbsVal=$newAbsVal"}
+        println("absVal=$absVal\n$b\nnewAbsVal=$newAbsVal")
         Assertions.assertEquals(true, newAbsVal.isBottom())
     }
 
@@ -283,15 +240,15 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
-        sbfLogger.info{"absVal=$absVal\n$b\nnewAbsVal=$newAbsVal"}
+        println("absVal=$absVal\n$b\nnewAbsVal=$newAbsVal")
         Assertions.assertEquals(false, newAbsVal.isBottom())
     }
 
@@ -330,14 +287,14 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val np = NPAnalysis(cfg, globals, memSummaries)
+        val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
         check(absValAt1 != null){"No preconditions for label 1"}
         val absValAt2 = np.getPreconditionsAtEntry(Label.Address(2))
         check(absValAt2 != null){"No preconditions for label 2"}
 
 
-        sbfLogger.warn{"absVal at 1=$absValAt1\nAbsVal at 2=$absValAt2"}
+        println("absVal at 1=$absValAt1\nAbsVal at 2=$absValAt2")
         Assertions.assertEquals(true, absValAt1.isBottom())
         Assertions.assertEquals(false, absValAt2.isBottom())
     }
@@ -367,11 +324,11 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val np = NPAnalysis(cfg, globals, memSummaries)
+        val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
         check(absValAt1 != null){"No preconditions for label 1"}
-        sbfLogger.warn {"$cfg"}
-        sbfLogger.warn {"Preconditions at entry of 1=$absValAt1\n"}
+        println("$cfg")
+        println("Preconditions at entry of 1=$absValAt1\n")
 
         Assertions.assertEquals(true, absValAt1.isBottom())
     }
@@ -405,19 +362,19 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        sbfLogger.warn { "$cfg" }
+        println( "$cfg")
 
         ConfigScope(SolanaConfig.SlicerBackPropagateThroughAsserts, true).use {
-            val np = NPAnalysis(cfg, globals, memSummaries)
+            val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
             val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
             check(absValAt1 != null) { "No preconditions for label 1" }
-            sbfLogger.warn { "Preconditions at entry of 1=$absValAt1\n" }
+            println( "Preconditions at entry of 1=$absValAt1")
             val absValAt2 = np.getPreconditionsAtEntry(Label.Address(2))
             check(absValAt2 != null) { "No preconditions for label 2" }
-            sbfLogger.warn { "Preconditions at entry of 2=$absValAt2\n" }
+            println( "Preconditions at entry of 2=$absValAt2")
             val absValAt3 = np.getPreconditionsAtEntry(Label.Address(3))
             check(absValAt3 != null) { "No preconditions for label 3" }
-            sbfLogger.warn { "Preconditions at entry of 3=$absValAt3\n" }
+            println( "Preconditions at entry of 3=$absValAt3")
             Assertions.assertEquals(true, absValAt2.isBottom())
         }
     }
@@ -451,19 +408,19 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        sbfLogger.warn { "$cfg" }
+        println("$cfg")
 
         ConfigScope(SolanaConfig.SlicerBackPropagateThroughAsserts, false).use {
-            val np = NPAnalysis(cfg, globals, memSummaries)
+            val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
             val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
             check(absValAt1 != null) { "No preconditions for label 1" }
-            sbfLogger.warn { "Preconditions at entry of 1=$absValAt1\n" }
+            println( "Preconditions at entry of 1=$absValAt1")
             val absValAt2 = np.getPreconditionsAtEntry(Label.Address(2))
             check(absValAt2 != null) { "No preconditions for label 2" }
-            sbfLogger.warn { "Preconditions at entry of 2=$absValAt2\n" }
+            println( "Preconditions at entry of 2=$absValAt2")
             val absValAt3 = np.getPreconditionsAtEntry(Label.Address(3))
             check(absValAt3 != null) { "No preconditions for label 3" }
-            sbfLogger.warn { "Preconditions at entry of 3=$absValAt3\n" }
+            println( "Preconditions at entry of 3=$absValAt3")
             Assertions.assertEquals(false, absValAt2.isBottom())
         }
     }

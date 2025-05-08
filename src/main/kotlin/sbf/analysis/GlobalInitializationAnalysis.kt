@@ -21,6 +21,9 @@ import sbf.cfg.*
 import sbf.disassembler.*
 import datastructures.stdcollections.*
 import sbf.SolanaConfig
+import sbf.domains.INumValue
+import sbf.domains.IOffset
+import sbf.domains.SbfType
 import java.math.BigInteger
 
 /**
@@ -50,11 +53,23 @@ data class GlobalVarInitializer(val gv: SbfGlobalVariable,
  * Then, the TAC lowering of the global initialization will add stores for all words starting from zero offset up to the largest read offset.
  * Some of these stores may be dead, and we rely on TAC optimizations to remove them.
  */
-fun runGlobalInitializationAnalysis(
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> runGlobalInitializationAnalysis(
     cfg: SbfCFG,
-    scalarAnalysis: IRegisterTypes,
+    scalarAnalysis: IRegisterTypes<TNum, TOffset>,
     globalsSymTable: IGlobalsSymbolTable
 ): List<GlobalVarInitializer>  {
+
+    /**
+     * If [reg] at [locInst] contains the address of a global variable then it returns the global variable
+     **/
+    fun getGlobalVariable(locInst: LocatedSbfInstruction,
+                                  reg: Value.Reg,
+                                  scalarAnalysis: IRegisterTypes<TNum, TOffset>): SbfGlobalVariable? {
+        return when(val type = scalarAnalysis.typeAtInstruction(locInst, reg.r)) {
+            is SbfType.PointerType.Global -> type.global
+            else -> null
+        }
+    }
 
     val globalInit: MutableMap<SbfGlobalVariable, GlobalVarInitializer> = mutableMapOf()
     val globalUses: MutableMap<SbfGlobalVariable, List<LocatedSbfInstruction>> = mutableMapOf()
@@ -159,16 +174,6 @@ private fun populateValues(gvInit: GlobalVarInitializer,
         }
     }
     return gvInit.copy(values = values)
-}
-
-/** Return true if [reg] at [locInst] is a global variable **/
-private fun getGlobalVariable(locInst: LocatedSbfInstruction,
-                              reg: Value.Reg,
-                              scalarAnalysis: IRegisterTypes): SbfGlobalVariable? {
-    return when(val type = scalarAnalysis.typeAtInstruction(locInst, reg.r)) {
-        is SbfType.PointerType.Global -> type.global
-        else -> null
-    }
 }
 
 private fun gcd(x: Short, y: Short): Short {

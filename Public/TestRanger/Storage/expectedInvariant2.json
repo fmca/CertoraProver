@@ -1,0 +1,13 @@
+{
+	"assertMessages": {},
+	"rules": {
+		"noneStorageInvariant-Initial State": "SUCCESS",
+		"noneStorageInvariant-Initial State-Any of: C.getAndAdd, C.setBar": "SUCCESS",
+		"noneStorageInvariant-Initial State-C.getAndAdd(uint40)-C.setBar": "SUCCESS",
+		"noneStorageInvariant-Initial State-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd": "SUCCESS",
+		"noneStorageInvariant-Initial State-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)-C.setBar": "SUCCESS",
+		"noneStorageInvariant-Initial State-C.setBar()-C.getAndAdd": "SUCCESS",
+		"noneStorageInvariant-Initial State-C.setBar()-C.getAndAdd(uint40)-C.setBar": "SUCCESS",
+		"noneStorageInvariant-Initial State-C.setBar()-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd": "SUCCESS"
+	}
+}

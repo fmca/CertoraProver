@@ -46,6 +46,15 @@ sealed class ProverQuery {
         }
     }
 
+    data class EquivalenceQuery(
+        val contractA: NamedContractIdentifier,
+        val contractB: NamedContractIdentifier,
+    ) : ProverQuery() {
+        override fun copyWithFilteredCVLRules(scene: IScene): ProverQuery {
+            return this
+        }
+    }
+
     sealed class CVLQuery: ProverQuery() {
         data class Single(val primaryContract: NamedContractIdentifier, val cvl: CVL): CVLQuery() {
             override fun copyWithFilteredCVLRules(scene: IScene): ProverQuery {
@@ -140,7 +149,14 @@ class CertoraBuilderSpecSource(val verificationConf: VerificationQuery) : ISpecS
                     cvlInput
                 )
             }
-//          VerificationQueryType.NONE -> ProverQuery.CVLQuery.NoQuery.lift()
+            VerificationQueryType.equivalence -> {
+                val contractA = SolidityContract(verificationConf.primary_contract)
+                val contractB = SolidityContract(verificationConf.secondary_contract)
+                ProverQuery.EquivalenceQuery(
+                    contractA = contractA,
+                    contractB = contractB,
+                ).lift()
+            }
         }
     }
 

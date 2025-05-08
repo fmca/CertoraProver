@@ -64,6 +64,10 @@ class TACTypeExtenderProcessor(val logger: KSPLogger, val codeGenerator: CodeGen
             private fun toTACExpr(x: java.math.BigInteger) = x.asTACExpr
             private fun toTACExpr(x: Int) = x.asTACExpr
 
+            object TXF {
+                operator fun <T> invoke(f: TACExprFactoryExtensions.() -> T) = TACExprFactoryExtensions.f()
+            }
+
             object TACExprFactoryExtensions : TACExprFact by TACExprFactTypeCheckedOnlyPrimitives {
                 operator fun <T> invoke(f: TACExprFactoryExtensions.() -> T) = this.f()
         """.trimIndent())

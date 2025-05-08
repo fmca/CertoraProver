@@ -67,11 +67,13 @@ const val enableDefensiveChecks = false
 
 class MemoryDomainError(msg: String): SolanaInternalError("MemoryDomain error: $msg")
 
-class MemoryDomain(private val scalars: ScalarDomain,
-                   private val ptaGraph: PTAGraph): AbstractDomain<MemoryDomain> {
+class MemoryDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
+                   private val scalars: ScalarDomain<TNum, TOffset>,
+                   private val ptaGraph: PTAGraph<TNum, TOffset>)
+    : AbstractDomain<MemoryDomain<TNum, TOffset>>, ScalarValueProvider<TNum, TOffset> {
 
-    constructor(nodeAllocator: PTANodeAllocator, initPreconditions: Boolean = false)
-        : this(ScalarDomain(initPreconditions), PTAGraph(nodeAllocator, initPreconditions))
+    constructor(nodeAllocator: PTANodeAllocator, sbfTypeFac: ISbfTypeFactory<TNum, TOffset>, initPreconditions: Boolean = false)
+        : this(ScalarDomain(sbfTypeFac, initPreconditions), PTAGraph(nodeAllocator, sbfTypeFac, initPreconditions))
 
     /**
      *  Check that the subdomains are consistent about the common facts that they infer.
@@ -89,34 +91,34 @@ class MemoryDomain(private val scalars: ScalarDomain,
         val scalars = getScalars()
         val ptaGraph = getPTAGraph()
         // Get value for r10 in the Pointer domain
-        val c = ptaGraph.getRegCell(r10, SbfType.Top /*shouldn't be used*/, globals, locInst = null)
+        val c = ptaGraph.getRegCell(r10, scalars.sbfTypeFac.mkTop() /*shouldn't be used*/, globals, locInst = null)
         check(c != null)
         {"$msg: pointer domain should know about r10"}
-        if (c.node.isExactNode()) {
+        if (c.getNode().isExactNode()) {
             // Get value for r10 in Scalars
             val type = scalars.getValue(r10).get()
-            check(type is SbfType.PointerType.Stack)
+            check(type is SbfType.PointerType.Stack<TNum, TOffset>)
             {"$msg: scalar domain should know that r10 is a pointer to the stack"}
             val scalarOffset = type.offset
-            val pointerOffset = c.offset
+            val pointerOffset = c.getOffset()
             // Since r10 is read-only, both subdomains should agree on the same offset for r10
             check(scalarOffset.get() == pointerOffset.get())
             { "$msg: scalar and pointer domains should agree on r10 offset" }
         }
     }
 
-    override fun deepCopy(): MemoryDomain {
+    override fun deepCopy(): MemoryDomain<TNum, TOffset> {
         return if (isBottom()) {
-            val res = MemoryDomain(ptaGraph.nodeAllocator)
+            val res = MemoryDomain(ptaGraph.nodeAllocator, scalars.sbfTypeFac)
             res.apply { setToBottom() }
         } else {
             MemoryDomain(scalars.deepCopy(), ptaGraph.copy())
         }
     }
 
-    private fun deepCopyOnlyScalars(): MemoryDomain {
+    private fun deepCopyOnlyScalars(): MemoryDomain<TNum, TOffset> {
         return if (isBottom()) {
-            val res = MemoryDomain(ptaGraph.nodeAllocator)
+            val res = MemoryDomain(ptaGraph.nodeAllocator, scalars.sbfTypeFac)
             res.apply { setToBottom() }
         } else {
             MemoryDomain(scalars.deepCopy(), ptaGraph)
@@ -125,17 +127,17 @@ class MemoryDomain(private val scalars: ScalarDomain,
 
 
     companion object {
-        fun initPreconditions(nodeAllocator: PTANodeAllocator): MemoryDomain {
-            return MemoryDomain(nodeAllocator, true)
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> initPreconditions(nodeAllocator: PTANodeAllocator, sbfTypeFac: ISbfTypeFactory<TNum, TOffset>): MemoryDomain<TNum, TOffset> {
+            return MemoryDomain(nodeAllocator, sbfTypeFac, true)
         }
 
-        fun makeBottom(nodeAllocator: PTANodeAllocator): MemoryDomain {
-            val res = MemoryDomain(nodeAllocator)
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> makeBottom(nodeAllocator: PTANodeAllocator, sbfTypeFac: ISbfTypeFactory<TNum, TOffset>): MemoryDomain<TNum, TOffset> {
+            val res = MemoryDomain(nodeAllocator, sbfTypeFac)
             return res.apply { setToBottom() }
         }
 
-        fun makeTop(nodeAllocator: PTANodeAllocator): MemoryDomain {
-            return MemoryDomain(nodeAllocator)
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> makeTop(nodeAllocator: PTANodeAllocator, sbfTypeFac: ISbfTypeFactory<TNum, TOffset>): MemoryDomain<TNum, TOffset> {
+            return MemoryDomain(nodeAllocator, sbfTypeFac)
         }
     }
 
@@ -168,8 +170,8 @@ class MemoryDomain(private val scalars: ScalarDomain,
         }
     }
 
-    private fun joinOrWiden(other: MemoryDomain, isJoin: Boolean,
-                            left: Label?, right: Label?): MemoryDomain {
+    private fun joinOrWiden(other: MemoryDomain<TNum, TOffset>, isJoin: Boolean,
+                            left: Label?, right: Label?): MemoryDomain<TNum, TOffset> {
         if (isBottom()) {
             return other.deepCopy()
         } else if (other.isBottom()) {
@@ -184,29 +186,29 @@ class MemoryDomain(private val scalars: ScalarDomain,
             val outPtaGraph = if (isJoin) {
                         ptaGraph.join(other.ptaGraph, scalars, other.scalars, left, right)
                     } else {
-                        ptaGraph.widen(other.ptaGraph, left)
+                        ptaGraph.widen(other.ptaGraph, scalars, other.scalars, left, right)
                     }
 
             return MemoryDomain(outScalars, outPtaGraph)
         }
     }
 
-    override fun pseudoCanonicalize(other: MemoryDomain) {
+    override fun pseudoCanonicalize(other: MemoryDomain<TNum, TOffset>) {
         if (!isBottom() && !other.isBottom()) {
             ptaGraph.pseudoCanonicalize(other.getPTAGraph())
             scalars.pseudoCanonicalize(other.scalars)
         }
     }
 
-    override fun join(other: MemoryDomain, left: Label?, right: Label?): MemoryDomain {
+    override fun join(other: MemoryDomain<TNum, TOffset>, left: Label?, right: Label?): MemoryDomain<TNum, TOffset> {
         return joinOrWiden(other, true, left, right)
     }
 
-    override fun widen(other: MemoryDomain, b: Label?): MemoryDomain {
+    override fun widen(other: MemoryDomain<TNum, TOffset>, b: Label?): MemoryDomain<TNum, TOffset> {
         return joinOrWiden(other, false, b, null)
     }
 
-    override fun lessOrEqual(other: MemoryDomain, left: Label?, right: Label?): Boolean {
+    override fun lessOrEqual(other: MemoryDomain<TNum, TOffset>, left: Label?, right: Label?): Boolean {
         return if (other.isTop() || isBottom()) {
             true
         } else if (other.isBottom() || isTop()) {
@@ -216,9 +218,9 @@ class MemoryDomain(private val scalars: ScalarDomain,
         }
     }
 
-    fun getPTAGraph(): PTAGraph = ptaGraph
+    fun getPTAGraph(): PTAGraph<TNum, TOffset> = ptaGraph
 
-    @TestOnly fun getScalars(): ScalarDomain = scalars
+    @TestOnly fun getScalars(): ScalarDomain<TNum, TOffset> = scalars
 
     private fun analyzeUn(locInst: LocatedSbfInstruction,
                           globals: GlobalVariableMap,
@@ -237,15 +239,15 @@ class MemoryDomain(private val scalars: ScalarDomain,
     private fun reductionFromPtaGraphToScalars(b: SbfBasicBlock, locInst: LocatedSbfInstruction, reg: Value) {
         if (reg is Value.Reg) {
             val x = ptaGraph.getRegCell(reg)
-            if (x != null && x.isReified()) {
-                val c = x.reify()
-                if (c.node.mustBeInteger()) {
-                    val change = scalars.refineValue(reg, ScalarValue.anyNum())
+            if (x != null && x.isConcrete()) {
+                val c = x.concretize()
+                if (c.getNode().mustBeInteger()) {
+                    val change = scalars.refineValue(reg, ScalarValue(scalars.sbfTypeFac.anyNum()))
                     if (change) {
+                        val topNum =  scalars.sbfTypeFac.anyNum().concretize()
+                        check(topNum != null) {"concretize on anyNum cannot be null"}
                         /// Changing metadata serves here as caching the reduction.
-                        val newMetadata = locInst.inst.metaData.plus(
-                            Pair(SbfMeta.REG_TYPE, Pair(reg, SbfType.NumType(Constant.makeTop())))
-                        )
+                        val newMetadata = locInst.inst.metaData.plus(SbfMeta.REG_TYPE to  (reg to topNum))
                         val newInst = locInst.inst.copyInst(metadata = newMetadata)
                         (b as MutableSbfBasicBlock).replaceInstruction(locInst.pos, newInst)
                     }
@@ -256,8 +258,8 @@ class MemoryDomain(private val scalars: ScalarDomain,
             /// If the analysis previously determined that `reg` is a number then we keep using that fact,
             /// even if the pointer analysis lost precision and cannot infer that fact anymore.
             locInst.inst.metaData.getVal(SbfMeta.REG_TYPE)?.let { (refinedReg, type) ->
-                if (refinedReg == reg && type is SbfType.NumType) {
-                    scalars.refineValue(reg, ScalarValue.anyNum())
+                if (refinedReg == reg && type is SbfRegisterType.NumType) {
+                    scalars.refineValue(reg, ScalarValue(scalars.sbfTypeFac.anyNum()))
                 }
             }
         }
@@ -425,13 +427,13 @@ class MemoryDomain(private val scalars: ScalarDomain,
     override fun analyze(b: SbfBasicBlock,
                          globals: GlobalVariableMap,
                          memSummaries: MemorySummaries,
-                         listener: InstructionListener<MemoryDomain>): MemoryDomain {
+                         listener: InstructionListener<MemoryDomain<TNum, TOffset>>): MemoryDomain<TNum, TOffset> {
 
 
         sbfLogger.debug { "=== Memory Domain analyzing ${b.getLabel()} ===\n$this\n" }
         if (listener is DefaultInstructionListener) {
             if (isBottom()) {
-                return makeBottom(ptaGraph.nodeAllocator)
+                return makeBottom(ptaGraph.nodeAllocator, scalars.sbfTypeFac)
             }
             val out = if (isNonOpForPTA(b)) {
                 this.deepCopyOnlyScalars()
@@ -461,13 +463,14 @@ class MemoryDomain(private val scalars: ScalarDomain,
         }
     }
 
-    override fun getValue(value: Value) = getScalars().getValue(value)
+    override fun getAsScalarValue(value: Value) = getScalars().getAsScalarValue(value)
 
     /** External API for TAC encoding **/
     fun getRegCell(reg: Value.Reg, globalsMap: GlobalVariableMap): PTASymCell? {
         val scalarVal = getScalars().getValue(reg)
         return getPTAGraph().getRegCell(reg, scalarVal.get(), globalsMap, locInst = null)
     }
+
 
     override fun toString(): String {
         return if (isBottom()) {

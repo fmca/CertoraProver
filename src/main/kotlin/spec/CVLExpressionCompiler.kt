@@ -29,6 +29,9 @@ import datastructures.stdcollections.*
 import instrumentation.transformers.FoundryCheatcodes
 import evm.*
 import log.*
+import report.CVTAlertReporter
+import report.CVTAlertSeverity
+import report.CVTAlertType
 import spec.ProgramGenMixin.Companion.andThen
 import spec.ProgramGenMixin.Companion.emptyProgram
 import spec.converters.*
@@ -57,7 +60,6 @@ import vc.data.ParametricMethodInstantiatedCode.mergeIf
 import vc.data.ParametricMethodInstantiatedCode.mergeProgs
 import vc.data.TACMeta.CVL_DISPLAY_NAME
 import vc.data.TACMeta.CVL_EXP
-import vc.data.TACMeta.CVL_GHOST
 import vc.data.TACMeta.CVL_TYPE
 import vc.data.TACMeta.CVL_USER_DEFINED_ASSERT
 import vc.data.TACMeta.CVL_VAR
@@ -1506,7 +1508,7 @@ class CVLExpressionCompiler(
                     cmds.add(TACCmd.Simple.AssigningCmd.AssignExpCmd(castCheckVar, f.safeCastExpr(inner.out)))
                     when (exp.castType) {
                         CastType.REQUIRE -> {
-                            cmds.add(TACCmd.Simple.AssumeCmd(castCheckVar))
+                            cmds.add(TACCmd.Simple.AssumeCmd(castCheckVar, "require cast"))
                         }
 
                         CastType.ASSERT -> {
@@ -1567,14 +1569,13 @@ class CVLExpressionCompiler(
             }
         ) { baseVar, args, ty ->
             compileGhostAccess(
-                out = out,
                 baseVar = baseVar,
                 args = args,
+                out = out,
                 ghostAccessExp = exp,
                 types = ty,
                 sort = GhostSort.Function,
-                persistent = persistent,
-                name = exp.id
+                persistent = persistent
             )
         }
     }
@@ -1783,7 +1784,7 @@ class CVLExpressionCompiler(
         }
 
         // this may be called for an assignment to wildcard, in which case a tag is required to disambiguate
-        fun getOutVar() = allocatedTACSymbols.get(out.id, outType.toTag())
+        fun getOutVar(): TACSymbol.Var = allocatedTACSymbols.get(out.id, outType.toTag())
 
         when (exp.tag.annotation) {
             ComplexMarker -> return compileComplexAccess(
@@ -1988,6 +1989,28 @@ class CVLExpressionCompiler(
                 )
             }
 
+            CVLBuiltInName.FOUNDRY_ROLL -> {
+                check(outVar == null) { "Foundry cheatcode roll doesn't return anything" }
+                check(exp.args.size == 1) { "Foundry cheatcode roll should have just one argument" }
+                val arg = exp.args.single()
+                val (argProg, argOut) = compileExp(arg)
+                val narrowed = TACSymbol.Var("prankedNewblocknum", Tag.Bit256).toUnique("!")
+                argProg.addSink(
+                    CommandWithRequiredDecls(
+                        listOf(
+                            TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                                narrowed,
+                                TACBuiltInFunction.SafeMathNarrow(Tag.Bit256).toTACFunctionSym(),
+                                listOf(argOut.asSym())
+                            ),
+                            TACCmd.Simple.AnnotationCmd(TACMeta.FOUNDRY_CHEATCODE, FoundryCheatcodes.Roll(narrowed))
+                        ),
+                        setOf(narrowed, argOut)
+                    ),
+                    compilationEnvironment
+                )
+            }
+
             CVLBuiltInName.FOUNDRY_MOCK_CALL -> {
                 check(outVar == null) { "Foundry cheatcode mockCall doesn't return anything" }
                 check(exp.args.size == 4) { "Foundry cheatcode mockCall should have exactly 4 arguments" }
@@ -2039,6 +2062,16 @@ class CVLExpressionCompiler(
                         TACCmd.Simple.AnnotationCmd(TACMeta.FOUNDRY_CHEATCODE, FoundryCheatcodes.ClearMockedCalls)
                     )
                 ).toProgWithCurrEnv("clearMockedCalls cheatcode").toSimple()
+            }
+
+            CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> {
+                CVTAlertReporter.reportAlert(
+                    CVTAlertType.FOUNDRY,
+                    CVTAlertSeverity.WARNING,
+                    jumpToDefinition = null,
+                    "Rule ${cvlCompiler.ruleName} uses `exectEmit` - this check is currently ignored by the Prover"
+                )
+                CommandWithRequiredDecls(TACCmd.Simple.NopCmd).toProgWithCurrEnv("foundry expectEmit").toSimple()
             }
 
             CVLBuiltInName.SHA256,
@@ -2233,8 +2266,10 @@ class CVLExpressionCompiler(
             CVLBuiltInName.FOUNDRY_START_PRANK,
             CVLBuiltInName.FOUNDRY_STOP_PRANK,
             CVLBuiltInName.FOUNDRY_WARP,
+            CVLBuiltInName.FOUNDRY_ROLL,
             CVLBuiltInName.FOUNDRY_MOCK_CALL,
-            CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS -> compileCVLBuiltinFoundryCheatcode(outVar, exp)
+            CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS,
+            CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> compileCVLBuiltinFoundryCheatcode(outVar, exp)
         }
     }
 
@@ -2726,8 +2761,7 @@ class CVLExpressionCompiler(
             ghostAccessExp = exp,
             types = arrayType.getKeys(),
             sort = GhostSort.Mapping,
-            persistent = cvlCompiler.fetchGhostDeclaration(array.id)?.persistent == true,
-            name = array.id
+            persistent = cvlCompiler.fetchGhostDeclaration(array.id)?.persistent == true
         )
     }
 
@@ -2739,14 +2773,8 @@ class CVLExpressionCompiler(
         ghostAccessExp: CVLExp,
         types: List<CVLType.PureCVLType>,
         sort: GhostSort,
-        persistent: Boolean,
-        name: String
+        persistent: Boolean
     ) : ParametricInstantiation<CVLTACProgram> {
-        val sym = out
-            .withMeta(CVL_GHOST)
-            .withMeta(CVL_VAR, true)
-            .withMeta(CVL_TYPE, ghostAccessExp.getOrInferPureCVLType())
-            .withMeta(CVL_DISPLAY_NAME, name)
         val compiledArgs = args.map { argExp ->
             compileExp(argExp).withMeta(CVL_TYPE, argExp.getOrInferPureCVLType())
         }
@@ -2769,11 +2797,11 @@ class CVLExpressionCompiler(
 
         val cmds = listOf(
             TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                lhs = sym,
+                lhs = out,
                 rhs = TACExpr.Select.buildMultiDimSelect(baseVar.asSym(), wrappedIndex)
             ),
             SnippetCmd.CVLSnippetCmd.GhostRead(
-                returnValueSym = sym,
+                returnValueSym = out,
                 returnValueExp = ghostAccessExp,
                 indices = compiledArgs.map { it.out },
                 sort = sort,
@@ -2970,7 +2998,7 @@ class CVLExpressionCompiler(
                                 Tag.Bool
                             )
                         ),
-                        TACCmd.Simple.AssumeCmd(idxAssumeSym)
+                        TACCmd.Simple.AssumeCmd(idxAssumeSym, "indexCompiler")
                     ), setOfNotNull(symbol, idx as? TACSymbol.Var, idxAssumeSym)
                 ) to symbol
             } else {

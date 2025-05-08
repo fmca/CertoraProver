@@ -188,7 +188,9 @@ data class MemorySummaries(private val summaries: List<Pair<Regex, MemorySummary
     /** To add extra summaries once the database of summaries has been loaded by calling [readSpecFile] **/
     fun addSummary(fname: String, summary: MemorySummary) {
         if (summaries.any { (regex,_) -> regex.containsMatchIn(fname)}) {
-            sbfLogger.warn {"There is already a PTA summary for $fname. Skipped new summary $summary"}
+            sbfLogger.warn {"There is already a PTA summary for $fname. Skipped new summary $summary." +
+                            "This warning is usually benign."
+            }
         } else {
             summaryCache[fname] = summary
         }
@@ -197,7 +199,7 @@ data class MemorySummaries(private val summaries: List<Pair<Regex, MemorySummary
     fun isKnownAbortFn(fname: String) = getSummary(fname)?.isAbort == true
 
     companion object {
-        private val grammar =
+        val grammar =
             """
     <ARGUMENT_TYPE>+ <FUNCTION_NAME>
 
@@ -335,6 +337,15 @@ data class MemorySummaries(private val summaries: List<Pair<Regex, MemorySummary
     }
 }
 
+
+fun hasSummary(fname: String, memSummaries: MemorySummaries): Boolean {
+    val inst = SbfInstruction.Call(fname)
+    return if (inst.isAbort() || inst.isAllocFn() || inst.isAssertOrSatisfy() || inst.isDeallocFn() || inst.isExternalFn()) {
+        true
+    } else {
+        memSummaries.getSummary(fname) != null
+    }
+}
 
 
 

@@ -1,0 +1,9 @@
+{
+	"assertMessages": {
+		"violatedLessThanFive-Initial State-Any of: C.getAndAdd, C.setBar": "invariant assertion - Invariant.spec line 20"
+	},
+	"rules": {
+		"violatedLessThanFive-Initial State": "SUCCESS",
+		"violatedLessThanFive-Initial State-Any of: C.getAndAdd, C.setBar": "FAIL"
+	}
+}

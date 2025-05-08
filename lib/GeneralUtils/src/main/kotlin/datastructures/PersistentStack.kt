@@ -187,3 +187,5 @@ fun <T> persistentStackOf(): PersistentStack<T> = EmptyPersistentStack<T>()
 fun <T> PersistentStack<T>?.orEmpty(): PersistentStack<T> = this ?: persistentStackOf()
 
 fun <T> PersistentStack<T>.topOrNull() = if (isEmpty()) { null } else { top }
+
+inline fun <T> PersistentStack<T>.mutate(action: (PersistentStack.Builder<T>) -> Unit) = builder().also(action).build()

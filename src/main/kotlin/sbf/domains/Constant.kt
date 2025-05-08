@@ -20,7 +20,7 @@ package sbf.domains
 import sbf.cfg.CondOp
 
 /** An immutable class that extends a Long with bottom/top values **/
-data class Constant(private val value: Long?, private val isBot: Boolean = false): NumValue<Constant> {
+data class Constant(private val value: Long?, private val isBot: Boolean = false): INumValue<Constant>, IOffset<Constant> {
 
     companion object {
         private val topC = Constant(null, false)
@@ -183,6 +183,8 @@ data class Constant(private val value: Long?, private val isBot: Boolean = false
             }
         }
     }
+
+    override fun widen(other: Constant): Constant = join(other)
 
     override fun meet(other: Constant): Constant {
         return if (isBottom() || other.isBottom()) {

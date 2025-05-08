@@ -44,83 +44,58 @@ import org.jetbrains.annotations.TestOnly
 /** For internal errors **/
 private class ScalarDomainError(msg: String): SolanaInternalError("ScalarDomain error: $msg")
 
-/**
- * This class wraps SbfType inside StackEnvironmentValue which is an interface.
- * It represents the value stored in a register or stack offset.
- **/
-class ScalarValue(private val type: SbfType): StackEnvironmentValue<ScalarValue> {
-    companion object {
-        fun mkTop() = ScalarValue(SbfType.Top)
-        fun mkBottom() = ScalarValue(SbfType.Bottom)
-        fun from(value: ULong): ScalarValue {
-            // REVISIT: immediate values are represented as ULong
-            // The analysis uses signed integer semantics, so we need to convert the value to Long.
-            // Therefore, overflow will happen if value represents a negative number.
-            return ScalarValue(SbfType.NumType(Constant(value.toLong())))
-        }
-        fun from(value: Long) = ScalarValue(SbfType.NumType(Constant(value)))
-
-        fun anyNum() = ScalarValue(SbfType.NumType(Constant.makeTop()))
-    }
-
-    fun get() = type
-    override fun isBottom() = type is SbfType.Bottom
-    override fun isTop() = type is SbfType.Top
-    override fun mkTop() = ScalarValue(SbfType.Top)
-    override fun join(other: ScalarValue) = ScalarValue(type.join(other.type))
-    override fun widen(other: ScalarValue)= ScalarValue(type.join(other.type))
-    override fun lessOrEqual(other: ScalarValue) = type.lessOrEqual(other.type)
-    override fun toString() = type.toString()
-}
-
-class ScalarDomain(// Model stack's contents
-                   private var stack: StackEnvironment<ScalarValue>,
+class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
+                   // factory for SbfType's
+                   val sbfTypeFac: ISbfTypeFactory<TNum, TOffset>,
+                   // Model stack's contents
+                   private var stack: StackEnvironment<ScalarValue<TNum, TOffset>>,
                    // Model each normal register
-                   private val registers: ArrayList<ScalarValue>,
+                   private val registers: ArrayList<ScalarValue<TNum, TOffset>>,
                    // Contains the scratch registers of all callers
                    // This is a stack whose size is multiple of 4 which is the number of scratch registers.
-                   private val scratchRegisters: ArrayList<ScalarValue>,
+                   private val scratchRegisters: ArrayList<ScalarValue<TNum, TOffset>>,
                    // To represent error or unreachable abstract state
-                   private var isBot: Boolean = false): AbstractDomain<ScalarDomain> {
+                   private var isBot: Boolean = false)
+    : AbstractDomain<ScalarDomain<TNum, TOffset>>, ScalarValueProvider<TNum, TOffset> {
 
-    constructor(initPreconditions: Boolean = false):
-        this(StackEnvironment.makeTop(),
+    constructor(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>, initPreconditions: Boolean = false):
+        this(sbfTypeFac,
+             StackEnvironment.makeTop(),
              ArrayList(NUM_OF_SBF_REGISTERS), arrayListOf(), false) {
         for (i in 0 until NUM_OF_SBF_REGISTERS) {
-            registers.add(ScalarValue.mkTop())
+            registers.add(ScalarValue(sbfTypeFac.mkTop()))
         }
         if (initPreconditions) {
-            setRegister(Value.Reg(SbfRegister.R10_STACK_POINTER),
-                        ScalarValue(SbfType.PointerType.Stack(ConstantOffset(SBF_STACK_FRAME_SIZE))))
+            setRegister(Value.Reg(SbfRegister.R10_STACK_POINTER), ScalarValue(sbfTypeFac.toStackPtr(SBF_STACK_FRAME_SIZE)))
         }
     }
 
     companion object {
-        fun makeBottom(): ScalarDomain {
-            val res = ScalarDomain()
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> makeBottom(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>): ScalarDomain<TNum, TOffset> {
+            val res = ScalarDomain(sbfTypeFac)
             res.setToBottom()
             return res
         }
-        fun makeTop() = ScalarDomain()
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> makeTop(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = ScalarDomain(sbfTypeFac)
     }
 
-    override fun deepCopy(): ScalarDomain {
-        val outRegisters = ArrayList<ScalarValue>(NUM_OF_SBF_REGISTERS)
+    override fun deepCopy(): ScalarDomain<TNum, TOffset> {
+        val outRegisters = ArrayList<ScalarValue<TNum, TOffset>>(NUM_OF_SBF_REGISTERS)
         registers.forEach {
             outRegisters.add(it)
         }
-        val outScratchRegs = ArrayList<ScalarValue>(scratchRegisters.size)
+        val outScratchRegs = ArrayList<ScalarValue<TNum, TOffset>>(scratchRegisters.size)
         scratchRegisters.forEach {
             outScratchRegs.add(it)
         }
-        return ScalarDomain(stack, outRegisters, outScratchRegs, isBot)
+        return ScalarDomain(sbfTypeFac, stack, outRegisters, outScratchRegs, isBot)
     }
 
-    private fun pushScratchReg(v: ScalarValue) {
+    private fun pushScratchReg(v: ScalarValue<TNum, TOffset>) {
         scratchRegisters.add(v)
     }
 
-    private fun popScratchReg(): ScalarValue {
+    private fun popScratchReg(): ScalarValue<TNum, TOffset> {
         if (scratchRegisters.isEmpty()) {
             throw ScalarDomainError("stack of scratch registers cannot be empty")
         }
@@ -146,7 +121,7 @@ class ScalarDomain(// Model stack's contents
         isBot = false
         stack = StackEnvironment.makeTop()
         for (i in 0 until NUM_OF_SBF_REGISTERS) {
-            registers[i] = ScalarValue.mkTop()
+            registers[i] = ScalarValue(sbfTypeFac.mkTop())
         }
         scratchRegisters.clear()
     }
@@ -159,17 +134,17 @@ class ScalarDomain(// Model stack's contents
         throw ScalarDomainError("register $idx out-of-bounds")
     }
 
-    private fun getRegister(reg: Value.Reg): ScalarValue {
+    private fun getRegister(reg: Value.Reg): ScalarValue<TNum, TOffset> {
         return if (isBottom()) {
-            ScalarValue.mkBottom()
+            ScalarValue(sbfTypeFac.mkBottom())
         } else {
             registers[getIndex(reg)]
         }
     }
 
-    private fun checkStackAccess(value: ScalarValue) {
+    private fun checkStackAccess(value: ScalarValue<TNum, TOffset>) {
         val valType = value.get()
-        if (valType is SbfType.PointerType.Stack) {
+        if (valType is SbfType.PointerType.Stack<TNum, TOffset>) {
             val stackOffset = valType.offset.get()
             if (stackOffset != null) {
                 if (stackOffset < 0) {
@@ -182,14 +157,14 @@ class ScalarDomain(// Model stack's contents
     }
 
     @TestOnly
-    fun setRegister(reg: Value.Reg, value: ScalarValue) {
+    fun setRegister(reg: Value.Reg, value: ScalarValue<TNum, TOffset>) {
         if (!isBottom()) {
             checkStackAccess(value)
             registers[getIndex(reg)] = value
         }
     }
 
-    private fun joinOrWiden(other: ScalarDomain, IsJoin: Boolean, left: Label?, right: Label?): ScalarDomain {
+    private fun joinOrWiden(other: ScalarDomain<TNum, TOffset>, IsJoin: Boolean, left: Label?, right: Label?): ScalarDomain<TNum, TOffset> {
         if (isBottom()) {
             return other.deepCopy()
         } else if (other.isBottom()) {
@@ -216,7 +191,7 @@ class ScalarDomain(// Model stack's contents
             } else {
                 stack.widen(other.stack)
             }
-            val outRegisters = ArrayList<ScalarValue>(NUM_OF_SBF_REGISTERS)
+            val outRegisters = ArrayList<ScalarValue<TNum, TOffset>>(NUM_OF_SBF_REGISTERS)
 
             registers.forEachIndexed {i, it ->
                 if (IsJoin) {
@@ -226,24 +201,24 @@ class ScalarDomain(// Model stack's contents
                 }
             }
 
-            val outScratchRegs = ArrayList<ScalarValue>(scratchRegisters.size)
+            val outScratchRegs = ArrayList<ScalarValue<TNum, TOffset>>(scratchRegisters.size)
             scratchRegisters.forEachIndexed{ i, it ->
                 outScratchRegs.add(it.join(other.scratchRegisters[i]))
             }
 
-            return ScalarDomain(outStack, outRegisters, outScratchRegs)
+            return ScalarDomain(sbfTypeFac, outStack, outRegisters, outScratchRegs)
         }
     }
 
-    override fun join(other: ScalarDomain, left: Label?, right: Label?): ScalarDomain {
+    override fun join(other: ScalarDomain<TNum, TOffset>, left: Label?, right: Label?): ScalarDomain<TNum, TOffset> {
         return joinOrWiden(other, true, left, right)
     }
 
-    override fun widen(other: ScalarDomain, b: Label?): ScalarDomain {
+    override fun widen(other: ScalarDomain<TNum, TOffset>, b: Label?): ScalarDomain<TNum, TOffset> {
         return joinOrWiden(other, false, b, null)
     }
 
-    override fun lessOrEqual(other: ScalarDomain, left: Label?, right: Label?): Boolean {
+    override fun lessOrEqual(other: ScalarDomain<TNum, TOffset>, left: Label?, right: Label?): Boolean {
         if (other.isTop() || isBottom()) {
             return true
         } else if (other.isBottom() || isTop()) {
@@ -286,7 +261,7 @@ class ScalarDomain(// Model stack's contents
 
     override fun forget(reg: Value.Reg) {
         if (!isBottom()) {
-            registers[getIndex(reg)] = ScalarValue.mkTop()
+            registers[getIndex(reg)] = ScalarValue(sbfTypeFac.mkTop())
         }
     }
 
@@ -295,26 +270,26 @@ class ScalarDomain(// Model stack's contents
      * This refinement is sound because if the value turns to be a pointer then the scalar domain
      * will throw an exception at the time the pointer is de-referenced.
      **/
-    private fun refineType(op: BinOp, ty: SbfType): SbfType {
-        check(ty !is SbfType.Bottom) {"cannot call refineType with bottom"}
-        return if (ty !is SbfType.Top) {
+    private fun refineType(op: BinOp, ty: SbfType<TNum, TOffset>): SbfType<TNum, TOffset> {
+        check(!ty.isBottom()) {"cannot call refineType with bottom"}
+        return if (!ty.isTop()) {
             ty
         } else {
             when (op) {
                 BinOp.ARSH, BinOp.LSH, BinOp.RSH,
-                BinOp.DIV, BinOp.MOD, BinOp.MUL -> SbfType.NumType(Constant.makeTop())
+                BinOp.DIV, BinOp.MOD, BinOp.MUL -> sbfTypeFac.anyNum()
                 else -> ty
             }
         }
     }
-    private fun refineType(op: CondOp, ty: SbfType): SbfType {
-        check(ty !is SbfType.Bottom) {"cannot call refineType with bottom"}
-        return if (ty !is SbfType.Top) {
+    private fun refineType(op: CondOp, ty: SbfType<TNum, TOffset>): SbfType<TNum, TOffset> {
+        check(!ty.isBottom()) {"cannot call refineType with bottom"}
+        return if (!ty.isTop()) {
             ty
         } else {
             when (op) {
                 CondOp.SGE, CondOp.SGT, CondOp.SLE, CondOp.SLT,
-                CondOp.GE, CondOp.GT, CondOp.LE, CondOp.LT -> SbfType.NumType(Constant.makeTop())
+                CondOp.GE, CondOp.GT, CondOp.LE, CondOp.LT -> sbfTypeFac.anyNum()
                 else -> ty
             }
         }
@@ -323,14 +298,16 @@ class ScalarDomain(// Model stack's contents
     private fun analyzeUn(stmt: SbfInstruction.Un) {
         check(!isBottom()) {"cannot call analyzeUn on bottom"}
        // This transfer function is too conservative, and it can be improved.
-        val newVal: ScalarValue? = when (val oldVal = getRegister(stmt.dst).get()) {
+        val newVal: ScalarValue<TNum, TOffset>? = when (val oldVal = getRegister(stmt.dst).get()) {
             is SbfType.Top, is SbfType.Bottom -> null
-            is SbfType.NumType -> {
-                ScalarValue(SbfType.NumType(ConstantNum.makeTop()))
-            }
-            else -> {
-                check(oldVal is SbfType.PointerType)
-                ScalarValue(oldVal.withOffset(ConstantOffset.makeTop()))
+            is SbfType.NumType -> ScalarValue(sbfTypeFac.anyNum())
+            is SbfType.PointerType -> {
+                when (oldVal) {
+                    is SbfType.PointerType.Stack -> ScalarValue(sbfTypeFac.anyStackPtr())
+                    is SbfType.PointerType.Heap -> ScalarValue(sbfTypeFac.anyHeapPtr())
+                    is SbfType.PointerType.Input -> ScalarValue(sbfTypeFac.anyInputPtr())
+                    is SbfType.PointerType.Global -> ScalarValue(sbfTypeFac.anyGlobalPtr(oldVal.global))
+                }
             }
         }
         if (newVal != null) {
@@ -339,55 +316,52 @@ class ScalarDomain(// Model stack's contents
     }
 
     private fun doConstantPointerArithmetic(op: BinOp, dst: Value.Reg, src: Value.Imm) {
-        fun makeConstantOffset(value: ULong): ConstantOffset {
-            return ConstantOffset(value.toLong())
-        }
         val dstType = getRegister(dst).get()
         if (dstType is SbfType.PointerType) {
             val dstOffset = dstType.offset
-            val newOffset = when (op) {
-                BinOp.ADD  -> dstOffset.add(makeConstantOffset(src.v))
-                BinOp.SUB  -> dstOffset.sub(makeConstantOffset(src.v))
+            val newVal = when (op) {
+                BinOp.ADD  -> ScalarValue(dstType.withOffset(dstOffset.add(src.v.toLong())))
+                BinOp.SUB  -> ScalarValue(dstType.withOffset(dstOffset.sub(src.v.toLong())))
                 else -> {
                     if (enableDefensiveChecks) {
                         throw ScalarDomainError("Unexpected pointer arithmetic $dst:= $dst $op $src")
                     } else {
-                        ConstantOffset.makeTop()
+                        ScalarValue(dstType.withTopOffset(sbfTypeFac))
                     }
                 }
             }
-            setRegister(dst,  ScalarValue(dstType.withOffset(newOffset)))
+            setRegister(dst, newVal)
         } else {
             forget(dst)
         }
     }
 
     private fun doNormalizedPointerArithmetic(op: BinOp, dst: Value.Reg,
-                                              op1: Value.Reg, op1Type: SbfType.PointerType,
-                                              op2: Value.Reg, op2Type: SbfType) {
+                                              op1: Value.Reg, op1Type: SbfType.PointerType<TNum, TOffset>,
+                                              op2: Value.Reg, op2Type: SbfType<TNum, TOffset>) {
         check(op2Type !is SbfType.Bottom) {"failed preconditions on doNormalizedPointerArithmetic"}
 
         when (op2Type) {
             is SbfType.NumType -> {
-                val newOffset = when (op) {
-                    BinOp.ADD  -> op1Type.offset.add(op2Type.value)
-                    BinOp.SUB  -> op1Type.offset.sub(op2Type.value)
+                val newVal = when (op) {
+                    BinOp.ADD  -> ScalarValue(op1Type.withOffset(op1Type.offset.add(sbfTypeFac.numToOffset(op2Type.value))))
+                    BinOp.SUB  -> ScalarValue(op1Type.withOffset(op1Type.offset.sub(sbfTypeFac.numToOffset(op2Type.value))))
                     else -> {
                         if (enableDefensiveChecks) {
                             throw ScalarDomainError("Unexpected pointer arithmetic $dst:= $op1 $op $op2")
                         } else {
-                            ConstantOffset.makeTop()
+                            ScalarValue(op1Type.withTopOffset(sbfTypeFac))
                         }
                     }
                 }
-                setRegister(dst, ScalarValue(op1Type.withOffset(newOffset)))
+                setRegister(dst, newVal)
             }
             is SbfType.PointerType -> {
-                if (samePointerType(op1Type, op2Type)) {
+                if (op1Type.samePointerType(op2Type)) {
                     if (op == BinOp.SUB) {
                         // subtraction of pointers of the same type is okay
                         val diff = op1Type.offset.sub(op2Type.offset)
-                        setRegister(dst, ScalarValue(SbfType.NumType(diff)))
+                        setRegister(dst, ScalarValue(SbfType.NumType(sbfTypeFac.offsetToNum(diff))))
                     } else {
                         throw ScalarDomainError("Unexpected pointer arithmetic $dst:= $op1 $op $op2")
                     }
@@ -396,8 +370,7 @@ class ScalarDomain(// Model stack's contents
                 }
             }
             is SbfType.Top -> {
-                val newOffset = ConstantOffset.makeTop()
-                setRegister(dst, ScalarValue(op1Type.withOffset(newOffset)))
+                setRegister(dst, ScalarValue(op1Type.withTopOffset(sbfTypeFac)))
             }
             else -> {
                 throw ScalarDomainError("unexpected type $op2Type for operand $op2")
@@ -418,7 +391,7 @@ class ScalarDomain(// Model stack's contents
         }
     }
 
-    private fun doALU(op: BinOp, dst: Value.Reg, dstType: SbfType.NumType, srcType: SbfType.NumType) {
+    private fun doALU(op: BinOp, dst: Value.Reg, dstType: SbfType.NumType<TNum, TOffset>, srcType: SbfType.NumType<TNum, TOffset>) {
         val dstCst = dstType.value
         val srcCst = srcType.value
         when (op) {
@@ -437,19 +410,7 @@ class ScalarDomain(// Model stack's contents
         }
     }
 
-    private fun getScalarValue(x: Value): ScalarValue {
-        return when (x) {
-            is Value.Imm -> {
-                ScalarValue.from(x.v)
-            }
-            is Value.Reg -> {
-                getRegister(x)
-            }
-        }
-    }
-
-
-    private fun getScalarValue(x: Value, globals: GlobalVariableMap): ScalarValue {
+    private fun getValue(x: Value, globals: GlobalVariableMap): ScalarValue<TNum, TOffset> {
         when (x) {
             is Value.Imm -> {
                 // We cast a number to a global variable if it matches an address from our [globals] map
@@ -457,10 +418,10 @@ class ScalarDomain(// Model stack's contents
                 if (address <= Long.MAX_VALUE.toULong()) {
                     val gv = globals[address.toLong()]
                     if (gv != null) {
-                        return ScalarValue(SbfType.PointerType.Global(Constant(0L), gv))
+                        return ScalarValue(sbfTypeFac.toGlobalPtr(0L, gv))
                     }
                 }
-                return ScalarValue.from(x.v)
+                return ScalarValue(sbfTypeFac.toNum(x.v))
             }
             is Value.Reg -> {
                 return getRegister(x)
@@ -483,16 +444,15 @@ class ScalarDomain(// Model stack's contents
                      * it is a global variable.
                      **/
                     setRegister(dst, if (stmt.metaData.getVal(SbfMeta.SET_GLOBAL) != null) {
-                        getScalarValue(src, globals)
+                        getValue(src, globals)
                     }  else {
-                        getScalarValue(src)
+                        getValue(src)
                     })
                 }
                 else ->  {
                     val dstType = refineType(stmt.op, getRegister(dst).get())
                     if (dstType is SbfType.NumType) {
-                        val srcVal = ScalarValue.from(src.v)
-                        doALU(stmt.op, dst, dstType, (srcVal.get() as SbfType.NumType))
+                        doALU(stmt.op, dst, dstType, sbfTypeFac.toNum(src.v))
                     } else {
                         /**
                          * We don't know for sure whether dst is a pointer or not.
@@ -511,11 +471,11 @@ class ScalarDomain(// Model stack's contents
                      * that global variable.
                      */
                     setRegister(dst, if (stmt.metaData.getVal(SbfMeta.SET_GLOBAL) != null) {
-                        (getScalarValue(src).get() as? SbfType.NumType)?.value?.get().let {
+                        (getValue(src).get() as? SbfType.NumType<TNum, TOffset>)?.value?.get().let {
                             if (it != null) {
                                 val gv = globals[it]
                                 if (gv != null) {
-                                    ScalarValue(SbfType.PointerType.Global(Constant(0L), gv))
+                                    ScalarValue(sbfTypeFac.toGlobalPtr(0L, gv))
                                 } else {
                                     null
                                 }
@@ -573,7 +533,7 @@ class ScalarDomain(// Model stack's contents
                 }
                 while (deadFields.isNotEmpty()) {
                     val k = deadFields.removeLast()
-                    stack = stack.put(k, ScalarValue.mkTop())
+                    stack = stack.put(k, ScalarValue(sbfTypeFac.mkTop()))
                 }
             }
         }
@@ -655,7 +615,7 @@ class ScalarDomain(// Model stack's contents
     private fun castNumToString(reg: Value.Reg, globals: GlobalVariableMap) {
         val oldType = getRegister(reg).get()
         if (oldType is SbfType.NumType) {
-            val newType = castNumToPtr(oldType, globals)
+            val newType = oldType.castToPtr(sbfTypeFac, globals)
             if (newType is SbfType.PointerType.Global && newType.global is SbfConstantStringGlobalVariable) {
                 setRegister(reg, ScalarValue(newType))
             }
@@ -676,7 +636,7 @@ class ScalarDomain(// Model stack's contents
                 SolanaFunction.SOL_MEMCMP, SolanaFunction.SOL_INVOKE_SIGNED_C, SolanaFunction.SOL_INVOKE_SIGNED_RUST,
                 SolanaFunction.SOL_CURVE_GROUP_OP, SolanaFunction.SOL_CURVE_VALIDATE_POINT,
                 SolanaFunction.SOL_GET_STACK_HEIGHT -> {
-                    setRegister(Value.Reg(SbfRegister.R0_RETURN_VALUE), ScalarValue.anyNum())
+                    setRegister(Value.Reg(SbfRegister.R0_RETURN_VALUE), ScalarValue(sbfTypeFac.anyNum()))
                 }
                 SolanaFunction.SOL_GET_CLOCK_SYSVAR -> {
                     summarizeCall(locInst, memSummaries)
@@ -691,8 +651,7 @@ class ScalarDomain(// Model stack's contents
         } else {
             if (stmt.isAllocFn() && memSummaries.getSummary(stmt.name) == null) {
                 /// This is only used for pretty-printing
-                setRegister(Value.Reg(SbfRegister.R0_RETURN_VALUE),
-                    ScalarValue(SbfType.PointerType.Heap(Constant.makeTop())))
+                setRegister(Value.Reg(SbfRegister.R0_RETURN_VALUE), ScalarValue(sbfTypeFac.anyHeapPtr()))
             } else {
                 /** CVT call **/
                 val cvtFunction = CVTFunction.from(stmt.name)
@@ -718,25 +677,20 @@ class ScalarDomain(// Model stack's contents
                                     /// This is only used for pretty-printing
                                     setRegister(
                                         Value.Reg(SbfRegister.R0_RETURN_VALUE),
-                                        ScalarValue(SbfType.PointerType.Input(Constant.makeTop()))
+                                        ScalarValue(sbfTypeFac.anyInputPtr())
                                     )
                                 }
                                 CVTCore.ALLOC_SLICE -> {
                                     /// This is only used for pretty-printing
                                     /// That's why we return top in some cases rather than reporting an error
                                     val returnedVal = when (getRegister(Value.Reg(SbfRegister.R1_ARG)).get()) {
-                                        is SbfType.PointerType.Heap -> ScalarValue(SbfType.PointerType.Heap(Constant.makeTop()))
-                                        is SbfType.PointerType.Input -> ScalarValue(SbfType.PointerType.Input(Constant.makeTop()))
-                                        is SbfType.PointerType.Global -> ScalarValue(
-                                            SbfType.PointerType.Global(
-                                                Constant.makeTop(),
-                                                global = null
-                                            )
-                                        )
-                                        is SbfType.PointerType.Stack -> ScalarValue(SbfType.PointerType.Stack(Constant.makeTop()))
-                                        else -> ScalarValue.mkTop()
+                                        is SbfType.PointerType.Heap -> sbfTypeFac.anyHeapPtr()
+                                        is SbfType.PointerType.Input -> sbfTypeFac.anyInputPtr()
+                                        is SbfType.PointerType.Global -> sbfTypeFac.anyGlobalPtr(null)
+                                        is SbfType.PointerType.Stack -> sbfTypeFac.anyStackPtr()
+                                        else -> sbfTypeFac.mkTop()
                                     }
-                                    setRegister(Value.Reg(SbfRegister.R0_RETURN_VALUE), returnedVal)
+                                    setRegister(Value.Reg(SbfRegister.R0_RETURN_VALUE), ScalarValue(returnedVal))
                                 }
                             }
                         }
@@ -760,12 +714,12 @@ class ScalarDomain(// Model stack's contents
     private fun summarizeCall(locInst: LocatedSbfInstruction, memSummaries: MemorySummaries) {
 
         class ScalarSummaryVisitor: SummaryVisitor {
-            private fun getScalarValue(ty: MemSummaryArgumentType): ScalarValue {
+            private fun getScalarValue(ty: MemSummaryArgumentType): ScalarValue<TNum, TOffset> {
                 return when(ty) {
-                    MemSummaryArgumentType.NUM -> ScalarValue.anyNum()
-                    MemSummaryArgumentType.PTR_HEAP -> ScalarValue(SbfType.PointerType.Heap(Constant.makeTop()))
-                    MemSummaryArgumentType.PTR_STACK -> ScalarValue(SbfType.PointerType.Stack(Constant.makeTop()))
-                    else -> ScalarValue.mkTop()
+                    MemSummaryArgumentType.NUM -> ScalarValue(sbfTypeFac.anyNum())
+                    MemSummaryArgumentType.PTR_HEAP -> ScalarValue(sbfTypeFac.anyHeapPtr())
+                    MemSummaryArgumentType.PTR_STACK -> ScalarValue(sbfTypeFac.anyStackPtr())
+                    else -> ScalarValue(sbfTypeFac.mkTop())
                 }
             }
 
@@ -798,7 +752,7 @@ class ScalarDomain(// Model stack's contents
     }
 
     private fun analyzeAssumeNumNum(op: CondOp, left: Value.Reg,
-                                    leftType: SbfType.NumType, rightType: SbfType.NumType) {
+                                    leftType: SbfType.NumType<TNum, TOffset>, rightType: SbfType.NumType<TNum, TOffset>) {
         when (op) {
             CondOp.EQ -> {
                 // The assume operation does not modify the left operand.
@@ -822,7 +776,7 @@ class ScalarDomain(// Model stack's contents
         }
     }
 
-    private fun analyzeAssumeTopNonTop(op: CondOp, left: Value.Reg, leftType: SbfType, rightType: SbfType) {
+    private fun analyzeAssumeTopNonTop(op: CondOp, left: Value.Reg, leftType: SbfType<TNum, TOffset>, rightType: SbfType<TNum, TOffset>) {
         check(leftType is SbfType.Top || rightType is SbfType.Top) {"failed preconditions on analyzeAssumeTopNonTop"}
         check(!(leftType !is SbfType.Top && rightType !is SbfType.Top)) {"failed preconditions on analyzeAssumeTopNonTop"}
         if (op == CondOp.EQ) {
@@ -834,9 +788,9 @@ class ScalarDomain(// Model stack's contents
         }
     }
 
-    private fun analyzeAssumePtrPtr(op: CondOp, left: Value.Reg, leftType: SbfType.PointerType,
-                                    right: Value.Reg, rightType: SbfType.PointerType) {
-        if (samePointerType(leftType, rightType)) {
+    private fun analyzeAssumePtrPtr(op: CondOp, left: Value.Reg, leftType: SbfType.PointerType<TNum, TOffset>,
+                                    right: Value.Reg, rightType: SbfType.PointerType<TNum, TOffset>) {
+        if (leftType.samePointerType(rightType)) {
             val leftOffset = leftType.offset
             val rightOffset = rightType.offset
             when (op) {
@@ -885,7 +839,8 @@ class ScalarDomain(// Model stack's contents
         }
     }
 
-    private fun analyzeAssume(cond: Condition) {
+    @TestOnly
+    fun analyzeAssume(cond: Condition) {
         val op = cond.op
         val leftReg = cond.left
         val rightVal = cond.right
@@ -898,7 +853,7 @@ class ScalarDomain(// Model stack's contents
         }
         check(!leftAbsVal.isBottom()) {"analyzeAssume: leftAbsVal is bottom after refinement"}
         if (rightVal is Value.Imm) {
-            val rightAbsVal = ScalarValue.from(rightVal.v)
+            val rightAbsVal = ScalarValue(sbfTypeFac.toNum(rightVal.v))
             if (leftAbsVal.get() is SbfType.NumType) {
                 analyzeAssumeNumNum(op, leftReg,
                                     leftAbsVal.get() as SbfType.NumType,
@@ -952,17 +907,11 @@ class ScalarDomain(// Model stack's contents
     }
 
     private fun analyzeHavoc(stmt: SbfInstruction.Havoc) {
-        // If the havoced variable has a type then we keep it.
-        val dstType = stmt.dstType
-        if (dstType == null) {
-            forget(stmt.dst)
-        } else {
-            setRegister(stmt.dst, ScalarValue(dstType))
-        }
+        forget(stmt.dst)
     }
 
-    private fun refineSelectCond(cond: Condition, other: ScalarDomain) {
-        fun refine(x: ScalarValue, y: ScalarValue) = if (x.isTop()) { y } else { x }
+    private fun refineSelectCond(cond: Condition, other: ScalarDomain<TNum, TOffset>) {
+        fun refine(x: ScalarValue<TNum, TOffset>, y: ScalarValue<TNum, TOffset>) = if (x.isTop()) { y } else { x }
         val left = cond.left
         setRegister(left, refine(getValue(left), other.getValue(left)))
         val right = cond.right
@@ -978,17 +927,17 @@ class ScalarDomain(// Model stack's contents
         val trueAbsVal = deepCopy()
         trueAbsVal.analyzeAssume(stmt.cond)
         if (trueAbsVal.isBottom()) {
-            setRegister(stmt.dst, getScalarValue(stmt.falseVal))
+            setRegister(stmt.dst, getValue(stmt.falseVal))
         } else {
             val falseAbsVal = deepCopy()
             falseAbsVal.analyzeAssume(stmt.cond.negate())
             if (falseAbsVal.isBottom()) {
-                setRegister(stmt.dst, getScalarValue(stmt.trueVal))
+                setRegister(stmt.dst, getValue(stmt.trueVal))
             } else {
                 refineSelectCond(stmt.cond, trueAbsVal.join(falseAbsVal))
                 setRegister(stmt.dst,
-                            getScalarValue(stmt.falseVal)
-                                .join(getScalarValue(stmt.trueVal)))
+                            getValue(stmt.falseVal)
+                                .join(getValue(stmt.trueVal)))
             }
         }
     }
@@ -998,7 +947,7 @@ class ScalarDomain(// Model stack's contents
             // This should be always a "weak" read because we can read twice from the same memory location
             // but one loaded value can be considered as non-pointer because it's never de-referenced but the other one can be de-referenced.
             // Since the scalar domain is non-relation all reads are weak anyway.
-            setRegister(v, ScalarValue.anyNum())
+            setRegister(v, ScalarValue(sbfTypeFac.anyNum()))
         } else {
             forget(v)
         }
@@ -1008,7 +957,7 @@ class ScalarDomain(// Model stack's contents
      *  Return the abstract value of the base register if it will be killed by the lhs of a load instruction.
      *  Otherwise, it returns null. This is used by the Memory Domain.
      **/
-    fun analyzeMem(locInst: LocatedSbfInstruction, globalsMap: GlobalVariableMap): ScalarValue? {
+    fun analyzeMem(locInst: LocatedSbfInstruction, globalsMap: GlobalVariableMap): ScalarValue<TNum, TOffset>? {
         check(!isBottom()) {"analyzeMem cannot be called on bottom"}
         val stmt = locInst.inst
         check(stmt is SbfInstruction.Mem) {"analyzeMem expect a memory instruction instead of $stmt"}
@@ -1026,7 +975,7 @@ class ScalarDomain(// Model stack's contents
          *  If the lhs is equal to @baseReg then we remember the type of baseReg
          *  before redefinition. This is needed by the Memory domain.
          */
-        var baseRegTypeBeforeKilled: ScalarValue? = if (isLoad) {
+        var baseRegTypeBeforeKilled: ScalarValue<TNum, TOffset>? = if (isLoad) {
             ScalarValue(baseRegType)
         } else {
             null
@@ -1049,7 +998,7 @@ class ScalarDomain(// Model stack's contents
                 setToBottom()
                 return null
             }
-            val castedPtrType = castNumToPtr(baseRegType, globalsMap)
+            val castedPtrType = baseRegType.castToPtr(sbfTypeFac, globalsMap)
             if (castedPtrType != null) {
                 /**
                  * IMPLICIT CASTS TO A POINTER: override the type for baseReg if possible
@@ -1095,7 +1044,7 @@ class ScalarDomain(// Model stack's contents
                 when (baseRegType) {
                     is SbfType.PointerType.Stack -> {
                         // We try to be precise when load/store from/to stack
-                        val stackOffset = baseRegType.offset.add(ConstantOffset(offset.toLong())).get()
+                        val stackOffset = baseRegType.offset.add(offset.toLong()).get()
                         if (stackOffset == null) {
                             if (isLoad) {
                                 forgetOrNum(value as Value.Reg, loadedAsNumForPTA)
@@ -1124,7 +1073,7 @@ class ScalarDomain(// Model stack's contents
                             val globalVar = baseRegType.global
                             if (globalVar != null) {
                                 if (globalVar is SbfConstantNumGlobalVariable) {
-                                    setRegister(value, ScalarValue.from(globalVar.value))
+                                    setRegister(value, ScalarValue(sbfTypeFac.toNum(globalVar.value)))
                                 }
                             }
                         }
@@ -1140,29 +1089,36 @@ class ScalarDomain(// Model stack's contents
         return baseRegTypeBeforeKilled
     }
 
-    override fun getValue(value: Value): ScalarValue {
-        return if (value is Value.Imm) {
-            ScalarValue.from(value.v)
-        } else {
-            getRegister(value as Value.Reg)
+    fun getValue(value: Value): ScalarValue<TNum, TOffset> {
+        return when (value) {
+            is Value.Imm -> {
+                ScalarValue(sbfTypeFac.toNum(value.v))
+            }
+            is Value.Reg -> {
+                getRegister(value)
+            }
         }
     }
 
-    fun getStackContent(offset: Long, width: Byte): ScalarValue {
+    override fun getAsScalarValue(value: Value): ScalarValue<TNum, TOffset> {
+        return getValue(value)
+    }
+
+    fun getStackContent(offset: Long, width: Byte): ScalarValue<TNum, TOffset> {
         return if (isBottom()) {
-            ScalarValue.mkBottom()
+            ScalarValue(sbfTypeFac.mkBottom())
         } else {
-            stack.getSingletonOrNull(ByteRange(offset, width)) ?: ScalarValue.mkTop()
+            stack.getSingletonOrNull(ByteRange(offset, width)) ?: ScalarValue(sbfTypeFac.mkTop())
         }
     }
 
     @TestOnly
-    fun setStackContent(offset: Long, width: Byte, value: ScalarValue) {
+    fun setStackContent(offset: Long, width: Byte, value: ScalarValue<TNum, TOffset>) {
         stack = stack.put(ByteRange(offset, width), value)
     }
 
     /** Set the value of [reg] to [newVal] only if its old value is top **/
-    fun refineValue(reg: Value.Reg, newVal: ScalarValue): Boolean {
+    fun refineValue(reg: Value.Reg, newVal: ScalarValue<TNum, TOffset>): Boolean {
         val oldVal = getRegister(reg)
         if (oldVal.isTop() && !newVal.isTop()) {
             setRegister(reg, newVal)
@@ -1206,7 +1162,7 @@ class ScalarDomain(// Model stack's contents
     override fun analyze(b: SbfBasicBlock,
                          globals: GlobalVariableMap,
                          memSummaries: MemorySummaries,
-                         listener: InstructionListener<ScalarDomain>): ScalarDomain {
+                         listener: InstructionListener<ScalarDomain<TNum, TOffset>>): ScalarDomain<TNum, TOffset> {
 
         if (SolanaConfig.DebugSlicer.get()) {
             sbfLogger.info {"=== Scalar Domain analyzing ${b.getLabel()} ===\n" +
@@ -1218,7 +1174,7 @@ class ScalarDomain(// Model stack's contents
              * No need to remember abstract states before and after each instruction
              **/
             if (isBottom()) {
-                return makeBottom()
+                return makeBottom(sbfTypeFac)
             }
 
             val out = this.deepCopy()
@@ -1256,7 +1212,7 @@ class ScalarDomain(// Model stack's contents
             return "top"
         }
 
-        val nonTopRegisters: ArrayList<Pair<Int, ScalarValue>> = ArrayList()
+        val nonTopRegisters: ArrayList<Pair<Int, ScalarValue<TNum, TOffset>>> = ArrayList()
         for (i in 0 until registers.size) {
             if (!registers[i].isTop()) {
                 nonTopRegisters.add(Pair(i, registers[i]))

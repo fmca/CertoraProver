@@ -23,14 +23,16 @@ import vc.data.*
 import java.math.BigInteger
 import datastructures.stdcollections.*
 import sbf.callgraph.CVTU128Intrinsics
+import sbf.domains.INumValue
+import sbf.domains.IOffset
 
 /**
  * Summarize u128 intrinsics.
  *
  * Precondition: UseTACMathInt is enabled
  **/
-context(SbfCFGToTAC)
-fun summarizeU128(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> summarizeU128(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
     val inst = locInst.inst
     check(inst is SbfInstruction.Call) {"summarizeU128 expects a call instruction instead of ${locInst.inst}"}
     val function = CVTU128Intrinsics.from(inst.name)
@@ -52,8 +54,8 @@ fun summarizeU128(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
  * 3. if `high(x) != 0` and `high(y) == 0` then `false`
  * 4. if `high(x) != 0` and `high(y) != 0` then `(high(x) << 64 + low(x)) <= (high(y) << 64 + low(y))`
  **/
-context(SbfCFGToTAC)
-fun summarizeU128Leq(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> summarizeU128Leq(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
     val inst = locInst.inst
     check(inst is SbfInstruction.Call)
     {"summarizeU128Leq expects a call instruction instead of ${locInst.inst}"}
@@ -98,8 +100,8 @@ fun summarizeU128Leq(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
  *  high(x) != 0 || low(x) > 0
  *  ```
  */
-context(SbfCFGToTAC)
-fun summarizeU128Gt0(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> summarizeU128Gt0(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
     val inst = locInst.inst
     check(inst is SbfInstruction.Call)
     { "summarizeU128Gt0 expects a call instruction instead of ${locInst.inst}" }
@@ -125,8 +127,8 @@ fun summarizeU128Gt0(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
  * ```
  * where `x = high(x) << 64 + low(x)` and `y = high(y) << 64 + low(y)`
  */
-context(SbfCFGToTAC)
-fun summarizeU128CeilDiv(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> summarizeU128CeilDiv(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
     val inst = locInst.inst
     check(inst is SbfInstruction.Call)
     { "summarizeU128CeilDiv expects a call instruction instead of ${locInst.inst}" }
@@ -161,8 +163,8 @@ fun summarizeU128CeilDiv(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
  * ```
  * where `result = high(result) << 64 + low(result)`
  **/
-context(SbfCFGToTAC)
-fun summarizeU128Nondet(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> summarizeU128Nondet(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
     val inst = locInst.inst
     check(inst is SbfInstruction.Call)
     { "summarizeU128Nondet expects a call instruction instead of ${locInst.inst}" }

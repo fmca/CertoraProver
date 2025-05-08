@@ -747,7 +747,7 @@ data class TACTransFormula(
 
         private val substituteSymExp =
             { subs: Map<TACExpr.Sym.Var, TACExpr>, exp: TACExpr ->
-                TACExprUtils.SubstitutorVar(subs).transformOuter(exp)
+                TACExprUtils.SubstitutorVar(subs).transform(exp)
             }
 
         private val conjoin = { ls: List<TACExpr> -> TACExprFactUntyped.LAnd(ls) }
@@ -1026,4 +1026,3 @@ class SelectOverStoreTACExpr private constructor(val exp: TACExpr.Select) {
         }
     }
 }
-

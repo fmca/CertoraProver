@@ -18,6 +18,7 @@
 package report
 
 import config.Config.PrettyTreeViewReports
+import datastructures.stdcollections.*
 import kotlinx.serialization.json.*
 import utils.*
 
@@ -162,4 +163,5 @@ fun JsonObjectBuilder.putJsonArray(
     elements: Collection<TreeViewReportable>
 ): JsonElement? = putJsonArray(key, elements) { it }
 
-
+fun JsonObjectBuilder.putJsonArray(key: String, iter: Iterable<JsonElement>) = put(key, JsonArray(iter.toList()))
+fun JsonObjectBuilder.putJsonArray(key: String, element: JsonElement) = put(key, JsonArray(listOf(element)))

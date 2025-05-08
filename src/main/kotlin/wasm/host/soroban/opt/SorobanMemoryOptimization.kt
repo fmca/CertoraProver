@@ -21,7 +21,6 @@ import analysis.*
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import analysis.icfg.*
 import config.*
-import datastructures.stdcollections.*
 import instrumentation.transformers.*
 import kotlin.streams.*
 import log.*
@@ -184,18 +183,18 @@ fun optimizeSorobanMemory(code: CoreTACProgram): CoreTACProgram {
         } else {
             // Rewrite any memory access expressions in the command
             object : DefaultTACCmdMapper() {
-                override val exprMapper = object : QuantDefaultTACExprTransformer() {
+                override val exprMapper = object : DefaultTACExprTransformer() {
                     // Replace select(mem, loc) with the corresponding scalar var
-                    override fun transformSelect(acc: QuantDefaultTACExprTransformer.QuantVars, base: TACExpr, loc: TACExpr, tag: Tag?) =
+                    override fun transformSelect(base: TACExpr, loc: TACExpr, tag: Tag?) =
                         if (base.getAs<TACExpr.Sym>()?.s == TACKeyword.MEMORY.toVar()) {
                             loc.tryToScalar()?.asSym() ?: loc
                         } else {
-                            super.transformSelect(acc, base, loc, tag)
+                            super.transformSelect(base, loc, tag)
                         }
 
                     // Fail if we encounter TACKeyword.MEMORY outside of a select
-                    override fun transformFreeVar(acc: QuantDefaultTACExprTransformer.QuantVars, exp: TACExpr.Sym.Var) =
-                        super.transformFreeVar(acc, exp).also {
+                    override fun transformVar(exp: TACExpr.Sym.Var) =
+                        super.transformVar(exp).also {
                             if (exp.s == TACKeyword.MEMORY.toVar()) {
                                 fail<Any>()
                             }

@@ -519,7 +519,7 @@
                     }
                 }
             },
-            "description": "result >= 0",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {

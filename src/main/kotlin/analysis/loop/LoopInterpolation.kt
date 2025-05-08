@@ -217,6 +217,7 @@ object LoopInterpolation {
                             ),
                             TACCmd.Simple.AssumeCmd(
                                 cond = tmp3,
+                                msg = "interpolateLoopSummaries",
                                 meta = meta
                             )
                         )

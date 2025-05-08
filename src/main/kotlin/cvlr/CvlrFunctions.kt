@@ -50,6 +50,8 @@ object CvlrFunctions {
     const val CVT_calltrace_print_tag = "CVT_calltrace_print_tag"
     const val CVT_calltrace_print_location = "CVT_calltrace_print_location"
     const val CVT_calltrace_attach_location = "CVT_calltrace_attach_location"
+    const val CVT_calltrace_scope_start = "CVT_calltrace_scope_start"
+    const val CVT_calltrace_scope_end = "CVT_calltrace_scope_end"
     const val CVT_u128_leq = "CVT_u128_leq"
     const val CVT_u128_gt0 = "CVT_u128_gt0"
     const val CVT_u128_ceil_div = "CVT_u128_ceil_div"

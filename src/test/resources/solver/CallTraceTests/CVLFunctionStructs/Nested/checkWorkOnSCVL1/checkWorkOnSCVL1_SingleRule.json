@@ -189,6 +189,7 @@
                     }
                 }
             },
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -1077,7 +1078,7 @@
                     }
                 }
             },
-            "description": "s.s1.b1",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {

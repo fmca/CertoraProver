@@ -29,7 +29,7 @@ import tac.MetaMap
 import tac.NBId
 import utils.uncheckedAs
 import vc.data.*
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import java.io.Serializable
 
 /**
@@ -192,7 +192,7 @@ open class CodeRemapper<T> (
 
     private inner class Mapper(
         val state: T,
-        buildExprMapper: ((DefaultTACCmdSpecMapper) -> QuantDefaultTACExprTransformer)? = null
+        buildExprMapper: ((DefaultTACCmdSpecMapper) -> DefaultTACExprTransformer)? = null
     ) : DefaultTACCmdSpecMapper() {
         override val exprMapper = buildExprMapper?.let { it(this) } ?: super.exprMapper
 
@@ -334,7 +334,7 @@ open class CodeRemapper<T> (
 
     fun mapper(
         state: T,
-        buildExprMapper: ((DefaultTACCmdSpecMapper) -> QuantDefaultTACExprTransformer)? = null
+        buildExprMapper: ((DefaultTACCmdSpecMapper) -> DefaultTACExprTransformer)? = null
     ): DefaultTACCmdSpecMapper = Mapper(state, buildExprMapper)
 
 

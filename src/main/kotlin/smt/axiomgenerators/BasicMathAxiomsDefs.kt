@@ -18,7 +18,7 @@
 package smt.axiomgenerators
 
 import config.Config
-import datastructures.Memoized
+import datastructures.memoized
 import datastructures.stdcollections.*
 import evm.EVM_MOD_GROUP256
 import smt.axiomgenerators.fullinstantiation.expnormalizer.ExpNormalizer
@@ -90,7 +90,7 @@ class BasicMathAxiomsDefs(val lxf: LExpressionFactory) {
         )
     }
 
-    private val mulBinaryTagAxioms = Memoized { tag: Tag ->
+    private val mulBinaryTagAxioms = memoized { tag: Tag ->
         if (Config.SignedMulAxioms.get() && tag is Tag.Bits) {
             val modulus = lxf.litInt(tag.modulus)
             val w = tag.bitwidth
@@ -118,7 +118,7 @@ class BasicMathAxiomsDefs(val lxf: LExpressionFactory) {
         }
     }
 
-    private val mulBinaryWithConstTagAxioms = Memoized { tag: Tag ->
+    private val mulBinaryWithConstTagAxioms = memoized { tag: Tag ->
         if (Config.SignedMulAxioms.get() && tag is Tag.Bits) {
             val modulus = lxf.litInt(tag.modulus)
             val w = tag.bitwidth
@@ -311,7 +311,7 @@ class BasicMathAxiomsDefs(val lxf: LExpressionFactory) {
         UnaryIntAxiomDef(lxf, "combinedMulArg", "axioms for mul arguments", mulUnaryAxioms)
     }
 
-    val combinedBinaryMul = Memoized { tag: Tag ->
+    val combinedBinaryMul = memoized { tag: Tag ->
         BinaryIntAxiomDef(
             lxf,
             "combinedMul_$tag",
@@ -320,7 +320,7 @@ class BasicMathAxiomsDefs(val lxf: LExpressionFactory) {
         )
     }
 
-    val combinedBinaryMulWithConst = Memoized { tag: Tag ->
+    val combinedBinaryMulWithConst = memoized { tag: Tag ->
         BinaryIntAxiomDef(
             lxf,
             "combinedMulConst_$tag",

@@ -32,12 +32,12 @@ class StorageArrayLengthFinder(private val graph: TACCommandGraph) {
     }
 
     fun isStorageArrayLengthRead(where: LTACCmdView<TACCmd.Simple.AssigningCmd.WordLoad>, dynBlock: AllocationAnalysis.Alloc.DynamicBlock) : Boolean {
-        if(where.ptr.block != dynBlock.elemSym.first.block || where.ptr.pos < dynBlock.elemSym.first.pos) {
+        if(where.ptr.block != dynBlock.lengthSym.first.block || where.ptr.pos < dynBlock.lengthSym.first.pos) {
             return false
         }
-        val def = nonTrivialDefAnalysis.nontrivialDefSingleOrNull(dynBlock.elemSym.second, dynBlock.elemSym.first) ?: return false
+        val def = nonTrivialDefAnalysis.nontrivialDefSingleOrNull(dynBlock.lengthSym.second, dynBlock.lengthSym.first) ?: return false
         // preceding read in this block
-        if (def.block != dynBlock.elemSym.first.block || def.pos >= dynBlock.elemSym.first.pos) {
+        if (def.block != dynBlock.lengthSym.first.block || def.pos >= dynBlock.lengthSym.first.pos) {
             return false
         }
         val lc = graph.elab(def)

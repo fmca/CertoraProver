@@ -70,7 +70,7 @@ sealed class RuleEvent : EventBase<EventTopic.Rule>() {
                     }
                 }"
             }
-
+            SpecType.Single.EquivalenceCheck -> "EquivalenceChecker"
             SpecType.Single.InCodeAssertions -> "InCodeAssertions"
 
             is SpecType.Single.InvariantCheck -> {

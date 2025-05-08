@@ -54,7 +54,7 @@ object CmdsFolder {
         }.reversed()
 
         val exprMap = mutableMapOf<TACExpr.Sym.Var, TACExpr>()
-        fun substitute(e : TACExpr) = SubstitutorVar(exprMap).transformOuter(e)
+        fun substitute(e : TACExpr) = SubstitutorVar(exprMap).transform(e)
 
         relevantCmds.forEach { cmd ->
             check(cmd is TACCmd.Simple.AssigningCmd.AssignExpCmd)

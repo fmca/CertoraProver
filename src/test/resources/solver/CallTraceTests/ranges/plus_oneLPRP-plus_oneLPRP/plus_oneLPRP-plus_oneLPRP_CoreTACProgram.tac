@@ -12,237 +12,221 @@ TACSymbolTable {
 	}
 	tacM0x40@1:bv256:0
 	tacM0x40@2:bv256:0
-	tacCodesizeCANON0:bv256:1
-	tacNonce:wordmap:2
-	tacCalldatabufCANON0@1:bv256:3
-	tacCalldatabufCANON0@2:bv256:3
+	CANON31!!19:bv256:1
+	CANON31!!71:bv256:2
+	CANON31!!95:bv256:2
+	tacCodesizeCANON0:bv256:3
+	tacCalldatabufCANON0@1:bv256:4
+	tacCalldatabufCANON0@2:bv256:4
 	tacM0x40!!0:bv256:0
 	tacM0x40!!1:bv256:0
-	tacContractsCreated!!25:wordmap:4
-	tacAddress!!54:bv256:5
-	tacAddress!!79:bv256:5
+	tacAddress!!50:bv256:5
+	tacAddress!!75:bv256:5
 	lastReverted:bool:6
-	lastStorageCANON:wordmap:7
-	CANON12!!7:int:8
-	CANON13!!8:int:9
-	CANON14!!9:int:10
-	tacExtcodesize!!5:wordmap:11
-	tacSCANON0!!27:wordmap:12
-	tacTCANON0:wordmap:13
-	tacExtcodesize:wordmap:11
-	tacMCANON0@1:bytemap:14
-	tacMCANON0@2:bytemap:15
-	tacBalance:wordmap:16
-	tacBalance!!59:wordmap:16
-	tacBalance!!63:wordmap:16
-	tacBalance!!84:wordmap:16
-	tacBalance!!88:wordmap:16
-	tacBalance!!6:wordmap:16
-	lastStorageCANON1:wordmap:7
-	lastStorageCANON2:bv256:17
-	lastStorageCANON3:wordmap:18
-	lastStorageCANON4:wordmap:18
-	lastStorageCANON5:wordmap:18
-	lastStorageCANON6:wordmap:18
-	tacCalldatabuf@1:bytemap:19
-	tacCalldatabuf@2:bytemap:20
-	CANON92!!111:bool:21
-	CANON11havocme1254:bytemap:22
-	R2:bv256:1
-	W4:wordmap:13
-	B31:bool:23
-	B32:bool:23
-	B67:bool:24
-	B68:bool:25
-	B69:bool:26
-	B71:bool:24
-	B72:bool:25
-	B73:bool:26
-	B92:bool:24
-	B93:bool:25
-	B94:bool:26
-	B96:bool:24
-	B97:bool:25
-	B98:bool:26
-	I48:int
-	I58:int:23
-	I61:int:23
-	I83:int:23
-	I86:int:23
-	M50:bytemap:27
-	M51:bytemap:23
-	R22:bv256:28
-	R23:bv256:29
-	R24:bv256:30
-	R26:bv256:31
-	R30:bv256:23
-	R47:bv256:23
-	R49:bv256:32
-	R52:bv256:23
-	R55:bv256:23
-	R56:bv256:23
-	R57:bv256:23
-	R60:bv256:23
-	R62:bv256:23
-	R64:bv256:23
-	R65:bv256:33
-	R66:bv256:24
-	R70:bv256:24
-	R74:bv256:24
-	R80:bv256:23
-	R81:bv256:23
-	R82:bv256:23
-	R85:bv256:23
-	R87:bv256:23
-	R89:bv256:23
-	R90:bv256:33
-	R91:bv256:24
-	R95:bv256:24
-	R99:bv256:24
-	tacNonce!!3:wordmap:2
-	I103:int
-	I109:int
-	I110:int
-	M105:bytemap:27
-	M106:bytemap:23
-	R104:bv256:32
-	R107:bv256:23
-	R108:bv256:23
-	lastHasThrown!!101:bool:34
+	CANON12!!5:int:7
+	CANON13!!6:int:8
+	CANON14!!7:int:9
+	CANON15!!8:bool:10
+	CANON16!!9:bool:11
+	tacExtcodesize!!3:wordmap:12
+	tacExtcodesize:wordmap:12
+	tacMCANON0@1:bytemap:13
+	tacMCANON0@2:bytemap:14
+	tacBalance:wordmap:15
+	tacBalance!!55:wordmap:15
+	tacBalance!!59:wordmap:15
+	tacBalance!!80:wordmap:15
+	tacBalance!!4:wordmap:15
+	tacCalldatabuf@1:bytemap:16
+	tacCalldatabuf@2:bytemap:17
+	CANON92!!106:bool:18
+	CANON11havocme1256:bytemap:19
+	R2:bv256:3
+	B27:bool:20
+	B28:bool:20
+	B63:bool:21
+	B64:bool:22
+	B65:bool:23
+	B67:bool:21
+	B68:bool:22
+	B69:bool:23
+	B87:bool:21
+	B88:bool:22
+	B89:bool:23
+	B91:bool:21
+	B92:bool:22
+	B93:bool:23
+	I44:int
+	I54:int:20
+	I57:int:20
+	I79:int:20
+	I82:int:20
+	I98:int
+	M46:bytemap:24
+	M47:bytemap:20
+	R20:bv256:25
+	R21:bv256:26
+	R22:bv256:27
+	R23:bv256:28
+	R26:bv256:20
+	R43:bv256:20
+	R45:bv256:29
+	R48:bv256:20
+	R51:bv256:20
+	R52:bv256:20
+	R53:bv256:20
+	R56:bv256:20
+	R58:bv256:20
+	R60:bv256:20
+	R61:bv256:30
+	R62:bv256:21
+	R66:bv256:21
+	R70:bv256:21
+	R76:bv256:20
+	R77:bv256:20
+	R78:bv256:20
+	R81:bv256:20
+	R83:bv256:20
+	R84:bv256:20
+	R85:bv256:30
+	R86:bv256:21
+	R90:bv256:21
+	R94:bv256:21
+	R99:bv256:29
+	I104:int
+	I105:int
+	M100:bytemap:24
+	M101:bytemap:20
+	R102:bv256:20
+	R103:bv256:20
 	tacAddress@1:bv256:5
 	tacAddress@2:bv256:5
-	lastReverted!!102:bool:6
-	CANON12!!33:int:8
-	CANON13!!37:int:9
-	CANON14!!39:int:10
-	LCANON0@1:bv256:33
-	LCANON0@2:bv256:33
-	LCANON1@1:bv256:24
-	LCANON1@2:bv256:24
-	LCANON2@1:bool:24
-	LCANON2@2:bool:24
-	LCANON3@1:bool:25
-	LCANON3@2:bool:25
-	LCANON4@1:bool:26
-	LCANON4@2:bool:26
-	LCANON5@1:bv256:24
-	LCANON5@2:bv256:24
-	LCANON6@1:bool:24
-	LCANON6@2:bool:24
-	LCANON7@1:bool:25
-	LCANON7@2:bool:25
-	LCANON8@1:bool:26
-	LCANON8@2:bool:26
-	LCANON9@1:bv256:24
-	LCANON9@2:bv256:24
-	CANON15!!10:bool:35
-	CANON15!!34:bool:35
-	CANON16!!11:bool:36
-	CANON16!!35:bool:36
-	CANON17!!12:bool:37
-	CANON17!!36:bool:37
-	CANON10:bv256:38
-	CANON11:bytemap:39
-	CANON12:int:8
-	CANON13:int:9
-	CANON14:int:10
-	CANON15:bool:35
-	CANON16:bool:36
-	CANON17:bool:37
-	CANON18:bool:40
-	CANON19:int:41
-	CANON20:int:42
-	CANON21:int:43
-	CANON22:bool:44
-	CANON23:bool:45
-	CANON24:bool:46
-	CANON25:bool:47
-	CANON26:int:48
-	CANON27:bv256:49
-	CANON28:bv256:23
-	CANON29:bool:23
-	CANON30:bool:23
-	CANON31:bv256:23
-	CANON32:bv256:50
-	CANON33:int:50
+	CANON12!!29:int:7
+	CANON13!!33:int:8
+	CANON14!!35:int:9
+	LCANON0@1:bv256:30
+	LCANON0@2:bv256:30
+	LCANON1@1:bv256:21
+	LCANON1@2:bv256:21
+	LCANON2@1:bool:21
+	LCANON2@2:bool:21
+	LCANON3@1:bool:22
+	LCANON3@2:bool:22
+	LCANON4@1:bool:23
+	LCANON4@2:bool:23
+	LCANON5@1:bv256:21
+	LCANON5@2:bv256:21
+	LCANON6@1:bool:21
+	LCANON6@2:bool:21
+	LCANON7@1:bool:22
+	LCANON7@2:bool:22
+	LCANON8@1:bool:23
+	LCANON8@2:bool:23
+	LCANON9@1:bv256:21
+	LCANON9@2:bv256:21
+	CANON15!!30:bool:10
+	CANON16!!31:bool:11
+	CANON17!!10:bool:31
+	CANON17!!32:bool:31
+	CANON10:bv256:32
+	CANON11:bytemap:33
+	CANON12:int:7
+	CANON13:int:8
+	CANON14:int:9
+	CANON15:bool:10
+	CANON16:bool:11
+	CANON17:bool:31
+	CANON18:bool:34
+	CANON19:int:35
+	CANON20:int:36
+	CANON21:int:37
+	CANON22:bool:38
+	CANON23:bool:39
+	CANON24:bool:40
+	CANON25:bool:41
+	CANON26:int:42
+	CANON27:bv256:20
+	CANON28:bool:20
+	CANON29:bool:20
+	CANON30:bv256:20
+	CANON31:bv256:1
+	CANON32:bv256:43
+	CANON33:int:43
 	CANON34:int
-	CANON35:bv256:32
-	CANON36:bytemap:27
-	CANON37:bytemap:23
-	CANON39:bv256:23
-	CANON52:bv256:23
-	CANON53:bv256:23
-	CANON54:bv256:23
-	CANON55:bv256:23
-	CANON56:int:23
-	CANON57:bv256:23
-	CANON58:int:23
-	CANON59:bv256:23
-	CANON60@1:bv256:23
-	CANON60@2:bv256:23
+	CANON35:bv256:29
+	CANON36:bytemap:24
+	CANON37:bytemap:20
+	CANON39:bv256:20
+	CANON52:bv256:20
+	CANON53:bv256:20
+	CANON54:bv256:20
+	CANON55:bv256:20
+	CANON56:int:20
+	CANON57:bv256:20
+	CANON58:int:20
+	CANON59:bv256:20
+	CANON60@1:bv256:20
+	CANON60@2:bv256:20
 	CANON61:int
-	CANON62:bv256:32
-	CANON63:bytemap:27
-	CANON64:bytemap:23
-	CANON66:bv256:23
-	CANON79:bv256:23
-	CANON80:bv256:23
-	CANON81:bv256:23
-	CANON82:bv256:23
-	CANON83:int:23
-	CANON84:bv256:23
-	CANON85:int:23
-	CANON86:bv256:23
-	CANON87:bv256:23
-	CANON88:bv256:51
-	CANON89:int:51
+	CANON62:bv256:29
+	CANON63:bytemap:24
+	CANON64:bytemap:20
+	CANON66:bv256:20
+	CANON79:bv256:20
+	CANON80:bv256:20
+	CANON81:bv256:20
+	CANON82:bv256:20
+	CANON83:int:20
+	CANON84:bv256:20
+	CANON85:int:20
+	CANON86:bv256:20
+	CANON87:bv256:20
+	CANON88:bv256:44
+	CANON89:int:44
 	CANON90:int
 	CANON91:int
 	CANON92:bool
-	CANON18!!13:bool:40
-	CANON18!!38:bool:40
-	CANON19!!14:int:41
-	CANON19!!40:int:41
-	CANON27!!100:bv256:49
-	tacContractAtCANON1:bv256:28
-	tacContractAtCANON2:bv256:29
-	tacContractAtCANON3:bv256:30
-	lastHasThrown:bool:34
-	tacContractsCreated:wordmap:4
-	lastReverted!!77:bool:6
-	CANON1:int:52
-	CANON2:int:53
-	CANON3:int:54
-	CANON4:int:55
-	CANON5:int:56
-	CANON6:int:57
-	CANON7:int:58
-	CANON8:int:59
-	CANON9:int:60
-	tacContractAtCANON:bv256:31
-	CANON20!!15:int:42
-	CANON20!!44:int:42
-	CANON21!!16:int:43
-	CANON21!!46:int:43
-	CANON22!!17:bool:44
-	CANON22!!41:bool:44
-	CANON23!!18:bool:45
-	CANON23!!42:bool:45
-	CANON24!!19:bool:46
-	CANON24!!43:bool:46
-	tacSCANON0:wordmap:12
-	CANON25!!20:bool:47
-	CANON25!!45:bool:47
-	CANON27!!21:bv256:49
-	CANON27!!75:bv256:49
-	lastHasThrown!!53:bool:34
-	lastHasThrown!!76:bool:34
-	lastHasThrown!!78:bool:34
-	tacSighash!!28:bv256:61
-	tacSighash!!29:bv256:61
-	tacSighash@1:bv256:61
-	tacSighash@2:bv256:61
-	CANON:int:62
+	CANON18!!11:bool:34
+	CANON18!!34:bool:34
+	CANON19!!12:int:35
+	CANON19!!36:int:35
+	tacContractAtCANON1:bv256:25
+	tacContractAtCANON2:bv256:26
+	tacContractAtCANON3:bv256:27
+	lastHasThrown:bool:45
+	lastReverted!!73:bool:6
+	lastReverted!!97:bool:6
+	CANON1:int:46
+	CANON2:int:47
+	CANON3:int:48
+	CANON4:int:49
+	CANON5:int:50
+	CANON6:int:51
+	CANON7:int:52
+	CANON8:int:53
+	CANON9:int:54
+	tacContractAtCANON:bv256:28
+	CANON20!!13:int:36
+	CANON20!!40:int:36
+	CANON21!!14:int:37
+	CANON21!!42:int:37
+	CANON22!!15:bool:38
+	CANON22!!37:bool:38
+	CANON23!!16:bool:39
+	CANON23!!38:bool:39
+	CANON24!!17:bool:40
+	CANON24!!39:bool:40
+	CANON25!!18:bool:41
+	CANON25!!41:bool:41
+	lastHasThrown!!49:bool:45
+	lastHasThrown!!72:bool:45
+	lastHasThrown!!74:bool:45
+	lastHasThrown!!96:bool:45
+	tacSighash!!24:bv256:55
+	tacSighash!!25:bv256:55
+	tacSighash@1:bv256:55
+	tacSighash@2:bv256:55
+	CANON:int:56
 }
 Program {
 	Block 0_0_0_0_0_0 Succ [0_0_0_1_0_0] {
@@ -250,310 +234,309 @@ Program {
 		AssumeExpCmd Le(tacM0x40!!0:0 0x80 )
 		AssignHavocCmd tacM0x40!!1:0
 		AssumeExpCmd Le(tacM0x40!!1:0 0x80 )
-		AssignHavocCmd R2:1
-		AssumeExpCmd Ge(R2:1 0x1 )
-		AssignHavocCmd tacExtcodesize!!5:11
-		AssignHavocCmd tacBalance!!6:16
-		AssignHavocCmd CANON11havocme1254:22
-		AssignHavocCmd CANON10:38
-		AssumeExpCmd LAnd(Ge(CANON10:38 0x4 ) Le(CANON10:38 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff ) )
-		AssignHavocCmd CANON11:39
-		AssignHavocCmd CANON12!!7:8
-		AssumeExpCmd LAnd(Ge(CANON12!!7:8 0x0(int) ) Le(CANON12!!7:8 0xffffffff(int) ) )
-		AssignHavocCmd CANON13!!8:9
-		AssumeExpCmd LAnd(Ge(CANON13!!8:9 0x0(int) ) Le(CANON13!!8:9 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON14!!9:10
-		AssumeExpCmd LAnd(Ge(CANON14!!9:10 0x0(int) ) Le(CANON14!!9:10 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON15!!10:35
-		AssignHavocCmd CANON16!!11:36
-		AssignHavocCmd CANON17!!12:37
-		AssignHavocCmd CANON18!!13:40
-		AssignHavocCmd CANON19!!14:41
-		AssumeExpCmd LAnd(Ge(CANON19!!14:41 0x0(int) ) Le(CANON19!!14:41 0xffffffff(int) ) )
-		AssignHavocCmd CANON20!!15:42
-		AssumeExpCmd LAnd(Ge(CANON20!!15:42 0x0(int) ) Le(CANON20!!15:42 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON21!!16:43
-		AssumeExpCmd LAnd(Ge(CANON21!!16:43 0x0(int) ) Le(CANON21!!16:43 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON22!!17:44
-		AssignHavocCmd CANON23!!18:45
-		AssignHavocCmd CANON24!!19:46
-		AssignHavocCmd CANON25!!20:47
-		AssignHavocCmd CANON27!!21:49
-		AssignHavocCmd R22:28
-		AssumeExpCmd Eq(R22:28 0x1 )
-		AssignHavocCmd R23:29
-		AssumeExpCmd Eq(R23:29 0x2 )
-		AssignHavocCmd R24:30
-		AssumeExpCmd Eq(R24:30 0x4 )
-		AssignHavocCmd R26:31
-		AssumeExpCmd LAnd(Ge(R26:31 0x1 ) Le(R26:31 0xffffffffffffffffffffffffffffffffffffffff ) )
-		AssignHavocCmd tacSCANON0!!27:12
-		AssignHavocCmd tacSighash!!28:61
-		AssumeExpCmd Eq(tacSighash!!28:61 0xad9ea578 )
-		AssignHavocCmd tacSighash!!29:61
-		AssumeExpCmd Eq(tacSighash!!29:61 0xad9ea578 )
+		AssignHavocCmd R2:3
+		AssumeExpCmd Ge(R2:3 0x1 )
+		AssignHavocCmd tacExtcodesize!!3:12
+		AssignHavocCmd tacBalance!!4:15
+		AssignHavocCmd CANON11havocme1256:19
+		AssignHavocCmd CANON10:32
+		AssumeExpCmd LAnd(Ge(CANON10:32 0x4 ) Le(CANON10:32 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff ) )
+		AssignHavocCmd CANON11:33
+		AssignHavocCmd CANON12!!5:7
+		AssumeExpCmd LAnd(Ge(CANON12!!5:7 0x0(int) ) Le(CANON12!!5:7 0xffffffff(int) ) )
+		AssignHavocCmd CANON13!!6:8
+		AssumeExpCmd LAnd(Ge(CANON13!!6:8 0x0(int) ) Le(CANON13!!6:8 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON14!!7:9
+		AssumeExpCmd LAnd(Ge(CANON14!!7:9 0x0(int) ) Le(CANON14!!7:9 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON15!!8:10
+		AssignHavocCmd CANON16!!9:11
+		AssignHavocCmd CANON17!!10:31
+		AssignHavocCmd CANON18!!11:34
+		AssignHavocCmd CANON19!!12:35
+		AssumeExpCmd LAnd(Ge(CANON19!!12:35 0x0(int) ) Le(CANON19!!12:35 0xffffffff(int) ) )
+		AssignHavocCmd CANON20!!13:36
+		AssumeExpCmd LAnd(Ge(CANON20!!13:36 0x0(int) ) Le(CANON20!!13:36 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON21!!14:37
+		AssumeExpCmd LAnd(Ge(CANON21!!14:37 0x0(int) ) Le(CANON21!!14:37 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON22!!15:38
+		AssignHavocCmd CANON23!!16:39
+		AssignHavocCmd CANON24!!17:40
+		AssignHavocCmd CANON25!!18:41
+		AssignHavocCmd CANON31!!19:1
+		AssignHavocCmd R20:25
+		AssumeExpCmd Eq(R20:25 0x1 )
+		AssignHavocCmd R21:26
+		AssumeExpCmd Eq(R21:26 0x2 )
+		AssignHavocCmd R22:27
+		AssumeExpCmd Eq(R22:27 0x4 )
+		AssignHavocCmd R23:28
+		AssumeExpCmd LAnd(Ge(R23:28 0x1 ) Le(R23:28 0xffffffffffffffffffffffffffffffffffffffff ) )
+		AssignHavocCmd tacSighash!!24:55
+		AssumeExpCmd Eq(tacSighash!!24:55 0xad9ea578 )
+		AssignHavocCmd tacSighash!!25:55
+		AssumeExpCmd Eq(tacSighash!!25:55 0xad9ea578 )
 		AnnotationCmd JSON{"key":{"name":"tac.state.extension","type":"analysis.icfg.Inliner$ExtendedStateVars","erasureStrategy":"Canonical"},"value":"rO0ABXNyACdhbmFseXNpcy5pY2ZnLklubGluZXIkRXh0ZW5kZWRTdGF0ZVZhcnOvh/MjxNFkQAIAAUwAFmluc3RhbmNlVG9FeHRlbmRlZFZhcnN0AA9MamF2YS91dGlsL01hcDt4cHNyACFkYXRhc3RydWN0dXJlcy5MaW5rZWRBcnJheUhhc2hNYXAAAAAAAAAAAQMAAkYACmxvYWRGYWN0b3JMAAloYXNoVGFibGV0AC5MZGF0YXN0cnVjdHVyZXMvYXJyYXloYXNodGFibGUvQXJyYXlIYXNoVGFibGU7eHB3CAAAAAFAAAAAc3IAFGphdmEubWF0aC5CaWdJbnRlZ2VyjPyfH6k7+x0DAAZJAAhiaXRDb3VudEkACWJpdExlbmd0aEkAE2ZpcnN0Tm9uemVyb0J5dGVOdW1JAAxsb3dlc3RTZXRCaXRJAAZzaWdudW1bAAltYWduaXR1ZGV0AAJbQnhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cP///////////////v////4AAAABdXIAAltCrPMX+AYIVOACAAB4cAAAABDORgSgAAAAAAAAAAAAAAABeHNxAH4AA3cIAAAAAEAAAAB4eA=="}
-		AnnotationCmd:63 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"rule parameters setup"}}
-		AssignHavocCmd CANON:62
-		AssumeExpCmd LAnd(Ge(CANON:62 0x0(int) ) Le(CANON:62 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON1:52
-		AssumeExpCmd Eq(CANON1:52 0x0(int) )
-		AssignHavocCmd CANON2:53
-		AssumeExpCmd LAnd(Ge(CANON2:53 0x0(int) ) Le(CANON2:53 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON3:54
-		AssumeExpCmd LAnd(Ge(CANON3:54 0x0(int) ) Le(CANON3:54 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON4:55
-		AssumeExpCmd LAnd(Ge(CANON4:55 0x0(int) ) Le(CANON4:55 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON5:56
-		AssumeExpCmd LAnd(Ge(CANON5:56 0x0(int) ) Le(CANON5:56 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON6:57
-		AssumeExpCmd LAnd(Ge(CANON6:57 0x0(int) ) Le(CANON6:57 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON7:58
-		AssumeExpCmd LAnd(Ge(CANON7:58 0x0(int) ) Le(CANON7:58 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON8:59
-		AssumeExpCmd LAnd(Ge(CANON8:59 0x0(int) ) Le(CANON8:59 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON9:60
-		AssumeExpCmd LAnd(Ge(CANON9:60 0x0(int) ) Le(CANON9:60 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AnnotationCmd:57 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"rule parameters setup"}}
+		AssignHavocCmd CANON:56
+		AssumeExpCmd LAnd(Ge(CANON:56 0x0(int) ) Le(CANON:56 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON1:46
+		AssumeExpCmd Eq(CANON1:46 0x0(int) )
+		AssignHavocCmd CANON2:47
+		AssumeExpCmd LAnd(Ge(CANON2:47 0x0(int) ) Le(CANON2:47 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON3:48
+		AssumeExpCmd LAnd(Ge(CANON3:48 0x0(int) ) Le(CANON3:48 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON4:49
+		AssumeExpCmd LAnd(Ge(CANON4:49 0x0(int) ) Le(CANON4:49 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON5:50
+		AssumeExpCmd LAnd(Ge(CANON5:50 0x0(int) ) Le(CANON5:50 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON6:51
+		AssumeExpCmd LAnd(Ge(CANON6:51 0x0(int) ) Le(CANON6:51 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON7:52
+		AssumeExpCmd LAnd(Ge(CANON7:52 0x0(int) ) Le(CANON7:52 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON8:53
+		AssumeExpCmd LAnd(Ge(CANON8:53 0x0(int) ) Le(CANON8:53 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON9:54
+		AssumeExpCmd LAnd(Ge(CANON9:54 0x0(int) ) Le(CANON9:54 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.StructArg","callIndex":0,"index":0,"symbols":[{"namePrefix":"CANON","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.sender"}]},{"namePrefix":"CANON1","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.value"}]},{"namePrefix":"CANON2","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.tx.origin"}]},{"namePrefix":"CANON3","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.basefee"}]},{"namePrefix":"CANON4","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.blobbasefee"}]},{"namePrefix":"CANON5","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.coinbase"}]},{"namePrefix":"CANON6","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.difficulty"}]},{"namePrefix":"CANON7","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.gaslimit"}]},{"namePrefix":"CANON8","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.number"}]},{"namePrefix":"CANON9","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.timestamp"}]}],"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"id":"e","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"e104"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"e"},"fields":[[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"coinbase"}],{"namePrefix":"CANON5","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.coinbase"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"basefee"}],{"namePrefix":"CANON3","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.basefee"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"timestamp"}],{"namePrefix":"CANON9","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.timestamp"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"blobbasefee"}],{"namePrefix":"CANON4","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.blobbasefee"}]},[{"#class":"tac.DataField.StructField","field":"tx"},{"#class":"tac.DataField.StructField","field":"origin"}],{"namePrefix":"CANON2","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.tx.origin"}]},[{"#class":"tac.DataField.StructField","field":"msg"},{"#class":"tac.DataField.StructField","field":"sender"}],{"namePrefix":"CANON","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.sender"}]},[{"#class":"tac.DataField.StructField","field":"msg"},{"#class":"tac.DataField.StructField","field":"value"}],{"namePrefix":"CANON1","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.value"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"difficulty"}],{"namePrefix":"CANON6","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.difficulty"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"gaslimit"}],{"namePrefix":"CANON7","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.gaslimit"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"number"}],{"namePrefix":"CANON8","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.number"}]}]}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"e100"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"e"},"fields":[[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"coinbase"}],{"namePrefix":"CANON5","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.coinbase"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"basefee"}],{"namePrefix":"CANON3","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.basefee"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"timestamp"}],{"namePrefix":"CANON9","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.timestamp"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"blobbasefee"}],{"namePrefix":"CANON4","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.blobbasefee"}]},[{"#class":"tac.DataField.StructField","field":"tx"},{"#class":"tac.DataField.StructField","field":"origin"}],{"namePrefix":"CANON2","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.tx.origin"}]},[{"#class":"tac.DataField.StructField","field":"msg"},{"#class":"tac.DataField.StructField","field":"sender"}],{"namePrefix":"CANON","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.sender"}]},[{"#class":"tac.DataField.StructField","field":"msg"},{"#class":"tac.DataField.StructField","field":"value"}],{"namePrefix":"CANON1","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.value"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"difficulty"}],{"namePrefix":"CANON6","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.difficulty"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"gaslimit"}],{"namePrefix":"CANON7","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.gaslimit"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"number"}],{"namePrefix":"CANON8","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":16},"end":{"line":0,"charByteOffset":21}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.number"}]}]}}
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.ArrayArg","callIndex":0,"index":1,"data":[{"namePrefix":"CANON11","tag":{"#class":"tac.Tag.ByteMap"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":23},"end":{"line":0,"charByteOffset":38}}}},{"key":{"name":"cvl.data.is-reference","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":false},{"key":{"name":"cvl.dataof","type":"java.lang.String","erasureStrategy":"Canonical"},"value":"arg"},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"arg"}]}],"len":{"namePrefix":"CANON10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":23},"end":{"line":0,"charByteOffset":38}}}},{"key":{"name":"cvl.lengthof","type":"java.lang.String","erasureStrategy":"Canonical"},"value":"arg"},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"arg.length"}]},"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"},"id":"arg","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":23},"end":{"line":0,"charByteOffset":38}}}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"arg105"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"arg"},"fields":null}}
-		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.StructArg","callIndex":0,"index":2,"symbols":[{"namePrefix":"CANON12!!7","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.selector"}]},{"namePrefix":"CANON15!!10","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPure"}]},{"namePrefix":"CANON16!!11","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isView"}]},{"namePrefix":"CANON17!!12","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPayable"}]},{"namePrefix":"CANON13!!8","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.numberOfArguments"}]},{"namePrefix":"CANON18!!13","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isFallback"}]},{"namePrefix":"CANON14!!9","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.contract"}]}],"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"id":"f","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"f106"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"f"},"fields":[[{"#class":"tac.DataField.StructField","field":"isPayable"}],{"namePrefix":"CANON17!!12","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPayable"}]},[{"#class":"tac.DataField.StructField","field":"isPure"}],{"namePrefix":"CANON15!!10","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPure"}]},[{"#class":"tac.DataField.StructField","field":"isView"}],{"namePrefix":"CANON16!!11","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isView"}]},[{"#class":"tac.DataField.StructField","field":"contract"}],{"namePrefix":"CANON14!!9","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.contract"}]},[{"#class":"tac.DataField.StructField","field":"isFallback"}],{"namePrefix":"CANON18!!13","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isFallback"}]},[{"#class":"tac.DataField.StructField","field":"numberOfArguments"}],{"namePrefix":"CANON13!!8","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.numberOfArguments"}]},[{"#class":"tac.DataField.StructField","field":"selector"}],{"namePrefix":"CANON12!!7","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.selector"}]}]}}
-		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.StructArg","callIndex":0,"index":3,"symbols":[{"namePrefix":"CANON19!!14","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.selector"}]},{"namePrefix":"CANON22!!17","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPure"}]},{"namePrefix":"CANON23!!18","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isView"}]},{"namePrefix":"CANON24!!19","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPayable"}]},{"namePrefix":"CANON20!!15","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.numberOfArguments"}]},{"namePrefix":"CANON25!!20","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isFallback"}]},{"namePrefix":"CANON21!!16","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.contract"}]}],"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"id":"g","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"g107"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"g"},"fields":[[{"#class":"tac.DataField.StructField","field":"isPayable"}],{"namePrefix":"CANON24!!19","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPayable"}]},[{"#class":"tac.DataField.StructField","field":"isPure"}],{"namePrefix":"CANON22!!17","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPure"}]},[{"#class":"tac.DataField.StructField","field":"isView"}],{"namePrefix":"CANON23!!18","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isView"}]},[{"#class":"tac.DataField.StructField","field":"contract"}],{"namePrefix":"CANON21!!16","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.contract"}]},[{"#class":"tac.DataField.StructField","field":"isFallback"}],{"namePrefix":"CANON25!!20","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isFallback"}]},[{"#class":"tac.DataField.StructField","field":"numberOfArguments"}],{"namePrefix":"CANON20!!15","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.numberOfArguments"}]},[{"#class":"tac.DataField.StructField","field":"selector"}],{"namePrefix":"CANON19!!14","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.selector"}]}]}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"arg103"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"arg"},"fields":null}}
+		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.StructArg","callIndex":0,"index":2,"symbols":[{"namePrefix":"CANON12!!5","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.selector"}]},{"namePrefix":"CANON15!!8","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPure"}]},{"namePrefix":"CANON16!!9","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isView"}]},{"namePrefix":"CANON17!!10","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPayable"}]},{"namePrefix":"CANON13!!6","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.numberOfArguments"}]},{"namePrefix":"CANON18!!11","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isFallback"}]},{"namePrefix":"CANON14!!7","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.contract"}]}],"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"id":"f","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"f105"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"f"},"fields":[[{"#class":"tac.DataField.StructField","field":"isPayable"}],{"namePrefix":"CANON17!!10","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPayable"}]},[{"#class":"tac.DataField.StructField","field":"isPure"}],{"namePrefix":"CANON15!!8","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isPure"}]},[{"#class":"tac.DataField.StructField","field":"isView"}],{"namePrefix":"CANON16!!9","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isView"}]},[{"#class":"tac.DataField.StructField","field":"contract"}],{"namePrefix":"CANON14!!7","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.contract"}]},[{"#class":"tac.DataField.StructField","field":"isFallback"}],{"namePrefix":"CANON18!!11","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.isFallback"}]},[{"#class":"tac.DataField.StructField","field":"numberOfArguments"}],{"namePrefix":"CANON13!!6","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.numberOfArguments"}]},[{"#class":"tac.DataField.StructField","field":"selector"}],{"namePrefix":"CANON12!!5","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":40},"end":{"line":0,"charByteOffset":48}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"f.selector"}]}]}}
+		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.StructArg","callIndex":0,"index":3,"symbols":[{"namePrefix":"CANON19!!12","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.selector"}]},{"namePrefix":"CANON22!!15","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPure"}]},{"namePrefix":"CANON23!!16","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isView"}]},{"namePrefix":"CANON24!!17","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPayable"}]},{"namePrefix":"CANON20!!13","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.numberOfArguments"}]},{"namePrefix":"CANON25!!18","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isFallback"}]},{"namePrefix":"CANON21!!14","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.contract"}]}],"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"id":"g","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"g107"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"g"},"fields":[[{"#class":"tac.DataField.StructField","field":"isPayable"}],{"namePrefix":"CANON24!!17","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPayable"}]},[{"#class":"tac.DataField.StructField","field":"isPure"}],{"namePrefix":"CANON22!!15","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isPure"}]},[{"#class":"tac.DataField.StructField","field":"isView"}],{"namePrefix":"CANON23!!16","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isView"}]},[{"#class":"tac.DataField.StructField","field":"contract"}],{"namePrefix":"CANON21!!14","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.contract"}]},[{"#class":"tac.DataField.StructField","field":"isFallback"}],{"namePrefix":"CANON25!!18","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.isFallback"}]},[{"#class":"tac.DataField.StructField","field":"numberOfArguments"}],{"namePrefix":"CANON20!!13","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.numberOfArguments"}]},[{"#class":"tac.DataField.StructField","field":"selector"}],{"namePrefix":"CANON19!!12","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"method","fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"fieldName":"isPure","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isView","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"isPayable","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"numberOfArguments","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"isFallback","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"contract","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]},"fields":[{"fieldName":"selector","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":0,"charByteOffset":50},"end":{"line":0,"charByteOffset":58}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":32}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"g.selector"}]}]}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":0}
-		AnnotationCmd:64 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Setup"}}
-		AnnotationCmd:65 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"multi contract setup"}}
+		AnnotationCmd:58 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Setup"}}
+		AnnotationCmd:59 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"multi contract setup"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":2}
-		AnnotationCmd:66 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"contract address vars initialized"}}
-		AssignExpCmd CANON26:48 R26:67
+		AnnotationCmd:60 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"contract address vars initialized"}}
+		AssignExpCmd CANON26:42 R23:61
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":3}
-		AnnotationCmd:68 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"setup read tracking instrumentation"}}
+		AnnotationCmd:62 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"setup read tracking instrumentation"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":4}
-		AnnotationCmd:69 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"last storage initialize"}}
+		AnnotationCmd:63 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"last storage initialize"}}
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageGlobalChangeSnippet.StorageTakeSnapshot","lhs":{"namePrefix":"lastStorage","tag":{"#class":"tac.Tag.BlockchainState"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule"}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"lastStorage"}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"lastStorage"}]}}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":5}
-		AnnotationCmd:70 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming contracts in scene with non-empty bytecode have EXTCODESIZE larger than zero"}}
-		AssignExpCmd R30:23 Select(tacExtcodesize!!5:11 Apply(to_skey:bif R26:67) )
-		AssumeExpCmd Ge(R30:23 0x1 )
-		AssumeExpCmd Eq(R30:71 R2:72 )
+		AnnotationCmd:64 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming contracts in scene with non-empty bytecode have EXTCODESIZE larger than zero"}}
+		AssignExpCmd R26:20 Select(tacExtcodesize!!3:12 Apply(to_skey:bif R23:61) )
+		AssumeExpCmd Ge(R26:20 0x1 )
+		AssumeExpCmd Eq(R26:65 R2:66 )
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":6}
-		AnnotationCmd:73 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming address(0).code has no code deployed"}}
-		AssignExpCmd B32:23 Eq(Select(tacExtcodesize!!5:11 Apply(skey_basic:bif 0x0) ) 0x0 )
-		AssumeCmd B32:23
+		AnnotationCmd:67 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming address(0).code has no code deployed"}}
+		AssignExpCmd B28:20 Eq(Select(tacExtcodesize!!3:12 Apply(skey_basic:bif 0x0) ) 0x0 )
+		AssumeCmd B28:20 "expToAssumeCmd"
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":7}
-		AnnotationCmd:74 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about contracts' addresses"}}
+		AnnotationCmd:68 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about contracts' addresses"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":8}
-		AnnotationCmd:75 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about static addresses"}}
+		AnnotationCmd:69 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about static addresses"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":9}
-		AnnotationCmd:76 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish addresses of precompiled contracts"}}
+		AnnotationCmd:70 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish addresses of precompiled contracts"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":10}
-		AnnotationCmd:77 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about uniqueness of contracts' addresses"}}
+		AnnotationCmd:71 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about uniqueness of contracts' addresses"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":11}
-		AnnotationCmd:78 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"static links"}}
+		AnnotationCmd:72 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"static links"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":12}
-		AnnotationCmd:79 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"record starting nonces"}}
+		AnnotationCmd:73 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"record starting nonces"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":13}
-		AnnotationCmd:80 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"cloned contracts have no balances"}}
+		AnnotationCmd:74 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"cloned contracts have no balances"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":14}
-		AnnotationCmd:81 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Linked immutable setup"}}
+		AnnotationCmd:75 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Linked immutable setup"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":15}
-		AnnotationCmd:82 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Constrain immutables"}}
+		AnnotationCmd:76 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Constrain immutables"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":16}
-		AnnotationCmd:83 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish equivalence of extension and base contract immutables"}}
+		AnnotationCmd:77 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish equivalence of extension and base contract immutables"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":17}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1}
-		AssignExpCmd CANON12!!33:8 0xad9ea578
-		AssignExpCmd CANON15!!34:35 false
-		AssignExpCmd CANON16!!35:36 false
-		AssignExpCmd CANON17!!36:37 false
-		AssignExpCmd CANON13!!37:9 0x0
-		AssignExpCmd CANON18!!38:40 false
-		AssignExpCmd CANON14!!39:10 R26:67
-		AssignExpCmd CANON19!!40:41 0xad9ea578
-		AssignExpCmd CANON22!!41:44 false
-		AssignExpCmd CANON23!!42:45 false
-		AssignExpCmd CANON24!!43:46 false
-		AssignExpCmd CANON20!!44:42 0x0
-		AssignExpCmd CANON25!!45:47 false
-		AssignExpCmd CANON21!!46:43 R26:67
-		AnnotationCmd:84 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Definition","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":35}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"idL":[{"#class":"spec.cvlast.CVLLhs.Id","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":14}},"id":"before","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":14}}}}],"exp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"currentContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"MultipleCandidates"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":17},"end":{"line":1,"charByteOffset":32}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"n","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$IntK","bitwidth":256},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":17},"end":{"line":1,"charByteOffset":34}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:85 CANON32:50 CANON27!!21:86
-		AssignExpCmd:85 CANON33:50 Apply(unwrap_twos_complement_256:bif CANON27!!21:86)
-		AnnotationCmd:85 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON33","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":14}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"before"}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"Parametric.spec","start":{"line":1,"charByteOffset":17},"end":{"line":1,"charByteOffset":34}}}}
-		AnnotationCmd:85 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":18}
-		AnnotationCmd:87 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Apply","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":4},"end":{"line":2,"charByteOffset":14}},"exp":{"#class":"spec.cvlast.CVLExp.ApplyExp.ContractFunction.Symbolic","methodIdWithCallContext":{"#class":"spec.cvlast.ParametricMethod","methodId":"f","host":{"#class":"spec.cvlast.AllContracts"}},"args":[{"#class":"spec.cvlast.CVLExp.VariableExp","id":"e","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":6},"end":{"line":2,"charByteOffset":7}}},"twoStateIndex":"NEITHER"},{"#class":"spec.cvlast.CVLExp.VariableExp","id":"arg","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":9},"end":{"line":2,"charByteOffset":12}}},"twoStateIndex":"NEITHER"}],"noRevert":true,"storage":{"id":"lastStorage","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"},"range":{"#class":"utils.Range.Empty","comment":"empty storage type"}},"twoStateIndex":"NEITHER"},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Void"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":4},"end":{"line":2,"charByteOffset":13}}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg144145"},"src":{"id":"e104"}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg146147"},"src":{"id":"arg105"}}}
-		AnnotationCmd:88 JSON{"key":{"name":"call.trace.push","type":"analysis.icfg.Inliner$CallStack$PushRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"summary":null,"convention":{"#class":"analysis.icfg.Inliner.CallConventionType.FromCVL"},"calleeId":1}}
-		AssignExpCmd:88 M51:23 MapDefinition(CANON38.1298:bv256 -> Ite(Lt(CANON38.1298:23 CANON10:89 ) Unconstrained(bv256) 0x0 ) bytemap)
-		AssignExpCmd tacCalldatabuf@1:19 LongStore(M51:23 0x0 CANON11havocme1254:22 0x0 CANON10:89 )
-		AssignExpCmd R52:23 Select(CANON11havocme1254:22 0x0 )
-		AssignExpCmd tacCalldatabufCANON0@1:3 R52:23
+		AssignExpCmd CANON12!!29:7 0xad9ea578
+		AssignExpCmd CANON15!!30:10 false
+		AssignExpCmd CANON16!!31:11 false
+		AssignExpCmd CANON17!!32:31 false
+		AssignExpCmd CANON13!!33:8 0x0
+		AssignExpCmd CANON18!!34:34 false
+		AssignExpCmd CANON14!!35:9 R23:61
+		AssignExpCmd CANON19!!36:35 0xad9ea578
+		AssignExpCmd CANON22!!37:38 false
+		AssignExpCmd CANON23!!38:39 false
+		AssignExpCmd CANON24!!39:40 false
+		AssignExpCmd CANON20!!40:36 0x0
+		AssignExpCmd CANON25!!41:41 false
+		AssignExpCmd CANON21!!42:37 R23:61
+		AnnotationCmd:78 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Definition","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":35}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"idL":[{"#class":"spec.cvlast.CVLLhs.Id","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":14}},"id":"before","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":14}}}}],"exp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"currentContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"MultipleCandidates"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":17},"end":{"line":1,"charByteOffset":32}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"n","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$IntK","bitwidth":256},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":17},"end":{"line":1,"charByteOffset":34}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:79 CANON32:43 CANON31!!19:80
+		AssignExpCmd:79 CANON33:43 Apply(unwrap_twos_complement_256:bif CANON31!!19:80)
+		AnnotationCmd:79 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON33","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":1,"charByteOffset":4},"end":{"line":1,"charByteOffset":14}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"before"}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"Parametric.spec","start":{"line":1,"charByteOffset":17},"end":{"line":1,"charByteOffset":34}}}}
+		AnnotationCmd:79 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":18}
+		AnnotationCmd:81 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Apply","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":4},"end":{"line":2,"charByteOffset":14}},"exp":{"#class":"spec.cvlast.CVLExp.ApplyExp.ContractFunction.Symbolic","methodIdWithCallContext":{"#class":"spec.cvlast.ParametricMethod","methodId":"f","host":{"#class":"spec.cvlast.AllContracts"}},"args":[{"#class":"spec.cvlast.CVLExp.VariableExp","id":"e","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":6},"end":{"line":2,"charByteOffset":7}}},"twoStateIndex":"NEITHER"},{"#class":"spec.cvlast.CVLExp.VariableExp","id":"arg","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":9},"end":{"line":2,"charByteOffset":12}}},"twoStateIndex":"NEITHER"}],"noRevert":true,"storage":{"id":"lastStorage","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"},"range":{"#class":"utils.Range.Empty","comment":"empty storage type"}},"twoStateIndex":"NEITHER"},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Void"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":2,"charByteOffset":4},"end":{"line":2,"charByteOffset":13}}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg144147"},"src":{"id":"e100"}}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg150151"},"src":{"id":"arg103"}}}
+		AnnotationCmd:82 JSON{"key":{"name":"call.trace.push","type":"analysis.icfg.Inliner$CallStack$PushRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"summary":null,"convention":{"#class":"analysis.icfg.Inliner.CallConventionType.FromCVL"},"calleeId":1}}
+		AssignExpCmd:82 M47:20 MapDefinition(CANON38.1282:bv256 -> Ite(Lt(CANON38.1282:20 CANON10:83 ) Unconstrained(bv256) 0x0 ) bytemap)
+		AssignExpCmd tacCalldatabuf@1:16 LongStore(M47:20 0x0 CANON11havocme1256:19 0x0 CANON10:83 )
+		AssignExpCmd R48:20 Select(CANON11havocme1256:19 0x0 )
+		AssignExpCmd tacCalldatabufCANON0@1:4 R48:20
 	}
 	Block 0_0_0_1_0_0 Succ [1_0_0_0_0_0] {
-		AssignExpCmd:88 lastHasThrown!!53:34 false
+		AssignExpCmd:82 lastHasThrown!!49:45 false
+		AssertCmd:84 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:85 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:86 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:87 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:88 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:89 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:90 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:91 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:92 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:93 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:94 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:95 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:96 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:97 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:98 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:99 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:100 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:101 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssignExpCmd:88 R55:23 Apply(safe_math_narrow_bv256:bif CANON:62)
-		AssignExpCmd:88 R57:23 Select(tacBalance!!6:16 Apply(to_skey:bif R55:23) )
-		AssignExpCmd:102 tacBalance!!59:16 Store(tacBalance!!6:16 Apply(to_skey:bif R55:23) R57:23 )
-		AssignExpCmd:88 R60:23 Select(tacBalance!!59:16 Apply(to_skey:bif R26:67) )
-		AssignExpCmd:102 R62:23 Apply(safe_math_narrow_bv256:bif R60:23)
-		AssignExpCmd:102 tacBalance!!63:16 Store(tacBalance!!59:16 Apply(to_skey:bif R26:67) R62:23 )
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.TransferSnippet","srcAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R57","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R57","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R55","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]}},"trgAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R60","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R62","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R26","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"tacContractAt"}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]}},"transferredAmount":{"#class":"vc.data.TACSymbol.Const","value":"0"}}}
-		LabelCmd:88 "Start procedure MultipleCandidates-plus_one()"
-		AnnotationCmd:88 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
-		AssignExpCmd:88 R64:23 Select(tacExtcodesize!!5:11 Apply(to_skey:bif R26:103) )
-		AssumeExpCmd Ge(R64:23 0x1 )
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R26","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"tacAddress","maybeTACKeywordOrdinal":22}},{"key":{"name":"tac.env.known-bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":160},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R64","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"storageType":null,"range":null}}
-		AnnotationCmd:88 JSON{"key":{"name":"internal.func.finder.info","type":"analysis.ip.InternalFunctionFinderReport","erasureStrategy":"Erased"},"value":{"unresolvedFunctions":[]}}
-		AnnotationCmd:88 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
-		AnnotationCmd:88 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":0,"bytecodeCount":8,"sources":[{"source":0,"begin":26,"end":697}]}}
+		AssignExpCmd:82 R51:20 Apply(safe_math_narrow_bv256:bif CANON:56)
+		AssignExpCmd:82 R53:20 Select(tacBalance!!4:15 Apply(to_skey:bif R51:20) )
+		AssignExpCmd:96 tacBalance!!55:15 Store(tacBalance!!4:15 Apply(to_skey:bif R51:20) R53:20 )
+		AssignExpCmd:82 R56:20 Select(tacBalance!!55:15 Apply(to_skey:bif R23:61) )
+		AssignExpCmd:96 R58:20 Apply(safe_math_narrow_bv256:bif R56:20)
+		AssignExpCmd:96 tacBalance!!59:15 Store(tacBalance!!55:15 Apply(to_skey:bif R23:61) R58:20 )
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.TransferSnippet","srcAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R51","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]}},"trgAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R56","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R58","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R23","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"tacContractAt"}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]}},"transferredAmount":{"#class":"vc.data.TACSymbol.Const","value":"0"}}}
+		LabelCmd:82 "Start procedure MultipleCandidates-plus_one()"
+		AnnotationCmd:82 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
+		AssignExpCmd:82 R60:20 Select(tacExtcodesize!!3:12 Apply(to_skey:bif R23:97) )
+		AssumeExpCmd Ge(R60:20 0x1 )
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R23","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"tacAddress","maybeTACKeywordOrdinal":22}},{"key":{"name":"tac.env.known-bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":160},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R60","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"storageType":null,"range":null}}
+		AnnotationCmd:82 JSON{"key":{"name":"internal.func.finder.info","type":"analysis.ip.InternalFunctionFinderReport","erasureStrategy":"Erased"},"value":{"unresolvedFunctions":[]}}
+		AnnotationCmd:82 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
+		AnnotationCmd:82 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":0,"bytecodeCount":8,"sources":[{"source":0,"begin":26,"end":697}]}}
 		LabelCmd "→ Assuming FP is strictly monotonic increasing"
 		LabelCmd "←"
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":0,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":2,"charByteOffset":0},"end":{"line":12,"charByteOffset":1}},"content":"contract MultipleCandidates {...}"}}}
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":0}}
-		AnnotationCmd:104 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":16,"bytecodeCount":7,"sources":[{"source":0,"begin":26,"end":697}]}}
-		AnnotationCmd:104 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":26,"bytecodeCount":9,"sources":[{"source":0,"begin":26,"end":697}]}}
-		AnnotationCmd:104 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":59,"bytecodeCount":4,"sources":[{"source":0,"begin":72,"end":380}]}}
-		AnnotationCmd:88 JSON{"key":{"name":"internal.func.start","type":"analysis.ip.InternalFuncStartAnnotation","erasureStrategy":"CallTrace"},"value":{"id":0,"startPc":79,"args":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]},"stackOffsetToArgPos":{},"callSiteSrc":{"source":0,"begin":72,"len":308,"jumpType":"ENTER","address":"ce4604a0000000000000000000000001","sourceContext":{"indexToFilePath":{"0":"MultipleCandidates.sol"},"sourceDir":".post_autofinders.0"}}}}
-		AnnotationCmd:105 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":79,"bytecodeCount":21,"sources":[{"source":0,"begin":72,"end":380},{"source":0,"begin":186,"end":199},{"source":0,"begin":118,"end":184},{"source":0,"begin":111,"end":200},{"source":0,"begin":276,"end":277},{"source":0,"begin":208,"end":274},{"source":0,"begin":201,"end":278},{"source":0,"begin":354,"end":355},{"source":0,"begin":286,"end":352},{"source":0,"begin":279,"end":356},{"source":0,"begin":372,"end":373},{"source":0,"begin":367,"end":368},{"source":0,"begin":367,"end":373}]}}
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON27!!21","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.storage.non-indexed-path.family","type":"analysis.storage.StorageAnalysisResult$StoragePaths","erasureStrategy":"Canonical"},"value":{"storagePaths":[{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}]}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.scalarization.sort","type":"vc.data.ScalarizationSort","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.ScalarizationSort.Split","idx":"0"}},{"key":{"name":"tac.storage.bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":256},{"key":{"name":"tac.storage.pretty.paths","type":"analysis.storage.DisplayPaths","erasureStrategy":"Erased"},"value":{"paths":[{"#class":"analysis.storage.DisplayPath.Root","name":"n"}]}},{"key":{"name":"tac.slot.type","type":"spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType","erasureStrategy":"Canonical"},"value":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256}},{"key":{"name":"tac.storage.non-indexed-path","type":"analysis.storage.StorageAnalysisResult$NonIndexedPath","erasureStrategy":"Canonical"},"value":{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}},{"key":{"name":"tac.storage","type":"java.math.BigInteger","erasureStrategy":"Canonical"},"value":"ce4604a0000000000000000000000001"},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
-		AnnotationCmd:106 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":414,"bytecodeCount":6,"sources":[{"source":1,"begin":275,"end":800},{"source":1,"begin":314,"end":317},{"source":1,"begin":333,"end":352},{"source":1,"begin":350,"end":351}]}}
-		AnnotationCmd:106 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
-		AnnotationCmd:106 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":425,"bytecodeCount":7,"sources":[{"source":1,"begin":333,"end":352},{"source":1,"begin":328,"end":352},{"source":1,"begin":366,"end":385},{"source":1,"begin":383,"end":384}]}}
-		AnnotationCmd:106 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
-		AnnotationCmd:106 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":436,"bytecodeCount":16,"sources":[{"source":1,"begin":366,"end":385},{"source":1,"begin":361,"end":385},{"source":1,"begin":554,"end":555},{"source":1,"begin":486,"end":552},{"source":1,"begin":482,"end":556},{"source":1,"begin":479,"end":480},{"source":1,"begin":475,"end":557},{"source":1,"begin":470,"end":471},{"source":1,"begin":467,"end":468},{"source":1,"begin":463,"end":472},{"source":1,"begin":456,"end":473},{"source":1,"begin":452,"end":558},{"source":1,"begin":449,"end":581}]}}
-		AssignExpCmd:107 R66:24 Sub(0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff CANON27!!21:108 )
-		AssignExpCmd:88 B67:24 Slt(R66:24 0x1 )
-		AssignExpCmd B68:25 Sle(0x0 CANON27!!21:108 )
-		AssumeExpCmd LNot(LAnd(B68:25 B67:24 ) )
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":1,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"content":"n += 1"}}}
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":1}}
-		AnnotationCmd:88 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":495,"bytecodeCount":13,"sources":[{"source":1,"begin":449,"end":581},{"source":1,"begin":741,"end":742},{"source":1,"begin":673,"end":739},{"source":1,"begin":669,"end":743},{"source":1,"begin":666,"end":667},{"source":1,"begin":662,"end":744},{"source":1,"begin":658,"end":659},{"source":1,"begin":655,"end":656},{"source":1,"begin":651,"end":660},{"source":1,"begin":647,"end":745},{"source":1,"begin":644,"end":768}]}}
-		AssignExpCmd:109 R70:24 Sub(0x8000000000000000000000000000000000000000000000000000000000000000 CANON27!!21:108 )
-		AssignExpCmd:88 B71:24 Slt(0x1 R70:24 )
-		AssignExpCmd:88 B72:25 Slt(CANON27!!21:108 0x0 )
-		AssumeExpCmd LNot(LAnd(B72:25 B71:24 ) )
-		AnnotationCmd:88 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":551,"bytecodeCount":11,"sources":[{"source":1,"begin":644,"end":768},{"source":1,"begin":792,"end":793},{"source":1,"begin":789,"end":790},{"source":1,"begin":785,"end":794},{"source":1,"begin":778,"end":794},{"source":1,"begin":275,"end":800}]}}
-		AssignExpCmd:110 R74:24 Add(0x1 CANON27!!21:108)
-		AnnotationCmd:88 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":209,"bytecodeCount":9,"sources":[{"source":0,"begin":367,"end":373},{"source":0,"begin":72,"end":380}]}}
-		AssignExpCmd:111 CANON27!!75:49 Add(0x1 CANON27!!21:108)
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.StoreSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R74","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1015}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}}}}
-		AnnotationCmd:88 JSON{"key":{"name":"internal.func.end","type":"analysis.ip.InternalFuncExitAnnotation","erasureStrategy":"Canonical"},"value":{"id":0,"rets":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]}}}
-		AnnotationCmd:112 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":67,"bytecodeCount":2,"sources":[{"source":0,"begin":72,"end":380}]}}
-		AssignExpCmd:112 lastHasThrown!!76:34 false
-		AssignExpCmd:112 lastReverted!!77:6 false
-		AnnotationCmd:112 JSON{"key":{"name":"tac.return.path","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
-		AnnotationCmd:88 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.HaltSnippet.Return","range":{"specFile":"MultipleCandidates.sol","start":{"line":5,"charByteOffset":4},"end":{"line":7,"charByteOffset":5}}}}
-		LabelCmd:88 "End procedure MultipleCandidates-plus_one()"
-		AnnotationCmd:88 JSON{"key":{"name":"call.trace.pop","type":"analysis.icfg.Inliner$CallStack$PopRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"calleeId":1}}
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":0,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":2,"charByteOffset":0},"end":{"line":12,"charByteOffset":1}},"content":"contract MultipleCandidates {...}"}}}
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":0}}
+		AnnotationCmd:98 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":16,"bytecodeCount":7,"sources":[{"source":0,"begin":26,"end":697}]}}
+		AnnotationCmd:98 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":26,"bytecodeCount":9,"sources":[{"source":0,"begin":26,"end":697}]}}
+		AnnotationCmd:98 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":59,"bytecodeCount":4,"sources":[{"source":0,"begin":72,"end":380}]}}
+		AnnotationCmd:82 JSON{"key":{"name":"internal.func.start","type":"analysis.ip.InternalFuncStartAnnotation","erasureStrategy":"CallTrace"},"value":{"id":0,"startPc":79,"args":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]},"stackOffsetToArgPos":{},"callSiteSrc":{"source":0,"begin":72,"len":308,"jumpType":"ENTER","address":"ce4604a0000000000000000000000001","sourceContext":{"indexToFilePath":{"0":"MultipleCandidates.sol"},"sourceDir":".post_autofinders.0"}}}}
+		AnnotationCmd:99 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":79,"bytecodeCount":21,"sources":[{"source":0,"begin":72,"end":380},{"source":0,"begin":186,"end":199},{"source":0,"begin":118,"end":184},{"source":0,"begin":111,"end":200},{"source":0,"begin":276,"end":277},{"source":0,"begin":208,"end":274},{"source":0,"begin":201,"end":278},{"source":0,"begin":354,"end":355},{"source":0,"begin":286,"end":352},{"source":0,"begin":279,"end":356},{"source":0,"begin":372,"end":373},{"source":0,"begin":367,"end":368},{"source":0,"begin":367,"end":373}]}}
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON31!!19","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.storage.non-indexed-path.family","type":"analysis.storage.StorageAnalysisResult$StoragePaths","erasureStrategy":"Canonical"},"value":{"storagePaths":[{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}]}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.scalarization.sort","type":"vc.data.ScalarizationSort","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.ScalarizationSort.Split","idx":"0"}},{"key":{"name":"tac.direct.storage.access.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256}},{"key":{"name":"tac.storage.bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":256},{"key":{"name":"tac.storage.pretty.paths","type":"analysis.storage.DisplayPaths","erasureStrategy":"Erased"},"value":{"paths":[{"#class":"analysis.storage.DisplayPath.Root","name":"n"}]}},{"key":{"name":"tac.slot.type","type":"spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType","erasureStrategy":"Canonical"},"value":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256}},{"key":{"name":"tac.storage.non-indexed-path","type":"analysis.storage.StorageAnalysisResult$NonIndexedPath","erasureStrategy":"Canonical"},"value":{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}},{"key":{"name":"tac.storage","type":"java.math.BigInteger","erasureStrategy":"Canonical"},"value":"ce4604a0000000000000000000000001"},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
+		AnnotationCmd:100 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":414,"bytecodeCount":6,"sources":[{"source":1,"begin":275,"end":800},{"source":1,"begin":314,"end":317},{"source":1,"begin":333,"end":352},{"source":1,"begin":350,"end":351}]}}
+		AnnotationCmd:100 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
+		AnnotationCmd:100 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":425,"bytecodeCount":7,"sources":[{"source":1,"begin":333,"end":352},{"source":1,"begin":328,"end":352},{"source":1,"begin":366,"end":385},{"source":1,"begin":383,"end":384}]}}
+		AnnotationCmd:100 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
+		AnnotationCmd:100 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":436,"bytecodeCount":16,"sources":[{"source":1,"begin":366,"end":385},{"source":1,"begin":361,"end":385},{"source":1,"begin":554,"end":555},{"source":1,"begin":486,"end":552},{"source":1,"begin":482,"end":556},{"source":1,"begin":479,"end":480},{"source":1,"begin":475,"end":557},{"source":1,"begin":470,"end":471},{"source":1,"begin":467,"end":468},{"source":1,"begin":463,"end":472},{"source":1,"begin":456,"end":473},{"source":1,"begin":452,"end":558},{"source":1,"begin":449,"end":581}]}}
+		AssignExpCmd:101 R62:21 Sub(0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff CANON31!!19:102 )
+		AssignExpCmd:82 B63:21 Slt(R62:21 0x1 )
+		AssignExpCmd B64:22 Sle(0x0 CANON31!!19:102 )
+		AssumeExpCmd LNot(LAnd(B64:22 B63:21 ) )
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":1,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"content":"n += 1"}}}
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":1}}
+		AnnotationCmd:82 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":495,"bytecodeCount":13,"sources":[{"source":1,"begin":449,"end":581},{"source":1,"begin":741,"end":742},{"source":1,"begin":673,"end":739},{"source":1,"begin":669,"end":743},{"source":1,"begin":666,"end":667},{"source":1,"begin":662,"end":744},{"source":1,"begin":658,"end":659},{"source":1,"begin":655,"end":656},{"source":1,"begin":651,"end":660},{"source":1,"begin":647,"end":745},{"source":1,"begin":644,"end":768}]}}
+		AssignExpCmd:103 R66:21 Sub(0x8000000000000000000000000000000000000000000000000000000000000000 CANON31!!19:102 )
+		AssignExpCmd:82 B67:21 Slt(0x1 R66:21 )
+		AssignExpCmd:82 B68:22 Slt(CANON31!!19:102 0x0 )
+		AssumeExpCmd LNot(LAnd(B68:22 B67:21 ) )
+		AnnotationCmd:82 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":551,"bytecodeCount":11,"sources":[{"source":1,"begin":644,"end":768},{"source":1,"begin":792,"end":793},{"source":1,"begin":789,"end":790},{"source":1,"begin":785,"end":794},{"source":1,"begin":778,"end":794},{"source":1,"begin":275,"end":800}]}}
+		AssignExpCmd:104 R70:21 Add(0x1 CANON31!!19:102)
+		AnnotationCmd:82 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":209,"bytecodeCount":9,"sources":[{"source":0,"begin":367,"end":373},{"source":0,"begin":72,"end":380}]}}
+		AssignExpCmd:105 CANON31!!71:2 Add(0x1 CANON31!!19:102)
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.StoreSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R70","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1015}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}}}}
+		AnnotationCmd:82 JSON{"key":{"name":"internal.func.end","type":"analysis.ip.InternalFuncExitAnnotation","erasureStrategy":"Canonical"},"value":{"id":0,"rets":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]}}}
+		AnnotationCmd:106 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":67,"bytecodeCount":2,"sources":[{"source":0,"begin":72,"end":380}]}}
+		AssignExpCmd:106 lastHasThrown!!72:45 false
+		AssignExpCmd:106 lastReverted!!73:6 false
+		AnnotationCmd:106 JSON{"key":{"name":"tac.return.path","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
+		AnnotationCmd:82 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.HaltSnippet.Return","range":{"specFile":"MultipleCandidates.sol","start":{"line":5,"charByteOffset":4},"end":{"line":7,"charByteOffset":5}}}}
+		LabelCmd:82 "End procedure MultipleCandidates-plus_one()"
+		AnnotationCmd:82 JSON{"key":{"name":"call.trace.pop","type":"analysis.icfg.Inliner$CallStack$PopRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"calleeId":1}}
 	}
 	Block 0_0_0_2_0_0 Succ [2_0_0_0_0_0] {
-		AssignExpCmd:113 lastHasThrown!!78:34 false
+		AssignExpCmd:107 lastHasThrown!!74:45 false
+		AssertCmd:108 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:109 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:110 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:111 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:112 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:113 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:114 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:115 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:116 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:117 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:118 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:119 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:120 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:121 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:122 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:123 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:124 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:125 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssignExpCmd:113 R80:23 Apply(safe_math_narrow_bv256:bif CANON:62)
-		AssignExpCmd:113 R82:23 Select(tacBalance!!63:16 Apply(to_skey:bif R80:23) )
-		AssignExpCmd:126 tacBalance!!84:16 Store(tacBalance!!63:16 Apply(to_skey:bif R80:23) R82:23 )
-		AssignExpCmd:113 R85:23 Select(tacBalance!!84:16 Apply(to_skey:bif R26:67) )
-		AssignExpCmd:126 R87:23 Apply(safe_math_narrow_bv256:bif R85:23)
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.TransferSnippet","srcAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R82","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R82","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R80","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]}},"trgAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R85","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R87","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R26","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"tacContractAt"}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]}},"transferredAmount":{"#class":"vc.data.TACSymbol.Const","value":"0"}}}
-		LabelCmd:113 "Start procedure MultipleCandidates-plus_one()"
-		AnnotationCmd:113 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
-		AssignExpCmd:113 R89:23 Select(tacExtcodesize!!5:11 Apply(to_skey:bif R26:103) )
-		AssumeExpCmd Ge(R89:23 0x1 )
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R26","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"tacAddress","maybeTACKeywordOrdinal":22}},{"key":{"name":"tac.env.known-bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":160},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R89","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"storageType":null,"range":null}}
-		AnnotationCmd:113 JSON{"key":{"name":"internal.func.finder.info","type":"analysis.ip.InternalFunctionFinderReport","erasureStrategy":"Erased"},"value":{"unresolvedFunctions":[]}}
-		AnnotationCmd:113 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
-		AnnotationCmd:113 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":0,"bytecodeCount":8,"sources":[{"source":0,"begin":26,"end":697}]}}
+		AssignExpCmd:107 R76:20 Apply(safe_math_narrow_bv256:bif CANON:56)
+		AssignExpCmd:107 R78:20 Select(tacBalance!!59:15 Apply(to_skey:bif R76:20) )
+		AssignExpCmd:120 tacBalance!!80:15 Store(tacBalance!!59:15 Apply(to_skey:bif R76:20) R78:20 )
+		AssignExpCmd:107 R81:20 Select(tacBalance!!80:15 Apply(to_skey:bif R23:61) )
+		AssignExpCmd:120 R83:20 Apply(safe_math_narrow_bv256:bif R81:20)
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.TransferSnippet","srcAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R78","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R78","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R76","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]}},"trgAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R81","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R83","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R23","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"tacContractAt"}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]}},"transferredAmount":{"#class":"vc.data.TACSymbol.Const","value":"0"}}}
+		LabelCmd:107 "Start procedure MultipleCandidates-plus_one()"
+		AnnotationCmd:107 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
+		AssignExpCmd:107 R84:20 Select(tacExtcodesize!!3:12 Apply(to_skey:bif R23:97) )
+		AssumeExpCmd Ge(R84:20 0x1 )
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R23","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"tacAddress","maybeTACKeywordOrdinal":22}},{"key":{"name":"tac.env.known-bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":160},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"MultipleCandidates"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R84","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"storageType":null,"range":null}}
+		AnnotationCmd:107 JSON{"key":{"name":"internal.func.finder.info","type":"analysis.ip.InternalFunctionFinderReport","erasureStrategy":"Erased"},"value":{"unresolvedFunctions":[]}}
+		AnnotationCmd:107 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
+		AnnotationCmd:107 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":0,"bytecodeCount":8,"sources":[{"source":0,"begin":26,"end":697}]}}
 		LabelCmd "→ Assuming FP is strictly monotonic increasing"
 		LabelCmd "←"
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":2,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":2,"charByteOffset":0},"end":{"line":12,"charByteOffset":1}},"content":"contract MultipleCandidates {...}"}}}
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":2}}
-		AnnotationCmd:127 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":16,"bytecodeCount":7,"sources":[{"source":0,"begin":26,"end":697}]}}
-		AnnotationCmd:127 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":26,"bytecodeCount":9,"sources":[{"source":0,"begin":26,"end":697}]}}
-		AnnotationCmd:127 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":59,"bytecodeCount":4,"sources":[{"source":0,"begin":72,"end":380}]}}
-		AnnotationCmd:113 JSON{"key":{"name":"internal.func.start","type":"analysis.ip.InternalFuncStartAnnotation","erasureStrategy":"CallTrace"},"value":{"id":1,"startPc":79,"args":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]},"stackOffsetToArgPos":{},"callSiteSrc":{"source":0,"begin":72,"len":308,"jumpType":"ENTER","address":"ce4604a0000000000000000000000001","sourceContext":{"indexToFilePath":{"0":"MultipleCandidates.sol"},"sourceDir":".post_autofinders.0"}}}}
-		AnnotationCmd:128 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":79,"bytecodeCount":21,"sources":[{"source":0,"begin":72,"end":380},{"source":0,"begin":186,"end":199},{"source":0,"begin":118,"end":184},{"source":0,"begin":111,"end":200},{"source":0,"begin":276,"end":277},{"source":0,"begin":208,"end":274},{"source":0,"begin":201,"end":278},{"source":0,"begin":354,"end":355},{"source":0,"begin":286,"end":352},{"source":0,"begin":279,"end":356},{"source":0,"begin":372,"end":373},{"source":0,"begin":367,"end":368},{"source":0,"begin":367,"end":373}]}}
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON27!!75","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.storage.non-indexed-path.family","type":"analysis.storage.StorageAnalysisResult$StoragePaths","erasureStrategy":"Canonical"},"value":{"storagePaths":[{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}]}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.scalarization.sort","type":"vc.data.ScalarizationSort","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.ScalarizationSort.Split","idx":"0"}},{"key":{"name":"tac.storage.bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":256},{"key":{"name":"tac.storage.pretty.paths","type":"analysis.storage.DisplayPaths","erasureStrategy":"Erased"},"value":{"paths":[{"#class":"analysis.storage.DisplayPath.Root","name":"n"}]}},{"key":{"name":"tac.slot.type","type":"spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType","erasureStrategy":"Canonical"},"value":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256}},{"key":{"name":"tac.storage.non-indexed-path","type":"analysis.storage.StorageAnalysisResult$NonIndexedPath","erasureStrategy":"Canonical"},"value":{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}},{"key":{"name":"tac.storage","type":"java.math.BigInteger","erasureStrategy":"Canonical"},"value":"ce4604a0000000000000000000000001"},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
-		AnnotationCmd:129 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":414,"bytecodeCount":6,"sources":[{"source":1,"begin":275,"end":800},{"source":1,"begin":314,"end":317},{"source":1,"begin":333,"end":352},{"source":1,"begin":350,"end":351}]}}
-		AnnotationCmd:129 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
-		AnnotationCmd:129 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":425,"bytecodeCount":7,"sources":[{"source":1,"begin":333,"end":352},{"source":1,"begin":328,"end":352},{"source":1,"begin":366,"end":385},{"source":1,"begin":383,"end":384}]}}
-		AnnotationCmd:129 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
-		AnnotationCmd:129 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":436,"bytecodeCount":16,"sources":[{"source":1,"begin":366,"end":385},{"source":1,"begin":361,"end":385},{"source":1,"begin":554,"end":555},{"source":1,"begin":486,"end":552},{"source":1,"begin":482,"end":556},{"source":1,"begin":479,"end":480},{"source":1,"begin":475,"end":557},{"source":1,"begin":470,"end":471},{"source":1,"begin":467,"end":468},{"source":1,"begin":463,"end":472},{"source":1,"begin":456,"end":473},{"source":1,"begin":452,"end":558},{"source":1,"begin":449,"end":581}]}}
-		AssignExpCmd:130 R91:24 Sub(0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff CANON27!!75:108 )
-		AssignExpCmd:113 B92:24 Slt(R91:24 0x1 )
-		AssignExpCmd B93:25 Sle(0x0 CANON27!!75:108 )
-		AssumeExpCmd LNot(LAnd(B93:25 B92:24 ) )
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":3,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"content":"n += 1"}}}
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":3}}
-		AnnotationCmd:113 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":495,"bytecodeCount":13,"sources":[{"source":1,"begin":449,"end":581},{"source":1,"begin":741,"end":742},{"source":1,"begin":673,"end":739},{"source":1,"begin":669,"end":743},{"source":1,"begin":666,"end":667},{"source":1,"begin":662,"end":744},{"source":1,"begin":658,"end":659},{"source":1,"begin":655,"end":656},{"source":1,"begin":651,"end":660},{"source":1,"begin":647,"end":745},{"source":1,"begin":644,"end":768}]}}
-		AssignExpCmd:131 R95:24 Sub(0x8000000000000000000000000000000000000000000000000000000000000000 CANON27!!75:108 )
-		AssignExpCmd:113 B96:24 Slt(0x1 R95:24 )
-		AssignExpCmd:113 B97:25 Slt(CANON27!!75:108 0x0 )
-		AssumeExpCmd LNot(LAnd(B97:25 B96:24 ) )
-		AnnotationCmd:113 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":551,"bytecodeCount":11,"sources":[{"source":1,"begin":644,"end":768},{"source":1,"begin":792,"end":793},{"source":1,"begin":789,"end":790},{"source":1,"begin":785,"end":794},{"source":1,"begin":778,"end":794},{"source":1,"begin":275,"end":800}]}}
-		AssignExpCmd:132 R99:24 Add(0x1 CANON27!!75:108)
-		AnnotationCmd:113 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":209,"bytecodeCount":9,"sources":[{"source":0,"begin":367,"end":373},{"source":0,"begin":72,"end":380}]}}
-		AssignExpCmd:133 CANON27!!100:49 Add(0x1 CANON27!!75:108)
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.StoreSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R99","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1015}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}}}}
-		AnnotationCmd:113 JSON{"key":{"name":"internal.func.end","type":"analysis.ip.InternalFuncExitAnnotation","erasureStrategy":"Canonical"},"value":{"id":1,"rets":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]}}}
-		AnnotationCmd:134 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":67,"bytecodeCount":2,"sources":[{"source":0,"begin":72,"end":380}]}}
-		AssignExpCmd:134 lastHasThrown!!101:34 false
-		AssignExpCmd:134 lastReverted!!102:6 false
-		AnnotationCmd:134 JSON{"key":{"name":"tac.return.path","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
-		AnnotationCmd:113 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.HaltSnippet.Return","range":{"specFile":"MultipleCandidates.sol","start":{"line":5,"charByteOffset":4},"end":{"line":7,"charByteOffset":5}}}}
-		LabelCmd:113 "End procedure MultipleCandidates-plus_one()"
-		AnnotationCmd:113 JSON{"key":{"name":"call.trace.pop","type":"analysis.icfg.Inliner$CallStack$PopRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"calleeId":2}}
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":2,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":2,"charByteOffset":0},"end":{"line":12,"charByteOffset":1}},"content":"contract MultipleCandidates {...}"}}}
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":2}}
+		AnnotationCmd:121 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":16,"bytecodeCount":7,"sources":[{"source":0,"begin":26,"end":697}]}}
+		AnnotationCmd:121 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":26,"bytecodeCount":9,"sources":[{"source":0,"begin":26,"end":697}]}}
+		AnnotationCmd:121 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":59,"bytecodeCount":4,"sources":[{"source":0,"begin":72,"end":380}]}}
+		AnnotationCmd:107 JSON{"key":{"name":"internal.func.start","type":"analysis.ip.InternalFuncStartAnnotation","erasureStrategy":"CallTrace"},"value":{"id":1,"startPc":79,"args":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]},"stackOffsetToArgPos":{},"callSiteSrc":{"source":0,"begin":72,"len":308,"jumpType":"ENTER","address":"ce4604a0000000000000000000000001","sourceContext":{"indexToFilePath":{"0":"MultipleCandidates.sol"},"sourceDir":".post_autofinders.0"}}}}
+		AnnotationCmd:122 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":79,"bytecodeCount":21,"sources":[{"source":0,"begin":72,"end":380},{"source":0,"begin":186,"end":199},{"source":0,"begin":118,"end":184},{"source":0,"begin":111,"end":200},{"source":0,"begin":276,"end":277},{"source":0,"begin":208,"end":274},{"source":0,"begin":201,"end":278},{"source":0,"begin":354,"end":355},{"source":0,"begin":286,"end":352},{"source":0,"begin":279,"end":356},{"source":0,"begin":372,"end":373},{"source":0,"begin":367,"end":368},{"source":0,"begin":367,"end":373}]}}
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON31!!71","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.storage.non-indexed-path.family","type":"analysis.storage.StorageAnalysisResult$StoragePaths","erasureStrategy":"Canonical"},"value":{"storagePaths":[{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}]}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.scalarization.sort","type":"vc.data.ScalarizationSort","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.ScalarizationSort.Split","idx":"0"}},{"key":{"name":"tac.storage.bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":256},{"key":{"name":"tac.storage.pretty.paths","type":"analysis.storage.DisplayPaths","erasureStrategy":"Erased"},"value":{"paths":[{"#class":"analysis.storage.DisplayPath.Root","name":"n"}]}},{"key":{"name":"tac.slot.type","type":"spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType","erasureStrategy":"Canonical"},"value":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256}},{"key":{"name":"tac.storage.non-indexed-path","type":"analysis.storage.StorageAnalysisResult$NonIndexedPath","erasureStrategy":"Canonical"},"value":{"#class":"analysis.storage.StorageAnalysisResult.NonIndexedPath.Root","slot":"0"}},{"key":{"name":"tac.storage","type":"java.math.BigInteger","erasureStrategy":"Canonical"},"value":"ce4604a0000000000000000000000001"},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
+		AnnotationCmd:123 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":414,"bytecodeCount":6,"sources":[{"source":1,"begin":275,"end":800},{"source":1,"begin":314,"end":317},{"source":1,"begin":333,"end":352},{"source":1,"begin":350,"end":351}]}}
+		AnnotationCmd:123 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
+		AnnotationCmd:123 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":425,"bytecodeCount":7,"sources":[{"source":1,"begin":333,"end":352},{"source":1,"begin":328,"end":352},{"source":1,"begin":366,"end":385},{"source":1,"begin":383,"end":384}]}}
+		AnnotationCmd:123 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":357,"bytecodeCount":9,"sources":[{"source":1,"begin":7,"end":83},{"source":1,"begin":43,"end":50},{"source":1,"begin":72,"end":77},{"source":1,"begin":61,"end":77}]}}
+		AnnotationCmd:123 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":436,"bytecodeCount":16,"sources":[{"source":1,"begin":366,"end":385},{"source":1,"begin":361,"end":385},{"source":1,"begin":554,"end":555},{"source":1,"begin":486,"end":552},{"source":1,"begin":482,"end":556},{"source":1,"begin":479,"end":480},{"source":1,"begin":475,"end":557},{"source":1,"begin":470,"end":471},{"source":1,"begin":467,"end":468},{"source":1,"begin":463,"end":472},{"source":1,"begin":456,"end":473},{"source":1,"begin":452,"end":558},{"source":1,"begin":449,"end":581}]}}
+		AssignExpCmd:124 R86:21 Sub(0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff CANON31!!71:125 )
+		AssignExpCmd:107 B87:21 Slt(R86:21 0x1 )
+		AssignExpCmd B88:22 Sle(0x0 CANON31!!71:125 )
+		AssumeExpCmd LNot(LAnd(B88:22 B87:21 ) )
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":3,"branchSource":{"range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}},"content":"n += 1"}}}
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":3}}
+		AnnotationCmd:107 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":495,"bytecodeCount":13,"sources":[{"source":1,"begin":449,"end":581},{"source":1,"begin":741,"end":742},{"source":1,"begin":673,"end":739},{"source":1,"begin":669,"end":743},{"source":1,"begin":666,"end":667},{"source":1,"begin":662,"end":744},{"source":1,"begin":658,"end":659},{"source":1,"begin":655,"end":656},{"source":1,"begin":651,"end":660},{"source":1,"begin":647,"end":745},{"source":1,"begin":644,"end":768}]}}
+		AssignExpCmd:126 R90:21 Sub(0x8000000000000000000000000000000000000000000000000000000000000000 CANON31!!71:125 )
+		AssignExpCmd:107 B91:21 Slt(0x1 R90:21 )
+		AssignExpCmd:107 B92:22 Slt(CANON31!!71:125 0x0 )
+		AssumeExpCmd LNot(LAnd(B92:22 B91:21 ) )
+		AnnotationCmd:107 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":551,"bytecodeCount":11,"sources":[{"source":1,"begin":644,"end":768},{"source":1,"begin":792,"end":793},{"source":1,"begin":789,"end":790},{"source":1,"begin":785,"end":794},{"source":1,"begin":778,"end":794},{"source":1,"begin":275,"end":800}]}}
+		AssignExpCmd:127 R94:21 Add(0x1 CANON31!!71:125)
+		AnnotationCmd:107 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":209,"bytecodeCount":9,"sources":[{"source":0,"begin":367,"end":373},{"source":0,"begin":72,"end":380}]}}
+		AssignExpCmd:128 CANON31!!95:2 Add(0x1 CANON31!!71:125)
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.StoreSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R94","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1015}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"MultipleCandidates.sol","start":{"line":6,"charByteOffset":8},"end":{"line":6,"charByteOffset":14}}}}
+		AnnotationCmd:107 JSON{"key":{"name":"internal.func.end","type":"analysis.ip.InternalFuncExitAnnotation","erasureStrategy":"Canonical"},"value":{"id":1,"rets":[],"methodSignature":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"MultipleCandidates"},"methodId":"plus_one"},"params":[],"res":[]}}}
+		AnnotationCmd:129 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"MultipleCandidates","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"1ce5c7ce25acd8feddb2eac3e1067247036bd17bab7e0d1fc4b7c00324557ba6","pc":67,"bytecodeCount":2,"sources":[{"source":0,"begin":72,"end":380}]}}
+		AssignExpCmd:129 lastHasThrown!!96:45 false
+		AssignExpCmd:129 lastReverted!!97:6 false
+		AnnotationCmd:129 JSON{"key":{"name":"tac.return.path","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
+		AnnotationCmd:107 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.HaltSnippet.Return","range":{"specFile":"MultipleCandidates.sol","start":{"line":5,"charByteOffset":4},"end":{"line":7,"charByteOffset":5}}}}
+		LabelCmd:107 "End procedure MultipleCandidates-plus_one()"
+		AnnotationCmd:107 JSON{"key":{"name":"call.trace.pop","type":"analysis.icfg.Inliner$CallStack$PopRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"calleeId":2}}
 	}
 	Block 1_0_0_0_0_0 Succ [0_0_0_2_0_0] {
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageGlobalChangeSnippet.StorageTakeSnapshot","lhs":{"namePrefix":"lastStorage","tag":{"#class":"tac.Tag.BlockchainState"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule"}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"lastStorage"}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"lastStorage"}]}}}
-		AnnotationCmd:88 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":19}
-		AnnotationCmd:135 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Apply","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":4},"end":{"line":3,"charByteOffset":14}},"exp":{"#class":"spec.cvlast.CVLExp.ApplyExp.ContractFunction.Symbolic","methodIdWithCallContext":{"#class":"spec.cvlast.ParametricMethod","methodId":"g","host":{"#class":"spec.cvlast.AllContracts"}},"args":[{"#class":"spec.cvlast.CVLExp.VariableExp","id":"e","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":6},"end":{"line":3,"charByteOffset":7}}},"twoStateIndex":"NEITHER"},{"#class":"spec.cvlast.CVLExp.VariableExp","id":"arg","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":9},"end":{"line":3,"charByteOffset":12}}},"twoStateIndex":"NEITHER"}],"noRevert":true,"storage":{"id":"lastStorage","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"},"range":{"#class":"utils.Range.Empty","comment":"empty storage type"}},"twoStateIndex":"NEITHER"},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Void"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":4},"end":{"line":3,"charByteOffset":13}}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg404405"},"src":{"id":"e104"}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg406407"},"src":{"id":"arg105"}}}
-		AnnotationCmd:113 JSON{"key":{"name":"call.trace.push","type":"analysis.icfg.Inliner$CallStack$PushRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"summary":null,"convention":{"#class":"analysis.icfg.Inliner.CallConventionType.FromCVL"},"calleeId":2}}
-		AssignExpCmd:113 M106:23 MapDefinition(CANON65.1299:bv256 -> Ite(Lt(CANON65.1299:23 CANON10:89 ) Unconstrained(bv256) 0x0 ) bytemap)
-		AssignExpCmd tacCalldatabuf@2:20 LongStore(M106:23 0x0 CANON11havocme1254:22 0x0 CANON10:89 )
-		AssignExpCmd R107:23 Select(CANON11havocme1254:22 0x0 )
-		AssignExpCmd tacCalldatabufCANON0@2:3 R107:23
+		AnnotationCmd:82 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":19}
+		AnnotationCmd:130 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Apply","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":4},"end":{"line":3,"charByteOffset":14}},"exp":{"#class":"spec.cvlast.CVLExp.ApplyExp.ContractFunction.Symbolic","methodIdWithCallContext":{"#class":"spec.cvlast.ParametricMethod","methodId":"g","host":{"#class":"spec.cvlast.AllContracts"}},"args":[{"#class":"spec.cvlast.CVLExp.VariableExp","id":"e","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":6},"end":{"line":3,"charByteOffset":7}}},"twoStateIndex":"NEITHER"},{"#class":"spec.cvlast.CVLExp.VariableExp","id":"arg","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":9},"end":{"line":3,"charByteOffset":12}}},"twoStateIndex":"NEITHER"}],"noRevert":true,"storage":{"id":"lastStorage","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"},"range":{"#class":"utils.Range.Empty","comment":"empty storage type"}},"twoStateIndex":"NEITHER"},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Void"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":3,"charByteOffset":4},"end":{"line":3,"charByteOffset":13}}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg448450"},"src":{"id":"e100"}}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg452454"},"src":{"id":"arg103"}}}
+		AnnotationCmd:107 JSON{"key":{"name":"call.trace.push","type":"analysis.icfg.Inliner$CallStack$PushRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"ad9ea578"},"attr":{"#class":"scene.MethodAttribute.Common"}},"summary":null,"convention":{"#class":"analysis.icfg.Inliner.CallConventionType.FromCVL"},"calleeId":2}}
+		AssignExpCmd:107 M101:20 MapDefinition(CANON65.1283:bv256 -> Ite(Lt(CANON65.1283:20 CANON10:83 ) Unconstrained(bv256) 0x0 ) bytemap)
+		AssignExpCmd tacCalldatabuf@2:17 LongStore(M101:20 0x0 CANON11havocme1256:19 0x0 CANON10:83 )
+		AssignExpCmd R102:20 Select(CANON11havocme1256:19 0x0 )
+		AssignExpCmd tacCalldatabufCANON0@2:4 R102:20
 	}
 	Block 2_0_0_0_0_0 Succ [] {
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageGlobalChangeSnippet.StorageTakeSnapshot","lhs":{"namePrefix":"lastStorage","tag":{"#class":"tac.Tag.BlockchainState"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule"}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"lastStorage"}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"lastStorage"}]}}}
-		AnnotationCmd:113 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":20}
-		AnnotationCmd:136 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Definition","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":34}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"idL":[{"#class":"spec.cvlast.CVLLhs.Id","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":13}},"id":"after","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":13}}}}],"exp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"currentContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"MultipleCandidates"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":16},"end":{"line":4,"charByteOffset":31}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"n","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$IntK","bitwidth":256},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":16},"end":{"line":4,"charByteOffset":33}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:137 CANON88:51 CANON27!!100:86
-		AssignExpCmd:137 CANON89:51 Apply(unwrap_twos_complement_256:bif CANON88:51)
-		AnnotationCmd:137 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON89","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":13}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"after"}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"Parametric.spec","start":{"line":4,"charByteOffset":16},"end":{"line":4,"charByteOffset":33}}}}
-		AnnotationCmd:137 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":21}
-		AnnotationCmd:138 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Assert","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":4},"end":{"line":5,"charByteOffset":83}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.EqExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"before","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":11},"end":{"line":5,"charByteOffset":17}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"after","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":21},"end":{"line":5,"charByteOffset":26}}},"twoStateIndex":"NEITHER"},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":11},"end":{"line":5,"charByteOffset":26}}}},"description":"\"solver will find a counterexample by choosing f == g\"","scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:139 I109 CANON33:50
-		AssignExpCmd:140 I110 CANON89:51
-		AssignExpCmd:141 CANON92!!111:21 Eq(I109 I110 )
-		AssertCmd:142 CANON92!!111:21 "\"solver will find a counterexample by choosing f == g\""
+		AnnotationCmd:107 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":20}
+		AnnotationCmd:131 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Definition","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":34}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"idL":[{"#class":"spec.cvlast.CVLLhs.Id","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":13}},"id":"after","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":13}}}}],"exp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"currentContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"MultipleCandidates"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":16},"end":{"line":4,"charByteOffset":31}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"n","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$IntK","bitwidth":256},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":16},"end":{"line":4,"charByteOffset":33}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:132 CANON88:44 CANON31!!95:133
+		AssignExpCmd:132 CANON89:44 Apply(unwrap_twos_complement_256:bif CANON88:44)
+		AnnotationCmd:132 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"CANON89","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":4,"charByteOffset":4},"end":{"line":4,"charByteOffset":13}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"after"}]},"displayPath":{"#class":"analysis.storage.DisplayPath.Root","name":"n"},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"Parametric.spec","start":{"line":4,"charByteOffset":16},"end":{"line":4,"charByteOffset":33}}}}
+		AnnotationCmd:132 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":21}
+		AnnotationCmd:134 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Assert","range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":4},"end":{"line":5,"charByteOffset":83}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.EqExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"before","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":11},"end":{"line":5,"charByteOffset":17}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"after","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.IntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":21},"end":{"line":5,"charByteOffset":26}}},"twoStateIndex":"NEITHER"},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"Parametric.spec","start":{"line":5,"charByteOffset":11},"end":{"line":5,"charByteOffset":26}}}},"description":"\"solver will find a counterexample by choosing f == g\"","scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":0}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:135 I104 CANON33:43
+		AssignExpCmd:136 I105 CANON89:44
+		AssignExpCmd:137 CANON92!!106:18 Eq(I104 I105 )
+		AssertCmd:138 CANON92!!106:18 "\"solver will find a counterexample by choosing f == g\""
 	}
 }
 Axioms {
@@ -584,6 +567,179 @@ Metas {
   "1": [
     {
       "key": {
+        "name": "tac.storage.non-indexed-path.family",
+        "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "storagePaths": [
+          {
+            "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+            "slot": "0"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "tac.scalarization.sort",
+        "type": "vc.data.ScalarizationSort",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.ScalarizationSort.Split",
+        "idx": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.direct.storage.access.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.IntK",
+        "k": 256
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.bit-width",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 256
+    },
+    {
+      "key": {
+        "name": "tac.storage.pretty.paths",
+        "type": "analysis.storage.DisplayPaths",
+        "erasureStrategy": "Erased"
+      },
+      "value": {
+        "paths": [
+          {
+            "#class": "analysis.storage.DisplayPath.Root",
+            "name": "n"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "tac.slot.type",
+        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK",
+        "bitwidth": 256
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.non-indexed-path",
+        "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+        "slot": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Canonical"
+      },
+      "value": "ce4604a0000000000000000000000001"
+    }
+  ],
+  "2": [
+    {
+      "key": {
+        "name": "tac.storage.non-indexed-path.family",
+        "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "storagePaths": [
+          {
+            "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+            "slot": "0"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "tac.scalarization.sort",
+        "type": "vc.data.ScalarizationSort",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.ScalarizationSort.Split",
+        "idx": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.bit-width",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 256
+    },
+    {
+      "key": {
+        "name": "tac.storage.pretty.paths",
+        "type": "analysis.storage.DisplayPaths",
+        "erasureStrategy": "Erased"
+      },
+      "value": {
+        "paths": [
+          {
+            "#class": "analysis.storage.DisplayPath.Root",
+            "name": "n"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "tac.slot.type",
+        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK",
+        "bitwidth": 256
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.non-indexed-path",
+        "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+        "slot": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Canonical"
+      },
+      "value": "ce4604a0000000000000000000000001"
+    }
+  ],
+  "3": [
+    {
+      "key": {
         "name": "Tac.symbol.keyword",
         "type": "vc.data.TACSymbol$Var$KeywordEntry",
         "erasureStrategy": "Canonical"
@@ -612,30 +768,7 @@ Metas {
       }
     }
   ],
-  "2": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacNonce",
-        "maybeTACKeywordOrdinal": 44
-      }
-    },
-    {
-      "key": {
-        "name": "tac.no.callindex",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
-  "3": [
+  "4": [
     {
       "key": {
         "name": "tac.immutable.array",
@@ -724,29 +857,6 @@ Metas {
       }
     }
   ],
-  "4": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacContractsCreated",
-        "maybeTACKeywordOrdinal": 46
-      }
-    },
-    {
-      "key": {
-        "name": "tac.no.callindex",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
   "5": [
     {
       "key": {
@@ -828,29 +938,6 @@ Metas {
     }
   ],
   "7": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "lastStorage"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.scalarization.sort",
-        "type": "vc.data.ScalarizationSort",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-      }
-    }
-  ],
-  "8": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -968,7 +1055,7 @@ Metas {
       "value": "f.selector"
     }
   ],
-  "9": [
+  "8": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -1086,7 +1173,7 @@ Metas {
       "value": "f.numberOfArguments"
     }
   ],
-  "10": [
+  "9": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -1202,736 +1289,7 @@ Metas {
       "value": "f.contract"
     }
   ],
-  "11": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacExtcodesize",
-        "maybeTACKeywordOrdinal": 25
-      }
-    },
-    {
-      "key": {
-        "name": "tac.no.callindex",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "tac.is.extcodesize",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
-  "12": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacS",
-        "maybeTACKeywordOrdinal": 2
-      }
-    },
-    {
-      "key": {
-        "name": "tac.scalarization.sort",
-        "type": "vc.data.ScalarizationSort",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage",
-        "type": "java.math.BigInteger",
-        "erasureStrategy": "Canonical"
-      },
-      "value": "ce4604a0000000000000000000000001"
-    }
-  ],
-  "13": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacT",
-        "maybeTACKeywordOrdinal": 5
-      }
-    },
-    {
-      "key": {
-        "name": "tac.transient_storage",
-        "type": "java.math.BigInteger",
-        "erasureStrategy": "Canonical"
-      },
-      "value": "ce4604a0000000000000000000000001"
-    },
-    {
-      "key": {
-        "name": "tac.scalarization.sort",
-        "type": "vc.data.ScalarizationSort",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-      }
-    }
-  ],
-  "14": [
-    {
-      "key": {
-        "name": "tac.is.memory",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacM",
-        "maybeTACKeywordOrdinal": 1
-      }
-    },
-    {
-      "key": {
-        "name": "tac.memory.partition",
-        "type": "analysis.pta.abi.UnindexedPartition",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "id": 0
-      }
-    }
-  ],
-  "15": [
-    {
-      "key": {
-        "name": "tac.is.memory",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacM",
-        "maybeTACKeywordOrdinal": 1
-      }
-    },
-    {
-      "key": {
-        "name": "tac.memory.partition",
-        "type": "analysis.pta.abi.UnindexedPartition",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "id": 1
-      }
-    }
-  ],
-  "16": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacBalance",
-        "maybeTACKeywordOrdinal": 23
-      }
-    },
-    {
-      "key": {
-        "name": "tac.no.callindex",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
-  "17": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "lastStorage"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.scalarization.sort",
-        "type": "vc.data.ScalarizationSort",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.ScalarizationSort.Split",
-        "idx": "0"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage.bit-width",
-        "type": "java.lang.Integer",
-        "erasureStrategy": "Canonical"
-      },
-      "value": 256
-    },
-    {
-      "key": {
-        "name": "tac.slot.type",
-        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK",
-        "bitwidth": 256
-      }
-    }
-  ],
-  "18": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "lastStorage"
-      }
-    }
-  ],
-  "19": [
-    {
-      "key": {
-        "name": "tac.immutable.array",
-        "type": "vc.data.ImmutableBound",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "sym": {
-          "#class": "vc.data.TACSymbol.Var.Full",
-          "namePrefix": "CANON35",
-          "tag": {
-            "#class": "tac.Tag.Bit256"
-          },
-          "callIndex": 0,
-          "meta": [
-            {
-              "key": {
-                "name": "cvl.type",
-                "type": "spec.cvlast.CVLType$PureCVLType",
-                "erasureStrategy": "CallTrace"
-              },
-              "value": {
-                "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                "k": 256
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacCalldatabuf",
-        "maybeTACKeywordOrdinal": 15
-      }
-    },
-    {
-      "key": {
-        "name": "tac.is.calldata",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
-  "20": [
-    {
-      "key": {
-        "name": "tac.immutable.array",
-        "type": "vc.data.ImmutableBound",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "sym": {
-          "#class": "vc.data.TACSymbol.Var.Full",
-          "namePrefix": "CANON62",
-          "tag": {
-            "#class": "tac.Tag.Bit256"
-          },
-          "callIndex": 0,
-          "meta": [
-            {
-              "key": {
-                "name": "cvl.type",
-                "type": "spec.cvlast.CVLType$PureCVLType",
-                "erasureStrategy": "CallTrace"
-              },
-              "value": {
-                "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                "k": 256
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "tacCalldatabuf",
-        "maybeTACKeywordOrdinal": 15
-      }
-    },
-    {
-      "key": {
-        "name": "tac.is.calldata",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
-  "21": [
-    {
-      "key": {
-        "name": "cvl",
-        "type": "java.lang.Boolean",
-        "erasureStrategy": "Canonical"
-      },
-      "value": true
-    }
-  ],
-  "22": [
-    {
-      "key": {
-        "name": "cvl.def.site",
-        "type": "spec.CVLDefinitionSite",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "spec.CVLDefinitionSite.Rule",
-        "range": {
-          "#class": "utils.Range.Range",
-          "specFile": "Parametric.spec",
-          "start": {
-            "line": 0,
-            "charByteOffset": 23
-          },
-          "end": {
-            "line": 0,
-            "charByteOffset": 38
-          }
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "tacsimplesimple.havocme",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.data.is-reference",
-        "type": "java.lang.Boolean",
-        "erasureStrategy": "Canonical"
-      },
-      "value": false
-    },
-    {
-      "key": {
-        "name": "cvl.type",
-        "type": "spec.cvlast.CVLType$PureCVLType",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"
-      }
-    },
-    {
-      "key": {
-        "name": "cvl",
-        "type": "java.lang.Boolean",
-        "erasureStrategy": "Canonical"
-      },
-      "value": true
-    },
-    {
-      "key": {
-        "name": "cvl.display",
-        "type": "java.lang.String",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": "arg"
-    }
-  ],
-  "23": [
-    {
-      "key": {
-        "name": "tac.is-temp-var",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
-  "24": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "L",
-        "maybeTACKeywordOrdinal": 45
-      }
-    },
-    {
-      "key": {
-        "name": "tac.stack.height",
-        "type": "java.lang.Integer",
-        "erasureStrategy": "Canonical"
-      },
-      "value": 1015
-    }
-  ],
-  "25": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "L",
-        "maybeTACKeywordOrdinal": 45
-      }
-    },
-    {
-      "key": {
-        "name": "tac.stack.height",
-        "type": "java.lang.Integer",
-        "erasureStrategy": "Canonical"
-      },
-      "value": 1014
-    }
-  ],
-  "26": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "L",
-        "maybeTACKeywordOrdinal": 45
-      }
-    },
-    {
-      "key": {
-        "name": "tac.was.replaced.with.bool",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "tac.stack.height",
-        "type": "java.lang.Integer",
-        "erasureStrategy": "Canonical"
-      },
-      "value": 1015
-    }
-  ],
-  "27": [
-    {
-      "key": {
-        "name": "cvl.data.is-reference",
-        "type": "java.lang.Boolean",
-        "erasureStrategy": "Canonical"
-      },
-      "value": false
-    }
-  ],
-  "28": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "tacContractAt"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr.name",
-        "type": "java.lang.String",
-        "erasureStrategy": "Erased"
-      },
-      "value": "ecrecover"
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr",
-        "type": "java.math.BigInteger",
-        "erasureStrategy": "Erased"
-      },
-      "value": "1"
-    }
-  ],
-  "29": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "tacContractAt"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr.name",
-        "type": "java.lang.String",
-        "erasureStrategy": "Erased"
-      },
-      "value": "sha256"
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr",
-        "type": "java.math.BigInteger",
-        "erasureStrategy": "Erased"
-      },
-      "value": "2"
-    }
-  ],
-  "30": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "tacContractAt"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr.name",
-        "type": "java.lang.String",
-        "erasureStrategy": "Erased"
-      },
-      "value": "identity"
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr",
-        "type": "java.math.BigInteger",
-        "erasureStrategy": "Erased"
-      },
-      "value": "4"
-    }
-  ],
-  "31": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "tacContractAt"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr.name",
-        "type": "java.lang.String",
-        "erasureStrategy": "Erased"
-      },
-      "value": "MultipleCandidates"
-    },
-    {
-      "key": {
-        "name": "tac.contract.sym.addr",
-        "type": "java.math.BigInteger",
-        "erasureStrategy": "Erased"
-      },
-      "value": "ce4604a0000000000000000000000001"
-    }
-  ],
-  "32": [
-    {
-      "key": {
-        "name": "cvl.type",
-        "type": "spec.cvlast.CVLType$PureCVLType",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-        "k": 256
-      }
-    }
-  ],
-  "33": [
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-        "name": "L",
-        "maybeTACKeywordOrdinal": 45
-      }
-    },
-    {
-      "key": {
-        "name": "tac.stack.height",
-        "type": "java.lang.Integer",
-        "erasureStrategy": "Canonical"
-      },
-      "value": 1018
-    }
-  ],
-  "34": [
-    {
-      "key": {
-        "name": "cvl.def.site",
-        "type": "spec.CVLDefinitionSite",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "spec.CVLDefinitionSite.Rule"
-      }
-    },
-    {
-      "key": {
-        "name": "Tac.symbol.keyword",
-        "type": "vc.data.TACSymbol$Var$KeywordEntry",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-        "name": "lastHasThrown"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.last.has.thrown",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.type",
-        "type": "spec.cvlast.CVLType$PureCVLType",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-      }
-    },
-    {
-      "key": {
-        "name": "cvl",
-        "type": "java.lang.Boolean",
-        "erasureStrategy": "Canonical"
-      },
-      "value": true
-    },
-    {
-      "key": {
-        "name": "cvl.display",
-        "type": "java.lang.String",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": "lastHasThrown"
-    }
-  ],
-  "35": [
+  "10": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2047,7 +1405,7 @@ Metas {
       "value": "f.isPure"
     }
   ],
-  "36": [
+  "11": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2163,7 +1521,558 @@ Metas {
       "value": "f.isView"
     }
   ],
-  "37": [
+  "12": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "tacExtcodesize",
+        "maybeTACKeywordOrdinal": 25
+      }
+    },
+    {
+      "key": {
+        "name": "tac.no.callindex",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "tac.is.extcodesize",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    }
+  ],
+  "13": [
+    {
+      "key": {
+        "name": "tac.is.memory",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "tacM",
+        "maybeTACKeywordOrdinal": 1
+      }
+    },
+    {
+      "key": {
+        "name": "tac.memory.partition",
+        "type": "analysis.pta.abi.UnindexedPartition",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "id": 0
+      }
+    }
+  ],
+  "14": [
+    {
+      "key": {
+        "name": "tac.is.memory",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "tacM",
+        "maybeTACKeywordOrdinal": 1
+      }
+    },
+    {
+      "key": {
+        "name": "tac.memory.partition",
+        "type": "analysis.pta.abi.UnindexedPartition",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "id": 1
+      }
+    }
+  ],
+  "15": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "tacBalance",
+        "maybeTACKeywordOrdinal": 23
+      }
+    },
+    {
+      "key": {
+        "name": "tac.no.callindex",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    }
+  ],
+  "16": [
+    {
+      "key": {
+        "name": "tac.immutable.array",
+        "type": "vc.data.ImmutableBound",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "sym": {
+          "#class": "vc.data.TACSymbol.Var.Full",
+          "namePrefix": "CANON35",
+          "tag": {
+            "#class": "tac.Tag.Bit256"
+          },
+          "callIndex": 0,
+          "meta": [
+            {
+              "key": {
+                "name": "cvl.type",
+                "type": "spec.cvlast.CVLType$PureCVLType",
+                "erasureStrategy": "CallTrace"
+              },
+              "value": {
+                "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                "k": 256
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "tacCalldatabuf",
+        "maybeTACKeywordOrdinal": 15
+      }
+    },
+    {
+      "key": {
+        "name": "tac.is.calldata",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    }
+  ],
+  "17": [
+    {
+      "key": {
+        "name": "tac.immutable.array",
+        "type": "vc.data.ImmutableBound",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "sym": {
+          "#class": "vc.data.TACSymbol.Var.Full",
+          "namePrefix": "CANON62",
+          "tag": {
+            "#class": "tac.Tag.Bit256"
+          },
+          "callIndex": 0,
+          "meta": [
+            {
+              "key": {
+                "name": "cvl.type",
+                "type": "spec.cvlast.CVLType$PureCVLType",
+                "erasureStrategy": "CallTrace"
+              },
+              "value": {
+                "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                "k": 256
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "tacCalldatabuf",
+        "maybeTACKeywordOrdinal": 15
+      }
+    },
+    {
+      "key": {
+        "name": "tac.is.calldata",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    }
+  ],
+  "18": [
+    {
+      "key": {
+        "name": "cvl",
+        "type": "java.lang.Boolean",
+        "erasureStrategy": "Canonical"
+      },
+      "value": true
+    }
+  ],
+  "19": [
+    {
+      "key": {
+        "name": "cvl.def.site",
+        "type": "spec.CVLDefinitionSite",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "spec.CVLDefinitionSite.Rule",
+        "range": {
+          "#class": "utils.Range.Range",
+          "specFile": "Parametric.spec",
+          "start": {
+            "line": 0,
+            "charByteOffset": 23
+          },
+          "end": {
+            "line": 0,
+            "charByteOffset": 38
+          }
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "tacsimplesimple.havocme",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.data.is-reference",
+        "type": "java.lang.Boolean",
+        "erasureStrategy": "Canonical"
+      },
+      "value": false
+    },
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.VMInternal.RawArgs"
+      }
+    },
+    {
+      "key": {
+        "name": "cvl",
+        "type": "java.lang.Boolean",
+        "erasureStrategy": "Canonical"
+      },
+      "value": true
+    },
+    {
+      "key": {
+        "name": "cvl.display",
+        "type": "java.lang.String",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": "arg"
+    }
+  ],
+  "20": [
+    {
+      "key": {
+        "name": "tac.is-temp-var",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    }
+  ],
+  "21": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "L",
+        "maybeTACKeywordOrdinal": 45
+      }
+    },
+    {
+      "key": {
+        "name": "tac.stack.height",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 1015
+    }
+  ],
+  "22": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "L",
+        "maybeTACKeywordOrdinal": 45
+      }
+    },
+    {
+      "key": {
+        "name": "tac.stack.height",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 1014
+    }
+  ],
+  "23": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "L",
+        "maybeTACKeywordOrdinal": 45
+      }
+    },
+    {
+      "key": {
+        "name": "tac.was.replaced.with.bool",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "tac.stack.height",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 1015
+    }
+  ],
+  "24": [
+    {
+      "key": {
+        "name": "cvl.data.is-reference",
+        "type": "java.lang.Boolean",
+        "erasureStrategy": "Canonical"
+      },
+      "value": false
+    }
+  ],
+  "25": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
+        "name": "tacContractAt"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr.name",
+        "type": "java.lang.String",
+        "erasureStrategy": "Erased"
+      },
+      "value": "ecrecover"
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Erased"
+      },
+      "value": "1"
+    }
+  ],
+  "26": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
+        "name": "tacContractAt"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr.name",
+        "type": "java.lang.String",
+        "erasureStrategy": "Erased"
+      },
+      "value": "sha256"
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Erased"
+      },
+      "value": "2"
+    }
+  ],
+  "27": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
+        "name": "tacContractAt"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr.name",
+        "type": "java.lang.String",
+        "erasureStrategy": "Erased"
+      },
+      "value": "identity"
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Erased"
+      },
+      "value": "4"
+    }
+  ],
+  "28": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
+        "name": "tacContractAt"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr.name",
+        "type": "java.lang.String",
+        "erasureStrategy": "Erased"
+      },
+      "value": "MultipleCandidates"
+    },
+    {
+      "key": {
+        "name": "tac.contract.sym.addr",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Erased"
+      },
+      "value": "ce4604a0000000000000000000000001"
+    }
+  ],
+  "29": [
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+        "k": 256
+      }
+    }
+  ],
+  "30": [
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "L",
+        "maybeTACKeywordOrdinal": 45
+      }
+    },
+    {
+      "key": {
+        "name": "tac.stack.height",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 1018
+    }
+  ],
+  "31": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2279,7 +2188,7 @@ Metas {
       "value": "f.isPayable"
     }
   ],
-  "38": [
+  "32": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -2338,7 +2247,7 @@ Metas {
       "value": "arg.length"
     }
   ],
-  "39": [
+  "33": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -2404,7 +2313,7 @@ Metas {
       "value": "arg"
     }
   ],
-  "40": [
+  "34": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2520,7 +2429,7 @@ Metas {
       "value": "f.isFallback"
     }
   ],
-  "41": [
+  "35": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2638,7 +2547,7 @@ Metas {
       "value": "g.selector"
     }
   ],
-  "42": [
+  "36": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2756,7 +2665,7 @@ Metas {
       "value": "g.numberOfArguments"
     }
   ],
-  "43": [
+  "37": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2872,7 +2781,7 @@ Metas {
       "value": "g.contract"
     }
   ],
-  "44": [
+  "38": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -2988,7 +2897,7 @@ Metas {
       "value": "g.isPure"
     }
   ],
-  "45": [
+  "39": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -3104,7 +3013,7 @@ Metas {
       "value": "g.isView"
     }
   ],
-  "46": [
+  "40": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -3220,7 +3129,7 @@ Metas {
       "value": "g.isPayable"
     }
   ],
-  "47": [
+  "41": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -3336,7 +3245,7 @@ Metas {
       "value": "g.isFallback"
     }
   ],
-  "48": [
+  "42": [
     {
       "key": {
         "name": "cvl.type",
@@ -3376,88 +3285,7 @@ Metas {
       "value": "currentContract"
     }
   ],
-  "49": [
-    {
-      "key": {
-        "name": "tac.storage.non-indexed-path.family",
-        "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "storagePaths": [
-          {
-            "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-            "slot": "0"
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "tac.scalarization.sort",
-        "type": "vc.data.ScalarizationSort",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.ScalarizationSort.Split",
-        "idx": "0"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage.bit-width",
-        "type": "java.lang.Integer",
-        "erasureStrategy": "Canonical"
-      },
-      "value": 256
-    },
-    {
-      "key": {
-        "name": "tac.storage.pretty.paths",
-        "type": "analysis.storage.DisplayPaths",
-        "erasureStrategy": "Erased"
-      },
-      "value": {
-        "paths": [
-          {
-            "#class": "analysis.storage.DisplayPath.Root",
-            "name": "n"
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "tac.slot.type",
-        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK",
-        "bitwidth": 256
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage.non-indexed-path",
-        "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-        "slot": "0"
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage",
-        "type": "java.math.BigInteger",
-        "erasureStrategy": "Canonical"
-      },
-      "value": "ce4604a0000000000000000000000001"
-    }
-  ],
-  "50": [
+  "43": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -3508,7 +3336,7 @@ Metas {
       "value": "before"
     }
   ],
-  "51": [
+  "44": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -3559,7 +3387,65 @@ Metas {
       "value": "after"
     }
   ],
-  "52": [
+  "45": [
+    {
+      "key": {
+        "name": "cvl.def.site",
+        "type": "spec.CVLDefinitionSite",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "spec.CVLDefinitionSite.Rule"
+      }
+    },
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
+        "name": "lastHasThrown"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.last.has.thrown",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+      }
+    },
+    {
+      "key": {
+        "name": "cvl",
+        "type": "java.lang.Boolean",
+        "erasureStrategy": "Canonical"
+      },
+      "value": true
+    },
+    {
+      "key": {
+        "name": "cvl.display",
+        "type": "java.lang.String",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": "lastHasThrown"
+    }
+  ],
+  "46": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -3749,7 +3635,7 @@ Metas {
       "value": "e.msg.value"
     }
   ],
-  "53": [
+  "47": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -3930,7 +3816,7 @@ Metas {
       "value": "e.tx.origin"
     }
   ],
-  "54": [
+  "48": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -4155,7 +4041,7 @@ Metas {
       "value": "e.block.basefee"
     }
   ],
-  "55": [
+  "49": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -4380,7 +4266,7 @@ Metas {
       "value": "e.block.blobbasefee"
     }
   ],
-  "56": [
+  "50": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -4603,7 +4489,7 @@ Metas {
       "value": "e.block.coinbase"
     }
   ],
-  "57": [
+  "51": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -4828,7 +4714,7 @@ Metas {
       "value": "e.block.difficulty"
     }
   ],
-  "58": [
+  "52": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5053,7 +4939,7 @@ Metas {
       "value": "e.block.gaslimit"
     }
   ],
-  "59": [
+  "53": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5278,7 +5164,7 @@ Metas {
       "value": "e.block.number"
     }
   ],
-  "60": [
+  "54": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5503,7 +5389,7 @@ Metas {
       "value": "e.block.timestamp"
     }
   ],
-  "61": [
+  "55": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -5517,7 +5403,7 @@ Metas {
       }
     }
   ],
-  "62": [
+  "56": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5705,7 +5591,7 @@ Metas {
       "value": "e.msg.sender"
     }
   ],
-  "63": [
+  "57": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5715,7 +5601,7 @@ Metas {
       "value": 0
     }
   ],
-  "64": [
+  "58": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5725,7 +5611,7 @@ Metas {
       "value": 1
     }
   ],
-  "65": [
+  "59": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5735,7 +5621,7 @@ Metas {
       "value": 2
     }
   ],
-  "66": [
+  "60": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5745,7 +5631,7 @@ Metas {
       "value": 3
     }
   ],
-  "67": [
+  "61": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -5783,7 +5669,7 @@ Metas {
       }
     }
   ],
-  "68": [
+  "62": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5793,7 +5679,7 @@ Metas {
       "value": 4
     }
   ],
-  "69": [
+  "63": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5803,7 +5689,7 @@ Metas {
       "value": 5
     }
   ],
-  "70": [
+  "64": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5813,7 +5699,7 @@ Metas {
       "value": 6
     }
   ],
-  "71": [
+  "65": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -5833,7 +5719,7 @@ Metas {
       }
     }
   ],
-  "72": [
+  "66": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -5873,7 +5759,7 @@ Metas {
       }
     }
   ],
-  "73": [
+  "67": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5883,7 +5769,7 @@ Metas {
       "value": 7
     }
   ],
-  "74": [
+  "68": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5893,7 +5779,7 @@ Metas {
       "value": 8
     }
   ],
-  "75": [
+  "69": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5903,7 +5789,7 @@ Metas {
       "value": 9
     }
   ],
-  "76": [
+  "70": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5913,7 +5799,7 @@ Metas {
       "value": 10
     }
   ],
-  "77": [
+  "71": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5923,7 +5809,7 @@ Metas {
       "value": 11
     }
   ],
-  "78": [
+  "72": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5933,7 +5819,7 @@ Metas {
       "value": 12
     }
   ],
-  "79": [
+  "73": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5943,7 +5829,7 @@ Metas {
       "value": 13
     }
   ],
-  "80": [
+  "74": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5953,7 +5839,7 @@ Metas {
       "value": 14
     }
   ],
-  "81": [
+  "75": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5963,7 +5849,7 @@ Metas {
       "value": 15
     }
   ],
-  "82": [
+  "76": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5973,7 +5859,7 @@ Metas {
       "value": 16
     }
   ],
-  "83": [
+  "77": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -5983,7 +5869,7 @@ Metas {
       "value": 17
     }
   ],
-  "84": [
+  "78": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -6012,7 +5898,7 @@ Metas {
       }
     }
   ],
-  "85": [
+  "79": [
     {
       "key": {
         "name": "cvl.range",
@@ -6033,7 +5919,7 @@ Metas {
       }
     }
   ],
-  "86": [
+  "80": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -6058,6 +5944,17 @@ Metas {
       "value": {
         "#class": "vc.data.ScalarizationSort.Split",
         "idx": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.direct.storage.access.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.IntK",
+        "k": 256
       }
     },
     {
@@ -6123,7 +6020,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "87": [
+  "81": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -6152,7 +6049,7 @@ Metas {
       }
     }
   ],
-  "88": [
+  "82": [
     {
       "key": {
         "name": "cvl.range",
@@ -6173,7 +6070,7 @@ Metas {
       }
     }
   ],
-  "89": [
+  "83": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -6241,7 +6138,7 @@ Metas {
       }
     }
   ],
-  "90": [
+  "84": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6288,7 +6185,7 @@ Metas {
       }
     }
   ],
-  "91": [
+  "85": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6335,7 +6232,7 @@ Metas {
       }
     }
   ],
-  "92": [
+  "86": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6382,7 +6279,7 @@ Metas {
       }
     }
   ],
-  "93": [
+  "87": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6429,7 +6326,7 @@ Metas {
       }
     }
   ],
-  "94": [
+  "88": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6476,7 +6373,7 @@ Metas {
       }
     }
   ],
-  "95": [
+  "89": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6523,7 +6420,7 @@ Metas {
       }
     }
   ],
-  "96": [
+  "90": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6570,7 +6467,7 @@ Metas {
       }
     }
   ],
-  "97": [
+  "91": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6617,7 +6514,7 @@ Metas {
       }
     }
   ],
-  "98": [
+  "92": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6664,7 +6561,7 @@ Metas {
       }
     }
   ],
-  "99": [
+  "93": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6711,7 +6608,7 @@ Metas {
       }
     }
   ],
-  "100": [
+  "94": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6758,7 +6655,7 @@ Metas {
       }
     }
   ],
-  "101": [
+  "95": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -6805,7 +6702,7 @@ Metas {
       }
     }
   ],
-  "102": [
+  "96": [
     {
       "key": {
         "name": "tac.transfers.balance",
@@ -6835,7 +6732,7 @@ Metas {
       }
     }
   ],
-  "103": [
+  "97": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -6882,7 +6779,7 @@ Metas {
       }
     }
   ],
-  "104": [
+  "98": [
     {
       "key": {
         "name": "tac.meta",
@@ -6923,7 +6820,7 @@ Metas {
       }
     }
   ],
-  "105": [
+  "99": [
     {
       "key": {
         "name": "tac.meta",
@@ -6964,7 +6861,7 @@ Metas {
       }
     }
   ],
-  "106": [
+  "100": [
     {
       "key": {
         "name": "tac.meta",
@@ -7005,7 +6902,7 @@ Metas {
       }
     }
   ],
-  "107": [
+  "101": [
     {
       "key": {
         "name": "tac.meta",
@@ -7046,7 +6943,1095 @@ Metas {
       }
     }
   ],
+  "102": [
+    {
+      "key": {
+        "name": "tac.storage.non-indexed-path.family",
+        "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "storagePaths": [
+          {
+            "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+            "slot": "0"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "Tac.symbol.keyword",
+        "type": "vc.data.TACSymbol$Var$KeywordEntry",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+        "name": "L",
+        "maybeTACKeywordOrdinal": 45
+      }
+    },
+    {
+      "key": {
+        "name": "tac.scalarization.sort",
+        "type": "vc.data.ScalarizationSort",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.ScalarizationSort.Split",
+        "idx": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.direct.storage.access.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.IntK",
+        "k": 256
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.bit-width",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 256
+    },
+    {
+      "key": {
+        "name": "tac.storage.pretty.paths",
+        "type": "analysis.storage.DisplayPaths",
+        "erasureStrategy": "Erased"
+      },
+      "value": {
+        "paths": [
+          {
+            "#class": "analysis.storage.DisplayPath.Root",
+            "name": "n"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "tac.slot.type",
+        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK",
+        "bitwidth": 256
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.non-indexed-path",
+        "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+        "slot": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Canonical"
+      },
+      "value": "ce4604a0000000000000000000000001"
+    },
+    {
+      "key": {
+        "name": "tac.stack.height",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 1018
+    }
+  ],
+  "103": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 1,
+        "begin": 669,
+        "len": 74,
+        "jumpType": "REGULAR",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 2,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 2,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "104": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 1,
+        "begin": 785,
+        "len": 9,
+        "jumpType": "REGULAR",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 2,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 2,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "105": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 0,
+        "begin": 367,
+        "len": 6,
+        "jumpType": "REGULAR",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.node",
+        "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "storagePaths": [
+          {
+            "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+            "slot": "0"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 2,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 2,
+          "charByteOffset": 14
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.access",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.printer",
+        "type": "instrumentation.StoragePathAnnotation$StoragePathPrinter",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    }
+  ],
+  "106": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 0,
+        "begin": 72,
+        "len": 308,
+        "jumpType": "EXIT",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 2,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 2,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "107": [
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
   "108": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON67",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "109": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON68",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "110": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON69",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "111": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON70",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "112": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON71",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "113": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON72",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "114": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON73",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "115": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON74",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "116": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON75",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "117": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON76",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "118": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON77",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "119": [
+    {
+      "key": {
+        "name": "assert.format.arg.1",
+        "type": "vc.data.TACSymbol",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.TACSymbol.Var.Full",
+        "namePrefix": "CANON78",
+        "tag": {
+          "#class": "tac.Tag.Int"
+        },
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "tac.is-temp-var",
+              "type": "tac.MetaMap$Companion$NothingValue",
+              "erasureStrategy": "Canonical"
+            },
+            "value": {
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "120": [
+    {
+      "key": {
+        "name": "tac.transfers.balance",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "121": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 0,
+        "begin": 26,
+        "len": 671,
+        "jumpType": "REGULAR",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "122": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 0,
+        "begin": 72,
+        "len": 308,
+        "jumpType": "ENTER",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "123": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 0,
+        "begin": 367,
+        "len": 6,
+        "jumpType": "ENTER",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "124": [
+    {
+      "key": {
+        "name": "tac.meta",
+        "type": "vc.data.TACMetaInfo",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "source": 0,
+        "begin": 367,
+        "len": 6,
+        "jumpType": "REGULAR",
+        "address": "ce4604a0000000000000000000000001",
+        "sourceContext": {
+          "indexToFilePath": {
+            "0": "MultipleCandidates.sol"
+          },
+          "sourceDir": ".post_autofinders.0"
+        }
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.range",
+        "type": "utils.Range",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "utils.Range.Range",
+        "specFile": "Parametric.spec",
+        "start": {
+          "line": 3,
+          "charByteOffset": 4
+        },
+        "end": {
+          "line": 3,
+          "charByteOffset": 14
+        }
+      }
+    }
+  ],
+  "125": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -7147,7 +8132,7 @@ Metas {
       "value": 1018
     }
   ],
-  "109": [
+  "126": [
     {
       "key": {
         "name": "tac.meta",
@@ -7178,777 +8163,6 @@ Metas {
         "#class": "utils.Range.Range",
         "specFile": "Parametric.spec",
         "start": {
-          "line": 2,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 2,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "110": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 1,
-        "begin": 785,
-        "len": 9,
-        "jumpType": "REGULAR",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 2,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 2,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "111": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 0,
-        "begin": 367,
-        "len": 6,
-        "jumpType": "REGULAR",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage.node",
-        "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "storagePaths": [
-          {
-            "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-            "slot": "0"
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 2,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 2,
-          "charByteOffset": 14
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage.access",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage.printer",
-        "type": "instrumentation.StoragePathAnnotation$StoragePathPrinter",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    }
-  ],
-  "112": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 0,
-        "begin": 72,
-        "len": 308,
-        "jumpType": "EXIT",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 2,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 2,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "113": [
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "114": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON67",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "115": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON68",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "116": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON69",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "117": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON70",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "118": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON71",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "119": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON72",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "120": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON73",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "121": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON74",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "122": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON75",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "123": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON76",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "124": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON77",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "125": [
-    {
-      "key": {
-        "name": "assert.format.arg.1",
-        "type": "vc.data.TACSymbol",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "#class": "vc.data.TACSymbol.Var.Full",
-        "namePrefix": "CANON78",
-        "tag": {
-          "#class": "tac.Tag.Int"
-        },
-        "callIndex": 0,
-        "meta": [
-          {
-            "key": {
-              "name": "tac.is-temp-var",
-              "type": "tac.MetaMap$Companion$NothingValue",
-              "erasureStrategy": "Canonical"
-            },
-            "value": {
-            }
-          }
-        ]
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "126": [
-    {
-      "key": {
-        "name": "tac.transfers.balance",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
           "line": 3,
           "charByteOffset": 4
         },
@@ -7967,9 +8181,9 @@ Metas {
         "erasureStrategy": "CallTrace"
       },
       "value": {
-        "source": 0,
-        "begin": 26,
-        "len": 671,
+        "source": 1,
+        "begin": 785,
+        "len": 9,
         "jumpType": "REGULAR",
         "address": "ce4604a0000000000000000000000001",
         "sourceContext": {
@@ -8009,211 +8223,6 @@ Metas {
       },
       "value": {
         "source": 0,
-        "begin": 72,
-        "len": 308,
-        "jumpType": "ENTER",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "129": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 0,
-        "begin": 367,
-        "len": 6,
-        "jumpType": "ENTER",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "130": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 0,
-        "begin": 367,
-        "len": 6,
-        "jumpType": "REGULAR",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "131": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 1,
-        "begin": 669,
-        "len": 74,
-        "jumpType": "REGULAR",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "132": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 1,
-        "begin": 785,
-        "len": 9,
-        "jumpType": "REGULAR",
-        "address": "ce4604a0000000000000000000000001",
-        "sourceContext": {
-          "indexToFilePath": {
-            "0": "MultipleCandidates.sol"
-          },
-          "sourceDir": ".post_autofinders.0"
-        }
-      }
-    },
-    {
-      "key": {
-        "name": "cvl.range",
-        "type": "utils.Range",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "#class": "utils.Range.Range",
-        "specFile": "Parametric.spec",
-        "start": {
-          "line": 3,
-          "charByteOffset": 4
-        },
-        "end": {
-          "line": 3,
-          "charByteOffset": 14
-        }
-      }
-    }
-  ],
-  "133": [
-    {
-      "key": {
-        "name": "tac.meta",
-        "type": "vc.data.TACMetaInfo",
-        "erasureStrategy": "CallTrace"
-      },
-      "value": {
-        "source": 0,
         "begin": 367,
         "len": 6,
         "jumpType": "REGULAR",
@@ -8279,7 +8288,7 @@ Metas {
       }
     }
   ],
-  "134": [
+  "129": [
     {
       "key": {
         "name": "tac.meta",
@@ -8320,7 +8329,7 @@ Metas {
       }
     }
   ],
-  "135": [
+  "130": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -8349,7 +8358,7 @@ Metas {
       }
     }
   ],
-  "136": [
+  "131": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -8378,7 +8387,7 @@ Metas {
       }
     }
   ],
-  "137": [
+  "132": [
     {
       "key": {
         "name": "cvl.range",
@@ -8399,7 +8408,97 @@ Metas {
       }
     }
   ],
-  "138": [
+  "133": [
+    {
+      "key": {
+        "name": "tac.storage.non-indexed-path.family",
+        "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "storagePaths": [
+          {
+            "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+            "slot": "0"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "tac.scalarization.sort",
+        "type": "vc.data.ScalarizationSort",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "vc.data.ScalarizationSort.Split",
+        "idx": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.bit-width",
+        "type": "java.lang.Integer",
+        "erasureStrategy": "Canonical"
+      },
+      "value": 256
+    },
+    {
+      "key": {
+        "name": "tac.is-temp-var",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.pretty.paths",
+        "type": "analysis.storage.DisplayPaths",
+        "erasureStrategy": "Erased"
+      },
+      "value": {
+        "paths": [
+          {
+            "#class": "analysis.storage.DisplayPath.Root",
+            "name": "n"
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "tac.slot.type",
+        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "spec.cvlast.typedescriptors.EVMTypeDescriptor.IntK",
+        "bitwidth": 256
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.non-indexed-path",
+        "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "#class": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
+        "slot": "0"
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage",
+        "type": "java.math.BigInteger",
+        "erasureStrategy": "Canonical"
+      },
+      "value": "ce4604a0000000000000000000000001"
+    }
+  ],
+  "134": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -8428,7 +8527,7 @@ Metas {
       }
     }
   ],
-  "139": [
+  "135": [
     {
       "key": {
         "name": "cvl.exp",
@@ -8505,7 +8604,7 @@ Metas {
       }
     }
   ],
-  "140": [
+  "136": [
     {
       "key": {
         "name": "cvl.exp",
@@ -8582,7 +8681,7 @@ Metas {
       }
     }
   ],
-  "141": [
+  "137": [
     {
       "key": {
         "name": "cvl.exp",
@@ -8729,7 +8828,7 @@ Metas {
         "o1": {
           "out": {
             "#class": "vc.data.TACSymbol.Var.Full",
-            "namePrefix": "I109",
+            "namePrefix": "I104",
             "tag": {
               "#class": "tac.Tag.Int"
             },
@@ -8785,7 +8884,7 @@ Metas {
         "o2": {
           "out": {
             "#class": "vc.data.TACSymbol.Var.Full",
-            "namePrefix": "I110",
+            "namePrefix": "I105",
             "tag": {
               "#class": "tac.Tag.Int"
             },
@@ -8860,7 +8959,7 @@ Metas {
       }
     }
   ],
-  "142": [
+  "138": [
     {
       "key": {
         "name": "cvl.user.defined.assert",

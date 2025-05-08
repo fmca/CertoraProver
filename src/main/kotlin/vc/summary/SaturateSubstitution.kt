@@ -26,7 +26,6 @@ import smt.solverscript.functionsymbols.substitute
 import utils.containsAny
 import vc.data.LExpression
 import vc.data.TACExpr
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
 import vc.data.tacexprutil.TACExprFreeVarsCollector
 import vc.data.tacexprutil.TACExprUtils
 
@@ -42,7 +41,7 @@ class SaturateSubstitutionLExpression(lxf : LExpressionFactory, subs: Map<LExpre
 class SaturateSubstitutionTACExpr(subs: Map<TACExpr.Sym.Var, TACExpr>) :
     SaturateSubstitution<TACExpr, TACExpr.Sym.Var>(
         { subs1, exp ->
-            TACExprUtils.SubstitutorVar(subs1).transform(QuantDefaultTACExprTransformer.QuantVars.Empty, exp)
+            TACExprUtils.SubstitutorVar(subs1).transform(exp)
         },
         { exp -> TACExprFreeVarsCollector.getFreeVars(exp).mapTo(mutableSetOf()) { it.asSym() } },
         subs

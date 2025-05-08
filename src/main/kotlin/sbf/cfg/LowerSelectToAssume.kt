@@ -19,6 +19,8 @@ package sbf.cfg
 
 import sbf.analysis.NPAnalysis
 import datastructures.stdcollections.*
+import sbf.domains.INumValue
+import sbf.domains.IOffset
 
 /**
  *  Replace
@@ -30,7 +32,7 @@ import datastructures.stdcollections.*
  *     dst := falseVal
  *     assume(!cond)  if we can infer that dst == falseVal otherwise
  */
-fun lowerSelectToAssume(cfg: MutableSbfCFG, npAnalysis: NPAnalysis) {
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> lowerSelectToAssume(cfg: MutableSbfCFG, npAnalysis: NPAnalysis<TNum, TOffset>) {
     for (block in cfg.getMutableBlocks().values) {
         val selects = ArrayList<LocatedSbfInstruction>()
         for (locInst in block.getLocatedInstructions()) {

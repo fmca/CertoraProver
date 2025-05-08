@@ -32,7 +32,9 @@ import com.certora.collect.*
 import config.Config
 import datastructures.ProjectedMap
 import datastructures.stdcollections.*
+import evm.EVM_MOD_GROUP256
 import evm.EVM_WORD_SIZE
+import evm.inEVMRange
 import log.*
 import parallel.*
 import parallel.ParallelPool.Companion.runInherit
@@ -750,7 +752,12 @@ class StorageAnalysis(private val compilerStorage: TACStorageLayout?, private va
             override fun usesVar(storage: Map<Storage, Value>?, v: TACSymbol.Var) = v in usedVars
 
             init {
-                check(stride.size == 1 || Stride.Top !in stride)
+                check(stride.size == 1 || Stride.Top !in stride) {
+                    "Top stride mixed with non-Top stride"
+                }
+                check(cs?.all { it.inEVMRange } != false) {
+                    "Out of bounds constant value"
+                }
             }
 
             /**
@@ -2440,7 +2447,10 @@ class StorageAnalysis(private val compilerStorage: TACStorageLayout?, private va
                 i2.cs.updateElements { c2 ->
                     op(c1, c2)
                 }
-            }.unionAll()
+            }.unionAll().takeIf {
+                // No overflow please
+                it.all { it.inEVMRange }
+            }
 
             return SValue.I(cs, SimpleQualifiedInt.nondet, Stride.Top.asSet)
         }
@@ -2716,7 +2726,7 @@ class StorageAnalysis(private val compilerStorage: TACStorageLayout?, private va
                     return SValue.Nondet to false
                 }
                 check(v1 is SValue.I && v2 is SValue.I)
-                return constBinOpSemantics(v1, v2) { c1, c2 -> c1 + c2 } to false
+                return constBinOpSemantics(v1, v2) { c1, c2 -> (c1 + c2).mod(EVM_MOD_GROUP256) } to false
             }
 
             if (v1 is IntegralType) {
@@ -3444,6 +3454,7 @@ class StorageAnalysis(private val compilerStorage: TACStorageLayout?, private va
                 try {
                     m = stepCommand(command, m)
                 } catch (_: InfeasibleState) {
+                    logger.debug { "Infeasible state after executing $command"}
                     return setOf()
                 }
             }

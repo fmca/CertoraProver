@@ -26,46 +26,32 @@ sealed class Either<out T, out R> : Serializable {
     fun leftOrNull(): T? = (this as? Left)?.d
     fun rightOrNull(): R? = (this as? Right)?.d
 
-    fun onLeft(op: (T) -> Unit): Either<T, R> {
+    inline fun onLeft(op: (T) -> Unit): Either<T, R> {
         if (this is Left) { op(d) }
         return this
     }
-    fun onRight(op: (R) -> Unit): Either<T, R> {
+    inline fun onRight(op: (R) -> Unit): Either<T, R> {
         if (this is Right) { op(d) }
         return this
     }
 }
 
-fun <T, R> List<Either<T, R>>.flattenLeft(): Either<List<T>, List<R>> {
-    val lResults = mutableListOf<T>()
-    val rResults = mutableListOf<R>()
-    for(p in this) {
-        when(p) {
-            is Either.Left -> lResults.add(p.d)
-            is Either.Right -> rResults.add(p.d)
-        }
-    }
-    return if(rResults.isNotEmpty()) {
-        Either.Right(rResults)
-    } else {
-        Either.Left(lResults)
+inline fun <T, R> Either<T, R>.leftOr(op: (Either<Nothing, R>) -> Nothing) : T {
+    when(this) {
+        is Either.Left -> return this.d
+        is Either.Right -> op(this)
     }
 }
 
-fun <T, R> List<Either<T, R>>.flattenRight(): Either<List<T>, List<R>> {
-    val lResults = mutableListOf<T>()
-    val rResults = mutableListOf<R>()
-    for(p in this) {
-        when(p) {
-            is Either.Left -> lResults.add(p.d)
-            is Either.Right -> rResults.add(p.d)
+fun <T, R> List<Either<T, R>>.flattenLeft(): Either<List<T>, R> {
+    val m = mutableListOf<T>()
+    for(i in this) {
+        when(i) {
+            is Either.Left -> m.add(i.d)
+            is Either.Right -> return i
         }
     }
-    return if(lResults.isNotEmpty()) {
-        Either.Left(lResults)
-    } else {
-        Either.Right(rResults)
-    }
+    return m.toLeft()
 }
 
 fun <T, R, U> Either<T, R>.mapLeft(f: (T) -> U) : Either<U, R> =
@@ -126,9 +112,28 @@ fun <T, R: Throwable> Either<T, R>.leftOrThrow(): T =
         is Either.Right -> throw this.d
     }
 
+fun <R> Either<Nothing, R>.right() = when(this) {
+    /* why does this work? Because of the type signature of Either<Nothing, _>, we know that
+    in this Left branch `this.d` must be of type Nothing. But the whole point is that Nothing has no inhabitants;
+    so this case is impossible; indeed this is why Nothing is a subtype of any type, any expression that produces a value
+    of type Nothing can never terminate. In other words, if we call this function, the receiver type *must*
+    be Either.Right; if it wasn't, then we would have been able to produce an Either.Left(x) where `x` has type Nothing,
+    which, again, is impossible
+    */
+    is Either.Left -> this.d
+    is Either.Right -> this.d
+}
+
+/*
+ * Similar reasoning applies here as to why this.d is perfectly fine in the Either.Right branch
+ */
+fun <R> Either<R, Nothing>.left() = when(this) {
+    is Either.Left -> this.d
+    is Either.Right -> this.d
+}
+
 /** returns the left value, or computes another left value */
-fun <T, R> Either<T, R>.leftOrElse(default: (R) -> T): T =
-    when (this) {
-        is Either.Left -> this.d
-        is Either.Right -> default(this.d)
-    }
+fun <U, T: U, R> Either<T, R>.leftOrElse(default: (R) -> U): U = when (this) {
+   is Either.Left -> this.d
+   is Either.Right -> default(this.d)
+}

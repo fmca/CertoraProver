@@ -411,6 +411,8 @@ def generate_modifier_finder(f: Func, internal_id: int, sym: int,
         formal_strings = []
         arg_strings = []
         for (logged_ty, logged_name) in zip(loggable_types, loggable_names):
+            if logged_name == "":
+                continue
             arg_strings.append(logged_name)
             formal_strings.append(f"{logged_ty} {logged_name}")
         modifier_body = f"modifier {modifier_name}"
@@ -1198,10 +1200,15 @@ class CertoraBuildGenerator:
         return x[TYPE] == FUNCTION or x[TYPE] == CertoraBuildGenerator.CONSTRUCTOR_STRING
 
     @staticmethod
-    def collect_srcmap(data: Dict[str, Any]) -> Any:
+    def collect_srcmap(data: Dict[str, Any]) -> Tuple[str, str]:
         # no source map object in vyper
-        return (data["evm"]["deployedBytecode"].get("sourceMap", ""),
-                data["evm"]["bytecode"].get("sourceMap", ""))
+        deployed = data["evm"]["deployedBytecode"].get("sourceMap", "")
+        if isinstance(deployed, dict):
+            deployed = deployed.get("pc_pos_map_compressed", "")
+        regular = data["evm"]["bytecode"].get("sourceMap", "")
+        if isinstance(regular, dict):
+            regular = regular.get("pc_pos_map_compressed", "")
+        return deployed, regular
 
     @staticmethod
     def collect_varmap(contract: str, data: Dict[str, Any]) -> Any:
@@ -1516,7 +1523,8 @@ class CertoraBuildGenerator:
             sources_dict = {str(contract_file_posix_abs): {
                 "urls": [str(contract_file_posix_abs)]}}  # type: Dict[str, Dict[str, Any]]
             output_selection = ["transientStorageLayout", "storageLayout", "abi", "evm.bytecode",
-                                "evm.deployedBytecode", "evm.methodIdentifiers", "evm.assembly"]
+                                "evm.deployedBytecode", "evm.methodIdentifiers", "evm.assembly",
+                                "evm.bytecode.functionDebugData"]
             ast_selection = ["id", "ast"]
         elif compiler_collector_lang == CompilerLangVy():
             with open(contract_file_posix_abs) as f:
@@ -1739,6 +1747,10 @@ class CertoraBuildGenerator:
         sdc_name = f"{Path(build_arg_contract_file).name}_{file_index}"
         compilation_path = self.get_compilation_path(sdc_name)
         self.file_to_sdc_name[Util.abs_norm_path(build_arg_contract_file)] = sdc_name
+
+        compiler_collector = self.compiler_coll_factory \
+            .get_compiler_collector(Path(path_for_compiler_collector_file))
+
         # update remappings and collect_cmd:
         if not is_vyper:
             Util.safe_create_dir(compilation_path)
@@ -1786,8 +1798,10 @@ class CertoraBuildGenerator:
             compiler_logger.debug(f"collect_cmd: {collect_cmd}\n")
         else:
             compiler_ver_to_run = get_relevant_compiler(Path(build_arg_contract_file), self.context)
-
-            collect_cmd = f'{compiler_ver_to_run} -p "{self.context.solc_allow_path}" -o "{compilation_path}" ' \
+            path_string = ""
+            if compiler_collector.compiler_version[1] < 4:
+                path_string = f' -p "{self.context.solc_allow_path}"'
+            collect_cmd = f'{compiler_ver_to_run}{path_string} -o "{compilation_path}" ' \
                           f'--standard-json'
 
         # Make sure compilation artifacts are always deleted
@@ -1799,9 +1813,6 @@ class CertoraBuildGenerator:
             # we want to preserve the previous artifacts too for a comprehensive view
             # (we do not try to save a big chain history of changes, just a previous and current)
             self.backup_compiler_outputs(sdc_name, smart_contract_lang, "prev")
-
-        compiler_collector = self.compiler_coll_factory \
-            .get_compiler_collector(Path(path_for_compiler_collector_file))
 
         # Standard JSON
         remappings = [] if isinstance(compiler_collector, CompilerCollectorYul) else self.context.remappings
@@ -2246,6 +2257,14 @@ class CertoraBuildGenerator:
                                                          build_arg_contract_file)
         immutables = self.collect_immutables(contract_data, build_arg_contract_file, compiler_lang)
 
+        internal_function_entrypoints = set([])
+
+        if compiler_lang == CompilerLangSol() and "functionDebugData" in contract_data["evm"]["deployedBytecode"]:
+            debug = contract_data["evm"]["deployedBytecode"]["functionDebugData"]
+            for (_, v) in debug.items():
+                if "entryPoint" in v and v["entryPoint"] is not None:
+                    internal_function_entrypoints.add(v["entryPoint"])
+
         if self.context.internal_funcs is not None:
             all_internal_functions: Dict[str, Any] = \
                 Util.read_json_file(self.context.internal_funcs)
@@ -2296,7 +2315,8 @@ class CertoraBuildGenerator:
                              extension_contracts=list(),
                              local_assignments={},
                              branches={},
-                             requires={}
+                             requires={},
+                             internal_starts=list(internal_function_entrypoints)
                              )
 
     @staticmethod
@@ -2527,7 +2547,7 @@ class CertoraBuildGenerator:
                 sources_from_pre_finder_SDCs |= sdc.all_contract_files
             sources = self.collect_sources(context, certora_verify_generator, sources_from_pre_finder_SDCs)
             try:
-                self.cwd_rel_in_sources = build_source_tree(sources, context)
+                build_source_tree(sources, context)
             except Exception as e:
                 build_logger.debug(f"build_source_tree failed. Sources: {sources}", exc_info=e)
                 raise
@@ -2698,8 +2718,8 @@ class CertoraBuildGenerator:
                 return None
             cloned_field = storage_field_info.copy()
             cloned_field["slot"] = str(link_slot)
-            # Try to uniquify the name
-            cloned_field["label"] = f"certoralink_{ext_instance.name}_{var_name}"
+            # Don't bother trying to uniquify the name
+            cloned_field["label"] = var_name
             return cloned_field
 
         def handle_one_extension(storage_ext: str) -> tuple[Any, str, List[Dict[str, Any]]] :
@@ -2750,23 +2770,34 @@ class CertoraBuildGenerator:
             if target_contract.storage_layout.get("types") is None:
                 target_contract.storage_layout["types"] = {}
             target_slots = {storage["slot"] for storage in target_contract.storage_layout["storage"]}
+            target_vars = {storage["label"] for storage in target_contract.storage_layout["storage"]}
             # Keep track of slots we've added, and error if we
             # find two extensions extending the same slot
             added_slots: Dict[str, str] = {}
+            added_vars: Dict[str, str] = {}
             for ext in extensions:
                 (new_fields, new_types) = to_add[ext]
 
                 for f in new_fields:
-                    # See if any of the new fields is a slot we've already added
+                    # See if any of the new fields is a slot or variable name we've already added
                     slot = f["slot"]
+                    var = f["label"]
                     if slot in added_slots:
                         seen = added_slots[slot]
-                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} already added by {seen}")
+                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} was already added by {seen}")
+
+                    if var in added_vars:
+                        seen = added_vars[var]
+                        raise Util.CertoraUserInputError(f"Var '{var}' added to {target_contract.name} by {ext} was already added by {seen}")
 
                     if slot in target_slots:
-                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} already mapped by {target_contract.name}")
+                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} is already mapped by {target_contract.name}")
+
+                    if var in target_vars:
+                        raise Util.CertoraUserInputError(f"Var '{var}' added to {target_contract.name} by {ext} is already declared by {target_contract.name}")
 
                     added_slots[slot] = ext
+                    added_vars[var] = ext
 
                 target_contract.storage_layout["storage"].extend(new_fields)
 
@@ -3003,7 +3034,7 @@ class CertoraBuildGenerator:
             for k, v in autofinder_remappings.items():
                 self.function_finder_file_remappings[Util.abs_posix_path(k)] = Util.abs_posix_path(v)
             new_sdcs = self.collect_for_file(new_file, i, get_compiler_lang(build_arg_contract_file),
-                                             Util.get_certora_sources_dir() / self.cwd_rel_in_sources,
+                                             Util.get_certora_sources_dir() / self.context.cwd_rel_in_sources,
                                              path_for_compiler_collector_file,
                                              sdc_pre_finder,
                                              fail_on_compilation_error=False,
@@ -3031,7 +3062,7 @@ class CertoraBuildGenerator:
         contract_path = Util.abs_posix_path_obj(contract_file)
         rel_directory = Path(os.path.relpath(contract_file, '.')).parent
         contract_filename = contract_path.name
-        new_path = Util.get_certora_sources_dir() / self.cwd_rel_in_sources / rel_directory / contract_filename
+        new_path = Util.get_certora_sources_dir() / self.context.cwd_rel_in_sources / rel_directory / contract_filename
         new_path.parent.mkdir(parents=True, exist_ok=True)
         return str(new_path)
 
@@ -3041,7 +3072,7 @@ class CertoraBuildGenerator:
         This assumes those paths can be related to cwd.
         """
         rel_to_cwd_path = Path(os.path.relpath(path, '.'))
-        new_path = Util.get_certora_sources_dir() / self.cwd_rel_in_sources / rel_to_cwd_path
+        new_path = Util.get_certora_sources_dir() / self.context.cwd_rel_in_sources / rel_to_cwd_path
         return str(new_path.absolute())
 
     def handle_links(self) -> None:
@@ -3449,20 +3480,19 @@ def sources_to_abs(sources: Set[Path]) -> Set[Path]:
     return result
 
 
-def build_source_tree(sources: Set[Path], context: CertoraContext, overwrite: bool = False) -> Path:
+def build_source_tree(sources: Set[Path], context: CertoraContext, overwrite: bool = False) -> None:
     """
     Copies files to .certora_sources
-    @returns the cwd relative in sources
     """
     sources = sources_to_abs(sources)
-    cwd_rel_in_sources, common_path = CertoraBuildGenerator.get_cwd_rel_in_sources(sources)
+    context.cwd_rel_in_sources, context.common_path = CertoraBuildGenerator.get_cwd_rel_in_sources(sources)
 
     for source_path in sources:
         is_dir = source_path.is_dir()
         # copy file to the path of the file from the common root under the sources directory
 
         # make sure directory exists
-        target_path = Util.get_certora_sources_dir() / source_path.relative_to(common_path)
+        target_path = Util.get_certora_sources_dir() / source_path.relative_to(context.common_path)
         target_directory = target_path if is_dir else target_path.parent
         try:
             target_directory.mkdir(parents=True, exist_ok=True)
@@ -3491,7 +3521,7 @@ def build_source_tree(sources: Set[Path], context: CertoraContext, overwrite: bo
             raise
 
     #  the empty file .cwd is written in the source tree to denote the current working directory
-    cwd_file_path = Util.get_certora_sources_dir() / cwd_rel_in_sources / Util.CWD_FILE
+    cwd_file_path = Util.get_certora_sources_dir() / context.cwd_rel_in_sources / Util.CWD_FILE
     cwd_file_path.parent.mkdir(parents=True, exist_ok=True)
     cwd_file_path.touch()
 
@@ -3500,7 +3530,7 @@ def build_source_tree(sources: Set[Path], context: CertoraContext, overwrite: bo
     if rust_proj_dir:
         proj_dir_parent_relative = os.path.relpath(rust_proj_dir, os.getcwd())
         assert Path(rust_proj_dir).is_dir(), f"build_source_tree: not a directory {rust_proj_dir}"
-        proj_dir_parent_file = (Util.get_certora_sources_dir() / cwd_rel_in_sources / proj_dir_parent_relative /
+        proj_dir_parent_file = (Util.get_certora_sources_dir() / context.cwd_rel_in_sources / proj_dir_parent_relative /
                                 Util.PROJECT_DIR_FILE)
         proj_dir_parent_file.parent.mkdir(parents=True, exist_ok=True)
         proj_dir_parent_file.touch()
@@ -3515,9 +3545,6 @@ def build_source_tree(sources: Set[Path], context: CertoraContext, overwrite: bo
     except OSError as e:
         build_logger.debug("Couldn't copy repro conf to certora sources.", exc_info=e)
         raise
-
-    return cwd_rel_in_sources
-
 
 def build_from_scratch(certora_build_generator: CertoraBuildGenerator,
                        certora_verify_generator: CertoraVerifyGenerator,
@@ -3661,8 +3688,7 @@ def build(context: CertoraContext, ignore_spec_syntax_check: bool = False) -> No
 
         # Start by syntax checking, if we're in the right mode
         if Cv.mode_has_spec_file(context) and not context.build_only and not ignore_spec_syntax_check:
-            attr = context.disable_local_typechecking
-            if attr:
+            if context.disable_local_typechecking:
                 build_logger.warning(
                     "Local checks of CVL specification files disabled. It is recommended to enable the checks.")
             else:
@@ -3674,6 +3700,11 @@ def build(context: CertoraContext, ignore_spec_syntax_check: bool = False) -> No
                                                                                    certora_build_generator,
                                                                                    certora_verify_generator,
                                                                                    certora_build_cache_manager)
+
+        # avoid running the same test over and over again for each split run, context.split_rules is true only for
+        # the first run and is set to [] for split runs
+        if context.split_rules:
+            Ctx.run_local_spec_check(True, context)
 
         # .certora_verify.json is always constructed even if build cache is enabled
         # Sources construction should only happen when rebuilding

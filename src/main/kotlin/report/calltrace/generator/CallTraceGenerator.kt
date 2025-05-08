@@ -31,7 +31,6 @@ import log.*
 import report.*
 import report.calltrace.*
 import report.calltrace.formatter.CallTraceValueFormatter
-import report.calltrace.generator.CallTraceGenerator.HandleCmdResult
 import report.calltrace.printer.CallTracePrettyPrinter
 import report.calltrace.sarif.FmtArg
 import report.calltrace.sarif.SarifFormatter
@@ -89,7 +88,7 @@ internal sealed class CallTraceGenerator(
         }
     }
 
-    val callInputsAndOutputs = CallInputsAndOutputs(formatter, blocks, model, program.analysisCache, scene)
+    val callInputsAndOutputs = CallInputsAndOutputs(blocks, model, program.analysisCache, scene)
 
     private val callHierarchyRoot = initCallHierarchyRoot(ruleCallString)
 
@@ -353,11 +352,10 @@ internal sealed class CallTraceGenerator(
 
         Logger.regression { "Got assert command with message: ${cmd.msg}" }
 
-        val hasFailed = cmd.hasFailedInModel(model, CmdPointer(currBlock, idx)).getOrThrow()
-        if (hasFailed) {
+        if (cmd.isViolated(model)) {
             globalState?.computeGlobalState(formatter = formatter)?.let(::callTraceAppend)
 
-            val violatedAssert = LTACCmd(CmdPointer(currBlock, idx), cmd as TACCmd.Simple)
+            val violatedAssert = LTACCmd(CmdPointer(currBlock, idx), cmd)
             return HandleCmdResult.GeneratedCallTrace(CallTrace.ViolationFound(callHierarchyRoot, violatedAssert))
         }
 

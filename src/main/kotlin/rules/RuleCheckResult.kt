@@ -31,7 +31,6 @@ import report.callresolution.*
 import report.calltrace.*
 import report.calltrace.formatter.*
 import report.calltrace.generator.generateCallTrace
-import report.calltrace.sarif.Sarif.Arg
 import report.dumps.UnsolvedSplitInfo
 import report.dumps.generateUnsolvedSplitCodeMap
 import rules.sanity.SanityCheckResult
@@ -61,10 +60,6 @@ import verifier.mus.UnsatCoresStats
 import java.math.BigInteger
 
 private val logger = Logger(LoggerTypes.COMMON)
-
-/** avoid flooding the log with warnings -- warn only once */
-private var warnedAlreadyOnUnexpectedValue = false
-
 
 sealed class RuleCheckResult(open val rule: IRule) {
 
@@ -209,12 +204,12 @@ sealed class RuleCheckResult(open val rule: IRule) {
          */
         protected fun baseTreeViewRepBuilder(
             location: TreeViewLocation?,
-            treeViewNode: DisplayableIdentifier,
+            breadcrumbs: String,
             exampleMeta: Result<CallResolutionTableWithExampleMeta.ExampleMeta>,
             dumpGraphLink: String?,
         ): TreeViewRepBuilder<JsonObjectBuilder> = TreeViewRepJsonObjectBuilder {
 
-            put(OutputReportViewAttribute.TREE_VIEW_PATH(), treeViewNode.toString())
+            put(OutputReportViewAttribute.TREE_VIEW_PATH(), breadcrumbs)
 
             /** graph_link */
             put(OutputReportViewAttribute.GRAPH_LINK(), dumpGraphLink)
@@ -299,7 +294,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
             ): OutputReportView {
                 val baseBuilder = baseTreeViewRepBuilder(
                     location,
-                    treeViewNode,
+                    treeViewNode.toString(),
                     exampleMeta = Result.success(CallResolutionTableWithExampleMeta.ExampleMeta.None),
                     dumpGraphLink = ruleCheckInfo.dumpGraphLink,
                 )
@@ -332,12 +327,12 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
             fun toOutputReportView(
                 location: TreeViewLocation?,
-                treeViewNode: DisplayableIdentifier,
+                breadcrumbs: String,
                 counterExample: RuleCheckInfo.WithExamplesData.CounterExample
             ): OutputReportView {
                 val baseBuilder = baseTreeViewRepBuilder(
                     location,
-                    treeViewNode,
+                    breadcrumbs,
                     exampleMeta = counterExample.callResolutionExampleMeta,
                     dumpGraphLink = counterExample.dumpGraphLink,
                 )
@@ -348,57 +343,10 @@ sealed class RuleCheckResult(open val rule: IRule) {
                             OutputReportViewAttribute.CALL_TRACE(),
                             counterExample.callTrace?.callHierarchyRoot
                         )
-                        /** variables */
-                        put(OutputReportViewAttribute.VARIABLES(), buildJsonArray {
-                            for ((name, local) in counterExample.localAssignments) {
-
-                                /** compute the tooltip for variables tab variables
-                                 * would be nicer to not look at the string, but should do for now, since the current
-                                 * rule for getting the tooltip is rather simple */
-                                fun tooltip(valueStr: String) = when (valueStr) {
-                                    CallTraceValueFormatter.DONT_CARE_VALUE_STR -> CallTraceValueFormatter.DONT_CARE_VALUE_TOOLTIP
-                                    CallTraceValueFormatter.UNKNOWN_VALUE_STR -> CallTraceValueFormatter.UNKNOWN_VALUE_TOOLTIP
-                                    else -> "copy value"
-                                }
-
-                                addJsonObject {
-                                    put("variableName", name)
-
-                                    val sarif = local.state.toSarif(local.formatter)
-                                    val value: Arg? = sarif.asArg()
-                                    if (value != null) {
-                                        put(CallTraceAttribute.VALUE(), value.values.pretty)
-                                        if (altReprsInTreeView) {
-                                            put(
-                                                CallTraceAttribute.VALUES(),
-                                                buildJsonArray { value.values.asRepList().forEach { add(it) } }
-                                            )
-                                        }
-                                        put(CallTraceAttribute.TOOLTIP(), tooltip(value.values.pretty))
-                                        put(CallTraceAttribute.TRUNCATABLE(), value.truncatable)
-                                    } else {
-                                        val valueStr = sarif.flatten()
-                                        if (!warnedAlreadyOnUnexpectedValue) {
-                                            logger.warn { // not really expecting this to happen -- let's monitor ..
-                                                "unexpected display value in variables tab (variable: $name, " +
-                                                    "displayValue: $valueStr)"
-                                            }
-                                            warnedAlreadyOnUnexpectedValue = true
-                                        }
-                                        put(CallTraceAttribute.VALUE(), valueStr)
-                                        if (altReprsInTreeView) {
-                                            put(CallTraceAttribute.VALUES(), buildJsonArray { add(valueStr) })
-                                        }
-                                        put(CallTraceAttribute.TOOLTIP(), tooltip(valueStr))
-                                        put(CallTraceAttribute.TRUNCATABLE(), false)
-                                    }
-
-                                    put(OutputReportViewAttribute.JUMP_TO_DEFINITION(), local.range as? Range.Range)
-                                    // not dumping this for now, since we're not using it -- but might put it to use later, so leaving it for now
-                                    // put(CallTraceAttribute.TYPE(), local.formatterType.toTypeString()) // XXX toString or toTypeString??
-                                }
-                            }
-                        })
+                        putJsonArray(
+                            OutputReportViewAttribute.VARIABLES(),
+                            counterExample.localAssignments?.toJson().orEmpty()
+                        )
                     }
 
                     return OutputReportView(
@@ -664,7 +612,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
                         CallResolutionTableWithExampleMeta.ExampleMeta.None
                     ),
                     val callTrace: CallTrace? = null,
-                    val localAssignments: Map<String, LocalAssignment> = emptyMap(),
+                    val localAssignments: LocalAssignments?,
                     val model: CounterexampleModel = CounterexampleModel.Empty,
                     val assertSlice: Result<DynamicSlicerResults?> = Result.success(null),
                     val minHashingBoundNeeded: BigInteger? = null,
@@ -686,6 +634,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
                         }
                         return firstFailureResultMetaOrNull
                     }
+
                 }
 
                 override fun copyWithDetailsIfNotNull(newDetails: String?): WithExamplesData {
@@ -760,8 +709,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
                             val formatter = CallTraceValueFormatter(addrToContract, scene, model)
 
-                            val localAssignments = localAssignments(model, origProgWithAssertIdMeta, addrToContract, formatter, scene)
-                            logLocalAssignments(localAssignments)
+                            val localAssignments = LocalAssignments(model, origProgWithAssertIdMeta, addrToContract, formatter, scene)
+                            localAssignments.logForTests()
 
                             val assertionMessages: List<RuleFailureMeta.ViolatedAssert> =
                                 listOfNotNull(model.findMetaOfFirstViolatedAssert(origProgWithAssertIdMeta, rule))
@@ -872,7 +821,9 @@ sealed class RuleCheckResult(open val rule: IRule) {
                     )
                 },details=${firstData.details},localVars.size=${
                     (firstData as? RuleCheckInfo.WithExamplesData.CounterExample)
-                        ?.localAssignments?.size ?: 0
+                        ?.localAssignments
+                        ?.size
+                        ?: 0
                 },time=${verifyTime.timeSeconds})"
         }
 

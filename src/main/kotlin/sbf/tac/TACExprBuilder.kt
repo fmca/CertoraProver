@@ -196,7 +196,7 @@ class TACExprBuilder(private val regVars: ArrayList<TACSymbol.Var>) {
     /** Return the equivalent TAC expression of logical [op1] xor [op2] **/
     private fun mkXorExpr(op1: TACExpr.Sym, op2: TACExpr): TACExpr {
         /* mask64 because TAC uses 256bits but SBF uses 64bits */
-        return mask64(TACExpr.BinOp.BWXOr(op1, op2))
+        return TACExpr.BinOp.BWXOr(mask64(op1), mask64(op2))
     }
 
     /** Return the equivalent TAC expression of logical [op1] or [op2] **/

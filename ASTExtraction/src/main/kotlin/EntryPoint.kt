@@ -17,22 +17,29 @@
 
 @file:Suppress("MissingPackageDeclaration") // `main` is in default package
 
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import spec.CVLInput
 import spec.CVLSource
 import spec.DummyTypeResolver
 import spec.cvlast.CVLAst
+import spec.cvlast.CVLCmd
 import spec.cvlast.SolidityContract
+import spec.cvlast.transformer.CVLAstTransformer
+import spec.cvlast.transformer.CVLCmdTransformer
+import spec.cvlast.transformer.CVLExpTransformer
 import spec.cvlast.typechecker.CVLError
+import spec.cvlast.typechecker.RequireWithoutReason
 import utils.CollectingResult
+import utils.CollectingResult.Companion.asError
 import java.io.File
 import kotlin.system.exitProcess
 
 /**
  * This entry point allows syntax checking of CVL spec files from the command line. Used by the LSP server.
  *
- * Input is in the form of a single file. If syntax checking passes, a [CVLAst] is emitted to stdout.
- * If it fails, [CVLError]s are emitted to stderr. Serialization is done via JSON.
+ * Input is in the form of a single file. If syntax checking passes, a [CVLAst] and potential warnings are emitted to stdout.
+ * If it fails, errors are emitted to stdout, while the ast will be null. Serialization is done via JSON.
  * Currently only basic syntax checking is done. For example, types are not validated and imports are not considered.
  *
  * Supported modes:
@@ -60,22 +67,32 @@ fun main(args: Array<String>) {
     CVLInput.Plain(source).emitAst()
 }
 
+@Serializable
+data class AstAndDiagnostics(val ast: CVLAst?, val diagnostics: List<LSPDiagnostic>)
+
+@Serializable
+data class LSPDiagnostic(val error: CVLError, val severity: Severity)
+
+@Serializable
+enum class Severity { WARNING, ERROR }
+
 private fun CVLInput.Plain.emitAst() {
     val primaryContract = SolidityContract(name = "")
     val typeResolver = DummyTypeResolver(primaryContract)
 
     when (val astOrErrors = getRawCVLAst(typeResolver)) {
         is CollectingResult.Result -> {
-            val entireAst: CVLAst = astOrErrors.result
-            val serialized = lspJsonConfig.encodeToString(entireAst)
+            val originalAst: CVLAst = astOrErrors.result
+            val warnings: List<LSPDiagnostic> = collectWarningsForLSP(originalAst).errorOrNull().orEmpty().map { LSPDiagnostic(it, Severity.WARNING) }
+            val serialized = lspJsonConfig.encodeToString(AstAndDiagnostics(originalAst, warnings))
             println(serialized)
             exitProcess(EXIT_SUCCESS)
         }
 
         is CollectingResult.Error -> {
-            val errors: List<CVLError> = astOrErrors.messages
-            val serialized = lspJsonConfig.encodeToString(errors)
-            errprintln(serialized)
+            val errors: List<LSPDiagnostic> = astOrErrors.messages.map { LSPDiagnostic(it, Severity.ERROR) }
+            val serialized = lspJsonConfig.encodeToString(AstAndDiagnostics(null, errors))
+            println(serialized)
             exitProcess(EXIT_SYNTAX_FAILURE)
         }
     }
@@ -95,3 +112,15 @@ private fun badFile(path: String): Nothing {
     exitProcess(EXIT_FAILURE)
 }
 
+private fun collectWarningsForLSP(ast: CVLAst): CollectingResult<CVLAst, CVLError> {
+    val cmdChecker = object : CVLCmdTransformer<CVLError>(CVLExpTransformer.copyTransformer()) {
+        override fun assumeCmd(cmd: CVLCmd.Simple.AssumeCmd.Assume): CollectingResult<CVLCmd, CVLError> {
+            if (cmd.description == null) {
+                return RequireWithoutReason(cmd.range, cmd.exp).asError()
+            }
+            return super.assumeCmd(cmd)
+        }
+    }
+    val astChecker = object : CVLAstTransformer<CVLError>(cmdChecker) {}
+    return astChecker.ast(ast)
+}

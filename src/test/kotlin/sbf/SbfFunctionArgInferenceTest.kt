@@ -49,7 +49,8 @@ class SbfFunctionArgInferenceTest {
         }
 
         val callGraph = MutableSbfCallGraph(outcfgs, setOf(root), globals)
-        return inline(root, callGraph, EmptyInlinerConfig)
+        val memSummaries = MemorySummaries()
+        return inline(root, callGraph, memSummaries, EmptyInlinerConfig)
     }
 
     private fun runAnalysis(cfgs: List<MutableSbfCFG>, root:String, slice: Boolean = false): FunctionArgumentInference {

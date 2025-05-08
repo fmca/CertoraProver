@@ -1,0 +1,7 @@
+Non-Function-Input-Require (`require a > 10;`) without Reason at trickier.spec:10:9
+Function-Input-Require (`require a > 11;`) without Reason at trickier.spec:20:5
+Function-Input-Require (`require a > 12;`) without Reason at trickier.spec:28:9
+Function-Input-Require (`require a > 13;`) without Reason at trickier.spec:38:9
+Function-Input-Require (`require a > 14;`) without Reason at trickier.spec:46:5
+Function-Input-Require (`require a > 15;`) without Reason at trickier.spec:61:5
+Function-Input-Require (`require a > 16;`) without Reason at trickier.spec:69:9

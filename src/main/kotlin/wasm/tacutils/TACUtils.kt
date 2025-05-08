@@ -21,16 +21,13 @@ import analysis.*
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import analysis.CommandWithRequiredDecls.Companion.withDecls
 import datastructures.stdcollections.*
-import instrumentation.transformers.*
-import kotlin.streams.*
 import tac.*
-import utils.*
 import vc.data.*
 import vc.data.tacexprutil.*
 import wasm.host.soroban.opt.LONG_COPY_STRIDE
 
-fun assignHavoc(dest: TACSymbol.Var) =
-    listOf(TACCmd.Simple.AssigningCmd.AssignHavocCmd(dest)).withDecls(dest)
+fun assignHavoc(dest: TACSymbol.Var, meta: MetaMap = MetaMap()) =
+    listOf(TACCmd.Simple.AssigningCmd.AssignHavocCmd(dest, meta)).withDecls(dest)
 
 fun assign(dest: TACSymbol.Var, exp: TACExprFact.() -> TACExpr) =
     ExprUnfolder.unfoldTo(TACExprFactUntyped(exp), dest).merge(dest)
@@ -79,7 +76,7 @@ fun assert(msg: String, subjectSym: TACSymbol? = null, cond: TACExprFact.() -> T
 
 fun assume(cond: TACExprFact.() -> TACExpr) =
     cond.letVar("a", Tag.Bool) {
-        TACCmd.Simple.AssumeCmd(it.s).withDecls()
+        TACCmd.Simple.AssumeCmd(it.s, "").withDecls()
     }
 
 fun label(label: String) = TACCmd.Simple.LabelCmd(label).withDecls()

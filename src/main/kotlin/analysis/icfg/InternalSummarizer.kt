@@ -519,7 +519,8 @@ object InternalSummarizer {
                                 callSiteSrc = callSite.callSiteSrc,
                                 methodSignature = callSite.methodSignature,
                                 callResolutionTableInfo = result.summarizationInfo,
-                                appliedSummary = Summarization.AppliedSummary.MethodsBlock(specCallSumm, summSignature)
+                                appliedSummary = Summarization.AppliedSummary.MethodsBlock(specCallSumm, summSignature),
+                                rets = retAnnot.rets
                             )
                         )
                     )).appendToSinks(
@@ -885,6 +886,13 @@ object InternalSummarizer {
                             result = listOf(NodeType.InlinedCall(start.id))
                         )
                     } else if(end != null) {
+                        /*
+                         * If this is a mismatch in a revert block ignore this mismatch,
+                         * solidity loves to share revert blocks...
+                         */
+                        if(currStart.id != end.id && lc.ptr.block in code.analysisCache.revertBlocks) {
+                            return this.cont(listOf())
+                        }
                         check(currStart.id == end.id) {
                             "Incoherent graph, hit ${end.id} @ $it, expecting to find end for $currStart"
                         }

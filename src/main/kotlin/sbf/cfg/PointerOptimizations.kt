@@ -69,3 +69,17 @@ fun runPTAOptimizations(prog: SbfCallGraph, memSummaries: MemorySummaries): SbfC
     }
 }
 
+/** CFG optimizations that should be executed only once **/
+fun runPostSlicingOptimizations(prog: SbfCallGraph): SbfCallGraph {
+    return prog.transformSingleEntry { entryCFG ->
+        val optEntryCFG = entryCFG.clone(entryCFG.getName())
+        // prerequisite for `markAddWithOverflow`
+        simplifyBools(optEntryCFG)
+        optEntryCFG.verify(false, "[after simplifyBools]")
+        markAddWithOverflow(optEntryCFG)
+        optEntryCFG.verify(false, "[after markAddWithOverflow]")
+        optEntryCFG.normalize()
+        optEntryCFG.verify(true, "after post-slicing optimizations")
+        optEntryCFG
+    }
+}

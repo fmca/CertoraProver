@@ -20,7 +20,7 @@ package analysis
 import vc.data.TACCmd
 import vc.data.TACExpr
 import vc.data.TACSymbol
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 
 
 object DefiningEquationAnalysis {
@@ -57,13 +57,13 @@ object DefiningEquationAnalysis {
                     check(exp.s is TACSymbol.Const)
                     return exp
                 }
-                return object : QuantDefaultTACExprTransformer() {
-                    override fun transform(acc: QuantVars, exp: TACExpr): TACExpr {
+                return object : DefaultTACExprTransformer() {
+                    override fun transform(exp: TACExpr): TACExpr {
                         if(!expressionFilter(exp)) {
                             throw InvalidRHSException()
                         }
                         if(exp !is TACExpr.Sym) {
-                            return super.transform(acc, exp)
+                            return super.transform(exp)
                         }
                         if(exp !is TACExpr.Sym.Var) {
                             return exp
@@ -74,7 +74,7 @@ object DefiningEquationAnalysis {
                             this@Worker.process(block.commands[pos-1].ptr, exp.s) ?: throw InvalidRHSException()
                         }
                     }
-                }.transformOuter(exp)
+                }.transform(exp)
             }
             return TACExpr.Sym(track)
         }

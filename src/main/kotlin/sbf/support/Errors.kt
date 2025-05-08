@@ -21,7 +21,7 @@ import sbf.SolanaConfig
 import sbf.cfg.*
 import sbf.domains.PTAField
 import datastructures.stdcollections.*
-import dwarf.InlinedFramesInfo
+import dwarf.DebugInfoReader
 import utils.*
 
 /**
@@ -226,7 +226,7 @@ private class FormattedErrorMessage(private val locInst: LocatedSbfInstruction?,
     private fun getSourceLocation(): String {
         val address = locInst?.inst?.metaData?.getVal(SbfMeta.SBF_ADDRESS)
         if (address != null) {
-            val frames = InlinedFramesInfo.getInlinedFrames(listOf(address))
+            val frames = DebugInfoReader.getInlinedFrames(listOf(address))
             val lines = frames[address]
             if (lines != null) {
                 val strB = StringBuilder()

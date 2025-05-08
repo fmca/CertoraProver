@@ -28,6 +28,7 @@ import analysis.opt.numeric.VROInt.Companion.nondetOf
 import analysis.worklist.*
 import bridge.SourceLanguage
 import com.certora.collect.*
+import config.Config
 import datastructures.stdcollections.*
 import disassembler.DisassembledEVMBytecode
 import tac.*
@@ -540,6 +541,9 @@ object FreePointerScalarizer {
         bytecode: DisassembledEVMBytecode,
         isConstructor: Boolean = false
     ): CoreTACProgram {
+        if(!Config.Mem0x0To0x40AsScalar.get()) {
+            return code
+        }
         val graph = code.analysisCache.graph
         val expSimplifier = ExpressionSimplifier(graph, defaultTo256Bits = true)
         if(graph.roots.isEmpty()) {

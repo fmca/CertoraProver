@@ -92,7 +92,7 @@ open class JSONReporter(private val conf: ConfigType<String>) : OutputReporter {
 
         return when (result) {
             is RuleCheckResult.Single -> {
-                val key = if (result.rule.ruleType != SpecType.Single.BMC) {
+                val key = if (result.rule.ruleType !is SpecType.Single.BMC) {
                     result.rule.declarationId
                 } else {
                     result.rule.ruleIdentifier.toString()
@@ -193,7 +193,7 @@ open class JSONReporter(private val conf: ConfigType<String>) : OutputReporter {
 
         // will add only for single rules
         return if (result is RuleCheckResult.Single) {
-            val key = if (result.rule.ruleType != SpecType.Single.BMC) {
+            val key = if (result.rule.ruleType !is SpecType.Single.BMC) {
                 result.rule.declarationId
             } else {
                 result.rule.ruleIdentifier.toString()

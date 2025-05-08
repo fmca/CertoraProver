@@ -9,7 +9,7 @@ we recommend following the documentation here: https://docs.certora.com/en/lates
 The instructions here are for users on Mac OS and Linux.
 
 ## Dependencies
-* JDK 10+
+* JDK 19+
 * SMT solvers:
   * [required] Z3 -- https://github.com/Z3Prover/z3/releases
   * [required] CVC5 -- https://github.com/cvc5/cvc5/releases
@@ -29,8 +29,8 @@ The instructions here are for users on Mac OS and Linux.
 
 * Rust (tested on Version 1.81.0+) -- https://www.rust-lang.org/tools/install
 
-* [`llvm-symbolizer`](https://llvm.org/docs/CommandGuide/llvm-symbolizer.html),
-  which is installed as part of LLVM.
+* [`llvm-symbolizer`](https://llvm.org/docs/CommandGuide/llvm-symbolizer.html) and [`llvm-dwarfdump`](https://llvm.org/docs/CommandGuide/llvm-dwarfdump.html),
+  which are installed as part of LLVM.
 
 * [`rustfilt`](https://github.com/luser/rustfilt)
 
@@ -65,6 +65,8 @@ The instructions here are for users on Mac OS and Linux.
 
 * If you want to clean up all artifacts of the project, run: `./gradlew clean`
 
+* Make sure the path you used to set the variable `CERTORA` has important jars, scripts, and binaries like `emv.jar`, `certoraRun.py`, `tac_optimizer`.
+
 ### Troubleshooting
 - We recommend working from within a python virtual environment and installing all dependencies there:
 ```commandline
@@ -74,6 +76,7 @@ source .venv/bin/activate
 pip install -r scripts/certora_cli_requirements.txt
 ```
 - If you have `Crypto` installed, you may first need to uninstall (`pip uninstall crypto`) before installing `pycryptodome`
+- You can make sure `tac_optimizer` builds correctly by `cd`ing in to the `fried-egg` directory and running `cargo build --release`. Also make sure `tac_optimizer` is in your path (set using `CERTORA`).
 
 ## Running
 

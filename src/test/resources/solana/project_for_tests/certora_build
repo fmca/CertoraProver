@@ -11,9 +11,15 @@ output_json() {
     cat <<EOF
 {
     "project_directory": "$project_directory",
+    "solana_inlining": [
+      "./cvt_inlining.txt"
+    ],
+    "solana_summaries": [
+      "./cvt_summaries.txt"
+    ],
     "sources": [
-        "Cargo.toml",
-        "src/**/*.rs"
+      "Cargo.toml",
+      "src/**/*.rs"
     ],
     "executables": "project_for_tests.so",
     "success": true,

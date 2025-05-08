@@ -230,14 +230,14 @@ object EthereumVariables {
     fun simplifyNumber(c: TACCmd.EVM.AssignNumberCmd) =
         CommandWithRequiredDecls(
 
-            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs, number, c.meta)),
+            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs.withMeta(TACMeta.FOUNDRY_PROTECTED), number, c.meta)),
             setOf(number)
         )
 
     fun simplifyTimestamp(c: TACCmd.EVM.AssignTimestampCmd) =
         CommandWithRequiredDecls(
 
-            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs.withMeta(TACMeta.FOUNDRY_PROTECTED), timestamp, c.meta + TACMeta.FOUNDRY_PROTECTED)),
+            listOf(TACCmd.Simple.AssigningCmd.AssignExpCmd(c.lhs.withMeta(TACMeta.FOUNDRY_PROTECTED), timestamp, c.meta)),
             setOf(timestamp)
         )
 
@@ -474,7 +474,7 @@ object EthereumVariables {
             )
         )
         l.add(
-            TACCmd.Simple.AssumeCmd(trgNoOverflow, meta)
+            TACCmd.Simple.AssumeCmd(trgNoOverflow, "trgNoOverflow", meta)
         )
         l.add(
             TACCmd.Simple.AssigningCmd.AssignExpCmd(
@@ -973,7 +973,7 @@ object EthereumVariables {
                 Le(newContractAddress.asSym(), EVMConfig.maxAddress.asTACExpr)
             )
         }) { e ->
-            TACCmd.Simple.AssumeCmd(e.s)
+            TACCmd.Simple.AssumeCmd(e.s, "newContractAddressIsAnAddress")
         }
         return CreateSetup(
             CommandWithRequiredDecls.mergeMany(
@@ -1046,7 +1046,7 @@ object EthereumVariables {
                     "codeSize",
                     TACExprFactSimple.Lt(TACExpr.zeroExpr, sizeTmp.asSym(), Tag.Bool)
                 ) {
-                    TACCmd.Simple.AssumeCmd(it.s)
+                    TACCmd.Simple.AssumeCmd(it.s, "nonZeroCodeSize")
                 }
             ).merge(
                 ExprUnfolder.unfoldPlusOneCmd("codeSize", with(TACExprFactUntyped) {
@@ -1115,7 +1115,7 @@ object EthereumVariables {
         val finish = finishSimplifyCreate(c.lhs, c.value, c.argsOffset, c.argsSize, c.memBaseMap, c.meta, callerSymbol, newAddress, c)
         if (useAssume.get()) {
             val assumeNoCollision = generateCreateCollisionCheck(newAddress) { chk, noCollision ->
-                chk.merge(TACCmd.Simple.AssumeCmd(noCollision))
+                chk.merge(TACCmd.Simple.AssumeCmd(noCollision, "assumeNoCollision"))
             }
             val toReplace = setupCode andThen assumeNoCollision andThen finish
             patch.replaceCommand(ptr, toReplace.cmds)

@@ -74,23 +74,28 @@ private fun normalizeSelect(bb: MutableSbfBasicBlock, locInst: LocatedSbfInstruc
  *  ```
  *  r3 = r4
  *  r3 = r3 + r2
+ *  r3 = r3 - 1 // optional
  *  r2 = select(r4 ugt r3, 1, 0)
  *  ```
  *  or
  *  ```
  *  r3 = r4
  *  r3 = r3 + r2
+ *  r3 = r3 - 1 // optional
  *  if (r4 ugt r3)
  *  ```
  *
  *  For simplicity, all instructions must be in the same block.
  */
+
 private fun markAddWithOverflow(cfg: MutableSbfCFG, addLocInst: LocatedSbfInstruction) {
+    // `addInst` is r3 = r3 + r2 in the above example
     val addInst = addLocInst.inst
     check(addInst is SbfInstruction.Bin && addInst.op == BinOp.ADD) {"markAddWithOverflow expects an addition instead of $addInst"}
     val bb = cfg.getMutableBlock(addLocInst.label)
     check(bb != null) {"markAddWithOverflow cannot find block for ${addLocInst.label}"}
 
+    // match assignment (r3 = r4 in the above example)
     val assignLocInst = findDefinitionInterBlock(bb, addInst.dst, addLocInst.pos) ?: return
     val assignInst = assignLocInst.inst
     if (assignInst is SbfInstruction.Bin && assignInst.op == BinOp.MOV && assignLocInst.label == bb.getLabel() /* same block */) {
@@ -100,21 +105,45 @@ private fun markAddWithOverflow(cfg: MutableSbfCFG, addLocInst: LocatedSbfInstru
         }
 
         val op2 = addInst.v
-        val selectOrJumpLocInst = getNextUseInterBlock(bb, addLocInst.pos+1, addInst.dst)
+
+
+
+        val safeMathInst = mutableListOf(addLocInst)
+        var (overflowVar, pos) = addInst.dst to addLocInst.pos
+        var nextUseLocInst = getNextUseInterBlock(bb, pos+1, overflowVar)
+
+        // match (optionally) r3 = r3 - 1 in the above example
+        // Note that we match any instruction r = r + k or r = r - k where k is an immediate value.
+        if (nextUseLocInst != null) {
+            val nextUseInst = nextUseLocInst.inst
+            if (nextUseInst is SbfInstruction.Bin &&
+                (nextUseInst.op == BinOp.SUB || nextUseInst.op == BinOp.ADD) &&
+                (nextUseInst.v is Value.Imm) &&
+                nextUseLocInst.label == bb.getLabel()) {
+
+                overflowVar = nextUseInst.dst
+                pos = nextUseLocInst.pos
+                safeMathInst.add(nextUseLocInst)
+                nextUseLocInst = getNextUseInterBlock(bb, pos+1, overflowVar)
+            }
+        }
+
+        // match the `select` or the `jump` instruction in the above example
+        val selectOrJumpLocInst = nextUseLocInst
         if (selectOrJumpLocInst != null && selectOrJumpLocInst.label == bb.getLabel() /* same block */) {
             when (val selectOrJumpInst = selectOrJumpLocInst.inst) {
                 is SbfInstruction.Select -> {
-                    if (isAddOverflowCondition(selectOrJumpInst.cond, addInst.dst, op1, op2,
-                                               bb, assignLocInst.pos, addLocInst.pos, selectOrJumpLocInst.pos)) {
-                        addAnnotForAddWithOverflow(bb, addLocInst)
-                        addAnnotForAddWithOverflowCond(bb, selectOrJumpLocInst, addInst)
+                    if (isAddOverflowCondition(selectOrJumpInst.cond, overflowVar, op1, op2,
+                                               bb, assignLocInst.pos, pos, selectOrJumpLocInst.pos)) {
+                        safeMathInst.forEach { addSafeMathAnnot(bb, it) }
+                        addOverflowAnnot(bb, selectOrJumpLocInst, overflowVar)
                     }
                 }
                 is  SbfInstruction.Jump.ConditionalJump -> {
-                    if (isAddOverflowCondition(selectOrJumpInst.cond, addInst.dst, op1, op2,
-                                               bb, assignLocInst.pos, addLocInst.pos, selectOrJumpLocInst.pos)) {
-                        addAnnotForAddWithOverflow(bb, addLocInst)
-                        addAnnotForAddWithOverflowCond(bb, selectOrJumpLocInst, addInst)
+                    if (isAddOverflowCondition(selectOrJumpInst.cond, overflowVar, op1, op2,
+                                               bb, assignLocInst.pos, pos, selectOrJumpLocInst.pos)) {
+                        safeMathInst.forEach { addSafeMathAnnot(bb, it) }
+                        addOverflowAnnot(bb, selectOrJumpLocInst, overflowVar)
                     }
                 }
                 else -> {}
@@ -161,22 +190,22 @@ private fun isAddOverflowCondition(cond: Condition, z: Value.Reg, x: Value.Reg, 
 }
 
 
-private fun addAnnotForAddWithOverflow(bb: MutableSbfBasicBlock, locInst: LocatedSbfInstruction) {
-    val addInst = locInst.inst
-    if (addInst is SbfInstruction.Bin && addInst.op == BinOp.ADD) {
-        val newMetaData = addInst.metaData.plus(Pair(SbfMeta.ADD_WITH_OVERFLOW, ""))
-        bb.replaceInstruction(locInst.pos, addInst.copy(metaData = newMetaData))
+private fun addSafeMathAnnot(bb: MutableSbfBasicBlock, locInst: LocatedSbfInstruction) {
+    val inst = locInst.inst
+    if (inst is SbfInstruction.Bin && (inst.op == BinOp.ADD || inst.op == BinOp.SUB)) {
+        val newMetaData = inst.metaData.plus(Pair(SbfMeta.SAFE_MATH, ""))
+        bb.replaceInstruction(locInst.pos, inst.copy(metaData = newMetaData))
     }
 }
 
-private fun addAnnotForAddWithOverflowCond(bb: MutableSbfBasicBlock, locInst: LocatedSbfInstruction, addInst: SbfInstruction.Bin) {
+private fun addOverflowAnnot(bb: MutableSbfBasicBlock, locInst: LocatedSbfInstruction, overflowVar: Value.Reg) {
     when (val inst = locInst.inst) {
         is SbfInstruction.Select -> {
             val newMetaData = inst.metaData
                 .plus(
                     Pair(
-                        SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK,
-                        Condition(CondOp.GT, addInst.dst, Value.Imm(ULong.MAX_VALUE))
+                        SbfMeta.PROMOTED_OVERFLOW_CHECK,
+                        Condition(CondOp.GT, overflowVar, Value.Imm(ULong.MAX_VALUE))
                     )
                 )
             bb.replaceInstruction(locInst.pos, inst.copy(metaData = newMetaData))
@@ -185,8 +214,8 @@ private fun addAnnotForAddWithOverflowCond(bb: MutableSbfBasicBlock, locInst: Lo
             val newMetaData = inst.metaData
                 .plus(
                     Pair(
-                        SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK,
-                        Condition(CondOp.GT, addInst.dst, Value.Imm(ULong.MAX_VALUE))
+                        SbfMeta.PROMOTED_OVERFLOW_CHECK,
+                        Condition(CondOp.GT, overflowVar, Value.Imm(ULong.MAX_VALUE))
                     )
                 )
             bb.replaceInstruction(locInst.pos, inst.copy(metaData = newMetaData))

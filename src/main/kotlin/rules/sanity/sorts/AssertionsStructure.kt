@@ -105,7 +105,7 @@ value class AssertionsStructureLeftOperand(override val assertExp: CVLExp.Binary
         get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _: String, rawMsg: String ->
             "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
                 if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.description
+                    assertCmd.descriptionOrDefault
                 } else {
                     "checked expression ${assertExp.l}"
                 }
@@ -131,7 +131,7 @@ value class AssertionsStructureRightOperand(override val assertExp: CVLExp.Binar
         get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _, rawMsg: String ->
             "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
                 if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.description
+                    assertCmd.descriptionOrDefault
                 } else {
                     "checked expression ${assertExp.r}"
                 }
@@ -157,7 +157,7 @@ value class AssertionsStructureIFFBothFalse(override val assertExp: CVLExp.Binar
         get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _, rawMsg: String ->
             "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
                 if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.description
+                    assertCmd.descriptionOrDefault
                 } else {
                     "checks that both ${assertExp.l} and ${assertExp.r} are not false, because that would make " +
                         "$assertExp always true"
@@ -221,7 +221,7 @@ value class AssertionsStructureIFFBothTrue(override val assertExp: CVLExp.Binary
         get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _, rawMsg: String ->
             "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
                 if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.description
+                    assertCmd.descriptionOrDefault
                 } else {
                     "checks that both ${assertExp.l} and ${assertExp.r} are not true, because that would make " +
                         "$assertExp always true"

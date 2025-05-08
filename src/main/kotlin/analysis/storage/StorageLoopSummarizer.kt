@@ -82,7 +82,7 @@ object StorageLoopSummarizer {
 
 
         fun TACExpr.substVar(from: TACSymbol.Var, to: TACExpr): TACExpr =
-            TACExprUtils.SubstitutorVar(mapOf(from.asSym() to to)).transformOuter(this)
+            TACExprUtils.SubstitutorVar(mapOf(from.asSym() to to)).transform(this)
 
         /**
          * Determine the initial value of [x] before entering the loop summarized by [loopSummary]
@@ -186,7 +186,7 @@ object StorageLoopSummarizer {
                     )
                 }?.toMap() ?: break
 
-                liftedExpr = TACExprUtils.SubstitutorVar(sub).transformOuter(liftedExpr)
+                liftedExpr = TACExprUtils.SubstitutorVar(sub).transform(liftedExpr)
                 nextTarget = graph.pred(nextTarget).singleOrNull() ?: break
             }
             return liftedExpr

@@ -390,12 +390,6 @@ class Decompiler private constructor(
             override val stackFrame get() = null
             override val blockInstance get() = null
         }
-
-        object None : EVMValueSource {
-            override fun toString() = ""
-            override val stackFrame get() = null
-            override val blockInstance get() = null
-        }
     }
 
     /**
@@ -413,8 +407,6 @@ class Decompiler private constructor(
             Given a known boolean value, possibly get the value of `this`.
          */
         abstract fun inferAbstractBool(knownValue: EVMValue, knownValueIsTrue: Boolean): InferredBool?
-
-        abstract fun clearSource(): EVMValue
     }
 
     /** A known specific constant integer value */
@@ -424,7 +416,6 @@ class Decompiler private constructor(
         override fun toBoolean() = value != BigInteger.ZERO
         override fun toInferredBool() = InferredBool(value != BigInteger.ZERO, immediateSource)
         override fun inferAbstractBool(knownValue: EVMValue, knownValueIsTrue: Boolean) = toInferredBool()
-        override fun clearSource() = copy(immediateSource = EVMValueSource.None)
     }
 
     /** Abstract boolean value inferred from conditional branching */
@@ -434,7 +425,6 @@ class Decompiler private constructor(
         override fun toBoolean() = value
         override fun toInferredBool() = this
         override fun inferAbstractBool(knownValue: EVMValue, knownValueIsTrue: Boolean) = this
-        override fun clearSource() = copy(immediateSource = EVMValueSource.None)
     }
 
     /** Result of ISZERO */
@@ -498,11 +488,6 @@ class Decompiler private constructor(
                 else -> null
             }
         }
-
-        override fun clearSource() = copy(
-            immediateSource = EVMValueSource.None,
-            inferenceSource = EVMValueSource.None
-        )
     }
 
     /** An unknown value */
@@ -526,8 +511,6 @@ class Decompiler private constructor(
             }
             else -> null
         }
-
-        override fun clearSource() = copy(immediateSource = EVMValueSource.None)
     }
 
     private fun EVMValue.isFunctionFinderConstant() = this.toBigInteger()?.isInternalAnnotationConstant() == true
@@ -736,8 +719,6 @@ class Decompiler private constructor(
         private val hash = hash { it + pc + stackIn + topOfStackValue + jumpThunkDepth }
         override fun hashCode() = hash
 
-        fun clearSources() = copy(stackIn = stackIn.updateValues { _, v -> v.clearSource() })
-
         companion object {
             val Start = BlockInstance(0, persistentStackOf(), null, 0)
         }
@@ -773,21 +754,7 @@ class Decompiler private constructor(
         The [synthetic] property distinguishes dependencies that are injected by our analysis, rather than expressed in
         the user's code.  Synthethic dependencies should not be related back to the user's code e.g. in call traces.
      */
-    private data class BlockDependency(val from: TreapSet<BlockInstance>, val to: BlockInstance, val synthetic: Boolean) {
-        fun clearSources() = copy(
-            from = from.updateElements { it.clearSources() },
-            to = to.clearSources()
-        )
-        fun merge(that: BlockDependency): BlockDependency {
-            // When merging block instances, the only difference we allow is the "from" part of the dependencies. This
-            // does not affect the TAC output, but is used in the size analysis report.  For that report, we need to
-            // track all of original "from" blocks, as they all retain the merged block.
-            check(this.to == that.to) {
-                "Merging incompatible block dependency destinations $this != $that"
-            }
-            return this.copy(from = this.from + that.from)
-        }
-    }
+    private data class BlockDependency(val from: TreapSet<BlockInstance>, val to: BlockInstance, val synthetic: Boolean)
 
     /**
         The result of interpreting a block instance (success/failure + successors)
@@ -795,9 +762,6 @@ class Decompiler private constructor(
     private sealed class BlockInstanceResult {
         abstract val successors: List<BlockInstance>
         abstract val usedSources: TreapSet<EVMValueSource>
-
-        abstract fun clearSources(): BlockInstanceResult
-        abstract fun merge(that: BlockInstanceResult): BlockInstanceResult
 
         data class Success(
             val jumpTarget: BlockDependency? = null,
@@ -808,36 +772,11 @@ class Decompiler private constructor(
                 fallthrough?.to,
                 jumpTarget?.to
             )
-
-            override fun clearSources() = copy(
-                jumpTarget = jumpTarget?.clearSources(),
-                fallthrough = fallthrough?.clearSources(),
-                usedSources = treapSetOf()
-            )
-
-            override fun merge(that: BlockInstanceResult): BlockInstanceResult {
-                check(
-                    that is Success
-                    && (this.jumpTarget == null) == (that.jumpTarget == null)
-                    && (this.fallthrough == null) == (that.fallthrough == null)
-                    && this.usedSources == that.usedSources) {
-                    "Merging incompatible block instance results $this != $that"
-                }
-                return this.copy(
-                    jumpTarget = this.jumpTarget?.merge(that.jumpTarget!!),
-                    fallthrough = this.fallthrough?.merge(that.fallthrough!!)
-                )
-            }
         }
 
         data class Error(val error: InterpretedBlockInfo.Error) : BlockInstanceResult() {
             override val successors get() = listOf<BlockInstance>()
             override val usedSources: TreapSet<EVMValueSource> get() = treapSetOf()
-            override fun clearSources() = this
-            override fun merge(that: BlockInstanceResult): BlockInstanceResult {
-                check(this == that) { "Merging incompatible block instance results $this != $that" }
-                return this
-            }
         }
     }
 
@@ -1100,14 +1039,7 @@ class Decompiler private constructor(
             }
         }
 
-        // Finally, merge any blocks that differ only due to the "source" fields, as we are done with those.
-        val mergedBlocks = mutableMapOf<BlockInstance, BlockInstanceResult>()
-        deduplicatedBlocks.forEachEntry { (block, result) ->
-            val clearedBlock = block.clearSources()
-            val clearedResult = result.clearSources()
-            mergedBlocks[clearedBlock] = mergedBlocks[clearedBlock]?.merge(clearedResult) ?: clearedResult
-        }
-        return mergedBlocks
+        return deduplicatedBlocks
     }
 
     /**
@@ -1245,7 +1177,7 @@ class Decompiler private constructor(
                         popVar() // jump target
                         val cond = popVar()
                         listOf(
-                            TACCmd.Simple.AssumeCmd(cond),
+                            TACCmd.Simple.AssumeCmd(cond, "JUMPI"),
                             TACCmd.Simple.JumpCmd(jumpTarget, meta)
                         )
                     }
@@ -1678,7 +1610,7 @@ class Decompiler private constructor(
                                 TACCmd.EVM.StopCmd
                             )
                             else -> listOf(
-                                TACCmd.Simple.AssumeCmd(TACSymbol.False),
+                                TACCmd.Simple.AssumeCmd(TACSymbol.False, "RecursionLimitReached"),
                                 TACCmd.EVM.StopCmd
                             )
                         }

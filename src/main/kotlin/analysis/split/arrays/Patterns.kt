@@ -26,6 +26,7 @@ import analysis.patterns.InfoKey
 import analysis.patterns.PatternHelpers
 import analysis.patterns.get
 import analysis.split.SplitContext
+import analysis.split.Ternary.Companion.isPowOf2Minus1
 import analysis.split.arrays.PackingInfoKey.*
 import analysis.storage.StorageAnalysisResult
 import evm.EVM_BITWIDTH256
@@ -53,13 +54,14 @@ class Patterns(splitContext: SplitContext) {
                 .set(PER_SLOT, EVM_BITWIDTH256 / width)
 
         with(PatternHelpers) {
-            val mask = c(MASK) { it > BigInteger.ZERO && (it + BigInteger.ONE).bitCount() == 1 }
+            val mask = c(MASK) { it > BigInteger.ZERO && it.isPowOf2Minus1 }
                 .andDo { addWidth(get(MASK)!!.bitLength()) }
 
             val physicalIndex = (lSym(LOGICAL_INDEX) / c(PER_SLOT))
                 .lastCmd(PHYSICAL_INDEX_CMD)
 
-            val loc = physicalIndex + sym()
+            // the `it + zero` appears in optimized solc. See `Public/TestEVM/StoragePacking/optimized`
+            val loc = (physicalIndex + sym()).let { it OR (it + zero) }
 
             val loadedSlot = read(loc)
                 .lastCmd(READ_CMD)
@@ -78,9 +80,14 @@ class Patterns(splitContext: SplitContext) {
             ).andDo { set(PER_SLOT, 32) }
 
             val startByte = OR(
-                numBytes * (lSym(LOGICAL_INDEX2) % c(PER_SLOT)).lastCmd(INDEX_WITHIN_SLOT_CMD),
-                startByteFor8bits.lastCmd(INDEX_WITHIN_SLOT_CMD)
-            )
+                startByteFor8bits,
+                numBytes * OR(
+                    lSym(LOGICAL_INDEX2) % c(PER_SLOT),
+                    lSym(LOGICAL_INDEX2) bwAnd c(PER_SLOT_MINUS1)
+                        .onlyIf { get(PER_SLOT_MINUS1)!!.toBigInteger().isPowOf2Minus1 }
+                        .andDo { set(PER_SLOT, get(PER_SLOT_MINUS1)!! + 1) },
+                )
+            ).lastCmd(INDEX_WITHIN_SLOT_CMD)
 
             val startBit = c(256) exp startByte
 
@@ -155,6 +162,7 @@ sealed class PackingInfoKey<K> : InfoKey<K>() {
     data object LOGICAL_INDEX : PackingInfoKey<LTACSymbol>()
     data object LOGICAL_INDEX2 : PackingInfoKey<LTACSymbol>()
     data object PER_SLOT : PackingInfoKey<Int>()
+    data object PER_SLOT_MINUS1 : PackingInfoKey<Int>()
     data object PATHS : PackingInfoKey<Set<StorageAnalysisResult.NonIndexedPath>>()
     data object BITWIDTH : PackingInfoKey<Int>()
     data object CONST_VALUE: PackingInfoKey<BigInteger>()

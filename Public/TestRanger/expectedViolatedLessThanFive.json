@@ -1,0 +1,9 @@
+{
+	"assertMessages": {
+		"violatedLessThanFive-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "invariant assertion - InvParams.spec line 28"
+	},
+	"rules": {
+		"violatedLessThanFive-Initial State": "SUCCESS",
+		"violatedLessThanFive-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "FAIL"
+	}
+}

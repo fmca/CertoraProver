@@ -23,6 +23,7 @@ import cli.Ecosystem
 import config.*
 import datastructures.stdcollections.*
 import kotlinx.serialization.json.*
+import sbf.SolanaConfig
 import scene.*
 import scene.source.CertoraBuilderContractSource
 import spec.cvlast.typechecker.CVLError
@@ -146,7 +147,13 @@ class CertoraBuild internal constructor(
 
             is CertoraBuildKind.SolanaBuild -> {
                 // solana-based verification tasks needs the Solana entrypoint to be specified
-                configScope.extend(Config.SolanaEntrypoint, buildKind.solanaEntrypoint).extend(Config.ActiveEcosystem, Ecosystem.SOLANA)
+                configScope
+                    .extend(Config.SolanaEntrypoint, buildKind.solanaEntrypoint)
+                    .extend(Config.ActiveEcosystem, Ecosystem.SOLANA)
+                    // Never elide functions — this is used for testing purposes.
+                    // Note that reading the config file does *not* apply any of the configurations specified within it.
+                    // This is temporary. Once the options in the config file are correctly applied, this can be removed.
+                    .extend(SolanaConfig.TACMinSizeForCalltrace, 0)
             }
         }
     }

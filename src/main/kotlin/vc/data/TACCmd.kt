@@ -25,6 +25,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import solver.CounterexampleModel
 import utils.Range
 import spec.cvlast.CVLType
 import spec.cvlast.ComparisonBasis
@@ -35,6 +36,7 @@ import vc.data.annotation.HookableOpcode
 import vc.data.annotation.OpcodeEnvironmentParam
 import vc.data.annotation.OpcodeOutput
 import vc.data.annotation.OpcodeParameter
+import vc.data.state.TACValue
 import vc.data.tacexprutil.*
 import java.io.Serializable
 import java.math.BigInteger
@@ -1276,12 +1278,11 @@ sealed class TACCmd : Serializable, ITACCmd {
         // Helper commands, not 'real' commands
         //TODO: change cond type to TACExpr
         @KSerializable
-        data class AssumeCmd(val cond: TACSymbol, override val meta: MetaMap = MetaMap()) : Assume, Simple() {
-            override fun argString(): String = "$cond"
+        data class AssumeCmd(val cond: TACSymbol, val msg: String, override val meta: MetaMap = MetaMap()) : Assume, Simple() {
+            override fun argString(): String = "$cond \"${msg.escapeQuotes()}\""
             override fun toString(): String = super.toString() // opt out of generated toString
             override fun withMeta(metaMap: MetaMap) = this.copy(meta = metaMap)
             override val condExpr get() = cond.asSym()
-
             //constructor(cond : TACSymbol, meta: TACMetaInfo? = null ): this(cond.asSym(), meta)
         }
 
@@ -1315,6 +1316,19 @@ sealed class TACCmd : Serializable, ITACCmd {
             override fun argString(): String = "$o \"${description.escapeQuotes()}\""
             override fun toString(): String = super.toString() // opt out of generated toString
             override fun withMeta(metaMap: MetaMap) = this.copy(meta = metaMap)
+
+            fun isViolated(model: CounterexampleModel): Boolean {
+                return when (val tv = model.valueAsTACValue(this.o)) {
+                    TACValue.False -> true
+                    TACValue.True -> false
+                    else -> {
+                        throw CertoraException(
+                            type = CertoraErrorType.COUNTEREXAMPLE,
+                            msg = "Assert command with unexpected model assignment (`$tv`): `$this`"
+                        )
+                    }
+                }
+            }
 
             val msg: String get() {
                 val formatArgs = meta[FORMAT_ARG1]?.let { arrayOf(it) }
@@ -1374,7 +1388,11 @@ sealed class TACCmd : Serializable, ITACCmd {
             override fun hashCode() = hashObject(this)
 
             override fun withMeta(metaMap: MetaMap): Simple {
-                throw UnsupportedOperationException("Cannot annotate NOP")
+                if (metaMap.isEmpty()) {
+                    return this
+                } else {
+                    throw UnsupportedOperationException("Cannot annotate NOP")
+                }
             }
 
             override val meta: MetaMap
@@ -1927,7 +1945,7 @@ sealed class TACCmd : Serializable, ITACCmd {
                 get() = length
         }
 
-        interface LogCmdSummary
+        sealed interface LogCmdSummary : TACSummary
 
         // Log commands.
         @HookableOpcode("LOG0", additionalInterfaces = [LogCmdSummary::class])

@@ -20,20 +20,23 @@ package sbf.tac
 import sbf.cfg.*
 import vc.data.*
 import datastructures.stdcollections.*
+import sbf.domains.INumValue
+import sbf.domains.IOffset
 
-context(SbfCFGToTAC)
 sealed class TACAllocator {
     /**
      * Emit TAC
      *   1) [ptr]:= [address]  if [useTACAssume] = false
      *   2) assume([ptr] == [address]) if [useTACAssume] = true
      */
-    protected fun mkEq(ptr: TACSymbol.Var, address: ULong, useTACAssume:Boolean): List<TACCmd.Simple> {
+
+    context(SbfCFGToTAC<TNum, TOffset>)
+    protected fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> mkEq(ptr: TACSymbol.Var, address: ULong, useTACAssume:Boolean): List<TACCmd.Simple> {
         return if (useTACAssume) {
             val b = mkFreshBoolVar()
             listOf(
                 assign(b, exprBuilder.mkBinRelExp(CondOp.EQ, ptr.asSym() , address.toLong())),
-                TACCmd.Simple.AssumeCmd(b)
+                TACCmd.Simple.AssumeCmd(b, "mkEq")
             )
         } else {
             listOf(assign(ptr, exprBuilder.mkConst(Value.Imm(address)).asSym()))
@@ -42,7 +45,6 @@ sealed class TACAllocator {
 }
 
 /** Symbolic bump allocator **/
-context(SbfCFGToTAC)
 class TACBumpAllocator(val name:String, val start: ULong, val end: ULong): TACAllocator() {
     private var freePtr: ULong = start
 
@@ -63,7 +65,8 @@ class TACBumpAllocator(val name:String, val start: ULong, val end: ULong): TACAl
     /**
      *   Emit TAC code that ensures [ptr] is equal to the bump pointer.
      */
-    fun alloc(ptr: TACSymbol.Var, size: ULong, useTACAssume:Boolean = false): List<TACCmd.Simple> {
+    context(SbfCFGToTAC<TNum, TOffset>)
+    fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> alloc(ptr: TACSymbol.Var, size: ULong, useTACAssume:Boolean = false): List<TACCmd.Simple> {
         val nextAddress = next(size)
         return mkEq(ptr, nextAddress, useTACAssume)
     }
@@ -71,7 +74,6 @@ class TACBumpAllocator(val name:String, val start: ULong, val end: ULong): TACAl
 
 
 /** Symbolic fixed-size block allocator **/
-context(SbfCFGToTAC)
 class TACFixedSizeBlockAllocator(val name:String, val start:ULong, private val maxBlocks:UShort, val blockSize: ULong): TACAllocator() {
     private var freeBlock: ULong = start
     private var usedBlocks: UShort = 0U
@@ -89,7 +91,8 @@ class TACFixedSizeBlockAllocator(val name:String, val start:ULong, private val m
     /**
      *   Emit TAC code that ensures [ptr] is equal to the start address of a new allocated block.
      */
-    fun alloc(ptr: TACSymbol.Var, size: Long, useTACAssume:Boolean = false): List<TACCmd.Simple> {
+    context(SbfCFGToTAC<TNum, TOffset>)
+    fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> alloc(ptr: TACSymbol.Var, size: Long, useTACAssume:Boolean = false): List<TACCmd.Simple> {
         if (size <= 0) {
             throw TACTranslationError("$name: expects non-zero, positive sizes but given $size")
         }

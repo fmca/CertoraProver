@@ -17,9 +17,11 @@
 
 package instrumentation
 
+import algorithms.dominates
 import analysis.*
-import analysis.alloc.AllocationAnalysis
 import analysis.smtblaster.*
+import com.certora.collect.*
+import evm.EVM_WORD_SIZE
 import parallel.*
 import parallel.ParallelPool.Companion.runInherit
 import parallel.Scheduler.complete
@@ -28,6 +30,7 @@ import smtlibutils.data.SmtExp
 import solver.SolverConfig
 import tac.MetaMap
 import tac.NBId
+import tac.Tag
 import utils.*
 import vc.data.*
 import vc.summary.ComputeTACSummaryTransFormula
@@ -43,13 +46,34 @@ object StoragePackedLengthSummarizer {
     private const val lengthField = "LEN_FIELD"
 
     @KSerializable
+    @Treapable
+    sealed class SizeReadSort : AmbiSerializable, TransformableVarEntity<SizeReadSort> {
+        @KSerializable
+        data class WordLoad(val indexSym: TACSymbol) : SizeReadSort() {
+            override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): SizeReadSort = copy(
+                indexSym = when (indexSym) {
+                    is TACSymbol.Var -> f(indexSym)
+                    is TACSymbol.Const -> indexSym
+                }
+            )
+        }
+
+        @KSerializable
+        data class UnpackRead(val read: TACSymbol.Var) : SizeReadSort() {
+            override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): SizeReadSort =
+                copy(read = f(read))
+        }
+    }
+
+    @KSerializable
     data class StorageLengthReadSummary(
         override val skipTarget: NBId,
         override val originalBlockStart: NBId,
         override val modifiedVars: Set<TACSymbol.Var>,
         override val summarizedBlocks: Set<NBId>,
-        val readSort: AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort,
-        val outputVar: TACSymbol.Var
+        val readSort: SizeReadSort,
+        val outputVar: TACSymbol.Var,
+        val storageSlotVar: TACSymbol.Var?
     ) : ConditionalBlockSummary {
         override val variables: Set<TACSymbol.Var>
             get() = setOf()
@@ -63,18 +87,19 @@ object StoragePackedLengthSummarizer {
                 modifiedVars = modifiedVars.mapToSet(f),
                 summarizedBlocks = summarizedBlocks,
                 readSort = when(readSort) {
-                    is AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.UnpackRead -> {
-                        AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.UnpackRead(
+                    is SizeReadSort.UnpackRead -> {
+                        SizeReadSort.UnpackRead(
                             read = f(readSort.read)
                         )
                     }
-                    is AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.WordLoad -> {
-                        AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.WordLoad(
+                    is SizeReadSort.WordLoad -> {
+                        SizeReadSort.WordLoad(
                             indexSym = (readSort.indexSym as? TACSymbol.Var)?.let(f) ?: readSort.indexSym
                         )
                     }
                 },
-                outputVar = f(outputVar)
+                outputVar = f(outputVar),
+                storageSlotVar = storageSlotVar?.let(f)
             )
         }
 
@@ -86,15 +111,17 @@ object StoragePackedLengthSummarizer {
                 modifiedVars = modifiedVars,
                 summarizedBlocks = summarizedBlocks.mapNotNullTo(mutableSetOf(), f),
                 readSort = readSort,
-                outputVar = outputVar
+                outputVar = outputVar,
+                storageSlotVar = storageSlotVar
             )
         }
     }
 
     private sealed class SummarizationMutSpec {
         abstract val output: TACSymbol.Var
-        abstract val readSort: AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort
+        abstract val readSort: SizeReadSort
         abstract val mutVariables: Set<TACSymbol.Var>
+        abstract val readLoc: LTACCmd
 
         /**
          * The storage decode is entirely contained in a single block between [startPoint] and [endPointer].
@@ -104,10 +131,11 @@ object StoragePackedLengthSummarizer {
             val startPoint: CmdPointer,
             val endPointer: CmdPointer,
             override val mutVariables: Set<TACSymbol.Var>,
-            override val readSort: AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort,
+            override val readSort: SizeReadSort,
             override val output: TACSymbol.Var,
             val commute: List<LTACCmdView<TACCmd.Simple.AssigningCmd>>,
-            val commuteTarget: LTACCmd
+            val commuteTarget: LTACCmd,
+            override val readLoc: LTACCmd,
         ) : SummarizationMutSpec()
 
         /**
@@ -117,15 +145,29 @@ object StoragePackedLengthSummarizer {
         data class MultiBlockSplit(
             val headSplit: CmdPointer,
             override val mutVariables: Set<TACSymbol.Var>,
-            override val readSort: AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort,
+            override val readSort: SizeReadSort,
             override val output: TACSymbol.Var,
             val intermediateBlocks: Set<NBId>,
-            val decodeSuccessor: NBId
+            val decodeSuccessor: NBId,
+            override val readLoc: LTACCmd,
+            val storageSlotVar: TACSymbol.Var?
         ) : SummarizationMutSpec()
     }
 
 
     private class Worker(val g: TACCommandGraph) {
+        val forwardMatcher = ForwardMatcher(g)
+
+        /**
+         * checks whether the raw length slot value is used as `(v & 1) == 0`, aka testing
+         * if array is less than 32 bytes long.
+         */
+        val maskCheckPattern = ForwardMatcherDSL.build {  ->
+            (V bwand 1) eq 0
+        }.withAction { _, where, v ->
+            where `to?` v
+        }
+
         private val eqZeroPatt by lazy {
             PatternMatcher.compilePattern(graph = g, patt = PatternDSL.build {
                 (BigInteger.ZERO() `==` Var).commute.locSecond
@@ -138,7 +180,7 @@ object StoragePackedLengthSummarizer {
                     f = { where, it ->
                         if(it is TACCmd.Simple.AssigningCmd.WordLoad && it.base.meta.containsKey(
                                 TACMeta.STORAGE_KEY)) {
-                            PatternMatcher.ConstLattice.Match(where to AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.WordLoad(it.loc))
+                            PatternMatcher.ConstLattice.Match(where to SizeReadSort.WordLoad(it.loc))
                         } else {
                             PatternMatcher.ConstLattice.NoMatch
                         }
@@ -148,7 +190,7 @@ object StoragePackedLengthSummarizer {
                 PatternMatcher.Pattern.FromVar(
                     extractor = { w, v ->
                         if(v.meta.find(TACMeta.STORAGE_KEY) != null) {
-                            PatternMatcher.VariableMatch.Match(w to AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.UnpackRead(v))
+                            PatternMatcher.VariableMatch.Match(w to SizeReadSort.UnpackRead(v))
                         } else {
                             PatternMatcher.VariableMatch.Continue
                         }
@@ -171,7 +213,7 @@ object StoragePackedLengthSummarizer {
         data class StorageBitTest(
             val maskLocation: LTACCmdView<TACCmd.Simple.AssigningCmd.AssignExpCmd>,
             val readLoc: LTACCmd,
-            val readSort: AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort
+            val readSort: SizeReadSort
         )
 
         fun summarizeDecode(p: SimplePatchingProgram, mut: SummarizationMutSpec) {
@@ -192,7 +234,8 @@ object StoragePackedLengthSummarizer {
                         originalBlockStart = block,
                         skipTarget = succ.first(),
                         summarizedBlocks = setOf(block),
-                        modifiedVars = mut.mutVariables
+                        modifiedVars = mut.mutVariables,
+                        storageSlotVar = null
                     )
                 }
                 is SummarizationMutSpec.MultiBlockSplit -> {
@@ -207,9 +250,48 @@ object StoragePackedLengthSummarizer {
                         summarizedBlocks = mut.intermediateBlocks + head,
                         skipTarget = mut.decodeSuccessor,
                         originalBlockStart = head,
-                        outputVar = mut.output
+                        outputVar = mut.output,
+                        storageSlotVar = mut.storageSlotVar
                     )
                 }
+            }
+            val postDecodeLocOrig = when(mut) {
+                is SummarizationMutSpec.MultiBlockSplit -> CmdPointer(mut.decodeSuccessor, 0)
+                is SummarizationMutSpec.SimpleSplit -> mut.endPointer
+            }
+            val rawSlot = mut.readLoc.narrow<TACCmd.Simple.AssigningCmd>().cmd.lhs
+            /**
+             * Find the cases where we branch of `(rawSlot & 1) == 0` and replace them
+             * with the (equivalent) `storageLength < 32`, which is way easier for later
+             * analyses to interpret.
+             */
+            forwardMatcher.matchOn(rawSlot, mut.readLoc.ptr, maskCheckPattern).flatMap { (_, m) ->
+                if(m == null) {
+                    return@flatMap listOf()
+                }
+                when(m) {
+                    is ForwardMatcher.MatchSort.Complete -> m.m
+                    is ForwardMatcher.MatchSort.Partial -> m.m
+                }
+            }.flatMap { (finalDef, v) ->
+                g.cache.use.useSitesAfter(v, finalDef.ptr).mapNotNull {
+                    g.elab(it).maybeNarrow<TACCmd.Simple.JumpiCmd>()
+                }
+            }.filter {
+                g.cache.domination.dominates(postDecodeLocOrig, it.ptr) && mut.output in g.cache.gvn.findCopiesAt(it.ptr, postDecodeLocOrig to mut.output)
+            }.forEach { jmp ->
+                val tmp = TACKeyword.TMP(Tag.Bool, "!lengthCheck")
+                val def = TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                    lhs = tmp,
+                    rhs = TACExpr.BinRel.Lt(
+                        mut.output.asSym(),
+                        EVM_WORD_SIZE.asTACExpr
+                    )
+                )
+                p.replaceCommand(jmp.ptr, listOf(
+                    def, jmp.cmd.copy(cond = tmp)
+                ))
+                p.addVarDecl(tmp)
             }
             p.reroutePredecessorsTo(reroute, listOf(
                 TACCmd.Simple.SummaryCmd(tacSumm, meta = MetaMap())
@@ -217,10 +299,12 @@ object StoragePackedLengthSummarizer {
         }
 
         fun compute(c: CoreTACProgram) : CoreTACProgram {
-            val spec = ParallelPool.allocInScope(SolverConfig.cvc5.default, { solverConf -> Z3BlasterPool(fallbackSolverConfig = solverConf, z3TimeoutMs = 2000) }) { blaster ->
+            val spec = ParallelPool.allocInScope(SolverConfig.cvc5.default to 2000, { (solverConf, timeout) -> Z3BlasterPool(fallbackSolverConfig = solverConf, z3TimeoutMs = timeout) }) { blaster ->
                 g.blocks.forkEvery {
                     it.commands.mapNotNull {
-                        it.maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()?.let {
+                        it.maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()?.takeIf {
+                            it.cmd.rhs is TACExpr.BinOp.BWAnd
+                        }?.let {
                             maskStorageMatcher.queryFrom(it).toNullableResult()
                         }
                     }.forkEvery {
@@ -317,39 +401,46 @@ object StoragePackedLengthSummarizer {
                Which of the variables defined in this code is live? That is our candidate decoded length. If there is
                more than one, give up
              */
+            val rawSlotVar = bitTest.readLoc.narrow<TACCmd.Simple.AssigningCmd>().cmd.lhs
+            val finalJoin = g.elab(joinPoint).commands.last().ptr
             val resultVar = summarization.transFormula.assignedVars.singleOrNull {
-                g.cache.lva.isLiveAfter(g.elab(joinPoint).commands.last().ptr, it.sym)
+                g.cache.lva.isLiveAfter(finalJoin, it.sym) && it.sym != rawSlotVar
             } ?: return null
             val smtVar = summarization.transFormula.outVars[resultVar]
                 ?: error("TransFormula class invariant violated: assigned var must be an outVar.")
+
             /*
               Translate the summary expression into a smt expression. When translating, replace the split out storage
               slot or the slot with the symbolic length field name
              */
-            val assertStmt = if(readSpec is AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.UnpackRead) {
-                SmtExpBitBlaster().blastExpr(exp) { it: TACSymbol.Var ->
-                    if(it == readSpec.read) {
-                        lengthField
-                    } else {
-                        it.smtRep
-                    }
-                }
-            } else {
-                check(readSpec is AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.WordLoad)
-                object : SmtExpBitBlaster() {
-                    override fun blastExpr(e: TACExpr, vm: (TACSymbol.Var) -> String?): SmtExp? {
-                        return if(e is TACExpr.Select && e.base is TACExpr.Sym.Var &&
-                            summarization.transFormula.inVars.reverseGet(e.base)?.sym?.meta?.find(TACMeta.STORAGE_KEY) != null &&
-                            e.loc is TACExpr.Sym && when(e.loc) {
-                                is TACExpr.Sym.Const -> e.loc.s
-                                is TACExpr.Sym.Var -> summarization.transFormula.inVars.reverseGet(e.loc)?.sym ?: e.loc.s
-                            } == readSpec.indexSym) {
-                                lifter.toIdent(lengthField)
-                            } else {
-                            super.blastExpr(e, vm)
+            val assertStmt = when(readSpec) {
+                is SizeReadSort.UnpackRead -> {
+                    SmtExpBitBlaster().blastExpr(exp) { it: TACSymbol.Var ->
+                        if(it == readSpec.read) {
+                            lengthField
+                        } else {
+                            it.smtRep
                         }
                     }
-                }.blastExpr(exp) { it -> it.smtRep }
+                }
+                is SizeReadSort.WordLoad -> {
+                    object : SmtExpBitBlaster() {
+                        override fun blastExpr(e: TACExpr, vm: (TACSymbol.Var) -> String?): SmtExp? {
+                            return if (e is TACExpr.Select && e.base is TACExpr.Sym.Var &&
+                                summarization.transFormula.inVars.reverseGet(e.base)?.sym?.meta?.find(TACMeta.STORAGE_KEY) != null &&
+                                e.loc is TACExpr.Sym && when (e.loc) {
+                                    is TACExpr.Sym.Const -> e.loc.s
+                                    is TACExpr.Sym.Var -> summarization.transFormula.inVars.reverseGet(e.loc)?.sym
+                                        ?: e.loc.s
+                                } == readSpec.indexSym
+                            ) {
+                                lifter.toIdent(lengthField)
+                            } else {
+                                super.blastExpr(e, vm)
+                            }
+                        }
+                    }.blastExpr(exp) { it -> it.smtRep }
+                }
             } ?: return null
             val script = SmtExpScriptBuilder(SmtExpBitVectorTermBuilder)
             /*
@@ -462,7 +553,11 @@ object StoragePackedLengthSummarizer {
                         joinPoint,
                         revert.first()
                     ) + diamond,
-                    decodeSuccessor = goodPath.single()
+                    decodeSuccessor = goodPath.single(),
+                    readLoc = bitTest.readLoc,
+                    storageSlotVar = rawSlotVar.takeIf { _ ->
+                        g.cache.strictDef.source(finalJoin, rawSlotVar) == g.cache.strictDef.source(bitTest.maskLocation.ptr, rawSlotVar)
+                    }
                 ))
             }
         }
@@ -579,7 +674,8 @@ object StoragePackedLengthSummarizer {
                     mutVariables = def + writeValue,
                     readSort = bitTest.readSort,
                     commute = commute,
-                    commuteTarget = commuteTarget
+                    commuteTarget = commuteTarget,
+                    readLoc = bitTest.readLoc
                 ))
             }
         }

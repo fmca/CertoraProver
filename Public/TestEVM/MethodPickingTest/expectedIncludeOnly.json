@@ -1,0 +1,17 @@
+{
+	"assertMessages": {},
+	"rules": {
+		"r": {
+			"FAIL": [],
+			"SANITY_FAIL": [],
+			"SUCCESS": [
+				"C.foo((uint256,bool[3][]))",
+				"D.bar((uint256,bool[3][]))",
+				"D.baz((uint256,bool[3][]))",
+				"E.baz((uint256,bool[3][]))"
+			],
+			"TIMEOUT": [],
+			"UNKNOWN": []
+		}
+	}
+}

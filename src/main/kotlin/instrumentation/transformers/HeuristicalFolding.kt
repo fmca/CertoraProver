@@ -229,7 +229,6 @@ object HeuristicalFolding {
         return patching.toCode(p, TACCmd.Simple.NopCmd)
     }
 
-
     /**
      * Folds assignments that are used once to save on variables in the program [p].
      * Assignments that contain sub-expressions for arithmetic operations,
@@ -294,10 +293,16 @@ object HeuristicalFolding {
         }.toMap() // improve the map creation
 
         var changed = false
+        val maxDepth = Config.MaxHeuristicFoldingDepth.get()
         val mapper = object : DefaultTACCmdMapperWithPointer() {
+            var depth = 0
 
-            override val exprMapper = object : QuantDefaultTACExprTransformer() {
-                override fun transform(acc: QuantVars, exp: TACExpr): TACExpr {
+            override val exprMapper = object : DefaultTACExprTransformer() {
+                override fun transform(exp: TACExpr): TACExpr {
+                    if(depth >= maxDepth && maxDepth != -1) {
+                        return exp
+                    }
+                    depth++
                     return try {
                         when (exp) {
                             is TACExpr.Sym.Var -> {
@@ -312,18 +317,19 @@ object HeuristicalFolding {
                                     exp
                                 }
                             }
-                            else -> super.transform(acc, exp)
+                            else -> super.transform(exp)
                         }
                     } catch (e: TACExprTransformerException) {
-                        logger.warn(e) { "Could not transform $exp with quantified vars $acc, falling back to original expression" }
+                        logger.warn(e) { "Could not transform $exp, falling back to original expression" }
                         exp
+                    } finally {
+                        depth--
                     }
-
                 }
             }
 
             override fun mapExpr(expr: TACExpr): TACExpr {
-                return exprMapper.transformOuter(expr)
+                return exprMapper.transform(expr)
             }
 
             override fun mapAssignExpCmd(t: TACCmd.Simple.AssigningCmd.AssignExpCmd): TACCmd.Simple {
@@ -373,9 +379,9 @@ object HeuristicalFolding {
 }
 
 internal object PeepHoleOptimizer {
-    val peepHoleOptimizeExprMapper = object : QuantDefaultTACExprTransformer() {
-        override fun transformUnary(acc: QuantVars, e: TACExpr.UnaryExp): TACExpr {
-            return when (val unary = super.transformUnary(acc, e)) {
+    val peepHoleOptimizeExprMapper = object : DefaultTACExprTransformer() {
+        override fun transformUnary(e: TACExpr.UnaryExp): TACExpr {
+            return when (val unary = super.transformUnary(e)) {
                 is TACExpr.UnaryExp.LNot -> {
                     if (unary.o is TACExpr.UnaryExp.LNot) {
                         unary.o.o
@@ -395,8 +401,8 @@ internal object PeepHoleOptimizer {
          * add to the sign extend bits the left shift bits and we get 256, it means the signextended bits
          * disappear.
          */
-        override fun transformShiftLeft(acc: QuantVars, e: TACExpr.BinOp.ShiftLeft): TACExpr {
-            val shiftLeft = super.transformShiftLeft(acc, e)
+        override fun transformShiftLeft(e: TACExpr.BinOp): TACExpr {
+            val shiftLeft = super.transformShiftLeft(e)
             if (shiftLeft !is TACExpr.BinOp.ShiftLeft) {
                 return shiftLeft
             }
@@ -427,8 +433,8 @@ internal object PeepHoleOptimizer {
             return shiftLeft
         }
 
-        override fun transformIte(acc: QuantVars, e: TACExpr.TernaryExp.Ite): TACExpr {
-            val ite = super.transformIte(acc, e)
+        override fun transformIte(e: TACExpr.TernaryExp.Ite): TACExpr {
+            val ite = super.transformIte(e)
             if (ite !is TACExpr.TernaryExp.Ite) {
                 return ite
             }
@@ -441,8 +447,8 @@ internal object PeepHoleOptimizer {
             }
         }
 
-        override fun transformEq(acc: QuantVars, e: TACExpr.BinRel.Eq): TACExpr {
-            val eq = super.transformEq(acc, e)
+        override fun transformEq(e: TACExpr.BinRel.Eq): TACExpr {
+            val eq = super.transformEq(e)
             if (eq !is TACExpr.BinRel.Eq) {
                 return eq
             }
@@ -456,8 +462,8 @@ internal object PeepHoleOptimizer {
         }
 
         // this looks peephole but actually instrumental for optimizing def axioms (alex: I wonder why..)
-        override fun transformVecMul(acc: QuantVars, ls: List<TACExpr>, tag: Tag.Bits?): TACExpr {
-            val mul = super.transformVecMul(acc, ls, tag)
+        override fun transformVecMul(ls: List<TACExpr>, tag: Tag.Bits?): TACExpr {
+            val mul = super.transformVecMul(ls, tag)
             if (mul !is TACExpr.Vec.Mul) {
                 return mul
             }
@@ -471,8 +477,8 @@ internal object PeepHoleOptimizer {
             )
         }
 
-        override fun transformVecIntMul(acc: QuantVars, ls: List<TACExpr>, tag: Tag.Int?): TACExpr {
-            val mul = super.transformVecIntMul(acc,ls,tag)
+        override fun transformVecIntMul(ls: List<TACExpr>, tag: Tag.Int?): TACExpr {
+            val mul = super.transformVecIntMul(ls,tag)
             if (mul !is TACExpr.Vec.IntMul) {
                 return mul
             }
@@ -486,8 +492,8 @@ internal object PeepHoleOptimizer {
             )
         }
 
-        override fun transformVecAdd(acc: QuantVars, ls: List<TACExpr>, tag: Tag.Bits?): TACExpr {
-            val add = super.transformVecAdd(acc, ls, tag)
+        override fun transformVecAdd(ls: List<TACExpr>, tag: Tag.Bits?): TACExpr {
+            val add = super.transformVecAdd(ls, tag)
             if (add !is TACExpr.Vec.Add) {
                 return add
             }
@@ -502,8 +508,8 @@ internal object PeepHoleOptimizer {
         }
 
 
-        override fun transformVecIntAdd(acc: QuantVars, ls: List<TACExpr>, tag: Tag.Int?): TACExpr {
-            val add = super.transformVecIntAdd(acc, ls, tag)
+        override fun transformVecIntAdd(ls: List<TACExpr>, tag: Tag.Int?): TACExpr {
+            val add = super.transformVecIntAdd(ls, tag)
             if (add !is TACExpr.Vec.IntAdd) {
                 return add
             }
@@ -517,8 +523,8 @@ internal object PeepHoleOptimizer {
             )
         }
 
-        override fun transformLOr(acc: QuantVars, ls: List<TACExpr>, tag: Tag.Bool?): TACExpr {
-            val lor = super.transformLOr(acc, ls, tag)
+        override fun transformLOr(ls: List<TACExpr>, tag: Tag.Bool?): TACExpr {
+            val lor = super.transformLOr(ls, tag)
             if (lor !is TACExpr.BinBoolOp.LOr) {
                 return lor
             }
@@ -540,8 +546,8 @@ internal object PeepHoleOptimizer {
             )
         }
 
-        override fun transformLAnd(acc: QuantVars, ls: List<TACExpr>, tag: Tag.Bool?): TACExpr {
-            val land = super.transformLAnd(acc, ls, tag)
+        override fun transformLAnd(ls: List<TACExpr>, tag: Tag.Bool?): TACExpr {
+            val land = super.transformLAnd(ls, tag)
             if (land !is TACExpr.BinBoolOp.LAnd) {
                 return land
             }
@@ -631,7 +637,7 @@ internal object PeepHoleOptimizer {
     fun peepholeOptimize(p: CoreTACProgram): CoreTACProgram {
         val simplifier = object : DefaultTACCmdMapper() {
             override fun mapExpr(expr: TACExpr): TACExpr {
-                return peepHoleOptimizeExprMapper.transformOuter(expr)
+                return peepHoleOptimizeExprMapper.transform(expr)
             }
         }
         val patching = p.toPatchingProgram()

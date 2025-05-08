@@ -294,7 +294,7 @@ class TACProgramBuilder private constructor() {
         fun havoc(lhs: TACSymbol.Var) =
             addCmd(TACCmd.Simple.AssigningCmd.AssignHavocCmd(lhs))
 
-        fun assume(b: TACSymbol) = addCmd(TACCmd.Simple.AssumeCmd(b))
+        fun assume(b: TACSymbol, msg: String = "") = addCmd(TACCmd.Simple.AssumeCmd(b, msg))
 
         fun assumeNot(b: TACSymbol) = addCmd(TACCmd.Simple.AssumeNotCmd(b))
 

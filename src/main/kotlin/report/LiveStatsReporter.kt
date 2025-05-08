@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 private val logger = Logger(LoggerTypes.SMT_TIMEOUT)
 
+/** a serialized form of [LiveStats] */
 data class LiveCheckData(
     val nodes: List<LiveCheckInfoNode>,
     val progress: Int?,
@@ -50,6 +51,7 @@ data class LiveCheckData(
 sealed interface LiveStatsReporter {
     fun reportDifficulty(rule: RuleIdentifier, callGraphInfo: CallGraphInfo, stats: SingleDifficultyStats)
     fun reportProgress(rule: RuleIdentifier, stats: LiveStatsProgressInfo)
+    fun updateRuleIdentifier(oldId: RuleIdentifier, newId: RuleIdentifier)
     val ruleToLiveCheckData: Map<RuleIdentifier, LiveCheckData>
 
 }
@@ -64,6 +66,7 @@ object DummyLiveStatsReporter : LiveStatsReporter {
     override fun reportProgress(rule: RuleIdentifier, stats: LiveStatsProgressInfo) {
         logger.info { info(stats) }
     }
+    override fun updateRuleIdentifier(oldId: RuleIdentifier, newId: RuleIdentifier) {}
     override val ruleToLiveCheckData: Map<RuleIdentifier, LiveCheckData> = emptyMap()
 }
 
@@ -92,7 +95,17 @@ class ConcreteLiveStatsReporter : LiveStatsReporter {
         }
     }
 
-    /** Brings the current state of the live stats into a json-ish form as a map from rule to [LiveCheckInfoNode]s. */
+    override fun updateRuleIdentifier(oldId: RuleIdentifier, newId: RuleIdentifier) {
+        synchronized(this) {
+            if (oldId in ruleToCallGraph) {
+                ruleToCallGraph[newId] = ruleToCallGraph[oldId]
+                ruleToCallGraph.remove(oldId)
+            }
+            collectedLiveStats[newId] = collectedLiveStats[oldId] ?: error("should have been there")
+            collectedLiveStats.remove(oldId)
+        }
+    }
+
     override val ruleToLiveCheckData: Map<RuleIdentifier, LiveCheckData>
         get() =
             synchronized(this) {

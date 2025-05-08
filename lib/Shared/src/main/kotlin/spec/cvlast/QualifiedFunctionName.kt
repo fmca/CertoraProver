@@ -382,6 +382,10 @@ sealed interface QualifiedMethodParameterSignature : MethodParameterSignature {
     fun prettyPrintFullyQualifiedName(): String =
         this.qualifiedMethodName.host.name + "." + prettyPrint()
 
+
+    fun computeCanonicalSignatureWithContract(printingContext: PrintingContext) =
+        this.qualifiedMethodName.host.name + "." + this.computeCanonicalSignature(printingContext)
+
     fun matchesContractNameAndMethodName(other: ContractFunctionIdentifier) =
         matchesNameAndContractName(other.methodId, other.host.name)
 

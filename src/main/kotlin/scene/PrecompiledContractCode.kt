@@ -223,7 +223,7 @@ sealed class PrecompiledContractCode : Serializable {
                                                             MASK_SIZE(160).asTACSymbol().asSym()
                                                         )
                                                     ),
-                                                    TACCmd.Simple.AssumeCmd(resultVarAssume),
+                                                    TACCmd.Simple.AssumeCmd(resultVarAssume, "ecrecover_resultAssume"),
                                                     TACCmd.Simple.ReturnSymCmd(resultVar)
                                                 ),
                                                 setOf(digestVar, vVar, rVar, sVar, resultVar, resultVarAssume)

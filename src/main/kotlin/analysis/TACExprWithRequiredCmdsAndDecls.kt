@@ -18,6 +18,7 @@
 package analysis
 
 import vc.data.*
+import datastructures.stdcollections.*
 
 
 /**
@@ -36,4 +37,18 @@ data class TACExprWithRequiredCmdsAndDecls<T: TACCmd.Spec>(
     val exp: TACExpr,
     val declsToAdd: Set<TACSymbol.Var>,
     val cmdsToAdd: List<T>,
-)
+) {
+    constructor(exp: TACExpr, declsToAdd: Iterable<TACSymbol>, cmdsToAdd: List<T>) : this(exp, declsToAdd.filterIsInstance<TACSymbol.Var>().toSet(), cmdsToAdd)
+
+
+    fun merge(decls: Iterable<TACSymbol>) = this.copy(
+        declsToAdd = this.declsToAdd + decls.filterIsInstance<TACSymbol.Var>()
+    )
+
+    fun merge(vararg decls: TACSymbol) = this.copy(
+        declsToAdd = this.declsToAdd + decls.filterIsInstance<TACSymbol.Var>()
+    )
+
+
+    fun toCRD() = CommandWithRequiredDecls(this.cmdsToAdd, this.declsToAdd)
+}

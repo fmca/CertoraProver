@@ -178,6 +178,8 @@ private val logger = Logger(LoggerTypes.PATTERN)
          infix fun <U> xor(p: Buildable<U>): CommutativeCoalesce2<R, U> = this.toBuilder() xor p.toBuilder()
 
 
+         infix fun <U> land(p: Buildable<U>): CommutativeCoalesce2<R, U> = this.toBuilder() land p.toBuilder()
+
          /**
           * As in [plus], but matches x < y
           *
@@ -464,6 +466,8 @@ private val logger = Logger(LoggerTypes.PATTERN)
         infix fun <U> ge(p: PatternBuilder<U>): Coalesce2<R, U> = binOpSemantics(TACExpr.BinRel.Ge::class.java, p)
 
         infix fun <U> le(p: PatternBuilder<U>): Coalesce2<R, U> = binOpSemantics(TACExpr.BinRel.Le::class.java, p)
+
+        infix fun <U> land(p: PatternBuilder<U>) : CommutativeCoalesce2<R, U> = commuteBinOpSemantics(TACExpr.BinBoolOp.LAnd::class.java, p)
 
         infix fun <U> `==`(p: PatternBuilder<U>): CommutativeCoalesce2<R, U> =
                 commuteBinOpSemantics(TACExpr.BinRel.Eq::class.java, p)
@@ -1813,13 +1817,7 @@ object PatternMatcher {
             is Pattern.FromBinOp<R, *, *> -> compileBinOp(graph, patt, traverseFilter)
             is Pattern.FromConstant<R, *> -> compileConstant(graph, patt, traverseFilter)
             is Pattern.FromVar -> compileFromVar(graph, patt, traverseFilter)
-            is Pattern.Fail -> object : SymbolQuery<ConstLattice<R>> {
-                override fun query(q: TACSymbol.Var, src: LTACCmd): ConstLattice<R> =
-                    ConstLattice.NoMatch
-
-                override fun queryFrom(start: LTACCmdView<TACCmd.Simple.AssigningCmd>): ConstLattice<R> =
-                    ConstLattice.NoMatch
-            }
+            is Pattern.Fail -> ConstantQuery<ConstLattice<R>>(ConstLattice.NoMatch)
             is Pattern.XOr<*, *, R> -> compileXOrPattern(graph, patt, traverseFilter)
             is Pattern.AssigningPattern0<R> -> compileAssigningPattern0(graph, patt, traverseFilter)
             is Pattern.AssigningPattern1<R, *> -> {
@@ -1831,11 +1829,7 @@ object PatternMatcher {
             is Pattern.Or<*, *, R> -> compileOrPattern(graph, patt, traverseFilter)
             is Pattern.Ite<*, *, *, R> -> compileItePattern(graph, patt, traverseFilter)
             // the only way this could be typed is if R = Unit
-            Pattern.Trivial -> (object : SymbolQuery<ConstLattice<Unit>> {
-                override fun query(q: TACSymbol.Var, src: LTACCmd): ConstLattice<Unit> = ConstLattice.Match(Unit)
-                override fun queryFrom(start: LTACCmdView<TACCmd.Simple.AssigningCmd>): ConstLattice<Unit> =
-                    ConstLattice.Match(Unit)
-            }) as SymbolQuery<ConstLattice<R>>
+            Pattern.Trivial -> ConstantQuery<ConstLattice<Unit>>(ConstLattice.NoMatch) as SymbolQuery<ConstLattice<R>>
             is Pattern.AnySymbol -> (object : SymbolQuery<ConstLattice<R>> {
                 override fun query(q: TACSymbol.Var, src: LTACCmd): ConstLattice<R> {
                     return ConstLattice.Match(patt.out(src, q))

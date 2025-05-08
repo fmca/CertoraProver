@@ -88,7 +88,11 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
             TACKeyword.TMP(
                 Tag.GhostMap(origGhost.paramTypes.map { it.toTag() }, Tag.Bool),
                 "_is_accessed_${origGhost.id}"
-            )
+            ).let {
+                it.withMeta(TACMeta.CVL_GHOST)
+                    .withMeta(TACMeta.CVL_DISPLAY_NAME, it.namePrefix)
+                    .withMeta(TACMeta.CVL_TYPE, origGhost.type)
+            }
         }
     }
 
@@ -100,7 +104,11 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
      */
     private fun getUnaccessedGhost(usumGhost: CVLGhostDeclaration.Sum): TACSymbol.Var {
         return unaccessedGhosts.getOrPut(usumGhost.id) {
-            TACKeyword.TMP(usumGhost.type.toTag(), "_unaccessed_${usumGhost.id}")
+            TACKeyword.TMP(usumGhost.type.toTag(), "_unaccessed_${usumGhost.id}").let {
+                it.withMeta(TACMeta.CVL_GHOST)
+                    .withMeta(TACMeta.CVL_DISPLAY_NAME, it.namePrefix)
+                    .withMeta(TACMeta.CVL_TYPE, usumGhost.type)
+            }
         }
     }
 
@@ -135,7 +143,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                     }
                 ),
                 TACCmd.Simple.AssumeCmd(
-                    allUnaccessedVar
+                    allUnaccessedVar, "AllUnaccessed"
                 )
             )
         }
@@ -163,7 +171,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                         }
                     }
                 ),
-                TACCmd.Simple.AssumeCmd(unaccessedGhostCondVar)
+                TACCmd.Simple.AssumeCmd(unaccessedGhostCondVar, "UnaccessedGhostCond")
             )
 
             val nonNegativeUsumCIndexVars = generateIndexVars(usumGhost.paramTypes)
@@ -179,7 +187,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                         }
                     }
                 ),
-                TACCmd.Simple.AssumeCmd(nonNegativeUsumCondVar)
+                TACCmd.Simple.AssumeCmd(nonNegativeUsumCondVar, "NonNegativeUsumCond")
             )
 
             patching.addVarDecls(setOf(unaccessedGhostVar, unaccessedGhostCondVar, nonNegativeUsumCondVar))
@@ -246,7 +254,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                 lhs = currValNonNegativeCondVar,
                 rhs = TACExprFactUntyped { currVal.asSym() ge Zero }
             ),
-            TACCmd.Simple.AssumeCmd(currValNonNegativeCondVar),
+            TACCmd.Simple.AssumeCmd(currValNonNegativeCondVar, "CurrValNonNegativeCond"),
             TACCmd.Simple.AssigningCmd.AssignExpCmd(
                 lhs = condVar,
                 rhs = TACExprFactUntyped {
@@ -346,65 +354,65 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
             // For each ghost sum, ghostSum = oldGhostSum + newGhostVal - oldGhostVal
             val sym = globalScope[sumGhost.id]!!
 
-            when (rhs) {
-                is TACExpr.Store -> {
-                    listOf(
-                        TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                            lhs = sym,
-                            rhs = TACExprFactUntyped { sym.asSym() intAdd rhs.value intSub oldGhostValSym.asSym() }
-                        ),
-                        SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
-                            sym,
-                            sumGhost.origGhost.id,
-                            listOf(null),
-                            sumGhost.persistent
-                        ).toAnnotation()
-                    )
+
+
+
+            if (sumGhost.nonSummedIndices.isEmpty()) {
+                listOf(
+                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = sym,
+                        rhs = TACExprFactUntyped { sym.asSym() intAdd rhs.value intSub oldGhostValSym.asSym() }
+                    ),
+                    SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
+                        sym,
+                        sumGhost.origGhost.id,
+                        listOf(null),
+                        sumGhost.persistent
+                    ).toAnnotation()
+                )
+            } else {
+                val nonSummedLocs = rhs.locs.filterIndexed { index, _ -> index in sumGhost.nonSummedIndices }
+
+                val nonSummedVars = nonSummedLocs.map {
+                    ((it as? TACExpr.Sym)?.s as? TACSymbol.Var)
+                        ?: error("expected the index expressions to be symbols")
                 }
-                is TACExpr.MultiDimStore -> {
-                    val nonSummedLocs = rhs.locs.filterIndexed { index, _ -> index in sumGhost.nonSummedIndices }
 
-                    val nonSummedVars = nonSummedLocs.map {
-                        ((it as? TACExpr.Sym)?.s as? TACSymbol.Var)
-                            ?: error("expected the index expressions to be symbols")
-                    }
+                val indices = sumGhost.placeItemsInNonSummedIndices(nonSummedVars)
 
-                    val indices = sumGhost.placeItemsInNonSummedIndices(nonSummedVars)
+                // We need this temp var (instead of just using the select expression as the value of the
+                // store) so that we have a "simple" variable holding the new value for the snippet to use.
+                val newGhostValSym = TACKeyword.TMP(Tag.Int, "NewGhostVal")
+                    .withMeta(TACMeta.CVL_TYPE, CVLType.PureCVLType.Primitive.Mathint)
+                patching.addVarDecl(newGhostValSym)
 
-                    // We need this temp var (instead of just using the select expression as the value of the
-                    // store) so that we have a "simple" variable holding the new value for the snippet to use.
-                    val newGhostValSym = TACKeyword.TMP(Tag.Int, "NewGhostVal")
-                        .withMeta(TACMeta.CVL_TYPE, CVLType.PureCVLType.Primitive.Mathint)
-                    patching.addVarDecl(newGhostValSym)
-
-                    listOf(
-                        TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                            lhs = newGhostValSym,
-                            rhs = TACExprFactUntyped {
-                                Select(
-                                    sym.asSym(),
-                                    *nonSummedLocs.toTypedArray()
-                                ) intAdd rhs.value intSub oldGhostValSym.asSym()
-                            }
-                        ),
-                        TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                            lhs = sym,
-                            rhs = TACExprFactUntyped {
-                                Store(
-                                    sym.asSym(),
-                                    locs = nonSummedLocs,
-                                    newGhostValSym.asSym()
-                                )
-                            }
-                        ),
-                        SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
-                            newGhostValSym,
-                            sumGhost.origGhost.id,
-                            indices,
-                            sumGhost.persistent
-                        ).toAnnotation()
-                    )
-                }
+                listOf(
+                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = newGhostValSym,
+                        rhs = TACExprFactUntyped {
+                            Select(
+                                sym.asSym(),
+                                *nonSummedLocs.toTypedArray()
+                            ) intAdd rhs.value intSub oldGhostValSym.asSym()
+                        }
+                    ),
+                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = sym,
+                        rhs = TACExprFactUntyped {
+                            Store(
+                                sym.asSym(),
+                                locs = nonSummedLocs,
+                                newGhostValSym.asSym()
+                            )
+                        }
+                    ),
+                    SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
+                        newGhostValSym,
+                        sumGhost.origGhost.id,
+                        indices,
+                        sumGhost.persistent
+                    ).toAnnotation()
+                )
             }
         }
 

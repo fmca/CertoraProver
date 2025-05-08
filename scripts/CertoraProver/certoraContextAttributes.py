@@ -351,7 +351,6 @@ class EvmAttributes(AttrUtil.Attributes):
 
     SOLC_EXPERIMENTAL_VIA_IR = AttrUtil.AttributeDefinition(
         arg_type=AttrUtil.AttrArgType.BOOLEAN,
-        help_msg="Pass the `--experimental-via-ir` flag to the Solidity compiler",
         default_desc="",
         argparse_args={
             'action': AttrUtil.STORE_TRUE
@@ -527,7 +526,7 @@ class EvmAttributes(AttrUtil.Attributes):
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.PACKAGES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
@@ -545,9 +544,10 @@ class EvmAttributes(AttrUtil.Attributes):
 
     STRICT_SOLC_OPTIMIZER = AttrUtil.AttributeDefinition(
         arg_type=AttrUtil.AttrArgType.BOOLEAN,
-        help_msg="Allow Solidity compiler optimizations that can interfere with internal function finders",
-        default_desc="Disables optimizations that may invalidate the bytecode annotations that identify "
-                     "internal functions",
+        # This is a hidden flag, the following two attributes are left intentionally as comments to help devs
+        # help_msg="Allow Solidity compiler optimizations that can interfere with internal function finders",
+        # default_desc="Disables optimizations that may invalidate the bytecode annotations that identify "
+        #              "internal functions",
         argparse_args={
             'action': AttrUtil.STORE_TRUE
         },
@@ -573,7 +573,8 @@ class EvmAttributes(AttrUtil.Attributes):
 
     YUL_ABI = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_json_file,
-        help_msg="An auxiliary ABI file for yul contracts",
+        # This is a hidden flag, the following two attributes are left intentionally as comments to help devs
+        # help_msg="An auxiliary ABI file for yul contracts",
         default_desc="",
         argparse_args={
             'action': AttrUtil.UniqueStore
@@ -604,7 +605,7 @@ class EvmAttributes(AttrUtil.Attributes):
         affects_build_cache_key=True,  # not sure, better be careful
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.LINKS
+            main_section=MainSection.NEW_SECTION
         )
     )
 
@@ -640,9 +641,10 @@ class EvmAttributes(AttrUtil.Attributes):
 
     STORAGE_EXTENSION_HARNESSES = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_storage_extension_harness_attr,
-        help_msg="List of ContractA=ContractB where ContractB is the name of a 'storage extension prototype`. "
-                 "See the documentation for details",
-        default_desc="",
+        # The docs aren't ready yet. The flag is hidden; the lines below are commented to help us devs
+        # help_msg="List of ContractA=ContractB where ContractB is the name of a 'storage extension prototype`. "
+        #          "See the documentation for details",
+        # default_desc="",
         disables_build_cache=False,
         affects_build_cache_key=True,
         arg_type=AttrUtil.AttrArgType.LIST,
@@ -738,7 +740,8 @@ class EvmAttributes(AttrUtil.Attributes):
             'action': AttrUtil.UniqueStore
         },
         affects_build_cache_key=False,
-        disables_build_cache=False
+        disables_build_cache=False,
+        config_data=None
     )
 
     BUILD_CACHE = AttrUtil.AttributeDefinition(
@@ -751,11 +754,13 @@ class EvmAttributes(AttrUtil.Attributes):
         affects_build_cache_key=False,
         disables_build_cache=False
     )
+
     FUNCTION_FINDER_MODE = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_function_finder_mode,
-        help_msg="Use `relaxed` mode to increase internal function finders precision, "
-                 "but may cause `stack too deep` errors unless using `via-ir`",
-        default_desc="Takes less stack space but internal functions may be missed",
+        # This is a hidden flag, the following two attributes are left intentionally as comments to help devs
+        # help_msg="Use `relaxed` mode to increase internal function finders precision, "
+        #          "but may cause `stack too deep` errors unless using `via-ir`",
+        # default_desc="Takes less stack space but internal functions may be missed",
         argparse_args={
             'nargs': AttrUtil.SINGLE_OR_NONE_OCCURRENCES,
             'action': AttrUtil.UniqueStore,
@@ -819,11 +824,17 @@ class EvmAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    EQUIVALENCE_CONTRACTS = AttrUtil.AttributeDefinition(
+        attr_validation_func=Vf.validate_equivalence_contracts,
+        arg_type=AttrUtil.AttrArgType.STRING,
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
+
     BYTECODE_JSONS = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_json_file,
         arg_type=AttrUtil.AttrArgType.LIST,
         jar_flag='-bytecode',
-        help_msg="List of EVM bytecode JSON descriptors",
         default_desc="",
         argparse_args={
             'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
@@ -836,7 +847,6 @@ class EvmAttributes(AttrUtil.Attributes):
     BYTECODE_SPEC = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_spec_file,
         jar_flag='-spec',
-        help_msg="Spec to use for the provided bytecodes",
         default_desc="",
         argparse_args={
             'action': AttrUtil.UniqueStore
@@ -961,6 +971,20 @@ class EvmAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    EXCLUDE_METHOD = AttrUtil.AttributeDefinition(
+        attr_validation_func=Vf.validate_method_flag,
+        jar_flag='-excludeMethod',
+        arg_type=AttrUtil.AttrArgType.LIST,
+        help_msg="Filter out methods to be verified by their signature",
+        default_desc="Verifies all public or external methods. In invariants pure and view functions are ignored",
+        argparse_args={
+            'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
+            'action': AttrUtil.APPEND
+        },
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
+
     OPTIMISTIC_CONTRACT_RECURSION = AttrUtil.AttributeDefinition(
         arg_type=AttrUtil.AttrArgType.BOOLEAN,
         help_msg="Assume the recursion limit is never reached in cases of "
@@ -1076,29 +1100,38 @@ class EvmAttributes(AttrUtil.Attributes):
         },
         affects_build_cache_key=True,
         disables_build_cache=False,
-        help_msg="Verify all foundry fuzz test in the current project",
+        help_msg="Verify all Foundry fuzz tests in the current project",
         default_desc="",
     )
 
-    BMC = AttrUtil.AttributeDefinition(
+    RANGE = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_non_negative_integer,
         argparse_args={
             'action': AttrUtil.UniqueStore
         },
+        help_msg="The maximal length of function call sequences Ranger checks",
+        default_desc=f"The default value ('{Util.DEFAULT_RANGER_RANGE}') is used",
         jar_flag="-boundedModelChecking",
         affects_build_cache_key=False,
         disables_build_cache=False,
     )
 
-    BMC_FAILURE_LIMIT = AttrUtil.AttributeDefinition(
+    RANGER_FAILURE_LIMIT = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_non_negative_integer,
         argparse_args={
             'action': AttrUtil.UniqueStore
         },
+        help_msg="Once this number of violations are found, no new Ranger call sequence checks will be started. Checks already in progress will continue.",
+        default_desc=f"Once {Util.DEFAULT_RANGER_FAILURE_LIMIT} violations are found, no new Ranger call sequence checks will be started.",
         jar_flag="-boundedModelCheckingFailureLimit",
         affects_build_cache_key=False,
         disables_build_cache=False,
     )
+
+    @classmethod
+    def hide_attributes(cls) -> List[str]:
+        # do not show these attributes in the help message
+        return [cls.RANGER_FAILURE_LIMIT.name, cls.RANGE.name]
 
 
 class InternalUseAttributes(AttrUtil.Attributes):
@@ -1451,6 +1484,16 @@ class BackendAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    ENFORCE_REQUIRE_REASON = AttrUtil.AttributeDefinition(
+        arg_type=AttrUtil.AttrArgType.BOOLEAN,
+        jar_flag='-enforceRequireReasonInCVL',
+        argparse_args={
+            'action': AttrUtil.STORE_TRUE
+        },
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
+
     # resource files are string of the form <label>:<path> the client will add the file to .certora_sources
     # and will change the path from relative/absolute path to
     PROVER_RESOURCE_FILES = AttrUtil.AttributeDefinition(
@@ -1611,6 +1654,15 @@ class RustAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    CARGO_TOOLS_VERSION = AttrUtil.AttributeDefinition(
+        help_msg="Platform tools version to use",
+        default_desc="Platform tools version is chosen automatically",
+        argparse_args={
+            'action': AttrUtil.UniqueStore
+        },
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
 
 class EvmProverAttributes(CommonAttributes, DeprecatedAttributes, EvmAttributes, InternalUseAttributes,
                           BackendAttributes):
@@ -1625,10 +1677,26 @@ class EvmProverAttributes(CommonAttributes, DeprecatedAttributes, EvmAttributes,
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.FILES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
+
+class RangerAttributes(EvmProverAttributes):
+    @classmethod
+    def ranger_unsupported_attributes(cls) -> List[AttrUtil.AttributeDefinition]:
+        return [cls.PROJECT_SANITY, cls.RULE_SANITY, cls.COVERAGE_INFO, cls.FOUNDRY, cls.INDEPENDENT_SATISFY,
+                cls.MULTI_ASSERT_CHECK, cls.MULTI_EXAMPLE]
+
+    @classmethod
+    def ranger_true_by_default_attributes(cls) -> List[AttrUtil.AttributeDefinition]:
+        return [cls.OPTIMISTIC_LOOP, cls.OPTIMISTIC_FALLBACK, cls.AUTO_DISPATCHER, cls.OPTIMISTIC_HASHING]
+
+    @classmethod
+    def hide_attributes(cls) -> List[str]:
+        # do not show these attributes in the help message
+        combined_list = cls.ranger_unsupported_attributes() + cls.ranger_true_by_default_attributes()
+        return [attr.name for attr in combined_list] + [cls.LOOP_ITER.name, cls.RANGER_FAILURE_LIMIT.name]
 
 class SorobanProverAttributes(CommonAttributes, InternalUseAttributes, BackendAttributes, RustAttributes):
     FILES = AttrUtil.AttributeDefinition(
@@ -1642,7 +1710,7 @@ class SorobanProverAttributes(CommonAttributes, InternalUseAttributes, BackendAt
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.FILES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
@@ -1660,14 +1728,13 @@ class SolanaProverAttributes(CommonAttributes, InternalUseAttributes, BackendAtt
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.FILES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
     SOLANA_INLINING = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_readable_file,
         arg_type=AttrUtil.AttrArgType.LIST,
-        jar_flag='-solanaInlining',
         help_msg="a list of paths for the inlining files of Solana contracts",
         argparse_args={
             'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
@@ -1680,7 +1747,6 @@ class SolanaProverAttributes(CommonAttributes, InternalUseAttributes, BackendAtt
     SOLANA_SUMMARIES = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_readable_file,
         arg_type=AttrUtil.AttrArgType.LIST,
-        jar_flag='-solanaSummaries',
         help_msg="a list of paths for the summaries files of Solana contracts",
         argparse_args={
             'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
@@ -1782,6 +1848,9 @@ def is_soroban_app() -> bool:
 def is_rust_app() -> bool:
     return is_soroban_app() or is_solana_app()
 
-
+# Ranger will also return true for this function
 def is_evm_app() -> bool:
-    return get_attribute_class() == EvmProverAttributes
+    return issubclass(get_attribute_class(), EvmProverAttributes)
+
+def is_ranger_app() -> bool:
+    return get_attribute_class() == RangerAttributes

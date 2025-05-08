@@ -17,58 +17,18 @@
 
 package sbf
 
-import com.certora.collect.*
 import config.ConfigScope
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.domains.*
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
+import sbf.analysis.AnalysisRegisterTypes
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
+private val sbfTypesFac = ConstantSbfTypeFactory()
+
 class PromoteStoresToMemcpyTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "debug")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
 
     private fun checkMemcpy(cfg: SbfCFG): Boolean {
         for (inst in cfg.getEntry().getInstructions()) {
@@ -93,7 +53,7 @@ class PromoteStoresToMemcpyTest {
 
     @Test
     fun test01() {
-        sbfLogger.info { "====== TEST 1  (one memcpy of 32 bytes) =======" }
+        println("====== TEST 1  (one memcpy of 32 bytes) =======")
         /**
          *   r1 := *(u64 *) (r10 + -56)
          *   *(u64 *) (r10 + -96) := r1
@@ -122,18 +82,18 @@ class PromoteStoresToMemcpyTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
     @Test
     fun test02() {
-        sbfLogger.info { "====== TEST 2 (2 memcpy of 32 bytes each, both having the same sources) =======" }
+        println("====== TEST 2 (2 memcpy of 32 bytes each, both having the same sources) =======")
         /**
          *   r1 := *(u64 *) (r10 + -56)
          *   *(u64 *) (r10 + -96) := r1
@@ -173,18 +133,18 @@ class PromoteStoresToMemcpyTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
     @Test
     fun test03() {
-        sbfLogger.info { "====== TEST 3  (1 memcpy of 16 bytes) =======" }
+        println("====== TEST 3  (1 memcpy of 16 bytes) =======")
         /**
          *   r1 := *(u64 *) (r10 + -56)
          *   *(u64 *) (r10 + -96) := r1
@@ -205,18 +165,18 @@ class PromoteStoresToMemcpyTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
     @Test
     fun test04() {
-        sbfLogger.info { "====== TEST 4 (two independent memcpy of 16 bytes each) =======" }
+        println("====== TEST 4 (two independent memcpy of 16 bytes each) =======")
         /**
          *   r1 := *(u64 *) (r10 + -56)
          *   *(u64 *) (r10 + -96) := r1
@@ -245,18 +205,18 @@ class PromoteStoresToMemcpyTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
     @Test
     fun test05() {
-        sbfLogger.info { "====== TEST 1  (one memcpy of 16 bytes) =======" }
+        println("====== TEST 1  (one memcpy of 16 bytes) =======")
         /**
          *   r1 := *(u64 *) (r10 + -56)
          *   *(u64 *) (r10 + -104) := r1
@@ -284,18 +244,18 @@ class PromoteStoresToMemcpyTest {
         }
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
     @Test
     fun test06() {
-        sbfLogger.info { "====== TEST 6  (one memcpy of 32 bytes from heap to stack) =======" }
+        println("====== TEST 6  (one memcpy of 32 bytes from heap to stack) =======")
         /**
          *   r0 := malloc(32)
          *   r7 := r0
@@ -329,18 +289,18 @@ class PromoteStoresToMemcpyTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
     @Test
     fun test07() {
-        sbfLogger.info { "====== TEST 7  (one memcpy of 32 bytes from heap to stack) =======" }
+        println("====== TEST 7  (one memcpy of 32 bytes from heap to stack) =======")
         /**
          *   r0 := malloc(32)
          *   r7 := r0
@@ -374,19 +334,19 @@ class PromoteStoresToMemcpyTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
 
     @Test
     fun test08() {
-        sbfLogger.info { "====== TEST 8  (one memcpy of 32 bytes from unknown memory to stack) =======" }
+        println("====== TEST 8  (one memcpy of 32 bytes from unknown memory to stack) =======")
         /**
          *   r1 := *(u64 *) (r7 + 24)
          *   *(u64 *) (r10 + -48) := r1
@@ -414,20 +374,20 @@ class PromoteStoresToMemcpyTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
 @Test
 fun test09() {
-    sbfLogger.info { "====== TEST 9  (one memcpy of 32 bytes from unknown memory to stack) =======" }
+    println("====== TEST 9  (one memcpy of 32 bytes from unknown memory to stack) =======")
     /**
        r1 := r7
        r1 := r1 + 76
@@ -459,20 +419,20 @@ fun test09() {
 
     val globals = newGlobalVariableMap()
     val memSummaries = MemorySummaries()
-    val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-    sbfLogger.warn {"Before transformation\n$cfg"}
+    val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+    println("Before transformation\n$cfg")
     ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
         promoteStoresToMemcpy(cfg, scalarAnalysis)
     }
-    sbfLogger.warn {"After transformation\n$cfg"}
+    println("After transformation\n$cfg")
     removeUselessDefinitions(cfg)
-    sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+    println("After remove useless loads transformation\n$cfg")
     Assertions.assertEquals(true, checkMemcpy(cfg))
 }
 
     @Test
     fun test10() {
-        sbfLogger.info { "====== TEST 10  (from callee stack to caller stack) =======" }
+        println("====== TEST 10  (from callee stack to caller stack) =======")
         /**
          *   r10 := r10 + 4096
          *   r6 := r0
@@ -502,16 +462,16 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(false, checkMemcpy(cfg))
     }
 
     @Test
     fun test11() {
-        sbfLogger.info { "====== TEST 11 (no memcpy) =======" }
+        println("====== TEST 11 (no memcpy) =======")
         /**
          *   r1 := *(u64 *) (r10 + -4080)
          *   *(u64 *) (r10 + -664) := r1
@@ -532,10 +492,10 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(false, checkMemcpy(cfg))
     }
 
@@ -561,7 +521,7 @@ fun test09() {
 
     @Test
     fun test12() {
-        sbfLogger.info { "====== TEST 12  (some byte is read/written twice) =======" }
+        println("====== TEST 12  (some byte is read/written twice) =======")
         /**
          *
          *  r1 := *(u64 *) (r10 + -62)
@@ -606,10 +566,10 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
@@ -679,14 +639,14 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After removing useless definitions\n$cfg"}
+        println("After removing useless definitions\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
         Assertions.assertEquals(true, getNumOfLoads(cfg) == 0)
     }
@@ -726,12 +686,12 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(false, checkMemcpy(cfg)) // we expect no promotion
     }
     @Test
@@ -794,14 +754,14 @@ fun test09() {
 
         b0.add(SbfInstruction.Exit())
 
-        sbfLogger.warn {"Before promote stores to memcpy: $cfg"}
+        println("Before promote stores to memcpy: $cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
         Assertions.assertEquals(true, getNumOfLoads(cfg) == 0)
     }
@@ -826,14 +786,14 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
         Assertions.assertEquals(true, getNumOfLoads(cfg) == 0)
     }
@@ -861,22 +821,25 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
 
-    private fun checkRegIsEqualAtAssert(cfg: SbfCFG, regTypes: ScalarAnalysisRegisterTypes, reg: SbfRegister, value: Long) {
+    private fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> checkRegIsEqualAtAssert(
+            cfg: SbfCFG,
+            regTypes: AnalysisRegisterTypes<ScalarDomain<TNum, TOffset>, TNum, TOffset>,
+            reg: SbfRegister, value: Long) {
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
         for (locInst in b0.getLocatedInstructions()) {
             if (locInst.inst.isAssertOrSatisfy()) {
                 val type = regTypes.typeAtInstruction(locInst, reg)
-                Assertions.assertEquals(type, SbfType.NumType(ConstantNum(value)))
+                Assertions.assertEquals(type, sbfTypesFac.toNum(value))
             }
         }
 
@@ -901,15 +864,15 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypesOld = ScalarAnalysisRegisterTypes(scalarAnalysisOld)
+        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypesOld = AnalysisRegisterTypes(scalarAnalysisOld)
         checkRegIsEqualAtAssert(cfg, regTypesOld, SbfRegister.R4_ARG, 0L)
 
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysisOld)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(false, checkMemcpy(cfg))
     }
 
@@ -932,20 +895,20 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypesOld = ScalarAnalysisRegisterTypes(scalarAnalysisOld)
+        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypesOld = AnalysisRegisterTypes(scalarAnalysisOld)
         checkRegIsEqualAtAssert(cfg, regTypesOld, SbfRegister.R4_ARG, 0L)
 
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysisOld)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After removing useless definitions\n$cfg"}
+        println("After removing useless definitions\n$cfg")
 
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
         checkRegIsEqualAtAssert(cfg, regTypes, SbfRegister.R4_ARG, 0L)
         Assertions.assertEquals(true, checkMemcpy(cfg))
     }
@@ -968,15 +931,15 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypesOld = ScalarAnalysisRegisterTypes(scalarAnalysisOld)
+        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypesOld = AnalysisRegisterTypes(scalarAnalysisOld)
         checkRegIsEqualAtAssert(cfg, regTypesOld, SbfRegister.R4_ARG, 0L)
 
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysisOld)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(false, checkMemcpy(cfg))
     }
 
@@ -998,12 +961,12 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysisOld)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(false, checkMemcpy(cfg))
     }
 
@@ -1022,15 +985,15 @@ fun test09() {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypesOld = ScalarAnalysisRegisterTypes(scalarAnalysisOld)
+        val scalarAnalysisOld = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypesOld = AnalysisRegisterTypes(scalarAnalysisOld)
         checkRegIsEqualAtAssert(cfg, regTypesOld, SbfRegister.R4_ARG, 0L)
 
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysisOld)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         Assertions.assertEquals(false, checkMemcpy(cfg))
     }
 
@@ -1077,16 +1040,16 @@ fun test09() {
         b0.add(SbfInstruction.Mem(Deref(8, r7, 3), r3, false))
         b0.add(SbfInstruction.Exit())
 
-        sbfLogger.warn {"Before promote stores to memcpy: $cfg"}
+        println("Before promote stores to memcpy: $cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)
         }
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
         Assertions.assertEquals(true, getNumOfLoads(cfg) == 0)
     }
@@ -1114,14 +1077,14 @@ fun test09() {
             }
         }
 
-        sbfLogger.warn {"Before promote stores to memcpy: $cfg"}
+        println("Before promote stores to memcpy: $cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         promoteStoresToMemcpy(cfg, scalarAnalysis)
-        sbfLogger.warn {"After transformation\n$cfg"}
+        println("After transformation\n$cfg")
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After remove useless loads transformation\n$cfg"}
+        println("After remove useless loads transformation\n$cfg")
         Assertions.assertEquals(true, checkMemcpy(cfg))
         Assertions.assertEquals(true, getNumOfLoads(cfg) == 1)
     }

@@ -203,5 +203,4 @@ fun PatternRewriter.earlyPatternsList() = listOf(
         handle = { Slt(sym(B), sym(A)) },
         TACExpr.UnaryExp.LNot::class.java
     ),
-
-)
+    )

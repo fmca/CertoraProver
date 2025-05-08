@@ -21,19 +21,19 @@ import datastructures.stdcollections.*
 import sbf.callgraph.CVTCalltrace
 import sbf.cfg.*
 import sbf.disassembler.SbfRegister
-import sbf.domains.AbstractDomain
-import sbf.domains.InstructionListener
+import sbf.domains.*
 
 /**
  * Retrieves SbfTypes from [analysis]
  */
-class AnalysisRegisterTypes<D: AbstractDomain<D>>(
+class AnalysisRegisterTypes<D, TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     val analysis: IAnalysis<D>
-): IRegisterTypes {
-    private val types: MutableMap<LocatedSbfInstruction, Map<SbfRegister, SbfType>> = mutableMapOf()
+): IRegisterTypes<TNum, TOffset>
+where D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
+    private val types: MutableMap<LocatedSbfInstruction, Map<SbfRegister, SbfType<TNum, TOffset>>> = mutableMapOf()
     private val listener = TypeListener()
 
-    override fun typeAtInstruction(i: LocatedSbfInstruction, r: SbfRegister): SbfType {
+    override fun typeAtInstruction(i: LocatedSbfInstruction, r: SbfRegister): SbfType<TNum, TOffset> {
         val block = i.label
         if (i !in types) {
             val absVal = analysis.getPre(block)
@@ -50,7 +50,7 @@ class AnalysisRegisterTypes<D: AbstractDomain<D>>(
             absVal.analyze(bb, analysis.getGlobalVariableMap(), analysis.getMemorySummaries(), listener)
         }
 
-        return types[i]?.get(r) ?: SbfType.Top
+        return types[i]?.get(r) ?: SbfType.top()
     }
 
     /**
@@ -69,7 +69,7 @@ class AnalysisRegisterTypes<D: AbstractDomain<D>>(
                 // the "before" callback will have already executed
                 types[locInst] = types[locInst]!!.mapValues { (r, ty) ->
                     val regVal = Value.Reg(r)
-                    post.getValue(regVal).get().takeUnless { regVal in written } ?: ty
+                    post.getAsScalarValue(regVal).get().takeUnless { regVal in written } ?: ty
                 }
             } else if (inst is SbfInstruction.Call) {
                 val calltraceFn = CVTCalltrace.from(inst.name)
@@ -78,7 +78,7 @@ class AnalysisRegisterTypes<D: AbstractDomain<D>>(
                     // We use the post-state to update only string registers
                     types[locInst] = types[locInst]!!.mapValues { (r, ty) ->
                         val regVal = Value.Reg(r)
-                        post.getValue(regVal).get().takeUnless { !strings.contains(r) } ?: ty
+                        post.getAsScalarValue(regVal).get().takeUnless { !strings.contains(r) } ?: ty
                     }
                 }
             }
@@ -88,7 +88,7 @@ class AnalysisRegisterTypes<D: AbstractDomain<D>>(
             val readRegisters = locInst.inst.readRegisters.toMutableSet()
             readRegisters.add(Value.Reg(SbfRegister.R10_STACK_POINTER))
             types[locInst] = readRegisters.map{r->r.r}.associateWith { r ->
-                pre.getValue(Value.Reg(r)).get()
+                pre.getAsScalarValue(Value.Reg(r)).get()
             }
         }
 

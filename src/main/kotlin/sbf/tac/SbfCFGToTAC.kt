@@ -50,14 +50,13 @@ import sbf.analysis.*
 import sbf.callgraph.*
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.MemSummaryArgumentType
-import sbf.domains.MemorySummaries
 import sbf.inliner.SBF_CALL_MAX_DEPTH
 import sbf.support.SolanaInternalError
 import tac.*
 import vc.data.*
 import com.certora.collect.*
 import datastructures.stdcollections.*
+import sbf.domains.*
 import java.math.BigInteger
 
 // TAC annotations for TAC debugging
@@ -70,10 +69,12 @@ const val RESERVED_NUM_OF_ASSERTS = 100_000
 class TACTranslationError(msg: String): SolanaInternalError("TAC translation error: $msg")
 
 /** If globalAnalysisResults == null then no memory splitting will be done **/
-fun sbfCFGsToTAC(program: SbfCallGraph,
-                 memSummaries: MemorySummaries,
-                 globalsSymTable: IGlobalsSymbolTable,
-                 globalAnalysisResults: Map<String, MemoryAnalysis>?): CoreTACProgram {
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> sbfCFGsToTAC(
+    program: SbfCallGraph,
+    memSummaries: MemorySummaries,
+    globalsSymTable: IGlobalsSymbolTable,
+    globalAnalysisResults: Map<String, MemoryAnalysis<TNum, TOffset>>?,
+    sbfTypesFac: ISbfTypeFactory<TNum, TOffset>): CoreTACProgram {
     val cfg = program.getCallGraphRootSingleOrFail()
     if (cfg.getBlocks().isEmpty()) {
         throw SolanaInternalError("The translation from SBF to TAC failed because the SBF CFG is empty")
@@ -85,17 +86,19 @@ fun sbfCFGsToTAC(program: SbfCallGraph,
         globalAnalysisResults[cfg.getName()]
             ?: throw TACTranslationError("Not analysis results found for ${cfg.getName()}")
     }
-    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, globalsSymTable, analysis)
+    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, globalsSymTable, analysis, sbfTypesFac)
     return marshaller.encode()
 }
 
 /** Translate an SBF CFG to a TAC program **/
 @Suppress("ForbiddenComment")
-internal class SbfCFGToTAC(private val cfg: SbfCFG,
-                           globals: GlobalVariableMap,
-                           memSummaries: MemorySummaries,
-                           private val globalsSymTable: IGlobalsSymbolTable,
-                           private val memoryAnalysis: MemoryAnalysis?) {
+internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
+           private val cfg: SbfCFG,
+           globals: GlobalVariableMap,
+           private val memSummaries: MemorySummaries,
+           private val globalsSymTable: IGlobalsSymbolTable,
+           private val memoryAnalysis: MemoryAnalysis<TNum, TOffset>?,
+           private val sbfTypesFac: ISbfTypeFactory<TNum, TOffset>) {
     private val blockMap: MutableMap<Label, NBId> = mutableMapOf()
     private val blockGraph = MutableBlockGraph()
     private val code: MutableMap<NBId, List<TACCmd.Simple>> = mutableMapOf()
@@ -125,13 +128,13 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
     // Unsupported calls. We just keep track of them to reduce the number of user warnings
     private val unsupportedCalls: MutableSet<String> = mutableSetOf()
     private val functionArgInference = FunctionArgumentInference(cfg)
-    val regTypes: IRegisterTypes
+    val regTypes: IRegisterTypes<TNum, TOffset>
 
     init {
         // It's much cheaper to analyze the whole cfg from scratch with ScalarAnalysis and rebuild invariants at the
         // instruction level than rebuilding invariants at the instruction level with [memoryAnalysis] (because of
         // the pointer domain).
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         regTypes = AnalysisRegisterTypes(scalarAnalysis)
         val regVars: ArrayList<TACSymbol.Var> = ArrayList(NUM_OF_SBF_REGISTERS)
         for (i in 0 until NUM_OF_SBF_REGISTERS) {
@@ -216,7 +219,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
         // r10 points to the end of the stack frame
         return listOf(
             assign(b, exprBuilder.mkBinRelExp(CondOp.EQ, TACExpr.Sym.Var(r10), SBF_STACK_START + SBF_STACK_FRAME_SIZE)),
-            TACCmd.Simple.AssumeCmd(b))
+            TACCmd.Simple.AssumeCmd(b, "InitialPreconditions"))
     }
 
     private fun addGlobalInitializers(): List<TACCmd.Simple> {
@@ -247,16 +250,16 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
         return if (isUnsigned) {
             listOf(
                 assign(lbBool, exprBuilder.mkBinRelExp(CondOp.GE, v.asSym(), lb)),
-                TACCmd.Simple.AssumeCmd(lbBool),
+                TACCmd.Simple.AssumeCmd(lbBool, "inRange"),
                 assign(ubBool, exprBuilder.mkBinRelExp(CondOp.LT, v.asSym(), ub)),
-                TACCmd.Simple.AssumeCmd(ubBool)
+                TACCmd.Simple.AssumeCmd(ubBool, "inRange")
             )
         } else {
             listOf(
                 assign(lbBool, exprBuilder.mkBinRelExp(CondOp.SGE, v.asSym(), lb)),
-                TACCmd.Simple.AssumeCmd(lbBool),
+                TACCmd.Simple.AssumeCmd(lbBool, "inRange"),
                 assign(ubBool, exprBuilder.mkBinRelExp(CondOp.SLT, v.asSym(), ub)),
-                TACCmd.Simple.AssumeCmd(ubBool)
+                TACCmd.Simple.AssumeCmd(ubBool, "inRange")
             )
         }
     }
@@ -268,7 +271,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
      *        ----------------------------------------------------------------
      *       0x100000000    0x200000000          0x30000000     0x40000000        ?
      **/
-    fun addMemoryLayoutAssumptions(ptr: TACSymbol.Var, region: SbfType?): List<TACCmd.Simple> {
+    fun addMemoryLayoutAssumptions(ptr: TACSymbol.Var, region: SbfType<TNum, TOffset>?): List<TACCmd.Simple> {
 
         if (!SolanaConfig.AddMemLayoutAssumptions.get()) {
             return listOf()
@@ -329,7 +332,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             val op2 = exprBuilder.mkExprSym(inst.v)
 
             return if (SolanaConfig.UseTACMathInt.get() &&
-                (useMathInt || inst.metaData.getVal(SbfMeta.ADD_WITH_OVERFLOW) != null)) {
+                (useMathInt || inst.metaData.getVal(SbfMeta.SAFE_MATH) != null)) {
                 val x = mkFreshMathIntVar()
                 val y = mkFreshMathIntVar()
                 val z = mkFreshMathIntVar()
@@ -362,7 +365,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
     private fun translateSelect(inst: SbfInstruction.Select): List<TACCmd.Simple> {
         val newCmds = mutableListOf<TACCmd.Simple>()
 
-        val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK)
+        val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK)
         val (tacOverflowCond, tacOverflowVar) = if (SolanaConfig.TACPromoteOverflow.get() && overflowCond != null) {
             // See comments from translateAssume
             newCmds.add(Debug.externalCall("overflow_check"))
@@ -428,7 +431,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
                     }
                 }
                 is Value.Imm -> {
-                    ConstantNum(right.v.toLong())
+                    sbfTypesFac.toNum(right.v.toLong()).value
                 }
             }
             if (rightVal != null) {
@@ -495,7 +498,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             // We know that the `if` condition is checking whether `x` overflows or not.
             // This fix ensures that after the overflow check has being done (i.e., A and B) x fits in 64 bits.
             //
-            val overflowCond = jumpInst.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK)
+            val overflowCond = jumpInst.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK)
             if (SolanaConfig.TACPromoteOverflow.get() && overflowCond != null) {
                 val x = exprBuilder.mkVar(overflowCond.left)
                 listOf(assign(x, exprBuilder.mask64(x.asSym())))
@@ -507,7 +510,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             val cmd = translateCond(inst.cond)
             listOf(
                 cmd,
-                TACCmd.Simple.AssumeCmd(cmd.lhs)
+                TACCmd.Simple.AssumeCmd(cmd.lhs, "translateAssume")
             )
         }
     }
@@ -576,7 +579,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
                 val falseTargetNBId = getBlockIdentifier(falseTargetBB)
 
                 val newCmds = mutableListOf<TACCmd.Simple>()
-                val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK)
+                val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK)
                 val cmd = if (SolanaConfig.TACPromoteOverflow.get() && overflowCond != null) {
                     /**
                      * We replace the original condition with the metadata's condition.
@@ -923,6 +926,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             return null
         }
         val fnName = metaData.getVal(SbfMeta.INLINED_FUNCTION_NAME) ?: return null
+        val fnMangledName = metaData.getVal(SbfMeta.MANGLED_NAME) ?: return null
         val callId = metaData.getVal(SbfMeta.CALL_ID)?.toInt() ?: return null
 
         // These are the observed args across all call sites
@@ -946,6 +950,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
 
         return SbfInlinedFuncStartAnnotation(
             name = fnName,
+            mangledName = fnMangledName,
             args = tacArgs,
             id = callId
         )
@@ -971,10 +976,10 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
         }
     }
 
-    private fun registerTypeFromUses(uses: Collection<LocatedSbfInstruction>, r: SbfRegister): SbfType {
+    private fun registerTypeFromUses(uses: Collection<LocatedSbfInstruction>, r: SbfRegister): SbfType<TNum, TOffset> {
         return uses.map {
             regTypes.typeAtInstruction(it, r)
-        }.fold(SbfType.Bottom as SbfType) { t1, t2 ->
+        }.fold(SbfType.bottom()) { t1, t2 ->
             t1.join(t2)
         }
     }
@@ -1320,6 +1325,12 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
                             CVTCalltrace.RULE_LOCATION -> {
                                 listOf(Calltrace.ruleLocation(locInst))
                             }
+                            CVTCalltrace.SCOPE_END -> {
+                                listOf(Calltrace.endScope(locInst))
+                            }
+                            CVTCalltrace.SCOPE_START -> {
+                                listOf(Calltrace.startScope(locInst))
+                            }
                         }
                     }
 
@@ -1358,7 +1369,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
 
             if (CompilerRtFunction.from(inst.name) != null) {
                 val summarizeCompilerRt = if (SolanaConfig.UseTACMathInt.get()) {
-                    SummarizeCompilerRtWithMathInt()
+                    SummarizeCompilerRtWithMathInt<TNum, TOffset>()
                 } else {
                     SummarizeCompilerRt()
                 }
@@ -1564,8 +1575,10 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             val sb = StringBuilder()
             sb.append("TAC encoding of the following external calls might be unsound because " +
                       "only the output has been havoced\n")
-            for (e in unsupportedCalls) {
-                sb.append("\t$e\n")
+            for (fname in unsupportedCalls) {
+                if (!hasSummary(fname, memSummaries)) {
+                    sb.append("\t$fname\n")
+                }
             }
             sbfLogger.warn { sb.toString() }
         }

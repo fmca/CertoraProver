@@ -67,7 +67,7 @@ import wasm.traps.ConditionalTrapRevert
 import java.io.File
 import java.util.stream.Collectors
 import wasm.transform.BitopsRewriter
-
+import wasm.transform.BranchConditionSimplifier
 
 class InvalidRules(msg: String) : Exception(msg)
 class TrivialRule(msg: String) : Exception(msg)
@@ -251,6 +251,7 @@ object WasmEntryPoint {
             val preprocessed = CoreTACProgram.Linear(coreTac)
                 .let { env.applyPreUnrollTransforms(it, wasmAST) }
                 .map(CoreToCoreTransformer(ReportTypes.DSA, TACDSA::simplify))
+                .map(CoreToCoreTransformer(ReportTypes.JUMP_COND_NORMALIZATION, BranchConditionSimplifier::rewrite))
                 .map(CoreToCoreTransformer(ReportTypes.OPTIMIZE_WASM_BITOPS, BitopsRewriter::rewriteXorEquality))
                 .map(CoreToCoreTransformer(ReportTypes.OPTIMIZE_WASM_BITOPS, BitopsRewriter::rewriteSignedOverflowCheck))
                 .map(CoreToCoreTransformer(ReportTypes.INTERVALS_OPTIMIZE, IntervalBasedExprSimplifier::analyze))
@@ -380,7 +381,7 @@ object WasmEntryPoint {
                         {}
                     else -> {
                         removedAssertConds += cmd.o
-                        p.replaceCommand(ptr, listOf(TACCmd.Simple.AssumeCmd(cmd.o, cmd.meta)))
+                        p.replaceCommand(ptr, listOf(TACCmd.Simple.AssumeCmd(cmd.o, "rewrote assert: ${cmd.msg}", cmd.meta)))
                     }
                 }
             }

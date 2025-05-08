@@ -18,10 +18,12 @@
 @file:kotlinx.serialization.UseSerializers(utils.BigIntegerSerializer::class)
 package sbf.tac
 
-import sbf.cfg.SbfType
 import tac.MetaKey
 import com.certora.collect.*
 import datastructures.stdcollections.*
+import sbf.domains.INumValue
+import sbf.domains.IOffset
+import sbf.domains.SbfType
 import utils.AmbiSerializable
 import utils.HasKSerializable
 import vc.data.TACSymbol
@@ -64,7 +66,7 @@ sealed class SbfArgSort: HasKSerializable, AmbiSerializable {
     }
 
     companion object {
-        fun fromSbfType(t: SbfType): SbfArgSort {
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> fromSbfType(t: SbfType<TNum, TOffset>): SbfArgSort {
             return when (t) {
                 is SbfType.NumType -> SCALAR
                 is SbfType.PointerType -> POINTER
@@ -94,6 +96,7 @@ data class SbfFuncArgInfo(
 @Treapable
 data class SbfInlinedFuncStartAnnotation(
     val name: String,
+    val mangledName: String,
     val id: Int,
     val args: List<Pair<TACSymbol.Var, SbfFuncArgInfo>>,
 ): HasKSerializable, AmbiSerializable,

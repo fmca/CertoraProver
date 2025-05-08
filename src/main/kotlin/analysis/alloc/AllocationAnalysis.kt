@@ -33,6 +33,7 @@ import evm.EVM_WORD_SIZE
 import log.Logger
 import log.LoggerTypes
 import parallel.ParallelPool
+import parallel.ParallelPool.Companion.runInherit
 import parallel.Scheduler
 import tac.NBId
 import utils.*
@@ -74,22 +75,29 @@ object AllocationAnalysis {
         NULL;
     }
 
-    interface WithElementSize {
+    sealed interface WithElementSize {
         fun getElementSize(): BigInteger
+    }
+    sealed interface InterpAsConstantArray {
+        fun interpAsConstantArraySize(): BigInteger
     }
 
     @KSerializable
     @Treapable
     sealed class Alloc : AmbiSerializable, TransformableVarEntity<Alloc> {
         @KSerializable
-        data class ConstBlock(val sz: BigInteger) : Alloc()
+        data class ConstBlock(val sz: BigInteger) : Alloc(), InterpAsConstantArray {
+            override fun interpAsConstantArraySize(): BigInteger {
+                return sz.divide(EVM_WORD_SIZE)
+            }
+        }
 
         @KSerializable
-        data class DynamicBlock(val eSz: BigInteger, val elemSym: Pair<CmdPointer, TACSymbol.Var>) : Alloc(),
+        data class DynamicBlock(val eSz: BigInteger, val lengthSym: Pair<CmdPointer, TACSymbol.Var>) : Alloc(),
             WithElementSize {
             override fun getElementSize(): BigInteger = eSz
             override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Alloc =
-                copy(elemSym = elemSym.first to f(elemSym.second))
+                copy(lengthSym = lengthSym.first to f(lengthSym.second))
         }
 
         @KSerializable
@@ -99,42 +107,36 @@ object AllocationAnalysis {
 
         @KSerializable
         @Treapable
-        data class StorageUnpack(val slotRead: Pair<CmdPointer, SizeReadSort>) : Alloc(), WithElementSize {
-            override fun getElementSize(): BigInteger = BigInteger.ONE
-
-            @KSerializable
-            @Treapable
-            sealed class SizeReadSort : AmbiSerializable, TransformableVarEntity<SizeReadSort> {
-                @KSerializable
-                data class WordLoad(val indexSym: TACSymbol) : SizeReadSort() {
-                    override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): SizeReadSort = copy(
-                        indexSym = when (indexSym) {
-                            is TACSymbol.Var -> f(indexSym)
-                            is TACSymbol.Const -> indexSym
-                        }
-                    )
-                }
-
-                @KSerializable
-                data class UnpackRead(val read: TACSymbol.Var) : SizeReadSort() {
-                    override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): SizeReadSort =
-                        copy(read = f(read))
-                }
-            }
+        /**
+         * Indicates an array that is unpacked (or just copied) from storage, whose elements are of size [elemSize];
+         * the length of which is captured in [lengthSym], and where the copying is complete at [closeLoc] (as inferred by the
+         * [StorageArrayAllocationAnalysis].
+         */
+        data class StorageUnpack(val lengthSym: Pair<CmdPointer, TACSymbol.Var>, val closeLoc: NBId, val elemSize: BigInteger) : Alloc(), WithElementSize {
+            override fun getElementSize(): BigInteger = elemSize
 
             override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Alloc =
-                copy(slotRead = slotRead.first to slotRead.second.transformSymbols(f))
+                copy(lengthSym = lengthSym.mapSecond(f))
         }
 
         @KSerializable
-        data class ConstantStringAlloc(val constLen: BigInteger, val dataCopy: CmdPointer) : Alloc(), WithElementSize {
+        data class ConstantStringAlloc(val constLen: BigInteger, val dataCopy: CmdPointer) : Alloc(), WithElementSize, InterpAsConstantArray {
             override fun getElementSize(): BigInteger = BigInteger.ONE
+            override fun interpAsConstantArraySize(): BigInteger {
+                return constLen
+            }
         }
 
+        /**
+         * [constSize] is the *logical* length
+         */
         // TODO(jtoman): refactor constarrayalloc and dynamic block into a common (sealed) class
         @KSerializable
-        data class ConstantArrayAlloc(val eSz: BigInteger, val constSize: BigInteger) : Alloc(), WithElementSize {
+        data class ConstantArrayAlloc(val eSz: BigInteger, val constSize: BigInteger) : Alloc(), WithElementSize, InterpAsConstantArray {
             override fun getElementSize(): BigInteger = eSz
+            override fun interpAsConstantArraySize(): BigInteger {
+                return constSize
+            }
         }
 
         override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Alloc = this
@@ -208,7 +210,7 @@ object AllocationAnalysis {
             ((Var { v, where ->
                 PatternMatcher.VariableMatch.Match(Alloc.DynamicBlock(
                     eSz = BigInteger.ONE,
-                    elemSym = where.ptr to v
+                    lengthSym = where.ptr to v
                 ))
             } + 31()).commute.first and lower32BitMask()).commute.first
         } lor roundUp {
@@ -796,20 +798,22 @@ object AllocationAnalysis {
     }
 
     private fun analyzeStrings(graph: TACCommandGraph) : Map<CmdPointer, Alloc> {
-        val storage = Scheduler.compute {
-            StringStorageCopyChecker.analyzeStringAllocations(graph).toMutableMap<CmdPointer, Alloc>()
+        val other = Scheduler.compute {
+            StorageArrayAllocationAnalysis.analyze(graph)
         }
-        val constant = Scheduler.compute {
+        return Scheduler.compute {
             ConstantStringAlloc.findConstantStringAlloc(graph)
-        }
-        return storage.parallelBind(constant) { mutStorage, c ->
-            for((k, v) in c) {
-                mutStorage[k] = v
+        }.parallelBind(other) { a: Map<CmdPointer, Alloc>, b ->
+            val res = a.toMutableMap()
+            for(init in b) {
+                res[init.fpWriteLoc] = Alloc.StorageUnpack(
+                    closeLoc = init.initCloseBlock,
+                    lengthSym = init.lengthVar,
+                    elemSize = init.elemSize
+                )
             }
-            complete(mutStorage)
-        }.let { work ->
-            ParallelPool.runInherit(work, ParallelPool.SpawnPolicy.GLOBAL)
-        }
+            complete(res)
+        }.runInherit(ParallelPool.SpawnPolicy.GLOBAL)
     }
 
     private fun computeReachingWrites(graph: TACCommandGraph, blockStartToNumber: Map<NBId, Int>, writeNumbering: Map<CmdPointer, Int>): Map<CmdPointer, Int>? {

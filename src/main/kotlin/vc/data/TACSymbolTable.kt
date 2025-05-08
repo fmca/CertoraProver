@@ -193,13 +193,6 @@ data class TACSymbolTable(
 
     operator fun contains(v: TACSymbol.Var): Boolean = v in tags
 
-    fun withGlobalScope(globalScope: Map<String, TACSymbol.Var>): TACSymbolTable {
-        check(this.globalScope.isEmpty()) {
-            "Trying to add cvl names to the TACSymbolTable twice"
-        }
-        return this.copy(globalScope = globalScope)
-    }
-
     val nameToSymbol: Map<String, TACSymbol.Var> by lazy { tags.keys.associateBy { sym -> sym.toString() } }
     val smtrepToSymbol: Map<String, TACSymbol.Var> by lazy { tags.keys.associateBy { sym -> sym.smtRep.toString() } }
 

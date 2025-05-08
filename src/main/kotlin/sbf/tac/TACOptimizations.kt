@@ -35,6 +35,8 @@ import sbf.SolanaConfig
 import tac.DumpTime
 import utils.*
 import vc.data.CoreTACProgram
+import vc.data.TACExpr
+import vc.data.tacexprutil.ExprUnfolder.Companion.unfoldAll
 import verifier.BlockMerger
 import verifier.CoreToCoreTransformer
 import verifier.SimpleMemoryOptimizer
@@ -55,6 +57,15 @@ fun optimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProgram {
             DumpTime.AGNOSTIC)
         }
         .mapIf(isSatisfyRule, CoreToCoreTransformer(ReportTypes.REWRITE_ASSERTS, WasmEntryPoint::rewriteAsserts))
+        .map(CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) {
+            unfoldAll(it) { e ->
+                    e.rhs is TACExpr.BinOp.BWXOr ||
+                    e.rhs is TACExpr.BinOp.BWOr ||
+                    e.rhs is TACExpr.UnaryExp.LNot
+            }.let {
+                PatternRewriter.rewrite(it, PatternRewriter::solanaPatternsList)
+            }
+        })
         // constant propagation + cleanup + merging blocks
         .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.PROPAGATOR_SIMPLIFIER) {
             ConstantPropagatorAndSimplifier(it).rewrite().let {
@@ -138,6 +149,16 @@ fun legacyOptimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProg
                 DumpTime.AGNOSTIC)
         }
         .mapIf(isSatisfyRule, CoreToCoreTransformer(ReportTypes.REWRITE_ASSERTS, WasmEntryPoint::rewriteAsserts))
+        .map(CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) {
+            // We need to ensure 3 address code before applying the pattern rewriter.
+            unfoldAll(it) { e ->
+                    e.rhs is TACExpr.BinOp.BWXOr ||
+                    e.rhs is TACExpr.BinOp.BWOr ||
+                    e.rhs is TACExpr.UnaryExp.LNot
+            }.let {
+                PatternRewriter.rewrite(it, PatternRewriter::solanaPatternsList)
+            }
+        })
 
     val maybeOptimized1 = runIf(optLevel >= 1) {
         preprocessed

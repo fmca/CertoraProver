@@ -1,0 +1,11 @@
+{
+	"assertMessages": {
+		"violatedLessThanFiveParamConditionalWithRequire-Initial State-InvParams.setBar(uint256)-InvParams.setFooConditionally": "invariant assertion - InvParams.spec line 43"
+	},
+	"rules": {
+		"violatedLessThanFiveParamConditionalWithRequire-Initial State": "SUCCESS",
+		"violatedLessThanFiveParamConditionalWithRequire-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "SUCCESS",
+		"violatedLessThanFiveParamConditionalWithRequire-Initial State-InvParams.setBar(uint256)-InvParams.setFooConditionally": "FAIL",
+		"violatedLessThanFiveParamConditionalWithRequire-Initial State-InvParams.setFoo()-InvParams.setFooConditionally": "SUCCESS"
+	}
+}

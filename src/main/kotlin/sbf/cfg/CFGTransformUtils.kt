@@ -17,16 +17,23 @@
 
 package sbf.cfg
 
-import sbf.analysis.ScalarAnalysisRegisterTypes
+import sbf.analysis.AnalysisRegisterTypes
 import sbf.disassembler.SbfRegister
+import sbf.domains.*
 
 /**
  *  Normalize the memory access at [base]+[offset] at [locatedInst] as an offset with respect to r10.
  *  Otherwise, it returns null.
  **/
-fun normalizeStackAccess(locatedInst: LocatedSbfInstruction,
-                         base: Value.Reg, offset: Long,
-                         regTypes: ScalarAnalysisRegisterTypes): Long? {
+fun <D, TNum, TOffset>
+    normalizeStackAccess(
+    locatedInst: LocatedSbfInstruction,
+    base: Value.Reg, offset: Long,
+    regTypes: AnalysisRegisterTypes<D, TNum, TOffset>
+): Long? where
+    TNum: INumValue<TNum>,
+    TOffset: IOffset<TOffset>,
+    D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val regType = regTypes.typeAtInstruction(locatedInst, base.r)
     return if (regType is SbfType.PointerType.Stack) {
         val regOffset = regType.offset.get() ?: return null
@@ -54,7 +61,7 @@ fun findDefinition(b: SbfBasicBlock, reg: Value.Reg): Int {
 
 
 /**
- * Starting from position [startPos] at block [b] finds the definition of [reg]
+ * Starting from position [startPos] (exclusive) at block [b] finds the definition of [reg]
  * That definition can be located in some ancestor *as long as* the definition's block dominates [b],
  * there is no CFG diamonds in between, and the distance between the definition's block and [b] is
  * not greater than [maxNumLevelsUp].
@@ -111,6 +118,11 @@ fun getNextUseInterBlock(bb: SbfBasicBlock, start: Int, reg: Value.Reg, maxNumLe
                 if (inst.readRegisters.contains(reg)) {
                     // reg is used
                     return locInst
+                }
+
+                if (inst.writeRegister.contains(reg)) {
+                    // reg is redefined
+                    return null
                 }
             }
         }

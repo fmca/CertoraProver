@@ -21,29 +21,32 @@ import sbf.analysis.ScalarAnalysis
 import sbf.callgraph.SbfCallGraph
 import sbf.cfg.*
 import sbf.disassembler.Label
-import sbf.domains.MemorySummaries
-import sbf.domains.ScalarDomain
 import sbf.disassembler.GlobalVariableMap
 import datastructures.stdcollections.*
+import sbf.domains.*
 
 /**
  * Only for debugging purposes
  **/
 
-fun annotateWithTypes(cfg: MutableSbfCFG, globals: GlobalVariableMap, memSummaries: MemorySummaries) {
-    val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> annotateWithTypes(
+        cfg: MutableSbfCFG,
+        globals: GlobalVariableMap,
+        memSummaries: MemorySummaries,
+        sbfTypesFac: ISbfTypeFactory<TNum, TOffset>) {
+    val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
     annotateWithTypes(cfg, scalarAnalysis)
 }
 
 /**
  * Annotate the instructions of [cfg] the with types extracted from [scalarAnalysis].
  **/
-fun annotateWithTypes(cfg: MutableSbfCFG, scalarAnalysis: ScalarAnalysis) {
-    fun getType(v: Value, absVal: ScalarDomain): SbfType? {
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> annotateWithTypes(cfg: MutableSbfCFG, scalarAnalysis: ScalarAnalysis<TNum, TOffset>) {
+    fun getType(v: Value, absVal: ScalarDomain<TNum, TOffset>): SbfRegisterType? {
         return if (v is Value.Imm) {
             null
         } else {
-            absVal.getValue(v).get()
+            absVal.getValue(v).get().concretize()
         }
     }
     fun getPre(block: Label) = scalarAnalysis.getPre(block)
@@ -55,10 +58,13 @@ fun annotateWithTypes(cfg: MutableSbfCFG, scalarAnalysis: ScalarAnalysis) {
  * Annotate the instructions of the entrypoint function with types extracted from
  * [ScalarAnalysis].
  ***/
-fun annotateWithTypes(prog: SbfCallGraph, memSummaries: MemorySummaries): SbfCallGraph {
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> annotateWithTypes(
+        prog: SbfCallGraph,
+        memSummaries: MemorySummaries,
+        sbfTypesFac: ISbfTypeFactory<TNum, TOffset>): SbfCallGraph {
     return prog.transformSingleEntry { entryCFG ->
         val newEntryCFG = entryCFG.clone(entryCFG.getName())
-        annotateWithTypes(newEntryCFG, prog.getGlobals(), memSummaries)
+        annotateWithTypes(newEntryCFG, prog.getGlobals(), memSummaries, sbfTypesFac)
         newEntryCFG
     }
 }

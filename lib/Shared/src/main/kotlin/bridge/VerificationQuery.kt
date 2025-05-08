@@ -43,6 +43,8 @@ data class VerificationQuery(
     val importFilesToOrigRelpaths: Map<String, String>? = null,
     // for assertions:
     val primaryContracts: List<String>? = null,
+    // for equivalence
+    val secondary_contract: String = "",
 ) {
 
     fun toCVLInput(): CVLInput = if (specfilesToImportDecls != null && importFilesToOrigRelpaths != null) {

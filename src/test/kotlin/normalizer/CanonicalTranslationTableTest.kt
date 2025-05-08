@@ -38,7 +38,7 @@ import tac.MetaKey
 import tac.NBId
 import utils.*
 import vc.data.*
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
@@ -541,8 +541,8 @@ fun CoreTACProgram.modifyVar(): CoreTACProgram {
 
 fun CoreTACProgram.modifyVarToConst(): CoreTACProgram {
     val mapper = buildCodeRemapper<Unit>().mapper(Unit) {
-        object : QuantDefaultTACExprTransformer() {
-            override fun transformFreeVar(acc: QuantVars, exp: TACExpr.Sym.Var): TACExpr =
+        object : DefaultTACExprTransformer() {
+            override fun transformVar(exp: TACExpr.Sym.Var): TACExpr =
                 TACExpr.Sym.Const(
                     s = TACSymbol.Const(
                         value = BigInteger.valueOf(exp.s.callIndex.toLong()),

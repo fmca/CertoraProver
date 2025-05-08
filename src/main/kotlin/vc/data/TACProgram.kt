@@ -1447,7 +1447,9 @@ class CoreTACProgram private constructor(
             },
             idRemapper = CodeRemapper.IdRemapperGenerator { state ->
                 { flg, curr, gen ->
-                    if (!state.remapCallSummary && flg == Allocator.Id.CALL_SUMMARIES) {
+                    if(flg == Allocator.Id.CALL_ID && curr == NBId.ROOT_CALL_ID) {
+                        state.targetCallIndex
+                    } else if (!state.remapCallSummary && flg == Allocator.Id.CALL_SUMMARIES) {
                         curr
                     } else {
                         state.idMap.getOrPut(flg to curr, gen)

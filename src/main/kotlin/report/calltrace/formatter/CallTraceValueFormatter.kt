@@ -67,6 +67,15 @@ class CallTraceValueFormatter(
         const val DONT_CARE_VALUE_STR = "*"
         const val DONT_CARE_VALUE_TOOLTIP = "unused value"
 
+        /** compute the tooltip for variables tab variables
+         * would be nicer to not look at the string, but should do for now, since the current
+         * rule for getting the tooltip is rather simple */
+        fun variableTooltip(valueStr: String) = when (valueStr) {
+            DONT_CARE_VALUE_STR -> DONT_CARE_VALUE_TOOLTIP
+            UNKNOWN_VALUE_STR -> UNKNOWN_VALUE_TOOLTIP
+            else -> "copy value"
+        }
+
         fun unusedValue(type: FormatterType<*>) = Sarif.Arg(
             values = RepresentationsMap(Representations.Pretty to DONT_CARE_VALUE_STR),
             tooltip = DONT_CARE_VALUE_TOOLTIP,

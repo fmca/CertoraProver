@@ -20,7 +20,6 @@ package sbf.cfg
 import sbf.SolanaConfig
 import sbf.disassembler.SbfConstantStringGlobalVariable
 import sbf.disassembler.SbfGlobalVariable
-import sbf.disassembler.GlobalVariableMap
 import sbf.domains.Constant
 
 /**
@@ -36,24 +35,6 @@ import sbf.domains.Constant
  * A register can store either a number or a pointer to any of the above memory regions.
  * Initially, r10 points to the end of the stack.
  * The register r10 is read-only.
- *
- * More concretely, the type of a register is defined by this finite lattice:
- *
- *             ----------------- Top
- *           /                    |
- *          /         -------- Pointer ---------
- *        /         /          |         |      \
- *      Num       Stack     Input    Heap   Global
- *        \            \      |        /       /
- *          -------------- Bottom -------------
- *  where
- *  - Top: any type
- *  - Bottom: type error
- *  - Num: number
- *  - Stack: pointer to the stack (i.e., it contains a stack offset)
- *  - Input: pointer to the input region
- *  - Heap: pointer to the heap (i.e, an integer between [0x300000000, 0x3000077f8])
- *  - Global: pointer to a global variable
  *
  *  In SBF, numbers and pointers are indistinguishable so there are implicit casts
  *  from numbers to pointers, and vice-versa.
@@ -83,67 +64,34 @@ const val SBF_INPUT_END = SBF_INPUT_START + (2 * MAX_SOLANA_ACCOUNTS * SOLANA_AC
 // We have split the input memory region into two parts: the first half for solana accounts and the second half for external allocations.
 const val SBF_EXTERNAL_START = SBF_INPUT_START + (MAX_SOLANA_ACCOUNTS * SOLANA_ACCOUNT_SIZE)
 
-typealias ConstantNum = Constant
-typealias ConstantOffset = Constant
 
-sealed class SbfType {
-    // To represent type errors
-    object Bottom : SbfType() {
-        override fun toString(): String {
-            return "bottom"
+sealed class SbfRegisterType {
+    data class NumType(val value: Constant) : SbfRegisterType() {
+        override fun toString() = if (value.isTop()) {
+            "num"
+        } else {
+            "num($value)"
         }
     }
 
-    // Any type
-    object Top : SbfType() {
-        override fun toString(): String {
-            return "top"
+    sealed class PointerType : SbfRegisterType() {
+        abstract val offset: Constant
+
+        data class Stack(override val offset: Constant) : PointerType() {
+            override fun toString() = "sp($offset)"
         }
 
-    }
-
-    // Numerical type
-    data class NumType(val value: ConstantNum): SbfType() {
-        override fun toString(): String {
-            return if (value.isTop()) {
-                "num"
-            } else {
-                "num($value)"
-            }
-        }
-    }
-
-    // Pointer type
-    sealed class PointerType: SbfType() {
-        abstract val offset : ConstantOffset
-        abstract fun withOffset(newOffset: ConstantOffset): PointerType
-
-        data class Stack(override val offset: ConstantOffset): PointerType() {
-            override fun toString(): String {
-                return "sp($offset)"
-            }
-            override fun withOffset(newOffset: ConstantOffset) = Stack(newOffset)
-
+        data class Input(override val offset: Constant) : PointerType() {
+            override fun toString() = "input($offset)"
         }
 
-        data class Input(override val offset: ConstantOffset): PointerType() {
-            override fun toString(): String {
-                return "input($offset)"
-            }
-            override fun withOffset(newOffset: ConstantOffset) = Input(newOffset)
-        }
-
-        data class Heap(override val offset: ConstantOffset): PointerType() {
-            override fun toString(): String {
-                return "heap($offset)"
-            }
-            override fun withOffset(newOffset: ConstantOffset) = Heap(newOffset)
+        data class Heap(override val offset: Constant) : PointerType() {
+            override fun toString() = "heap($offset)"
         }
 
         // global.address is the start address of the global variable.
         // offset is actually an absolute address between [global.address, global.address+size)
-        data class Global(override val offset: ConstantOffset,
-                          val global: SbfGlobalVariable?): PointerType() {
+        data class Global(override val offset: Constant, val global: SbfGlobalVariable?) : PointerType() {
             override fun toString(): String {
                 return if (global != null) {
                     if (global is SbfConstantStringGlobalVariable) {
@@ -155,113 +103,6 @@ sealed class SbfType {
                     "global($offset)"
                 }
             }
-            override fun withOffset(newOffset: ConstantOffset) = Global(newOffset, global)
         }
     }
-
-    fun join(other: SbfType): SbfType {
-        if (this is Bottom) {
-            return other
-        } else if (other is Bottom) {
-            return this
-        } else if (this is Top || other is Top) {
-            return Top
-        }
-
-        return if (this is NumType && other is NumType) {
-            NumType(value.join(other.value))
-        } else if (this is PointerType.Stack && other is PointerType.Stack) {
-            PointerType.Stack(offset.join(other.offset))
-        } else if (this is PointerType.Input && other is PointerType.Input) {
-            PointerType.Input(offset.join(other.offset))
-        } else if (this is PointerType.Heap && other is PointerType.Heap) {
-            PointerType.Heap(offset.join(other.offset))
-        } else if (this is PointerType.Global && other is PointerType.Global) {
-            PointerType.Global(offset.join(other.offset),
-                                if (global == other.global) {
-                                    global
-                                } else {
-                                    null
-                                })
-        } else {
-            Top
-        }
-    }
-
-    fun lessOrEqual(other: SbfType): Boolean {
-        if (other is Top || this is Bottom) {
-            return true
-        } else if (this is Top || other is Bottom) {
-            return false
-        }
-
-        return if (this is NumType && other is NumType) {
-            value.lessOrEqual(other.value)
-        } else if (this is PointerType.Stack && other is PointerType.Stack) {
-            offset.lessOrEqual(other.offset)
-        } else if (this is PointerType.Input && other is PointerType.Input) {
-            offset.lessOrEqual(other.offset)
-        } else if (this is PointerType.Heap && other is PointerType.Heap) {
-            offset.lessOrEqual(other.offset)
-        } else if (this is PointerType.Global && other is PointerType.Global) {
-            offset.lessOrEqual(other.offset)
-        } else {
-            false
-        }
-    }
-}
-
-fun samePointerType(t1: SbfType.PointerType, t2: SbfType.PointerType) = t1::class == t2::class
-
-/**
- *  Cast a number type to a pointer type
- *
- *  We cast a number only if the number is a valid heap address or the address of a global variable.
- *  We don't try to cast a number to a pointer if the number can be a valid address in the stack or input regions.
- *  In that case, we will return null.
- * **/
-fun castNumToPtr(src: SbfType.NumType, globalsMap: GlobalVariableMap): SbfType.PointerType? {
-    fun findLowerBound(key: Long): Pair<Long, SbfGlobalVariable>? {
-        // globalsMap is sorted
-        var lb: Pair<Long, SbfGlobalVariable> ? = null
-        for (kv in globalsMap) {
-            if (kv.key <= key) {
-                lb = Pair(kv.key, kv.value)
-            } else {
-                break
-            }
-        }
-        return lb
-    }
-
-    val n = src.value.get()
-    if (n != null) {
-        if (n in SBF_HEAP_START until SBF_HEAP_END) {
-            val offset = ConstantOffset(n).sub(ConstantOffset(SBF_HEAP_START))
-            check(!offset.assume(CondOp.SLT, Constant(0L)).isTrue())
-            {"Offsets of pointers to the Heap region heap cannot be negative"}
-            return SbfType.PointerType.Heap(offset)
-        } else {
-            // We check if n can be a valid address assigned to a global variable.
-            val lb = findLowerBound(n)
-            if (lb != null) {
-                val globalVar = lb.second
-                if (globalVar.size == 0L) {
-                    // The global might have been inferred by GlobalInferenceAnalysis.
-                    // We assume that offset is the start of the global
-                    val offset = ConstantOffset(n)
-                    return SbfType.PointerType.Global(offset, globalVar)
-                }
-                else if (n >= globalVar.address && (n < (globalVar.address + globalVar.size))) {
-                    // Note that in case of an array, `offset` might not be the start address of the global.
-                    // That is, it's not always true that offset == globalVar.address
-                    val offset = ConstantOffset(n)
-                    return SbfType.PointerType.Global(offset, globalVar)
-                }
-            }
-        }
-    }
-    /// We are here if the number cannot be either the address of a global or a valid address
-    /// in the heap.
-    return null
 }

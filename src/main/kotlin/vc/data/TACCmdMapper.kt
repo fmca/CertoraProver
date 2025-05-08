@@ -22,7 +22,7 @@ import spec.cvlast.CVLType
 import spec.cvlast.ComparisonBasis
 import tac.*
 import utils.uncheckedAs
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import java.io.Serializable
 import vc.data.TACCmd.Simple as TS
 import vc.data.TACCmd.Simple.AssigningCmd as TSA
@@ -69,7 +69,7 @@ abstract class TACCmdMapper<T> {
 
     open fun mapAssumeNotCmd(t: TS.AssumeNotCmd) = this.mapAssumeNotCmd(t.cond, t.meta)
 
-    open fun mapAssumeCmd(t: TS.AssumeCmd) = this.mapAssumeCmd(t.cond, t.meta)
+    open fun mapAssumeCmd(t: TS.AssumeCmd) = this.mapAssumeCmd(t.cond, t.msg, t.meta)
 
     open fun mapAssumeExpCmd(t: TS.AssumeExpCmd) = this.mapAssumeExpCmd(t.cond, t.meta)
 
@@ -116,7 +116,7 @@ abstract class TACCmdMapper<T> {
     abstract fun mapNopCmd(): T
     abstract fun mapAssertCmd(o: TACSymbol, description: String, metaMap: MetaMap): T
     abstract fun mapAssumeNotCmd(cond: TACSymbol, metaMap: MetaMap): T
-    abstract fun mapAssumeCmd(cond: TACSymbol, metaMap: MetaMap): T
+    abstract fun mapAssumeCmd(cond: TACSymbol, description: String, metaMap: MetaMap): T
     abstract fun mapAssumeExpCmd(cond: TACExpr, metaMap: MetaMap): T
     abstract fun mapRevertCmd(
         o1: TACSymbol,
@@ -320,9 +320,10 @@ abstract class AbstractDefaultTACCmdMapper : TACCmdMapper<TACCmd.Simple>() {
             cond = cond.map(0)
         ).mapThisMeta(metaMap)
 
-    override fun mapAssumeCmd(cond: TACSymbol, metaMap: MetaMap): TS =
+    override fun mapAssumeCmd(cond: TACSymbol, description: String, metaMap: MetaMap): TS =
         TS.AssumeCmd(
-            cond = cond.map(0)
+            cond = cond.map(0),
+            msg = description
         ).mapThisMeta(metaMap)
 
     override fun mapAssumeExpCmd(cond: TACExpr, metaMap: MetaMap): TS =
@@ -591,20 +592,17 @@ abstract class AbstractDefaultTACCmdMapper : TACCmdMapper<TACCmd.Simple>() {
 }
 
 open class DefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {
-    protected open val exprMapper = object : QuantDefaultTACExprTransformer() {
-        override fun transform(acc: QuantVars, exp: TACExpr): TACExpr {
+    protected open val exprMapper = object : DefaultTACExprTransformer() {
+        override fun transform(exp: TACExpr): TACExpr {
             return when (exp) {
-                is TACExpr.Sym.Var ->
-                    if (exp.s in acc.quantifiedVars) exp
-                    else TACExpr.Sym(this@DefaultTACCmdMapper.mapSymbol(exp.s))
-                is TACExpr.Sym.Const -> TACExpr.Sym(this@DefaultTACCmdMapper.mapSymbol(exp.s))
-                else -> super.transform(acc, exp)
+                is TACExpr.Sym -> TACExpr.Sym(this@DefaultTACCmdMapper.mapSymbol(exp.s))
+                else -> super.transform(exp)
             }
         }
 
         override fun <@Treapable T : Serializable> transformAnnotationExp(
-            acc: QuantVars, o: TACExpr, k: MetaKey<T>, v: T
-        ) = TACExpr.AnnotationExp(transform(acc, o), k, mapMetaPair(k, v))
+            o: TACExpr, k: MetaKey<T>, v: T
+        ) = TACExpr.AnnotationExp(transform(o), k, mapMetaPair(k, v))
     }
 
     override fun mapMeta(t: MetaMap): MetaMap {
@@ -627,7 +625,7 @@ open class DefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {
 
     open fun mapLhs(t: TACSymbol.Var) = this.mapVar(t)
 
-    open fun mapExpr(expr: TACExpr): TACExpr = exprMapper.transformOuter(expr)
+    open fun mapExpr(expr: TACExpr): TACExpr = exprMapper.transform(expr)
 
     /* overriding the indexing methods to just drop the index */
 
@@ -643,9 +641,9 @@ open class DefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {
 
 }
 
-/** 
+/**
  * "index" here refers the position at which an operand occurs. E.g. consider the expression `f(x, y, z)`;
- * the index we pass when visiting `z` will be `2`, since `z` occurs at the third position and we count 
+ * the index we pass when visiting `z` will be `2`, since `z` occurs at the third position and we count
  * 0-based.
  */
 abstract class IndexingDefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {

@@ -17,12 +17,21 @@
 
 package wasm.analysis.intervals
 
+import analysis.TACCommandGraph
 import analysis.numeric.*
+import analysis.smtblaster.*
+import annotations.TestTags
+import com.certora.collect.*
 import evm.*
 import net.jqwik.api.*
 import net.jqwik.api.arbitraries.*
 import net.jqwik.kotlin.api.*
 import org.junit.jupiter.api.Assertions.*
+import smtlibutils.data.SmtExp
+import tac.NBId
+import tac.Tag
+import testing.ttl.TACMockLanguage
+import utils.*
 import vc.data.*
 import java.math.BigInteger
 
@@ -35,6 +44,15 @@ class IntervalAnalysisTest {
                 SimpleQualifiedInt(IntValue(lb = lowerBound, ub = upperBound), setOf())
             }
         }
+
+    companion object {
+        fun intValBetween(lo: Int, hi: Int) =
+            Arbitraries.integers().between(lo, hi).flatMap { lower ->
+                Arbitraries.integers().between(lower, hi).map {
+                    IntValue(lower.toBigInteger(), it.toBigInteger())
+                }
+            }
+    }
 
     @Provide
     fun numeratorIntervals() = bit256Intervals(0.toBigInteger(), 100.toBigInteger())

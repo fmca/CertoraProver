@@ -122,8 +122,10 @@ object QuantifierChecker: CVLExpFolder<VoidResult<CVLError>>() {
                     CVLBuiltInName.FOUNDRY_START_PRANK,
                     CVLBuiltInName.FOUNDRY_STOP_PRANK,
                     CVLBuiltInName.FOUNDRY_WARP,
+                    CVLBuiltInName.FOUNDRY_ROLL,
                     CVLBuiltInName.FOUNDRY_MOCK_CALL,
-                    CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS -> `impossible!`
+                    CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS,
+                    CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> `impossible!`
                 }
             }
         )

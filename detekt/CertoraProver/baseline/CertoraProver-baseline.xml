@@ -49,7 +49,6 @@
         <ID>BracesOnIfStatements:IndexTracking.kt$IndexTracking$if</ID>
         <ID>BracesOnIfStatements:IntValue.kt$IntValue$else</ID>
         <ID>BracesOnIfStatements:IntValue.kt$IntValue$if</ID>
-        <ID>BracesOnIfStatements:InterContractCallResolver.kt$InterContractCallResolver.CallGraphNode.CallNode$else</ID>
         <ID>BracesOnIfStatements:JSONReporter.kt$JSONReporter$else</ID>
         <ID>BracesOnIfStatements:JSONReporter.kt$JSONReporter$if</ID>
         <ID>BracesOnIfStatements:LExpVCStatsLogger.kt$LExpVCStatsLogger$else</ID>
@@ -67,7 +66,6 @@
         <ID>BracesOnIfStatements:NumericAnalysis.kt$NumericAnalysis.&lt;no name provided&gt;$else</ID>
         <ID>BracesOnIfStatements:ReachabilityFailureSourceFinder.kt$ReachabilityFailureSourceFinder.LeafReachabilityChecker$else</ID>
         <ID>BracesOnIfStatements:ReachabilityFailureSourceFinder.kt$ReachabilityFailureSourceFinder.LeafReachabilityChecker$if</ID>
-        <ID>BracesOnIfStatements:RedundantStorageReadOptimizer.kt$RedundantStorageReadOptimizer$if</ID>
         <ID>BracesOnIfStatements:RegexToNFA.kt$RegexToNFA$else</ID>
         <ID>BracesOnIfStatements:RegexToNFA.kt$RegexToNFA$if</ID>
         <ID>BracesOnIfStatements:RuleCheckResult.kt$RuleCheckResult.Multi$else</ID>
@@ -96,10 +94,6 @@
         <ID>BracesOnIfStatements:TACCommandGraph.kt$ExpPointer$if</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr$else</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr$if</ID>
-        <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.BinBoolOp.LAnd$else</ID>
-        <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.BinBoolOp.LAnd$if</ID>
-        <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.BinBoolOp.LOr$else</ID>
-        <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.BinBoolOp.LOr$if</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.BinExp$else</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.BinExp$if</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.QuantifiedFormula$else</ID>
@@ -108,8 +102,6 @@
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.Select$if</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.Store$else</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.Store$if</ID>
-        <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.TernaryExp.Ite$else</ID>
-        <ID>BracesOnIfStatements:TACExpr.kt$TACExpr.TernaryExp.Ite$if</ID>
         <ID>BracesOnIfStatements:TACExprFactory.kt$TACExprFactBasicSimp$if</ID>
         <ID>BracesOnIfStatements:TACExprUtils.kt$TACExprUtils$else</ID>
         <ID>BracesOnIfStatements:TACExprUtils.kt$TACExprUtils$if</ID>
@@ -196,7 +188,6 @@
         <ID>ForbiddenComment:CallGraphBuilder.kt$CallGraphBuilder.EncodingPayload.Instrument$* We only know the type and shapes of the encoded values. Instrumentation will be required to resolve their precise * identities. This can occur when an abstract location can be allocated multiple times, e.g., an abi.encode * call within a loop * * Q) What if [where] is different for the different possible encodings? * A) These are all attached to a single PTA node, wich maps one to one to an allocation site; thus in-memory * encoded buffer will have exactly one point of allocation (and thus, one point of encoding), ensure * [where] is singleton for each PTA node * * TODO(jtoman): this instrumentation isn't actually done yet, if we hit a call that has Instrument for its * encoded buffer, we give up</ID>
         <ID>ForbiddenComment:CallResolutionTable.kt$CallResolutionTable.Factory$//todo: detect cases where the external version of a public function jumps to the</ID>
         <ID>ForbiddenComment:CallResolutionTableReportView.kt$CallResolutionTableRowReportView$// TODO - pass real location</ID>
-        <ID>ForbiddenComment:CallTrace.kt$CallTraceGenerator$//TODO propagate the type from Solidity AST</ID>
         <ID>ForbiddenComment:CalledContractResolver.kt$CalledContractResolver.Worker$// TODO: Return null if the storage slot in question was modified</ID>
         <ID>ForbiddenComment:CalledContractResolver.kt$CalledContractResolver.Worker$// non storage case - maybe it's just our address, hard-coded, or an immutable (TODO)</ID>
         <ID>ForbiddenComment:Callee.kt$Callee$// TODO - pass real location</ID>
@@ -289,7 +280,6 @@
         <ID>ForbiddenComment:QuantiferRewriter.kt$QuantifierRewriter$* Rewrites [original] with nested quantifiers pulled out to the outer most quantification. * * TODO: Currently we will exit with an error on cases such as this one: * `forall x. [ forall y. y &lt; 0 /\ forall y. y &gt;= 0 ]` * Because pulling y out will change semantics. * However, this is solvable with simple renaming.</ID>
         <ID>ForbiddenComment:ReachabilityFailureSourceFinder.kt$ReachabilityFailureSourceFinder.LeafReachabilityChecker$// TODO: how could we reach here?</ID>
         <ID>ForbiddenComment:ReachabilityFailureSourceFinder.kt$ReachabilityFailureSourceFinder.LeafReachabilityChecker$// todo reachable?</ID>
-        <ID>ForbiddenComment:RedundantStorageReadOptimizer.kt$RedundantStorageReadOptimizer$/* TODO(jtoman): The storage unpacker will break if we do this; sharing storage accesses between an unpacked write and unpacked read breaks a pretty fundamental invariant of the storage unpacker. */</ID>
         <ID>ForbiddenComment:RevertStringsOptimizer.kt$RevertStringsOptimizer$// not the root because we're not that brave (TODO although why not?)</ID>
         <ID>ForbiddenComment:RuleCheckResult.kt$RuleCheckResult.Single.RuleCheckInfo.Companion$// TODO: move this function out of HTMLReporter</ID>
         <ID>ForbiddenComment:RuleCheckResult.kt$RuleCheckResult.Single.RuleCheckInfo.WithExamplesData.CounterExample$//TODO: enforce this by design</ID>
@@ -311,7 +301,6 @@
         <ID>ForbiddenComment:StorageHashAxiomGeneratorDataTypes.kt$StorageHashAxiomGeneratorDataTypes$// TODO: this is especially bad due to the string construction here; the define-fun infrastructure probably</ID>
         <ID>ForbiddenComment:SummarizeProgram.kt$SummarizeProgram$// TODO: is index -1 a good solution here??</ID>
         <ID>ForbiddenComment:SummarizeProgram.kt$SummarizeProgram$// TODO: not a good criterion</ID>
-        <ID>ForbiddenComment:TACBuiltInFunction.kt$TACBuiltInFunction.TwosComplement.Unwrap$// TODO: smt test</ID>
         <ID>ForbiddenComment:TACCmd.kt$TACCmd$* As the name says, returns all free variables on the right hand side of the given command. * TODO: what about commands that don't have a "right hand side"?? * * Not to be confused with the similar method [getRhs].</ID>
         <ID>ForbiddenComment:TACCmd.kt$TACCmd$// TODO: isn't this.base part of rhs as well??</ID>
         <ID>ForbiddenComment:TACCmd.kt$TACCmd$//TODO: change to TACExprConstCollector.getConstantsAndVars(this.cond) if this.cond becomes TACExpr</ID>
@@ -352,7 +341,6 @@
         <ID>ForbiddenComment:TACValue.kt$TACValue.Uninitialized$// TODO: review: should this be serializable (or is it an error if it gets serialized)?</ID>
         <ID>ForbiddenComment:TernaryCalculator.kt$TernaryCalculator$// TODO: Signed comparisons</ID>
         <ID>ForbiddenComment:TernaryCalculator.kt$TernaryCalculator$// TODO: collect constants?</ID>
-        <ID>ForbiddenComment:TernaryCalculator.kt$TernaryCalculator$// TODO: support it if we ever encounter it.</ID>
         <ID>ForbiddenComment:TypeBoundsGenerator.kt$TypeBoundsGenerator.Companion$// TODO: This expression should actually be given to `visit` of linear math axiom generator</ID>
         <ID>ForbiddenComment:UninterpretedSymbolManager.kt$UninterpretedSymbolManager$// TODO freezing mechanism is duplicated with [LExpressionFactory]..</ID>
         <ID>ForbiddenComment:VariableCheckpoint.kt$CheckpointType$* Define chceckpoint types. * TODO: we may prefer to move to sealed data classes for [VariableCheckpoint].</ID>
@@ -435,10 +423,6 @@
         <ID>ImportStdCollections:CVLUtils.kt$CVLTestGenerator.Companion$mutableSetOf</ID>
         <ID>ImportStdCollections:CVLUtils.kt$CVLTestGenerator.Companion$toSet</ID>
         <ID>ImportStdCollections:CallGraphBuilder.kt$CallGraphBuilder.Worker$forEach</ID>
-        <ID>ImportStdCollections:CalledContractResolver.kt$CalledContractResolver$mapValues</ID>
-        <ID>ImportStdCollections:CalledContractResolver.kt$CalledContractResolver.Worker$mutableMapOf</ID>
-        <ID>ImportStdCollections:CalledContractResolver.kt$CalledContractResolver.Worker$singleOrNull</ID>
-        <ID>ImportStdCollections:CalledContractResolver.kt$CalledContractResolver.Worker$toSet</ID>
         <ID>ImportStdCollections:CalleeResolution.kt$CalleeResolution.Companion$mapOf</ID>
         <ID>ImportStdCollections:CanonicalSum.kt$CanonicalSum$+</ID>
         <ID>ImportStdCollections:CanonicalSum.kt$CanonicalSum$listOf</ID>
@@ -523,14 +507,6 @@
         <ID>ImportStdCollections:ConstantStringAlloc.kt$ConstantStringAlloc.ShortConstantStringAllocWorker$mutableMapOf</ID>
         <ID>ImportStdCollections:ConstraintChooser.kt$SmtConstraintsGen$listOf</ID>
         <ID>ImportStdCollections:ConstraintChooser.kt$SmtConstraintsGen$mutableSetOf</ID>
-        <ID>ImportStdCollections:ContractCreation.kt$ContractCreation$listOf</ID>
-        <ID>ImportStdCollections:ContractCreation.kt$ContractCreation$mutableMapOf</ID>
-        <ID>ImportStdCollections:ContractCreation.kt$ContractCreation$mutableSetOf</ID>
-        <ID>ImportStdCollections:ContractCreation.kt$ContractCreation$setOf</ID>
-        <ID>ImportStdCollections:ContractCreation.kt$ContractCreation$setOfNotNull</ID>
-        <ID>ImportStdCollections:ContractStorageResolver.kt$ContractStorageResolver$listOf</ID>
-        <ID>ImportStdCollections:ContractStorageResolver.kt$ContractStorageResolver$mapValues</ID>
-        <ID>ImportStdCollections:ContractStorageResolver.kt$ContractStorageResolver$singleOrNull</ID>
         <ID>ImportStdCollections:CounterExampleDiversifier.kt$CounterExampleDiversifier$forEach</ID>
         <ID>ImportStdCollections:CreateSummary.kt$CreateSummary$setOfNotNull</ID>
         <ID>ImportStdCollections:DSAToSSA.kt$DSAToSSA$forEach</ID>
@@ -557,7 +533,6 @@
         <ID>ImportStdCollections:EnumPackingNormalizer.kt$EnumPackingNormalizer$mapOf</ID>
         <ID>ImportStdCollections:EnvironmentFixer.kt$EnvironmentFixer$listOf</ID>
         <ID>ImportStdCollections:EnvironmentFixer.kt$EnvironmentFixer$setOf</ID>
-        <ID>ImportStdCollections:EqualityCheckNormalizer.kt$EqualityCheckNormalizer$listOf</ID>
         <ID>ImportStdCollections:ExpNormalizer.kt$ExpNormalizer$listOf</ID>
         <ID>ImportStdCollections:ExtCallSummarization.kt$ExtCallSummarization$forEach</ID>
         <ID>ImportStdCollections:ExternalMapGetterSummarization.kt$ExternalMapGetterSummarization$+</ID>
@@ -579,10 +554,6 @@
         <ID>ImportStdCollections:FreePointerAnalysis.kt$FreePointerAnalysis$toSet</ID>
         <ID>ImportStdCollections:FreePointerAnalysis.kt$FreePointerAnalysis.&lt;no name provided&gt;$setOf</ID>
         <ID>ImportStdCollections:FreePointerAnalysis.kt$FreePointerAnalysis.Companion$listOf</ID>
-        <ID>ImportStdCollections:FreePointerReadFixer.kt$FreePointerReadFixer$listOf</ID>
-        <ID>ImportStdCollections:FreePointerReadFixer.kt$FreePointerReadFixer$mutableMapOf</ID>
-        <ID>ImportStdCollections:FreePointerReadFixer.kt$FreePointerReadFixer$singleOrNull</ID>
-        <ID>ImportStdCollections:FreePointerReadFixer.kt$FreePointerReadFixer.Holder$mutableMapOf</ID>
         <ID>ImportStdCollections:FunctionFlowAnnotator.kt$FunctionFlowAnnotator$forEach</ID>
         <ID>ImportStdCollections:GraphDrawer.kt$forEach</ID>
         <ID>ImportStdCollections:GraphToRegex.kt$GraphToRegex$+</ID>
@@ -600,10 +571,6 @@
         <ID>ImportStdCollections:Havocer.kt$Havocer$listOf</ID>
         <ID>ImportStdCollections:Havocer.kt$Havocer$mutableSetOf</ID>
         <ID>ImportStdCollections:IContractSourceFull.kt$IContractSourceFull$toSet</ID>
-        <ID>ImportStdCollections:IDynamicScene.kt$IDynamicScene$mapTo</ID>
-        <ID>ImportStdCollections:IDynamicScene.kt$IDynamicScene$mutableMapOf</ID>
-        <ID>ImportStdCollections:IDynamicScene.kt$IDynamicScene$mutableSetOf</ID>
-        <ID>ImportStdCollections:IDynamicScene.kt$IDynamicScene.RemapperState$mutableMapOf</ID>
         <ID>ImportStdCollections:IMustEqualsAnalysis.kt$IMustEqualsAnalysis.ScopeDefinition$minus</ID>
         <ID>ImportStdCollections:IMustEqualsAnalysis.kt$IMustEqualsAnalysis.ScopeDefinition$setOf</ID>
         <ID>ImportStdCollections:ImmutableInstrumenter.kt$ImmutableInstrumenter$forEach</ID>
@@ -717,7 +684,6 @@
         <ID>ImportStdCollections:SDCollector.kt$EnabledSDCollector.Companion$listOf</ID>
         <ID>ImportStdCollections:SDCollector.kt$EnabledSDCollector.Companion$plus</ID>
         <ID>ImportStdCollections:SDCollector.kt$EnabledSDCollector.Companion$toList</ID>
-        <ID>ImportStdCollections:SafeMathRewriting.kt$SafeMathRewriting$listOf</ID>
         <ID>ImportStdCollections:SanityResultsView.kt$SanityResultsView$emptyList</ID>
         <ID>ImportStdCollections:SanityResultsView.kt$SanityResultsView$mapValues</ID>
         <ID>ImportStdCollections:SanityResultsView.kt$SanityResultsView.FunctionDependent$mapValues</ID>
@@ -864,7 +830,6 @@
         <ID>TooGenericExceptionCaught:CVLExpToTACExpr.kt$CVLExpToTACExpr$e: Exception</ID>
         <ID>TooGenericExceptionCaught:CacheManager.kt$CacheManager$e: Exception</ID>
         <ID>TooGenericExceptionCaught:CallGraphBuilder.kt$CallGraphBuilder$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CallTrace.kt$CallTraceGenerator$e: Exception</ID>
         <ID>TooGenericExceptionCaught:CodeTransformers.kt$ChainedCoreTransformers$e: Exception</ID>
         <ID>TooGenericExceptionCaught:ConcreteTACStateSerializer.kt$ConcreteTACStateSerializer$e: Exception</ID>
         <ID>TooGenericExceptionCaught:ContractUtils.kt$ContractUtils$e: Exception</ID>
@@ -890,7 +855,6 @@
         <ID>TooGenericExceptionCaught:TACProgram.kt$CoreTACProgram.Companion$e: Exception</ID>
         <ID>TooGenericExceptionCaught:TACProgram.kt$EVMTACProgram$e: Exception</ID>
         <ID>TooGenericExceptionCaught:TACProgram.kt$TACProgram$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:ValueRangeOptimization.kt$ValueRangeOptimization$e: Exception</ID>
         <ID>TooGenericExceptionCaught:Z3BlasterPool.kt$Z3BlasterPool.Z3BlasterWorker$e: Exception</ID>
         <ID>TooGenericExceptionThrown:BlockMerger.kt$BlockMerger$throw Exception("Current chain node $b from $chain not in code")</ID>
         <ID>TooGenericExceptionThrown:BlockMerger.kt$BlockMerger$throw Exception("Start node $current is not in graph $newGraph")</ID>
@@ -909,7 +873,6 @@
         <ID>TooGenericExceptionThrown:TransformableVarsEntity.kt$throw RuntimeException( "the transformable entity ($v) failed to return the right type when applying a " + "TransformableEntity transformation: should have that $k ${k.typ} is an instance of $ret (${ret.javaClass.name})" )</ID>
         <ID>UseOrEmpty:BMC.kt$BMCRunner$MetaSourceFinder.extractSource(it.cmd.annot.k, it.cmd.annot.v)?.let { sequenceOf(it) } ?: sequenceOf()</ID>
         <ID>UseOrEmpty:BMC.kt$BMCRunner$MetaSourceFinder.extractSource(null, it.cmd.summ)?.let { sequenceOf(it) } ?: sequenceOf&lt;Pair&lt;Allocator.Id, Int&gt;&gt;()</ID>
-        <ID>UseOrEmpty:CallSummary.kt$CallSummary$callTarget.callee?.let { "($it)" } ?: ""</ID>
         <ID>UseOrEmpty:EVMSnippet.kt$EVMSnippetCmd.StorageSnippet$(value as? TACSymbol.Var)?.let { setOf(it) } ?: emptySet()</ID>
         <ID>UseOrEmpty:EncoderAnalysis.kt$EncoderAnalysis$elementFinder?.elementWithIndex(BigInteger.ZERO) ?: emptySet()</ID>
         <ID>UseOrEmpty:HTMLReporter.kt$HTMLReporter$tables.find { it.name == tableName }?.rows ?: listOf()</ID>

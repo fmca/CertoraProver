@@ -19,6 +19,7 @@ package vc.data.tacexprutil
 
 import analysis.ExpPointer
 import com.certora.collect.*
+import datastructures.stdcollections.*
 import tac.MetaKey
 import tac.Tag
 import utils.CertoraInternalErrorType
@@ -33,18 +34,10 @@ class TACExprTransformerException(msg: String) :
     CertoraInternalException(CertoraInternalErrorType.TAC_TRANSFORMER_EXCEPTION, msg)
 
 /**
- * A transformer for [TACExpr]s that may contain quantifiers.
- * Implements the convention that
- *  - quantified variables are not transformed
- *  - the transformation cannot introduce variables that are captured by the quantifier (avoided through alpha-renaming
- *    away the quantified variables)
- * This convention comes from standard mathematical substitution -- it may or may not be appropriate for your use case.
- * If you need another convention, use e.g. [DefaultAccumulatingTACExprTransformer] to implement it.
- *
  * Does not recurse into the meta-maps attached to variables and the annotations of [TACExpr.AnnotationExp].
  */
-open class QuantDefaultTACExprTransformer :
-    DefaultAccumulatingTACExprTransformer<QuantDefaultTACExprTransformer.QuantVars>() {
+abstract class QuantDefaultTACExprTransformerWithPointer :
+    DefaultAccumulatingTACExprTransformer<QuantDefaultTACExprTransformerWithPointer.QuantVarsAndExpPointer>() {
 
     /** Stores quantified variables that are bound in a subexpression. */
     class QuantVars(val quantifiedVars: List<TACSymbol.Var>) {
@@ -59,28 +52,36 @@ open class QuantDefaultTACExprTransformer :
         }
     }
 
-    /** Transform an expression that is not inside a quantifier. */
-    fun transformOuter(exp: TACExpr): TACExpr = transform(QuantVars.Empty, exp)
+    data class QuantVarsAndExpPointer(
+        val boundVars: QuantDefaultTACExprTransformerWithPointer.QuantVars,
+        val expPointer: ExpPointer
+    ) {
 
-    /**
-     * We need to avoid two things here:
-     * - the transformation creates an expression that contains a free variable that is captured by this quantifier
-     * - the transformation changes the quantified variables inside [body] into something else
-     * (this is analogous to standard substitution rules for quantified formulas)
-     * Strategy:
-     * - rename all variables v in [quantifiedVars] to something fresh in the [body]
-     * - transform [body]
-     * - if the transformed body does not contain any variable from [quantifiedVars]
-     *   - reverse the renaming (just for cosmetics, so the formula isn't changed unnecessarily) in transformed body
-     *   - return [isForall] [quantifiedVars] . <transformedBody>
-     * - else
-     *   - return [isForall] <fresh vars> . <transformedBody>
-     * (note: we're doing the check for that "if" all-or nothing right now, for simplicity -- if only some variables are
-     *  captured, we alpha-rename all of them)
-     */
+        fun push(vars: List<TACSymbol.Var>): QuantVarsAndExpPointer =
+            this.copy(boundVars = boundVars.push(vars))
+
+        override fun toString(): String {
+            return "$boundVars, $expPointer"
+        }
+
+        companion object {
+            fun getEmpty(expPointer: ExpPointer) =
+                QuantVarsAndExpPointer(
+                    QuantDefaultTACExprTransformerWithPointer.QuantVars.Empty,
+                    expPointer
+                )
+        }
+    }
+
+    /** Descendants of this class must call this when they dispatch arguments explicitly */
+    override fun transformArg(acc: QuantVarsAndExpPointer, exp: TACExpr, index: Int): TACExpr {
+        return super.transformArg(acc.copy(expPointer = acc.expPointer.extend(index)), exp, index)
+    }
+
+    /** see [DefaultTACExprTransformer.transformQuantifiedFormula] */
     @Suppress("NAME_SHADOWING")
     override fun transformQuantifiedFormula(
-        acc: QuantVars,
+        acc: QuantVarsAndExpPointer,
         isForall: Boolean,
         quantifiedVars: List<TACSymbol.Var>,
         body: TACExpr,
@@ -89,7 +90,7 @@ open class QuantDefaultTACExprTransformer :
         val (qVarsToFreshVars: Map<TACSymbol.Var, TACSymbol.Var>, bodyQVarsRenamedAway) =
             renameBodyVars(quantifiedVars, body)
 
-        val bodyTransformed = transform(acc.push(qVarsToFreshVars.values.toList()), bodyQVarsRenamedAway)
+        val bodyTransformed = transformArg(acc.push(qVarsToFreshVars.values.toList()), bodyQVarsRenamedAway, 0)
 
         return renameBack(
             bodyTransformed,
@@ -100,13 +101,10 @@ open class QuantDefaultTACExprTransformer :
         )
     }
 
-    /**
-     * Like in the quantified case, `MapDefinition` also has bound variables -- we treat them like the ones bound
-     * by quantifiers.
-     */
+    /** see [DefaultTACExprTransformer.transformMapDefinition] */
     @Suppress("NAME_SHADOWING")
     override fun transformMapDefinition(
-        acc: QuantVars,
+        acc: QuantVarsAndExpPointer,
         defParams: List<TACExpr.Sym.Var>,
         definition: TACExpr,
         tag: Tag.Map
@@ -114,7 +112,11 @@ open class QuantDefaultTACExprTransformer :
         val (qVarsToFreshVars: Map<TACSymbol.Var, TACSymbol.Var>, bodyQVarsRenamedAway) =
             renameBodyVars(defParams.map { it.s }, definition)
 
-        val bodyTransformed = transform(acc.push(qVarsToFreshVars.values.toList()), bodyQVarsRenamedAway)
+        val bodyTransformed = transformArg(
+            acc.push(qVarsToFreshVars.values.toList()),
+            bodyQVarsRenamedAway,
+            0
+        )
 
         return renameBack(
             bodyTransformed,
@@ -131,20 +133,12 @@ open class QuantDefaultTACExprTransformer :
         )
     }
 
-    /** One cannot override this in the quantified case (see [transformQuantifiedFormula] for an explanation), override,
-     * use tranformFreeVar instead */
-    final override fun transformVar(acc: QuantVars, exp: TACExpr.Sym.Var): TACExpr =
-        if (exp.s in acc.quantifiedVars) exp else transformFreeVar(acc, exp)
-
-    open fun transformFreeVar(acc: QuantVars, exp: TACExpr.Sym.Var): TACExpr = exp
-
     companion object {
         fun <T : Tag?> renameBack(
             bodyTransformed: TACExpr,
             quantifiedVars: List<TACSymbol.Var>,
             make: (List<TACSymbol.Var>, TACExpr, T) -> TACExpr,
             qVarsToFreshVars: Map<TACSymbol.Var, TACSymbol.Var>,
-            // TODO: are we sure we don't change the type with this transformation?
             tag: T
         ): TACExpr {
             val freeVars = TACExprFreeVarsCollector.getFreeVars(bodyTransformed)
@@ -154,7 +148,7 @@ open class QuantDefaultTACExprTransformer :
                 // rename back
                 val substitution2 =
                     qVarsToFreshVars.entries.map { (qv, qvFresh) -> Pair(qvFresh.asSym(), qv.asSym()) }.toMap()
-                val bodyQVarsRenamedBack = TACExprUtils.SubstitutorVar(substitution2).transformOuter(bodyTransformed)
+                val bodyQVarsRenamedBack = TACExprUtils.SubstitutorVar(substitution2).transform(bodyTransformed)
                 make(quantifiedVars, bodyQVarsRenamedBack, tag)
             }
             return res
@@ -171,100 +165,10 @@ open class QuantDefaultTACExprTransformer :
                     }
             val substitution =
                 qVarsToFreshVars.entries.map { (qv, qvFresh) -> Pair(qv.asSym(), qvFresh.asSym()) }.toMap()
-            val bodyQVarsRenamedAway = TACExprUtils.SubstitutorVar(substitution).transformOuter(body)
+            val bodyQVarsRenamedAway = TACExprUtils.SubstitutorVar(substitution).transform(body)
             return Pair(qVarsToFreshVars, bodyQVarsRenamedAway)
         }
     }
-
-}
-
-/**
- * Does not recurse into the meta-maps attached to variables and the annotations of [TACExpr.AnnotationExp].
- */
-abstract class QuantDefaultTACExprTransformerWithPointer :
-    DefaultAccumulatingTACExprTransformer<QuantDefaultTACExprTransformerWithPointer.QuantVarsAndExpPointer>() {
-
-    data class QuantVarsAndExpPointer(
-        val boundVars: QuantDefaultTACExprTransformer.QuantVars,
-        val expPointer: ExpPointer
-    ) {
-
-        fun push(vars: List<TACSymbol.Var>): QuantVarsAndExpPointer =
-            this.copy(boundVars = boundVars.push(vars))
-
-        override fun toString(): String {
-            return "$boundVars, $expPointer"
-        }
-
-        companion object {
-            fun getEmpty(expPointer: ExpPointer) =
-                QuantVarsAndExpPointer(
-                    QuantDefaultTACExprTransformer.QuantVars.Empty,
-                    expPointer
-                )
-        }
-    }
-
-    /** Descendants of this class must call this when they dispatch arguments explicitly */
-    override fun transformArg(acc: QuantVarsAndExpPointer, exp: TACExpr, index: Int): TACExpr {
-        return super.transformArg(acc.copy(expPointer = acc.expPointer.extend(index)), exp, index)
-    }
-
-    /** see [QuantDefaultTACExprTransformer.transformQuantifiedFormula] */
-    @Suppress("NAME_SHADOWING")
-    override fun transformQuantifiedFormula(
-        acc: QuantVarsAndExpPointer,
-        isForall: Boolean,
-        quantifiedVars: List<TACSymbol.Var>,
-        body: TACExpr,
-        tag: Tag?
-    ): TACExpr {
-        val (qVarsToFreshVars: Map<TACSymbol.Var, TACSymbol.Var>, bodyQVarsRenamedAway) =
-            QuantDefaultTACExprTransformer.renameBodyVars(quantifiedVars, body)
-
-        val bodyTransformed = transformArg(acc.push(qVarsToFreshVars.values.toList()), bodyQVarsRenamedAway, 0)
-
-        return QuantDefaultTACExprTransformer.renameBack(
-            bodyTransformed,
-            quantifiedVars,
-            { qVars, body, tag -> TACExprFactSimple.QuantifiedFormula(isForall, qVars, body, tag) },
-            qVarsToFreshVars,
-            tag
-        )
-    }
-
-    /** see [QuantDefaultTACExprTransformer.transformMapDefinition] */
-    @Suppress("NAME_SHADOWING")
-    override fun transformMapDefinition(
-        acc: QuantVarsAndExpPointer,
-        defParams: List<TACExpr.Sym.Var>,
-        definition: TACExpr,
-        tag: Tag.Map
-    ): TACExpr {
-        val (qVarsToFreshVars: Map<TACSymbol.Var, TACSymbol.Var>, bodyQVarsRenamedAway) =
-            QuantDefaultTACExprTransformer.renameBodyVars(defParams.map { it.s }, definition)
-
-        val bodyTransformed = transformArg(
-            acc.push(qVarsToFreshVars.values.toList()),
-            bodyQVarsRenamedAway,
-            0
-        )
-
-        return QuantDefaultTACExprTransformer.renameBack(
-            bodyTransformed,
-            defParams.map { it.s },
-            { _defParams, _definition, tag ->
-                TACExprFactSimple.MapDefinition(
-                    _defParams.map { it.asSym() },
-                    _definition,
-                    tag
-                )
-            },
-            qVarsToFreshVars,
-            tag
-        )
-    }
-
 }
 
 
@@ -279,7 +183,7 @@ abstract class DefaultAccumulatingTACExprTransformer<ACC> : AccumulatingTACExprT
         quantifiedVars: List<TACSymbol.Var>,
         body: TACExpr,
         tag: Tag?
-    ): TACExpr = TACExprFactSimple.QuantifiedFormula(isForall, quantifiedVars, transformArg(acc, body, 0), tag)
+    ): TACExpr = TACExprFactSimple.QuantifiedFormula(isForall, quantifiedVars.map { transformVar(acc, it.asSym()).asVar }, transformArg(acc, body, 0), tag)
 
     override fun transformVar(acc: ACC, exp: TACExpr.Sym.Var): TACExpr = exp
 
@@ -460,7 +364,7 @@ abstract class DefaultAccumulatingTACExprTransformer<ACC> : AccumulatingTACExprT
         tag: Tag.Map
     ): TACExpr =
         TACExprFactSimple.MapDefinition(
-            defParams, // defParams are binders, not proper expressions, thus aren't subject to transformation
+            defParams.map { transformVar(acc, it) as TACExpr.Sym.Var }, // defParams are binders, not proper expressions, thus aren't subject to transformation
             transformArg(acc, definition, 0),
             tag
         )

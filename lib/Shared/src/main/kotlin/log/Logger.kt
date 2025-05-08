@@ -129,6 +129,7 @@ enum class LoggerTypes : LoggerName {
     TWOSTAGE,
     FOUNDRY,
     DEBUG_SYMBOLS,
+    EQUIVALENCE,
     OVERFLOW_PATTERN_REWRITER,
     BOUNDED_MODEL_CHECKER
     ;

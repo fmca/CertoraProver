@@ -21,6 +21,7 @@ import analysis.numeric.IntValue
 import analysis.numeric.MAX_UINT
 import com.certora.collect.*
 import datastructures.stdcollections.*
+import evm.inEVMRange
 import utils.*
 import vc.data.TACSymbol
 import java.math.BigInteger
@@ -136,6 +137,9 @@ sealed class Stride {
     data class SumOfTerms(val factored: TreapMap<BigInteger, SymValue>, val off: BigInteger): Stride() {
 
         init {
+            check(off.inEVMRange) {
+                "Offset overflow"
+            }
             for ((f, v) in factored) {
                 check(f > BigInteger.ZERO) {
                     "Representation violation: zero factor"
@@ -151,7 +155,7 @@ sealed class Stride {
 
         companion object {
             fun sumOf(factored: TreapMap<BigInteger, SymValue>, off: BigInteger): Stride =
-                if (factored.any { (_,v) -> v.v == IntValue.Nondet })  {
+                if (!off.inEVMRange || factored.any { (_,v) -> v.v == IntValue.Nondet })  {
                     Top
                 } else {
                     SumOfTerms(
@@ -170,7 +174,13 @@ sealed class Stride {
                 } else {
                     SumOfTerms(treapMapOf(), BigInteger.ZERO)
                 }
-            operator fun invoke(o: BigInteger) = SumOfTerms(treapMapOf(), o)
+
+            operator fun invoke(o: BigInteger) =
+                if (o.inEVMRange) {
+                    SumOfTerms(treapMapOf(), o)
+                } else {
+                    Top
+                }
         }
 
         override val range: IntValue = run {
@@ -249,7 +259,7 @@ sealed class Stride {
         /**
          * Refines this SumOfTerms if it contains exactly one factor
          */
-        override fun refineTotal(i: IntValue): SumOfTerms? {
+        override fun refineTotal(i: IntValue): Stride? {
             // Let's make this easy. Imagine if we have { 3 => [1, 5], 10 => [0, 10] }
             // and we refine with [ 30, 90 ]. Then of course 3*[1, 5] = [3,6..15] does
             // not even overlap with i...
@@ -322,7 +332,7 @@ sealed class Stride {
             if (!factored.keys.containsAny(o.factored.keys)) {
                 val newFactors = factored + o.factored
                 val offSum = off + o.off
-                return SumOfTerms(newFactors, offSum)
+                return sumOf(newFactors, offSum)
             }
             return Top
         }

@@ -97,7 +97,8 @@ object SummaryStack {
             override val callSiteSrc: TACMetaInfo?,
             val methodSignature: QualifiedMethodSignature,
             override val callResolutionTableInfo: CallResolutionTableSummaryInfo,
-            override val appliedSummary: Summarization.AppliedSummary
+            override val appliedSummary: Summarization.AppliedSummary,
+            val rets: List<InternalFuncRet>
         ) : SummaryStart() {
 
             override val support: Set<TACSymbol.Var> = setOf()
@@ -118,7 +119,7 @@ object SummaryStack {
             val summaryId: Int
         ) : SummaryEnd(), UniqueIdEntity<External> {
             override fun mapId(f: (Any, Int, () -> Int) -> Int): External {
-                return External(appliedSummary, summaryId)
+                return External(appliedSummary, summaryId = f(Allocator.Id.CALL_SUMMARIES, summaryId) { Allocator.getFreshId(Allocator.Id.CALL_SUMMARIES) })
             }
 
         }

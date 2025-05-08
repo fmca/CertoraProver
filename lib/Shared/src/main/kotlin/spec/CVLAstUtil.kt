@@ -19,13 +19,13 @@ package spec
 
 import bridge.*
 import com.certora.collect.*
-import config.Config.MethodChoices
+import config.Config
+import config.Config.containsMethodFilteredByConfig
 import datastructures.stdcollections.*
 import evm.SighashInt
 import log.Logger
 import log.LoggerTypes
 import scene.MethodAttribute
-import spec.CalculateMethodParamFilters.Companion.containsMethod
 import spec.cvlast.*
 import spec.cvlast.typechecker.CVLError
 import spec.cvlast.typechecker.DuplicatePreserved
@@ -315,7 +315,7 @@ class GenerateRulesForInvariantsAndEnvFree(
 
     companion object {
         fun assumeInvariant(inv: CVLInvariant, ruleScope: CVLScope, msg: String = "assume ${inv.invariantType.getShortName().lowercase()} invariant in pre-state", /*The range that should be associated with this assume for JTS information*/ range: Range = inv.range) =
-            CVLCmd.Simple.AssumeCmd.Assume(range, ExpScopeRelocator(ruleScope).expr(inv.exp).safeForce(), invariantPreCond = true, scope = ruleScope).wrapWithMessageLabel(msg)
+            CVLCmd.Simple.AssumeCmd.Assume(range, ExpScopeRelocator(ruleScope).expr(inv.exp).safeForce(), msg, invariantPreCond = true, scope = ruleScope).wrapWithMessageLabel(msg)
 
         fun assertInvariant(inv: CVLInvariant, ruleScope: CVLScope, msg: String = "assert ${inv.invariantType.getShortName().lowercase()} invariant in post-state", /*The range that should be associated with this assert for JTS information*/ range: Range = inv.range) =
             CVLCmd.Simple.Assert(range, ExpScopeRelocator(ruleScope).expr(inv.exp).safeForce(), msg, ruleScope, invariantPostCond=true).wrapWithMessageLabel(msg)
@@ -439,7 +439,8 @@ class GenerateRulesForInvariantsAndEnvFree(
             it.value.singleOrNull()
         }.filter { preserved ->
             // If the user provided a method name on the command line, we can skip generating rules for all other methods.
-            MethodChoices.containsMethod(preserved.methodSignature.computeCanonicalSignature(PrintingContext(false)), preserved.methodSignature.qualifiedMethodName.host.name, mainContract.name)
+            importedFuncs.mapNotNull { it.evmExternalMethodInfo?.toExternalABINameWithContract() }
+                .containsMethodFilteredByConfig(preserved.methodSignature.computeCanonicalSignatureWithContract(PrintingContext(false)), mainContract.name)
         }.forEach { preserved ->
             // Now we check to see if the user has provided duplicate wildcard blocks or duplicate explicitly named non-
             // wildcard blocks. We will generate a DuplicatePreserved error in these cases. However, we do not generate
@@ -661,7 +662,7 @@ class GenerateRulesForInvariantsAndEnvFree(
 
 
     private fun initstateInvariantScenario(inv: CVLInvariant): CVLSingleRule? {
-        if (MethodChoices != null) {
+        if (Config.methodsAreFiltered) {
             // The user specified specific methods to test, so skip generating the initstate rule
             return null
         }
@@ -674,7 +675,7 @@ class GenerateRulesForInvariantsAndEnvFree(
                 )
 
                 val assumes = initStateAxioms.map { axiom ->
-                    CVLCmd.Simple.AssumeCmd.Assume(axiom.exp.getRangeOrEmpty(), axiom.exp, scope)
+                    CVLCmd.Simple.AssumeCmd.Assume(axiom.exp.getRangeOrEmpty(), axiom.exp, "init state axiom", scope)
                 }
                 val block =
                     // technically should be only the current contract? or let the user choose?
@@ -721,7 +722,7 @@ class GenerateRulesForInvariantsAndEnvFree(
 
 
     private fun resetTransientStorageRule(inv: CVLInvariant): CVLSingleRule? {
-        if (MethodChoices != null) {
+        if (Config.methodsAreFiltered) {
             // The user specified specific methods to test, so skip generating the preserved rule
             return null
         }

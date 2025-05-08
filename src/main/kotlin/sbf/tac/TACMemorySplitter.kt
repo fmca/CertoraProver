@@ -32,9 +32,9 @@ import datastructures.stdcollections.*
  *  Dummy class in case no memory splitting is done.
  *  All pointers are mapped to the same variable
  **/
-class DummyMemSplitter(// State for the TAC translation
+class DummyMemSplitter<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (// State for the TAC translation
     declaredVars: ArrayList<TACSymbol.Var>,
-    private val regTypes: IRegisterTypes): TACMemSplitter {
+    private val regTypes: IRegisterTypes<TNum, TOffset>): TACMemSplitter {
     private val mem: TACVariable = TACByteMapVariable(TACSymbol.Var("UntypedMem", Tag.ByteMap))
     init { declaredVars.add(mem.tacVar) }
 
@@ -113,10 +113,11 @@ class DummyMemSplitter(// State for the TAC translation
  *  If not, the precise encoding of sol_memcmp cannot be done, and we resort to the imprecise one.
  **/
 
-class PTAMemSplitter(private val cfg: SbfCFG,
+class PTAMemSplitter<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (
+                     private val cfg: SbfCFG,
                      private val vFac: TACVariableFactory,
                       // Memory analysis
-                     private val analysis: MemoryAnalysis,
+                     private val analysis: MemoryAnalysis<TNum, TOffset>,
                       // Global state needed to reply invariants at each statement
                      private val globals: GlobalVariableMap) : TACMemSplitter {
 
@@ -161,7 +162,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                   val isStack: Boolean,
                                   val killedFields: List<Pair<PTANode, PTAField>>): PTAMemoryInfo() {
         init {
-            if (c.node.isForwarding()) {
+            if (c.isForwarding()) {
                 throw TACTranslationError("PTALoadOrStoreInfo should take only resolved cells")
             }
         }
@@ -179,10 +180,10 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                  val length: Long?,
                                  val killedFields: List<Pair<PTANode, PTAField>>): PTAMemoryInfo() {
         init {
-            if (dstC.node.isForwarding()) {
+            if (dstC.isForwarding()) {
                 throw TACTranslationError("PTAMemoryInstInfo should take only resolved cells (1)")
             }
-            if (srcC.node.isForwarding()) {
+            if (srcC.isForwarding()) {
                 throw TACTranslationError("PTAMemoryInstInfo should take only resolved cells (2)")
             }
         }
@@ -192,7 +193,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                  val storedVal: Long?, val length: Long?,
                                  val killedFields: List<Pair<PTANode, PTAField>>): PTAMemoryInfo() {
         init {
-            if (c.node.isForwarding()) {
+            if (c.isForwarding()) {
                 throw TACTranslationError("PTAMemsetInstInfo should take only resolved cells")
             }
         }
@@ -231,7 +232,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
     private fun populateTACMaps() {
         val start = System.currentTimeMillis()
         sbfLogger.info { "Re-running memory analysis to generate info at each statement" }
-        val listener = MemoryPartitioningListener(::encodePTAtoTAC, analysis.memSummaries, globals)
+        val listener = MemoryPartitioningListener<TNum, TOffset>(::encodePTAtoTAC, analysis.memSummaries, globals)
         for (block in cfg.getBlocks().values) {
             val absVal = analysis.getPre(block.getLabel())
             if (absVal == null || absVal.isBottom())  {
@@ -301,7 +302,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
     private fun getVarsToHavoc(baseC: PTACell,
                                fields: List<Pair<PTANode, PTAField>>,
                                isStack: Boolean): TACMemSplitter.HavocMemLocations {
-        val baseOffset  = baseC.offset
+        val baseOffset  = baseC.getOffset()
         val res = if (isStack) {
             TACMemSplitter.HavocScalars(fields.map { vFac.getByteStackVar(it.second.offset)})
         } else {
@@ -318,7 +319,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                    @Suppress("UNUSED_PARAMETER") inst: SbfInstruction.Mem): TACMemSplitter.LoadOrStoreInfo {
         val locationsToHavoc = getVarsToHavoc(memInfo.c, memInfo.killedFields, memInfo.isStack)
         val tacVar = if (memInfo.isStack) {
-            vFac.getByteStackVar(memInfo.c.offset)
+            vFac.getByteStackVar(memInfo.c.getOffset())
         } else {
             vFac.getByteMapVar(memInfo.c)
         }
@@ -342,12 +343,12 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                 TACMemSplitter.UnsupportedMemCmpInfo
             } else {
                 /* Scalarize both operands: use of scalars for source and destination */
-                val srcVars = createStackVarsFromRange(memInfo.srcC.offset, length, wordSize)
-                val dstVars = createStackVarsFromRange(memInfo.dstC.offset, length, wordSize)
+                val srcVars = createStackVarsFromRange(memInfo.srcC.getOffset(), length, wordSize)
+                val dstVars = createStackVarsFromRange(memInfo.dstC.getOffset(), length, wordSize)
                 TACMemSplitter.StackMemCmpInfo(
                     dstVars, srcVars,
-                    Pair(memInfo.srcC.offset, memInfo.srcC.offset + length - 1),
-                    Pair(memInfo.dstC.offset, memInfo.dstC.offset + length - 1),
+                    Pair(memInfo.srcC.getOffset(), memInfo.srcC.getOffset() + length - 1),
+                    Pair(memInfo.dstC.getOffset(), memInfo.dstC.getOffset() + length - 1),
                     length, wordSize
                 )
             }
@@ -367,11 +368,11 @@ class PTAMemSplitter(private val cfg: SbfCFG,
             if (!stackC.isWordCompatible(length, wordSize)) {
                 TACMemSplitter.UnsupportedMemCmpInfo
             } else {
-                val scalarVars = createStackVarsFromRange(stackC.offset, length, wordSize)
+                val scalarVars = createStackVarsFromRange(stackC.getOffset(), length, wordSize)
                 val byteMapVar = vFac.getByteMapVar(nonStackC)
                 TACMemSplitter.MixedRegionsMemCmpInfo(scalarVars, byteMapVar,
                                                       stackReg, nonStackReg,
-                                                      Pair(stackC.offset, stackC.offset + length - 1),
+                                                      Pair(stackC.getOffset(), stackC.getOffset() + length - 1),
                                                       length, wordSize)
             }
         }
@@ -404,8 +405,8 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                 throw TACTranslationError("cannot TAC translate stack mempcy without static length")
             }
             TACMemSplitter.StackMemTransferInfo(
-                Pair(memInfo.srcC.offset, memInfo.srcC.offset + len - 1),
-                Pair(memInfo.dstC.offset, memInfo.dstC.offset + len - 1),
+                Pair(memInfo.srcC.getOffset(), memInfo.srcC.getOffset() + len - 1),
+                Pair(memInfo.dstC.getOffset(), memInfo.dstC.getOffset() + len - 1),
                 len,
                 getVarsToHavoc(memInfo.dstC, memInfo.killedFields, true) as TACMemSplitter.HavocScalars
             )
@@ -422,21 +423,21 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                     Pair(dstC, srcC)
                 }
 
-                if (nonStackC.node.isExactNode()) {
+                if (nonStackC.getNode().isExactNode()) {
                     // from stack to exact node or vice-versa
                     TACMemSplitter.MixedRegionsMemTransferInfo(
                         vFac.getByteMapVar(nonStackC),
-                        Pair(stackC.offset, stackC.offset + len- 1),
+                        Pair(stackC.getOffset(), stackC.getOffset() + len- 1),
                         memInfo.isDstStack,
                         len,
                         getVarsToHavoc(memInfo.dstC, memInfo.killedFields, memInfo.isDstStack)
                     )
                 } else if (stackC == srcC) {
-                    check(!nonStackC.node.isExactNode())
+                    check(!nonStackC.getNode().isExactNode())
                     // from stack to summarized node
                     TACMemSplitter.MixedRegionsMemTransferInfo(
                         vFac.getByteMapVar(nonStackC),
-                        Pair(stackC.offset, stackC.offset + len - 1),
+                        Pair(stackC.getOffset(), stackC.getOffset() + len - 1),
                         memInfo.isDstStack,
                         len,
                         getVarsToHavoc(memInfo.dstC, memInfo.killedFields, memInfo.isDstStack)
@@ -444,10 +445,10 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                 } else {
                     // from summarized node to stack
                     check(stackC == dstC)
-                    check(!nonStackC.node.isExactNode())
+                    check(!nonStackC.getNode().isExactNode())
                     TACMemSplitter.MixedRegionsMemTransferInfo(
                         vFac.getByteMapVar(nonStackC),
-                        Pair(stackC.offset, stackC.offset + len - 1),
+                        Pair(stackC.getOffset(), stackC.getOffset() + len - 1),
                         true,
                         len,
                         getVarsToHavoc(memInfo.dstC, memInfo.killedFields, true)
@@ -469,7 +470,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
 
         return if (memInfo.isStack) {
             if (storedVal == 0L) {
-                TACMemSplitter.StackZeroMemsetInfo(Pair(memInfo.c.offset, memInfo.c.offset + len - 1), len)
+                TACMemSplitter.StackZeroMemsetInfo(Pair(memInfo.c.getOffset(), memInfo.c.getOffset() + len - 1), len)
             } else {
                 TACMemSplitter.UnsupportedMemsetInfo
             }
@@ -496,11 +497,12 @@ class PTAMemSplitter(private val cfg: SbfCFG,
      *
      * We don't support memmove
      **/
-    class MemoryPartitioningListener(private val tacEncoder: (locInst: LocatedSbfInstruction, memInfo: PTAMemoryInfo) -> Unit,
-                                     private val memSummaries: MemorySummaries,
-                                     private val globalsMap: GlobalVariableMap)
-        : InstructionListener<MemoryDomain> {
-        override fun instructionEvent(locInst: LocatedSbfInstruction, pre: MemoryDomain, post: MemoryDomain) {}
+    class MemoryPartitioningListener<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (
+            private val tacEncoder: (locInst: LocatedSbfInstruction, memInfo: PTAMemoryInfo) -> Unit,
+            private val memSummaries: MemorySummaries,
+            private val globalsMap: GlobalVariableMap)
+        : InstructionListener<MemoryDomain<TNum, TOffset>> {
+        override fun instructionEvent(locInst: LocatedSbfInstruction, pre: MemoryDomain<TNum, TOffset>, post: MemoryDomain<TNum, TOffset>) {}
 
         /**
          * It contains the set of overlapping killed cells by the pointer analysis in the **last** memcpy instruction.
@@ -534,7 +536,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
          *  a store instruction.
          *  In TAC, we need to havoc the corresponding scalars or byte map locations that represent those fields.
          **/
-         private fun getKilledFields(inst: SbfInstruction.Mem, absVal: MemoryDomain): List<Pair<PTANode, PTAField>> {
+         private fun getKilledFields(inst: SbfInstruction.Mem, absVal: MemoryDomain<TNum, TOffset>): List<Pair<PTANode, PTAField>> {
             check(!inst.isLoad) {"precondition of getKilledFields: $inst is not a store instruction"}
 
             val g = absVal.getPTAGraph()
@@ -542,9 +544,9 @@ class PTAMemSplitter(private val cfg: SbfCFG,
             val offset  = inst.access.offset
             val width   = inst.access.width
             val baseSc = g.getRegCell(baseReg)
-            if (baseSc != null && baseSc.isReified()) {
-                val baseC = baseSc.reify()
-                val overwrittenFields = g.getOverlapFields(baseC.node.createCell(baseC.offset + offset), width)
+            if (baseSc != null && baseSc.isConcrete()) {
+                val baseC = baseSc.concretize()
+                val overwrittenFields = g.getOverlapFields(baseC.getNode().createCell(baseC.getOffset() + offset), width)
                 if (overwrittenFields != null) {
                     return overwrittenFields
                 }
@@ -562,14 +564,14 @@ class PTAMemSplitter(private val cfg: SbfCFG,
          *
          *  In TAC, we need to havoc the corresponding scalars or byte map locations that represent those fields.
          **/
-         private fun getKilledFields(inst: SbfInstruction.Call, absVal: MemoryDomain,
+         private fun getKilledFields(inst: SbfInstruction.Call, absVal: MemoryDomain<TNum, TOffset>,
                                      onlyOverlaps: Boolean = false): List<Pair<PTANode, PTAField>> {
             check(SolanaFunction.from(inst.name) == SolanaFunction.SOL_MEMCPY) {"Expected call getKilledFields on memcpy"}
             val g = absVal.getPTAGraph()
             val scalars = absVal.getScalars()
             val dstSc = g.getRegCell(Value.Reg(SbfRegister.R1_ARG))
-            if (dstSc != null && dstSc.isReified()) {
-                val dstC = dstSc.reify()
+            if (dstSc != null && dstSc.isConcrete()) {
+                val dstC = dstSc.concretize()
                 val len = (scalars.getValue(Value.Reg(SbfRegister.R3_ARG)).get() as? SbfType.NumType)?.value?.get()
                 if (len != null) {
                     val overwrittenFields = g.getOverwrittenFieldsByLongCopy(dstC, len)
@@ -577,7 +579,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                         return if (onlyOverlaps) {
                             overwrittenFields.filter {
                                 val offset = it.second.offset
-                                (offset < dstC.offset || dstC.offset + len <= offset)
+                                (offset < dstC.getOffset() || dstC.getOffset() + len <= offset)
                             }
                         } else {
                             overwrittenFields
@@ -592,11 +594,12 @@ class PTAMemSplitter(private val cfg: SbfCFG,
             return listOf()
          }
 
-        class MemPartitioningSummaryVisitor(private val absVal: MemoryDomain,
-                                            private val globalsMap: GlobalVariableMap) : SummaryVisitor {
+        class MemPartitioningSummaryVisitor<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (
+                private val absVal: MemoryDomain<TNum, TOffset>,
+                private val globalsMap: GlobalVariableMap) : SummaryVisitor {
             private val sumFields = ArrayList<PTACallModifiedField>()
             private val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
-            private val stackNode = absVal.getRegCell(r10, globalsMap)?.node
+            private val stackNode = absVal.getRegCell(r10, globalsMap)?.getNode()
 
             init {
                 if (stackNode == null) {
@@ -620,18 +623,17 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                 val symC = absVal.getRegCell(r, globalsMap)
                     ?: throw TACTranslationError("memory partitioning failed because" +
                                                  "cannot find a cell for $r ($call)")
-                val c = symC.reify()
-                val adjustedC = c.node.createCell(c.offset + offset)
-                val resolvedAdjustedC = adjustedC.resolve()
+                val c = symC.concretize()
+                val adjustedC = c.getNode().createCell(c.getOffset() + offset)
                 sumFields.add(PTACallModifiedField(reg, offset, width, allocatedSpace,
-                                                   resolvedAdjustedC.node, PTAField(resolvedAdjustedC.offset, width.toShort()),
-                                                   type, resolvedAdjustedC.node == stackNode))
+                                                   adjustedC.getNode(), PTAField(adjustedC.getOffset(), width.toShort()),
+                                                   type, adjustedC.getNode() == stackNode))
             }
 
             fun getPTAMemInfo() = PTACallInfo(sumFields)
         }
 
-        override fun instructionEventBefore(locInst: LocatedSbfInstruction, pre: MemoryDomain) {
+        override fun instructionEventBefore(locInst: LocatedSbfInstruction, pre: MemoryDomain<TNum, TOffset>) {
             if (pre.isBottom()) {
                 return
             }
@@ -645,19 +647,18 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                 "memory partitioning failed because" +
                                     "cannot find a cell for $baseReg ($inst) in the local graph ${locInst.label}"
                             )
-                        val stackNode = pre.getRegCell(r10, globalsMap)?.node
+                        val stackNode = pre.getRegCell(r10, globalsMap)?.getNode()
                             ?: throw TACTranslationError("memory partitioning failed because cannot find a cell for r10")
                         val offset = PTASymOffset(inst.access.offset.toLong())
-                        val newOffset = baseC.offset.add(offset)
-                        val derefC = baseC.node.createSymCell(newOffset)
-                        val concreteDerefC = derefC.reify()
+                        val newOffset = baseC.getOffset().add(offset)
+                        val derefC = baseC.getNode().createSymCell(newOffset)
+                        val concreteDerefC = derefC.concretize()
                         if (SolanaConfig.SanityChecks.get()) {
-                            if (concreteDerefC.node == stackNode) {
+                            if (concreteDerefC.getNode() == stackNode) {
                                 checkNoOverlaps(stackNode, locInst)
                             }
                         }
-                        val resolvedDerefC = concreteDerefC.resolve()
-                        PTALoadOrStoreInfo(resolvedDerefC, resolvedDerefC.node == stackNode,
+                        PTALoadOrStoreInfo(concreteDerefC, concreteDerefC.getNode() == stackNode,
                                            if (inst.isLoad) { listOf() } else { getKilledFields(inst, pre) })
                     }
                     is SbfInstruction.Call -> {
@@ -676,7 +677,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
             }
         }
 
-        override fun instructionEventAfter(locInst: LocatedSbfInstruction, post: MemoryDomain) {
+        override fun instructionEventAfter(locInst: LocatedSbfInstruction, post: MemoryDomain<TNum, TOffset>) {
             val inst = locInst.inst
             if (post.isBottom()) {
                 return
@@ -690,7 +691,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                 val r2 = Value.Reg(SbfRegister.R2_ARG)
                                 val r3 = Value.Reg(SbfRegister.R3_ARG)
                                 val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
-                                val stackNode = post.getRegCell(r10, globalsMap)?.node
+                                val stackNode = post.getRegCell(r10, globalsMap)?.getNode()
                                     ?: throw TACTranslationError("memory partitioning failed because cannot find a cell for r10")
                                 val dstC = post.getRegCell(r1, globalsMap)
                                     ?: throw TACTranslationError(
@@ -702,25 +703,23 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                         "memory partitioning failed because" +
                                             "cannot find a cell for $r2 ($inst) in the local graph ${locInst.label}"
                                     )
-                                val lengthVal = post.getValue(r3).get()
+                                val lengthVal = post.getAsScalarValue(r3).get()
                                 val length = if (lengthVal is SbfType.NumType) {
                                     lengthVal.value.get()
                                 } else {
                                     null
                                 }
-                                val concreteSrcC = srcC.reify()
-                                val concreteDstC = dstC.reify()
+                                val concreteSrcC = srcC.concretize()
+                                val concreteDstC = dstC.concretize()
                                 if (SolanaConfig.SanityChecks.get()) {
-                                    if (concreteDstC.node == stackNode) {
+                                    if (concreteDstC.getNode() == stackNode) {
                                         checkNoOverlaps(stackNode, locInst)
                                     }
                                 }
 
-                                val resolvedDstC = concreteDstC.resolve()
-                                val resolvedSrcC = concreteSrcC.resolve()
                                 PTAMemoryInstInfo(
-                                    resolvedDstC, resolvedDstC.node == stackNode,
-                                    resolvedSrcC, resolvedSrcC.node == stackNode, length,
+                                    concreteDstC, concreteDstC.getNode() == stackNode,
+                                    concreteSrcC, concreteSrcC.getNode() == stackNode, length,
                                     killedFieldsByMemcpy
                                 )
                             }
@@ -729,7 +728,7 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                 val r2 = Value.Reg(SbfRegister.R2_ARG)
                                 val r3 = Value.Reg(SbfRegister.R3_ARG)
                                 val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
-                                val stackNode = post.getRegCell(r10, globalsMap)?.node
+                                val stackNode = post.getRegCell(r10, globalsMap)?.getNode()
                                     ?: throw TACTranslationError("memory partitioning failed because cannot find a cell for r10")
                                 // process r1
                                 val c = post.getRegCell(r1, globalsMap)
@@ -738,29 +737,28 @@ class PTAMemSplitter(private val cfg: SbfCFG,
                                             "cannot find a cell for $r1 ($inst) in the local graph ${locInst.label}"
                                     )
                                 // process r2
-                                val v = post.getValue(r2).get()
+                                val v = post.getAsScalarValue(r2).get()
                                 val storedVal = if (v is SbfType.NumType) {
                                     v.value.get()
                                 } else {
                                     null
                                 }
                                 // process r3
-                                val lengthVal = post.getValue(r3).get()
+                                val lengthVal = post.getAsScalarValue(r3).get()
                                 val length = if (lengthVal is SbfType.NumType) {
                                     lengthVal.value.get()
                                 } else {
                                     null
                                 }
-                                val concreteC = c.reify()
+                                val concreteC = c.concretize()
                                 if (SolanaConfig.SanityChecks.get()) {
-                                    if (concreteC.node == stackNode) {
+                                    if (concreteC.getNode() == stackNode) {
                                         checkNoOverlaps(stackNode, locInst)
                                     }
                                 }
-                                val resolvedC = concreteC.resolve()
                                 @Suppress("ForbiddenComment")
                                 PTAMemsetInstInfo(
-                                    resolvedC, resolvedC.node == stackNode,
+                                    concreteC, concreteC.getNode() == stackNode,
                                     storedVal,  length,
                                     listOf() /*TODO: infer killed fields by memset*/
                                 )

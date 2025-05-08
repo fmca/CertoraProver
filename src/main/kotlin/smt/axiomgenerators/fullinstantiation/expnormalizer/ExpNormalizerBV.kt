@@ -280,6 +280,10 @@ class ExpNormalizerBV(
                     } else {
                         exp.copy(f = exp.f.copy(tag = exp.f.tag.toBV()))
                     }
+
+                is AxiomatizedFunctionSymbol.DefFunc ->
+                    exp.copy(f = exp.f.copy(signature = exp.f.signature.transform { it.toBV() }))
+
                 else -> null
             }
             else -> null

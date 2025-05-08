@@ -17,10 +17,8 @@
 
 package sbf
 
-import com.certora.collect.*
 import datastructures.stdcollections.*
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.analysis.WholeProgramMemoryAnalysis
 import sbf.callgraph.MutableSbfCallGraph
 import sbf.cfg.*
@@ -28,57 +26,16 @@ import sbf.disassembler.newGlobalVariableMap
 import sbf.domains.*
 import sbf.support.PointerStackEscapingError
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import org.junit.jupiter.api.*
+import sbf.analysis.AnalysisRegisterTypes
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
+private val sbfTypesFac = ConstantSbfTypeFactory()
+
 class MemoryStackEscapeTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
-
     @Test
     fun test01() {
-        sbfLogger.info { "====== TEST 1 =======" }
+        println("====== TEST 1 =======")
         /**
          *  The scalar domain is sound assuming that no stack address escapes.
          *  The pointer domain is sound without that assumption.
@@ -103,11 +60,11 @@ class MemoryStackEscapeTest {
                 exit()
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getEntry()
         val sb = StringBuffer()
@@ -122,10 +79,10 @@ class MemoryStackEscapeTest {
             }
             sb.append("}\n")
         }
-        sbfLogger.warn {sb.toString()}
+        println(sb.toString())
 
         val prog = MutableSbfCallGraph(mutableListOf(cfg), setOf("entrypoint"), globals)
-        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries)
+        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries, sbfTypesFac)
         var exception = false
         try {
             memAnalysis.inferAll()
@@ -138,7 +95,7 @@ class MemoryStackEscapeTest {
 
     @Test
     fun test02() {
-        sbfLogger.info { "====== TEST 2 =======" }
+        println("====== TEST 2 =======")
         /**
          *  The scalar domain is sound assuming that no stack address escapes.
          *  The pointer domain is sound without that assumption.
@@ -173,11 +130,11 @@ class MemoryStackEscapeTest {
                 exit()
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getEntry()
         val sb = StringBuffer()
@@ -192,10 +149,10 @@ class MemoryStackEscapeTest {
             }
             sb.append("}\n")
         }
-        sbfLogger.warn {sb.toString()}
+        println(sb.toString())
 
         val prog = MutableSbfCallGraph(mutableListOf(cfg), setOf("entrypoint"), globals)
-        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries)
+        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries, sbfTypesFac)
         var exception = false
         try {
             memAnalysis.inferAll()

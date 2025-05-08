@@ -46,8 +46,10 @@ import java.util.IdentityHashMap
  * an over-approximation of the effects of writes that occur within a nested loop.
  *
  *
+ * [includeFixups] indicates whether the summarization should try to give "special handling" for fixup blocks.
+ * It is expected this arugment will be removed soon to remove this special handling for all users.
  */
-class LoopSummarization(private val g: TACCommandGraph, private val blaster: IBlaster, loops: Collection<Loop>) {
+class LoopSummarization(private val g: TACCommandGraph, private val blaster: IBlaster, loops: Collection<Loop>, val includeFixups: Boolean = true) {
 
     private val revertBlocks = g.cache.revertBlocks
 
@@ -595,8 +597,12 @@ class LoopSummarization(private val g: TACCommandGraph, private val blaster: IBl
                 }.singleOrNull()?.let(g::elab)?.commands?.first() ?:
                         return null
                 // check if this loop has a post-write fixup
-                val postWriteFixups = ParallelPool.globalPool.run(ArrayLoopSummarization(blaster).isArrayWriteStride(nestedSummary)).mapNotNull {
-                    ParallelPool.globalPool.run(fixupSummarizer.isPostWriteFixup(nestedLoop, nestedSummary, it, g))
+                val postWriteFixups = if(includeFixups) {
+                    ParallelPool.globalPool.run(ArrayLoopSummarization(blaster).isArrayWriteStride(nestedSummary)).mapNotNull {
+                        ParallelPool.globalPool.run(fixupSummarizer.isPostWriteFixup(nestedLoop, nestedSummary, it, g))
+                    }
+                } else {
+                    listOf()
                 }
 
                 if(postWriteFixups.size == 1) {

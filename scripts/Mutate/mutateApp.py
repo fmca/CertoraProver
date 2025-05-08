@@ -496,7 +496,7 @@ class WebUtils:
             mutation_test_domain = MConstants.MUTATION_TEST_REPORT_DEV
         else:
             raise Util.CertoraUserInputError(f"Invalid server name {args.server}")
-        self.mutation_test_id_url = f"https://{domain}/mutationTesting/initiate/"
+        self.mutation_test_id_url = f"https://{domain}/v1/domain/mutation-tests/initiate/"
         self.mutation_test_submit_final_result_url = f"https://{domain}/mutationTesting/getUploadInfo/"
         self.mutation_test_final_result_url = f"https://{mutation_test_domain}"
         mutation_logger.debug(f"Using server {args.server} with mutation_test_id_url {self.mutation_test_id_url}")
@@ -542,8 +542,8 @@ class WebUtils:
             try:
                 return requests.put(url, json=body, timeout=self.request_timeout,
                                     headers=headers)
-            except Exception:
-                mutation_logger.debug(f"attempt {i} failed to put url {url}.")
+            except Exception as e:
+                mutation_logger.debug(f"attempt {i} failed to put url {url}. {e}")
         return None
 
     def get_response_with_timeout(self, url: str,

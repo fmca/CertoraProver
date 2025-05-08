@@ -282,7 +282,6 @@ object AlternativeRepresentations {
             }
         }
 
-        /** Return the [values] in [map] according to the order of the [Representations] enum. */
         fun asRepList() = Representations.values().mapNotNull { map[it] }
 
         val pretty get() = map[Representations.Pretty]!!

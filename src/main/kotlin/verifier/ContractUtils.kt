@@ -25,6 +25,7 @@ import analysis.ip.INTERNAL_FUNC_EXIT
 import analysis.ip.JUMP_SYM
 import analysis.ip.SourceFinderAnnotator
 import analysis.maybeNarrow
+import analysis.opt.Deduplicator
 import analysis.opt.TernarySimplifier
 import analysis.split.SplitContext.Companion.storageLoc
 import analysis.type.TypeRewriter
@@ -123,10 +124,14 @@ object ContractUtils {
                     CoreToCoreTransformer(
                         ReportTypes.INTERNAL_FUNCTION_VALIDATED
                     ) { c: CoreTACProgram -> FunctionFlowAnnotator.validateIds(c, source) },
-                        // instrument source finders
-                        CoreToCoreTransformer(
-                            ReportTypes.SOURCE_FINDER_ANNOTATOR
-                        ) { c: CoreTACProgram -> SourceFinderAnnotator.annotate(c, source) },
+                    // Deduplicate blocks; must happen after the function flow analysis
+                    CoreToCoreTransformer(
+                        ReportTypes.DEDUPLICATED
+                    ) { c: CoreTACProgram -> Deduplicator.deduplicateBlocks(c) },
+                    // instrument source finders
+                    CoreToCoreTransformer(
+                        ReportTypes.SOURCE_FINDER_ANNOTATOR
+                    ) { c: CoreTACProgram -> SourceFinderAnnotator.annotate(c, source) },
                     // Basic instrumentation
                     CoreToCoreTransformer(
                         ReportTypes.ENV_START_BLOCK

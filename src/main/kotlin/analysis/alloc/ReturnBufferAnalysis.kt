@@ -33,7 +33,6 @@ import tac.Tag
 import utils.*
 import vc.data.*
 import java.math.BigInteger
-import kotlin.streams.toList
 
 private val logger = Logger(LoggerTypes.PER_FUNCTION_SIMPLIFICATION)
 
@@ -643,8 +642,10 @@ object ReturnBufferAnalysis {
             }
 
             override fun transitionDominanceLost(from: NBId, to: NBId): Either<ReturnBufferState, String> {
+                // just keep track of the first time we lose our dominance relation. Later logic will attempt to
+                // work around that
                 if(dominanceBoundary != null) {
-                    return "Already traversed a dominance frontier at ${dominanceBoundary.second}, not allowing a second".toRight()
+                    return this.toLeft()
                 }
                 return this.copy(
                     dominanceBoundary = from to to
@@ -732,12 +733,12 @@ object ReturnBufferAnalysis {
          * Marker interface for states that *might* contain sufficient information (i.e., a non-null
          * [seenFPWrite] with other information).
          */
-        interface PotentiallyCompleteState : ReturnBufferState {
+        interface PotentiallyCompleteState : ReturnBufferState, WithDominanceTracking {
             val seenFPWrite: CmdPointer?
             val copyLocation: CmdPointer?
             val successPathStart: CmdPointer
             val declaredOutSize: BigInteger
-            val dominanceBoundary: Pair<NBId, NBId>?
+            override val dominanceBoundary: Pair<NBId, NBId>?
         }
 
         object Halt : HaltingState {
@@ -763,19 +764,26 @@ object ReturnBufferAnalysis {
             }
         }
 
-
+        /**
+         * A [ReturnBufferState] which tracks dominance information, namely when the control-flow from the call
+         * reaches a point that the call no longer dominates.
+         */
+        sealed interface WithDominanceTracking {
+            val dominanceBoundary: Pair<NBId, NBId>?
+        }
         /**
          * We have passed the end of the call with static [outSize], and are now waiting to enter a branch where the
          * RC is non-zero (i.e., a success branch)
          */
-        data class ExpectRCBound(val outSize: BigInteger, val dominanceBoundary: Pair<NBId, NBId>?) : ReturnBufferState {
+        data class ExpectRCBound(val outSize: BigInteger, override val dominanceBoundary: Pair<NBId, NBId>?) : ReturnBufferState, WithDominanceTracking {
             override fun transitionRCDefinitelyZero(p: CmdPointer): Either<ReturnBufferState, String> {
                 return Halt.toLeft()
             }
 
             override fun transitionDominanceLost(from: NBId, to: NBId): Either<ReturnBufferState, String> {
+                // again, only track when this first starts
                 if(dominanceBoundary != null) {
-                    return "Not allowing to traverse another dominance frontier already saw one at $to".toRight()
+                    return this.toLeft()
                 }
                 return ExpectRCBound(outSize, from to to).toLeft()
             }
@@ -946,47 +954,59 @@ object ReturnBufferAnalysis {
             if(predJoins != preds.mapToTreapSet { it.dominanceBoundary!!.first }) {
                 continue
             }
-            var it = 1
+            if(preds.map {
+                it.allocSort
+            }.uniqueOrNull() == null) {
+                logger.info {
+                    "At dominance frontier $join, alloc sort mismatches: $preds, so skipping"
+                }
+                continue@outer
+            }
+            val isSuccessPathMismatch = preds.mapToSet {
+                it.successPathStart
+            }.size > 1
             val first = preds[0]
-            var isSuccessPathMismatch = false
+            var it = 1
+            var failedAliasMatching = false
             while(it < preds.size) {
                 val other = preds[it]
-                if (other.fpAliases != first.fpAliases || other.allocSort != first.allocSort || other.prunedPaths != first.prunedPaths) {
+                if (other.fpAliases != first.fpAliases || other.prunedPaths != first.prunedPaths) {
                     logger.info {
-                        "At dominance frontier $join, unrecoverable state mismatch, so skipping"
+                        "At dominance frontier $join, alias state mismatch"
                     }
-                    continue@outer
-                }
-                if(other.successPathStart != first.successPathStart) {
-                    isSuccessPathMismatch = true
+                    failedAliasMatching = true
+                    break
                 }
                 it++
             }
-            // can we just "push" the success path later?
-            if(isSuccessPathMismatch) {
-                if(first.allocSort !is AllocSort.ExplicitSize) {
+            if(!isSuccessPathMismatch && !failedAliasMatching) {
+                doAllocRewrite(c, patcher, first)
+                continue@outer
+            } else if(!failedAliasMatching) {
+                // can we just "push" the success path later?
+                if (first.allocSort !is AllocSort.ExplicitSize) {
                     continue@outer
                 }
                 val confluenceStart = CmdPointer(join, 0)
                 // because of the equivalence on fpAliases above, we can do this check once
                 val canUseJoinAsSuccess = first.fpAliases.all { (v, ty) ->
-                    when(ty) {
+                    when (ty) {
                         /*
-                          it is fine to rewrite any assignment using a copy, *or* the copies will automatically see the redefinition
-                          at the new success point. Why? Well, where can we get a copy from? Either from the free pointer
-                          (in which the copy must come after any Explicit, which must come after the confluenceStart)
-                          OR from an extant pointer. But we also check that all extant pointers are only used *after* the confluence
-                          start, so any aliases we create from them must come after the confluence start.
+                              it is fine to rewrite any assignment using a copy, *or* the copies will automatically see the redefinition
+                              at the new success point. Why? Well, where can we get a copy from? Either from the free pointer
+                              (in which the copy must come after any Explicit, which must come after the confluenceStart)
+                              OR from an extant pointer. But we also check that all extant pointers are only used *after* the confluence
+                              start, so any aliases we create from them must come after the confluence start.
 
-                          In other words, any rewriting we are doing with aliases is fine if we have copies around.
-                         */
+                              In other words, any rewriting we are doing with aliases is fine if we have copies around.
+                             */
                         AliasDefinition.Copy -> true
                         is AliasDefinition.Explicit -> {
                             g.cache.domination.dominates(confluenceStart, ty.where)
                         }
                         /*
-                         * so, redefining all extant aliases at the join point will be "fine"
-                         */
+                             * so, redefining all extant aliases at the join point will be "fine"
+                             */
                         AliasDefinition.Extant -> {
                             preds.all { p ->
                                 g.cache.use.useSitesAfter(v, p.successPathStart).all { useSite ->
@@ -996,14 +1016,42 @@ object ReturnBufferAnalysis {
                         }
                     }
                 }
-                if(canUseJoinAsSuccess) {
-                    doAllocRewrite(c, patcher, first.copy(
-                        successPathStart = confluenceStart
-                    ))
+                if (canUseJoinAsSuccess) {
+                    doAllocRewrite(
+                        c, patcher, first.copy(
+                            successPathStart = confluenceStart
+                        )
+                    )
                 }
-            } else {
-                doAllocRewrite(c, patcher, first)
+                continue@outer
             }
+            // then we have a more complex join pattern
+            val allocSort = preds.first().allocSort as? AllocSort.ExplicitSize ?: continue
+            // well, can we push the success path later?
+
+            // find the principle alias of the free pointer at these join points
+            val confluenceStart = CmdPointer(join, 0)
+            val lva = g.cache.lva
+            val principleFp = preds.monadicMap {
+                it.fpAliases.entries.singleOrNull { (v, _) ->
+                    lva.isLiveBefore(confluenceStart, v)
+                }?.key
+            }?.uniqueOrNull() ?: continue@outer
+            /*
+             * "Hope" that any other FP aliases are dead, and thus will be ignored by the alloc analysis. Note that we
+             * aren't breaking correctness here by ignoring them, by definition it is safe to redefine an alias
+             * of a variable to be equal to that variable, and because we aren't changing the "interpretation" of the variables
+             * (as is the case in the array allocations, where we push them 32 bytes later) it is fine to ignore
+             * them. The worst that will happen is PTA fails.
+             */
+            rewriteConstantSizeAllocation(
+                size = allocSort.k,
+                fpWriteLocation = allocSort.fpWriteLocation,
+                needRedef = listOf(principleFp),
+                fpAlias = principleFp,
+                simplePatchingProgram = patcher,
+                successPathStart = confluenceStart
+            )
         }
         return patcher.toCode(c)
     }
@@ -1042,6 +1090,55 @@ object ReturnBufferAnalysis {
         )
     }
 
+    private fun rewriteConstantSizeAllocation(
+        size: BigInteger,
+        needRedef: List<TACSymbol.Var>,
+        fpAlias: TACSymbol.Var,
+
+        fpWriteLocation: CmdPointer,
+        successPathStart: CmdPointer,
+        simplePatchingProgram: SimplePatchingProgram
+    ) {
+        val toAddBefore = mutableListOf<TACCmd.Simple>()
+        for(k in needRedef) {
+            toAddBefore.add(TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                lhs = k,
+                rhs = TACKeyword.MEM64.toVar()
+            ))
+        }
+        val k = fpAlias
+        val nextFP = TACKeyword.TMP(Tag.Bit256, "!nextFp")
+        simplePatchingProgram.addVarDecl(nextFP)
+        simplePatchingProgram.replaceCommand(fpWriteLocation, listOf(
+            TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                lhs = nextFP,
+                rhs = TACExpr.Vec.Add(
+                    k.asSym(),
+                    size.asTACExpr
+                )
+            ),
+            TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                lhs = TACKeyword.MEM64.toVar(),
+                rhs = nextFP.asSym()
+            ),
+            TACCmd.Simple.ByteLongCopy(
+                srcBase = TACKeyword.RETURNDATA.toVar(),
+                length = size.asTACSymbol(),
+                dstBase = TACKeyword.MEMORY.toVar(),
+                srcOffset = TACSymbol.Zero,
+                dstOffset = k
+            ),
+            TACCmd.Simple.AnnotationCmd(
+                ConstantReturnBufferAllocComplete.META_KEY,
+                ConstantReturnBufferAllocComplete(
+                    outputVar = k,
+                    allocSize = size
+                )
+            )
+        ))
+        simplePatchingProgram.addBefore(successPathStart, toAddBefore)
+    }
+
     /**
      * Rewrite a constant sized allocation which uses the implicit copying of the callcore command. This inserts
      * an explicit copy of the [AllocSort.ExplicitSize.k] bytes in [allocSort], and rewrites the fp update
@@ -1068,36 +1165,16 @@ object ReturnBufferAnalysis {
         val (k, _) = rewrite.fpAliases.entries.firstOrNull { (_, v) ->
             v != AliasDefinition.Copy
         } ?: return
-        val nextFP = TACKeyword.TMP(Tag.Bit256, "!nextFp")
-        simplePatchingProgram.addVarDecl(nextFP)
-        simplePatchingProgram.replaceCommand(allocSort.fpWriteLocation, listOf(
-            TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                lhs = nextFP,
-                rhs = TACExpr.Vec.Add(
-                    k.asSym(),
-                    allocSort.k.asTACExpr
-                )
-            ),
-            TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                lhs = TACKeyword.MEM64.toVar(),
-                rhs = nextFP.asSym()
-            ),
-            TACCmd.Simple.ByteLongCopy(
-                srcBase = TACKeyword.RETURNDATA.toVar(),
-                length = allocSort.k.asTACSymbol(),
-                dstBase = TACKeyword.MEMORY.toVar(),
-                srcOffset = TACSymbol.Zero,
-                dstOffset = k
-            ),
-            TACCmd.Simple.AnnotationCmd(
-                ReturnBufferAnalysis.ConstantReturnBufferAllocComplete.META_KEY,
-                ConstantReturnBufferAllocComplete(
-                    outputVar = k,
-                    allocSize = allocSort.k
-                )
-            )
-        ))
-        simplePatchingProgram.addBefore(rewrite.successPathStart, toAddBefore)
+        rewriteConstantSizeAllocation(
+            fpAlias = k,
+            successPathStart = rewrite.successPathStart,
+            fpWriteLocation = allocSort.fpWriteLocation,
+            needRedef = rewrite.fpAliases.keysMatching { _, v ->
+                v == AliasDefinition.Extant
+            },
+            size = allocSort.k,
+            simplePatchingProgram = simplePatchingProgram
+        )
     }
 
     /**
@@ -1640,19 +1717,23 @@ object ReturnBufferAnalysis {
                     } ?: return err("disjoint domains detected at start for $b: $predStates")
                 )
                 val toIterate = if(!g.cache.domination.dominates(start.ptr.block, b)) {
-                    // this is likely equivalent to looking for the single predecessor for which we have an out state,
-                    // but I prefer this as it is a more direct (To my mind) stating of what we're looking for
-                    // note that we only expect one such predecessor here, despite this being a join point, because
-                    // at this point we are doing the analysis on a per-call group basis, so we shouldn't have traversed the other
-                    // paths to this point
-                    val uniquePred = g.pred(b).singleOrNull { p ->
-                        g.cache.domination.dominates(start.ptr.block, p)
-                    } ?: return err("hit apparent dominance frontier $b, but couldn't find where we came from; aborting analysis")
-                    when(val r = joinedState.returnBufferState.transitionDominanceLost(from = uniquePred, to = b)) {
-                        is Either.Left -> joinedState.copy(
-                            returnBufferState = r.d
-                        )
-                        is Either.Right -> return r.withContext()
+                    if(joinedState.returnBufferState !is ReturnBufferState.WithDominanceTracking || joinedState.returnBufferState.dominanceBoundary == null) {
+                        // this is likely equivalent to looking for the single predecessor for which we have an out state,
+                        // but I prefer this as it is a more direct (To my mind) stating of what we're looking for
+                        // note that we only expect one such predecessor here, despite this being a join point, because
+                        // at this point we are doing the analysis on a per-call group basis, so we shouldn't have traversed the other
+                        // paths to this point
+                        val uniquePred = g.pred(b).singleOrNull { p ->
+                            g.cache.domination.dominates(start.ptr.block, p)
+                        } ?: return err("hit apparent dominance frontier $b, but couldn't find where we came from; aborting analysis")
+                        when(val r = joinedState.returnBufferState.transitionDominanceLost(from = uniquePred, to = b)) {
+                            is Either.Left -> joinedState.copy(
+                                returnBufferState = r.d
+                            )
+                            is Either.Right -> return r.withContext()
+                        }
+                    } else {
+                        joinedState
                     }
                 } else {
                     joinedState

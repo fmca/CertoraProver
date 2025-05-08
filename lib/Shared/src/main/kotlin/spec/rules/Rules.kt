@@ -339,3 +339,26 @@ data class GroupRule(
             .flatMap { rule -> rule.getAllSingleRules() }
     }
 }
+
+
+@Serializable
+data class EquivalenceRule(
+    override val ruleIdentifier: RuleIdentifier,
+) : IRule {
+    override val ruleType: SpecType
+        get() = SpecType.Single.EquivalenceCheck
+    override val range: Range
+        get() = Range.Empty()
+    override val isSatisfyRule: Boolean
+        get() = false
+
+    override fun getAllSingleRules(): List<SingleRule> {
+        return listOf()
+    }
+
+    companion object {
+        fun freshRule(nm: String) = EquivalenceRule(
+            ruleIdentifier = RuleIdentifier.freshIdentifier(nm)
+        )
+    }
+}
