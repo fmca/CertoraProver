@@ -54,7 +54,7 @@ fun findDefinition(b: SbfBasicBlock, reg: Value.Reg): Int {
 
 
 /**
- * Starting from position [startPos] at block [b] finds the definition of [reg]
+ * Starting from position [startPos] (exclusive) at block [b] finds the definition of [reg]
  * That definition can be located in some ancestor *as long as* the definition's block dominates [b],
  * there is no CFG diamonds in between, and the distance between the definition's block and [b] is
  * not greater than [maxNumLevelsUp].

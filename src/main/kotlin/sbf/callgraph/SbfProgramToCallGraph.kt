@@ -204,8 +204,6 @@ private fun postProcessCFG(cfg: MutableSbfCFG, globalsMap: GlobalVariableMap) {
     cfg.verify(false, "[after simplifying builtin calls]")
     cfg.simplify(globalsMap)
     cfg.verify(false, "[after simplify]")
-    markAddWithOverflow(cfg)
-    cfg.verify(false, "[after markAddWithOverflow]")
     cfg.normalize()
     cfg.verify(true, "[after normalize]")
 }

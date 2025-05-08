@@ -84,7 +84,8 @@ fun sliceAndPTAOptLoop(rule: String, prog: SbfCallGraph, memSummaries: MemorySum
         }
         i++
     }
-    return optProg
+
+    return runPostSlicingOptimizations(optProg)
 }
 
 

@@ -74,6 +74,7 @@ object SbfMeta {
     val LOWERED_SELECT = MetaKey<String>("lowered_select")
     val REMOVED_MEMMOVE = MetaKey<String>("sol_memmove_")
     val LOWERED_ASSUME = MetaKey<String>("lowered_assume")
+    val LOWERED_OR = MetaKey<String>("lowered_or")
     val UNREACHABLE_FROM_COI = MetaKey<String>("unreachable_from_coi")
     val ADD_WITH_OVERFLOW = MetaKey<String>("add_overflow")
 }
@@ -93,7 +94,7 @@ fun toString(metaData: MetaData): String {
             SbfMeta.HINT_OPTIMIZED_WIDE_STORE, SbfMeta.MEMCPY_PROMOTION,
             SbfMeta.UNHOISTED_STORE, SbfMeta.UNHOISTED_LOAD,
             SbfMeta.UNHOISTED_MEMCPY, SbfMeta.UNHOISTED_MEMCMP, SbfMeta.UNHOISTED_STACK_POP,
-            SbfMeta.LOWERED_SELECT, SbfMeta.LOADED_AS_NUM_FOR_PTA, SbfMeta.REMOVED_MEMMOVE,
+            SbfMeta.LOWERED_SELECT, SbfMeta.LOWERED_OR, SbfMeta.LOADED_AS_NUM_FOR_PTA, SbfMeta.REMOVED_MEMMOVE,
             SbfMeta.ADD_WITH_OVERFLOW, SbfMeta.SET_GLOBAL -> {
                 strB.append(" /*${k.name}*/")
             }
