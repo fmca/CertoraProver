@@ -21,9 +21,11 @@ import analysis.CommandWithRequiredDecls
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import analysis.CommandWithRequiredDecls.Companion.withDecls
 import datastructures.stdcollections.*
+import tac.MetaKey
+import tac.MetaMap
+import utils.*
 import utils.ModZm.Companion.to2s
 import vc.data.*
-import wasm.host.soroban.Val.digest
 import wasm.tacutils.*
 import wasm.traps.Trap
 import java.math.BigInteger
@@ -145,8 +147,11 @@ object Val {
         ;
 
         val isInteger get() = signed != null
-        val isObjectTag get() = value in ObjectCodeLowerBound.value..ObjectCodeUpperBound.value
+        val isObjectTag get() = value.isObjectTagValue
     }
+
+    val Int.isObjectTagValue
+        get() = this in Tag.ObjectCodeLowerBound.value..Tag.ObjectCodeUpperBound.value
 
     fun init() = mergeMany(
         assignHavoc(TACKeyword.SOROBAN_OBJECTS.toVar()),
@@ -165,6 +170,8 @@ object Val {
 
     const val sizeInBytes = 8 // 64 bits
 
+    val WASM_FRESH_HANDLE = MetaKey<Int>("wasm.alloc.fresh.handle")
+
     /** Create a TACSymbol that produces a Val */
     operator fun invoke(tag: Tag, value: Long): TACExpr.Sym {
         check((value * TAG_MUL) / TAG_MUL == value) { "Value $value is too large for a Val" }
@@ -174,7 +181,7 @@ object Val {
     /** Allocate a new object handle.  We choose a nonterministic handle that is not already allocated. */
     fun allocHandle(dest: TACSymbol.Var, tag: Tag, contentSummary: (TACExprFact.() -> List<TACExpr>)? = null) = mergeMany(
         listOfNotNull(
-            assignHavoc(dest),
+            assignHavoc(dest, MetaMap(WASM_FRESH_HANDLE to tag.value)),
             assumeValid(dest, false, tag),
             assume { not(select(TACKeyword.SOROBAN_OBJECTS.toVar().asSym(), dest.asSym())) },
             assign(TACKeyword.SOROBAN_OBJECTS.toVar()) {
