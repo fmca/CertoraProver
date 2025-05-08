@@ -1515,15 +1515,6 @@ class PointsToAnalysis(
                     val res = transformBlock(it, state[it]!!, state)
                     val cont = mutableListOf<NBId>()
                     for((k, v) in res) {
-                        if(graph.pred(k).singleOrNull() == it) {
-                            // lone predecessor, assuming this transfer function is monotone, no need  to join
-                            val curr = state[k]
-                            state[k] = v
-                            if(curr != v) {
-                                cont.add(k)
-                            }
-                            continue
-                        }
                         val s = state[k]
                         if (s == null) {
                             state[k] = v

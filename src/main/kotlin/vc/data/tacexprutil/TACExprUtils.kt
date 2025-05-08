@@ -288,7 +288,7 @@ data class CastToUnsignedInt(val bitWidth: Int) : TACFunForCastExpression() {
         outVar: TACSymbol.Var,
         inVar: TACSymbol.Var
     ) =
-        compileCast(outVar, inVar) { toConstrain -> TACCmd.Simple.AssumeCmd(toConstrain, "compileRequireCast") }
+        compileCast(outVar, inVar) { toConstrain -> TACCmd.Simple.AssumeCmd(toConstrain) }
 
     /**
      * Assert that [inVar] is in range for an unsigned integer of bitwidth [bitwidth]

@@ -474,7 +474,7 @@ object EthereumVariables {
             )
         )
         l.add(
-            TACCmd.Simple.AssumeCmd(trgNoOverflow, "trgNoOverflow", meta)
+            TACCmd.Simple.AssumeCmd(trgNoOverflow, meta)
         )
         l.add(
             TACCmd.Simple.AssigningCmd.AssignExpCmd(
@@ -973,7 +973,7 @@ object EthereumVariables {
                 Le(newContractAddress.asSym(), EVMConfig.maxAddress.asTACExpr)
             )
         }) { e ->
-            TACCmd.Simple.AssumeCmd(e.s, "newContractAddressIsAnAddress")
+            TACCmd.Simple.AssumeCmd(e.s)
         }
         return CreateSetup(
             CommandWithRequiredDecls.mergeMany(
@@ -1046,7 +1046,7 @@ object EthereumVariables {
                     "codeSize",
                     TACExprFactSimple.Lt(TACExpr.zeroExpr, sizeTmp.asSym(), Tag.Bool)
                 ) {
-                    TACCmd.Simple.AssumeCmd(it.s, "nonZeroCodeSize")
+                    TACCmd.Simple.AssumeCmd(it.s)
                 }
             ).merge(
                 ExprUnfolder.unfoldPlusOneCmd("codeSize", with(TACExprFactUntyped) {
@@ -1115,7 +1115,7 @@ object EthereumVariables {
         val finish = finishSimplifyCreate(c.lhs, c.value, c.argsOffset, c.argsSize, c.memBaseMap, c.meta, callerSymbol, newAddress, c)
         if (useAssume.get()) {
             val assumeNoCollision = generateCreateCollisionCheck(newAddress) { chk, noCollision ->
-                chk.merge(TACCmd.Simple.AssumeCmd(noCollision, "assumeNoCollision"))
+                chk.merge(TACCmd.Simple.AssumeCmd(noCollision))
             }
             val toReplace = setupCode andThen assumeNoCollision andThen finish
             patch.replaceCommand(ptr, toReplace.cmds)

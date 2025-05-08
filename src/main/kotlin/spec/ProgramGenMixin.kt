@@ -185,7 +185,7 @@ interface ProgramGenMixin {
                 TACExpr.BinRel.Le(len.asSym(), Config.LoopUnrollConstant.get().asTACExpr)
             }
         ) {
-            TACCmd.Simple.AssumeCmd(it.s, "UnrollBound")
+            TACCmd.Simple.AssumeCmd(it.s)
         }
     }
 }

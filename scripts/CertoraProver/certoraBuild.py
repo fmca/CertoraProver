@@ -411,8 +411,6 @@ def generate_modifier_finder(f: Func, internal_id: int, sym: int,
         formal_strings = []
         arg_strings = []
         for (logged_ty, logged_name) in zip(loggable_types, loggable_names):
-            if logged_name == "":
-                continue
             arg_strings.append(logged_name)
             formal_strings.append(f"{logged_ty} {logged_name}")
         modifier_body = f"modifier {modifier_name}"

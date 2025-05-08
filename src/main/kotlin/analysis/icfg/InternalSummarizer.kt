@@ -876,6 +876,9 @@ object InternalSummarizer {
                     if(lc.cmd.maybeAnnotation(Inliner.CallStack.STACK_POP)?.calleeId == currentCallIdx) {
                         return this.cont(listOf())
                     }
+                    if(it.block in code.analysisCache.revertBlocks) {
+                        return this.cont(listOf())
+                    }
                     if(start != null) {
                         val next = exitFinder.getExits(start.id, it).flatMap {
                             code.analysisCache.graph.succ(it.ptr)

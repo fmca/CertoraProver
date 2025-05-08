@@ -8,7 +8,7 @@
             "counter": 2
         },
         "displayName": "plus_one()-minus_one()",
-        "counter": 9
+        "counter": 6
     },
     "range": {
         "type": "utils.Range.Range",

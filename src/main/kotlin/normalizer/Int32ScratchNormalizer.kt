@@ -88,8 +88,7 @@ object Int32ScratchNormalizer {
                 )
             ),
             TACCmd.Simple.AssumeCmd(
-                eq3,
-                "Int32ScratchNormalizer"
+                eq3
             )
         ).withDecls(ret, eq1, eq2, eq3)
     }

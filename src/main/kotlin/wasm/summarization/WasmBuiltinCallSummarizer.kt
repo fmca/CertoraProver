@@ -549,9 +549,9 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
         return CommandWithRequiredDecls(
             listOf(
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(lbBool, TACExpr.BinRel.Le(lb.asSym(), v.asSym())),
-                TACCmd.Simple.AssumeCmd(lbBool, "inRange"),
+                TACCmd.Simple.AssumeCmd(lbBool),
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(ubBool, TACExpr.BinRel.Lt(v.asSym(), ub.asSym())),
-                TACCmd.Simple.AssumeCmd(ubBool, "inRange")
+                TACCmd.Simple.AssumeCmd(ubBool)
             ), setOf(lbBool, ubBool)
         )
     }
@@ -698,7 +698,7 @@ class WasmBuiltinCallSummarizer(private val typeContext: Map<WasmName, WasmProgr
                 newAssignment,
                 when (type) {
                     AssumeAssertType.ASSUME, AssumeAssertType.CVT_ASSUME ->
-                        TACCmd.Simple.AssumeCmd(argSymTac, "summarizeAssumeAssert")
+                        TACCmd.Simple.AssumeCmd(argSymTac)
                     AssumeAssertType.ASSERT, AssumeAssertType.CVT_ASSERT ->
                         TACCmd.Simple.AssertCmd(
                             argSymTac,

@@ -380,7 +380,7 @@ object WasmEntryPoint {
                         {}
                     else -> {
                         removedAssertConds += cmd.o
-                        p.replaceCommand(ptr, listOf(TACCmd.Simple.AssumeCmd(cmd.o, "rewrote assert: ${cmd.msg}", cmd.meta)))
+                        p.replaceCommand(ptr, listOf(TACCmd.Simple.AssumeCmd(cmd.o, cmd.meta)))
                     }
                 }
             }

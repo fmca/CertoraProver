@@ -67,7 +67,7 @@ object FPMonotonicityInstrumenter {
                             monotonicityAssumeSym,
                             TACExpr.BinRel.Ge(newFPValue.asSym(), fpAssignment.cmd.lhs.asSym())
                         ),
-                        TACCmd.Simple.AssumeCmd(monotonicityAssumeSym, "monotonicityAssume"),
+                        TACCmd.Simple.AssumeCmd(monotonicityAssumeSym),
                         TACCmd.Simple.AssigningCmd.AssignExpCmd(fpAssignment.cmd.lhs, newFPValue),
                         TACCmd.Simple.LabelCmd("←")
                     )

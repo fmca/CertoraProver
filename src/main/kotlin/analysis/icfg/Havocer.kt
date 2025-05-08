@@ -192,7 +192,7 @@ object Havocer {
                                     EthereumVariables.balance.asSym(), sourceAddress
                                 )
                             )
-                        ), TACCmd.Simple.AssumeCmd(b, "assumeNonDecreasedThisBalance")
+                        ), TACCmd.Simple.AssumeCmd(b)
                 )
             }
             val assumeSameCalleeBalance = allocTmp("isIncreasedBalance", Tag.Bool).let { b ->
@@ -203,7 +203,7 @@ object Havocer {
                                 EthereumVariables.balance.asSym(), callSummary.toVar.asSym()
                             )
                         )
-                    ), TACCmd.Simple.AssumeCmd(b, "assumeSameCalleeBalance")
+                    ), TACCmd.Simple.AssumeCmd(b)
                 )
             }
             commands.addAll(havocBalance)
@@ -305,8 +305,7 @@ object Havocer {
                     )
                 ),
                 TACCmd.Simple.AssumeCmd(
-                    cond = tmp,
-                    "ConservativeGasBasedReturnsize"
+                    cond = tmp
                 )
             ), tmp
         )

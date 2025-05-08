@@ -738,9 +738,9 @@ class TACCommandGraph(
         }
 
         fun getAsAssumeCmd() : TACCmd.Simple = when (this) {
-            is Summary, TRUE -> TACCmd.Simple.AssumeCmd(TACSymbol.True, "path condition assume")
+            is Summary, TRUE -> TACCmd.Simple.AssumeCmd(TACSymbol.True)
             is EqZero -> TACCmd.Simple.AssumeNotCmd(this.v)
-            is NonZero -> TACCmd.Simple.AssumeCmd(this.v, "path condition assume")
+            is NonZero -> TACCmd.Simple.AssumeCmd(this.v)
         }
 
         fun getAsExpression() = when (this) {

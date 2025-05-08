@@ -155,7 +155,7 @@ class WidthConstraints(private val boundee: TACSymbol.Var) {
                     Ge(boundee.asSym(), 0.asTACExpr)
                 )
             },
-            last = { TACCmd.Simple.AssumeCmd(it.s, "unsignedBound") }
+            last = { TACCmd.Simple.AssumeCmd(it.s) }
         )
     }
 

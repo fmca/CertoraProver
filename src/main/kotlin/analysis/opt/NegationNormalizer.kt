@@ -179,12 +179,12 @@ class NegationNormalizer(val code: CoreTACProgram) {
                     is TACCmd.Simple.AssumeNotCmd ->
                         if (cmd.cond is TACSymbol.Var) {
                             equivNeg(cmd.cond)
-                                ?.let { patcher.replace(ptr, TACCmd.Simple.AssumeCmd(it, "")) }
+                                ?.let { patcher.replace(ptr, TACCmd.Simple.AssumeCmd(it)) }
                                 ?: run {
                                     val temp = patcher.newTempVar("neg", Tag.Bool)
                                     patcher.replace(ptr, listOf(
                                         AssignExpCmd(temp, txf.LNot(cmd.cond.asSym())),
-                                        TACCmd.Simple.AssumeCmd(temp, "")
+                                        TACCmd.Simple.AssumeCmd(temp)
                                     ))
                                 }
                         }

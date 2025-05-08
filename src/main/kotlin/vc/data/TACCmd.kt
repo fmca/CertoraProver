@@ -1276,11 +1276,12 @@ sealed class TACCmd : Serializable, ITACCmd {
         // Helper commands, not 'real' commands
         //TODO: change cond type to TACExpr
         @KSerializable
-        data class AssumeCmd(val cond: TACSymbol, val msg: String, override val meta: MetaMap = MetaMap()) : Assume, Simple() {
-            override fun argString(): String = "$cond \"${msg.escapeQuotes()}\""
+        data class AssumeCmd(val cond: TACSymbol, override val meta: MetaMap = MetaMap()) : Assume, Simple() {
+            override fun argString(): String = "$cond"
             override fun toString(): String = super.toString() // opt out of generated toString
             override fun withMeta(metaMap: MetaMap) = this.copy(meta = metaMap)
             override val condExpr get() = cond.asSym()
+
             //constructor(cond : TACSymbol, meta: TACMetaInfo? = null ): this(cond.asSym(), meta)
         }
 

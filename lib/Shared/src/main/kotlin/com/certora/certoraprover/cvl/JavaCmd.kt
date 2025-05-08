@@ -17,6 +17,7 @@
 
 package com.certora.certoraprover.cvl
 
+import report.calltrace.CVLReportLabel
 import spec.TypeResolver
 import spec.cvlast.*
 import spec.cvlast.CVLCmd.Simple.AssumeCmd.AssumeInvariant
@@ -47,15 +48,19 @@ class AssertCmd(range: Range, val exp: Exp, val description: String?) : Cmd(rang
     override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLCmd, CVLError>
         = exp
             .kotlinize(resolver, scope)
-            .map { asserted -> CVLCmd.Simple.Assert(range, asserted, description, scope, invariantPostCond = false) }
+            .map { asserted ->
+                val description = this.description ?: defaultAssertDescription(asserted)
+
+                CVLCmd.Simple.Assert(range, asserted, description, scope, invariantPostCond = false)
+            }
 }
 
 
-class AssumeCmd(_range: Range, val exp: Exp, val description: String?) : Cmd(_range) {
-    override fun toString() = "Assume($exp,$description)"
+class AssumeCmd(_range: Range, val exp: Exp) : Cmd(_range) {
+    override fun toString() = "Assume($exp)"
 
     override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLCmd, CVLError>
-        = exp.kotlinize(resolver, scope).map { CVLCmd.Simple.AssumeCmd.Assume(range, it, description, scope, invariantPreCond = false) }
+        = exp.kotlinize(resolver, scope).map {CVLCmd.Simple.AssumeCmd.Assume(range,it,scope,invariantPreCond = false) }
 }
 
 
@@ -161,6 +166,12 @@ class SatisfyCmd(range: Range, val exp: Exp, val description: String?) : Cmd(ran
     override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLCmd, CVLError>
         = exp
             .kotlinize(resolver, scope)
-            .map { asserted -> CVLCmd.Simple.Satisfy(range, asserted, description, scope, invariantPostCond = false) }
+            .map { asserted ->
+                val description = this.description ?: defaultAssertDescription(asserted)
+
+                CVLCmd.Simple.Satisfy(range, asserted, description, scope, invariantPostCond = false)
+            }
 }
 
+/** we do this here to ensure [CVLCmd.Simple.Assert] and [CVLCmd.Simple.Satisfy] have non-null descriptions */
+private fun defaultAssertDescription(asserted: CVLExp) = CVLReportLabel.Exp(asserted).toString()

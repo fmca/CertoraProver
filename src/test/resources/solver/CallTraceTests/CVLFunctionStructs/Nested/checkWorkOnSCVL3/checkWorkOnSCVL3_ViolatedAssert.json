@@ -15,7 +15,7 @@
         "type": "vc.data.TACCmd.Simple.AssertCmd",
         "o": {
             "type": "vc.data.TACSymbol.Var.Full",
-            "namePrefix": "B61",
+            "namePrefix": "B79",
             "tag": {
                 "type": "tac.Tag.Bool"
             },
@@ -38,7 +38,7 @@
                     "type": "java.lang.Integer",
                     "erasureStrategy": "Canonical"
                 },
-                "value": 4
+                "value": 5
             },
             {
                 "key": {
