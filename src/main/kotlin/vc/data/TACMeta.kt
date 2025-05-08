@@ -379,4 +379,7 @@ object TACMeta {
     /** Foundry cheatcode meta */
     val FOUNDRY_CHEATCODE = MetaKey<FoundryCheatcodes>("foundry.cheatcode")
     val FOUNDRY_PROTECTED = MetaKey.Nothing("foundry.protected")
+
+    /** Soroban Env */
+    val SOROBAN_ENV = MetaKey.Nothing("soroban.env")
 }

@@ -96,7 +96,7 @@ enum class TACKeyword(private val varName: String, val type: Tag, val metaMap: M
     /**
         Maps allocated Soroban object handles to `true`.
      */
-    SOROBAN_OBJECTS("tacSorobanObjects", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bool)),
+    SOROBAN_OBJECTS("tacSorobanObjects", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bool), MetaMap(TACMeta.SOROBAN_ENV)),
 
     /*
         Soroban object types
@@ -104,59 +104,59 @@ enum class TACKeyword(private val varName: String, val type: Tag, val metaMap: M
         SOROBAN_*_SIZES: used to store mapping sizes: objectHandle->size
         SOROBAN_*_MAPPINGS: used to store mappings: {objectHandle,key}->value
      */
-    SOROBAN_BYTES_SIZES("tacSoroBytesSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_BYTES_MAPPINGS("tacSoroBytesMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
+    SOROBAN_BYTES_SIZES("tacSoroBytesSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_BYTES_MAPPINGS("tacSoroBytesMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
-    SOROBAN_STRING_SIZES("tacSoroStringSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_STRING_MAPPINGS("tacSoroStringMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
+    SOROBAN_STRING_SIZES("tacSoroStringSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_STRING_MAPPINGS("tacSoroStringMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
-    SOROBAN_SYMBOL_SIZES("tacSoroSymbolSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_SYMBOL_MAPPINGS("tacSoroSymbolMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
+    SOROBAN_SYMBOL_SIZES("tacSoroSymbolSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_SYMBOL_MAPPINGS("tacSoroSymbolMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
-    SOROBAN_VEC_SIZES("tacSoroVectorSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_VEC_MAPPINGS("tacSoroVectorMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
+    SOROBAN_VEC_SIZES("tacSoroVectorSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_VEC_MAPPINGS("tacSoroVectorMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
-    SOROBAN_MAP_SIZES("tacSoroMapSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_MAP_MAPPINGS("tacSoroMapMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
+    SOROBAN_MAP_SIZES("tacSoroMapSizes", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_MAP_MAPPINGS("tacSoroMapMappings", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
     /*
         Additional maps for Soroban "map" objects; see [wasm.host.soroban.types.MapType]
      */
-    SOROBAN_MAP_KEYS("tacSoroMapKeys", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bool)),
-    SOROBAN_MAP_KEY_DIGESTS("tacSoroMapKeyDigests", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bool)),
-    SOROBAN_MAP_KEY_TO_INDEX("tacSoroMapKeyToIndex", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
-    SOROBAN_MAP_INDEX_TO_KEY("tacSoroMapIndexToKey", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
+    SOROBAN_MAP_KEYS("tacSoroMapKeys", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bool), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_MAP_KEY_DIGESTS("tacSoroMapKeyDigests", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bool), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_MAP_KEY_TO_INDEX("tacSoroMapKeyToIndex", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_MAP_INDEX_TO_KEY("tacSoroMapIndexToKey", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
     /** Maps each object handle to a unique integer identifying the type and content of the object */
-    SOROBAN_OBJECT_DIGEST("tacSoroObjDigest", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
+    SOROBAN_OBJECT_DIGEST("tacSoroObjDigest", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
-    SOROBAN_ADDRESS_CURRENT("tacSoroAddressCurrent", Tag.Bit256),
+    SOROBAN_ADDRESS_CURRENT("tacSoroAddressCurrent", Tag.Bit256, MetaMap(TACMeta.SOROBAN_ENV)),
 
-    SOROBAN_LEDGER_VERSION("tacSoroLedgerVersion", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX)),
-    SOROBAN_LEDGER_SEQUENCE("tacSoroLedgerSequence", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX)),
-    SOROBAN_LEDGER_TIMESTAMP("tacSoroLedgerTimestamp", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX)),
-    SOROBAN_LEDGER_NETWORK_ID("tacSoroLedgerNetworkId", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX)),
-    SOROBAN_MAX_LIVE_UNTIL_LEDGER("tacSoroMaxLiveUntilLedger", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX)),
+    SOROBAN_LEDGER_VERSION("tacSoroLedgerVersion", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX).plus(TACMeta.SOROBAN_ENV)),
+    SOROBAN_LEDGER_SEQUENCE("tacSoroLedgerSequence", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX).plus(TACMeta.SOROBAN_ENV)),
+    SOROBAN_LEDGER_TIMESTAMP("tacSoroLedgerTimestamp", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX).plus(TACMeta.SOROBAN_ENV)),
+    SOROBAN_LEDGER_NETWORK_ID("tacSoroLedgerNetworkId", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX).plus(TACMeta.SOROBAN_ENV)),
+    SOROBAN_MAX_LIVE_UNTIL_LEDGER("tacSoroMaxLiveUntilLedger", Tag.Bit256, MetaMap(TACMeta.NO_CALLINDEX).plus(TACMeta.SOROBAN_ENV)),
 
     /** Soroban contract data (a.k.a. storage) */
-    SOROBAN_CONTRACT_DATA("tacSoroContractData", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256)),
-    SOROBAN_CONTRACT_DATA_KEY_DIGESTS("tacSoroContractDataKeyDigests", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bool)),
+    SOROBAN_CONTRACT_DATA("tacSoroContractData", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_CONTRACT_DATA_KEY_DIGESTS("tacSoroContractDataKeyDigests", Tag.GhostMap(listOf(Tag.Bit256, Tag.Bit256), Tag.Bool), MetaMap(TACMeta.SOROBAN_ENV)),
 
     /** Int object mappings (handle)->value */
-    SOROBAN_U64_VALUES("tacSoroU64Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_I64_VALUES("tacSoroI64Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_U128_VALUES("tacSoroU128Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_I128_VALUES("tacSoroI128Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_U256_VALUES("tacSoroU256Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_I256_VALUES("tacSoroI256Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_TIMEPOINT_VALUES("tacSoroTimepointValues", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
-    SOROBAN_DURATION_VALUES("tacSoroDurationValues", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
+    SOROBAN_U64_VALUES("tacSoroU64Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_I64_VALUES("tacSoroI64Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_U128_VALUES("tacSoroU128Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_I128_VALUES("tacSoroI128Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_U256_VALUES("tacSoroU256Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_I256_VALUES("tacSoroI256Values", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_TIMEPOINT_VALUES("tacSoroTimepointValues", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
+    SOROBAN_DURATION_VALUES("tacSoroDurationValues", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
 
     /** digest(address)->is_auth(address) */
-    SOROBAN_ADDRESS_AUTH("tacSoroAddressAuth", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bool)),
+    SOROBAN_ADDRESS_AUTH("tacSoroAddressAuth", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bool), MetaMap(TACMeta.SOROBAN_ENV)),
 
     /** digest(address)->address_to_strkey(address) */
-    SOROBAN_ADDRESS_TO_STRKEY("tacSoroAddressToStrkey", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256)),
+    SOROBAN_ADDRESS_TO_STRKEY("tacSoroAddressToStrkey", Tag.GhostMap(listOf(Tag.Bit256), Tag.Bit256), MetaMap(TACMeta.SOROBAN_ENV)),
     ;
 
     init {
