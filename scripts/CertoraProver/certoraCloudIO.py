@@ -592,42 +592,25 @@ class CloudVerification:
 
         jar_settings = Ctx.collect_jar_args(self.context)
 
-        if Attrs.is_solana_app():
-            def paths_in_source_dir(attr_values: List[str]) -> str:
-                cwd_rel_in_sources = Util.get_certora_sources_dir() / self.context.cwd_rel_in_sources
-                values: list[str] = \
-                    [os.path.relpath(cwd_rel_in_sources / value, Util.get_build_dir()) for value in attr_values]
-                return ','.join(values)
+        if Attrs.is_rust_app():
+            rust_jar_settings = [Path(self.context.files[0]).name]
 
-            solana_jar_settings = []
-            if hasattr(self.context, 'build_script') and self.context.build_script:
-                solana_jar_settings.append(Path(self.context.rust_executables).name)
-            else:
-                for file in self.context.files:
-                    solana_jar_settings.append(file)
+            if Attrs.is_solana_app():
+                def paths_in_source_dir(attr_values: List[str]) -> str:
+                    cwd_rel_in_sources = Util.get_certora_sources_dir() / self.context.cwd_rel_in_sources
+                    values: list[str] = \
+                        [os.path.relpath(cwd_rel_in_sources / value, Util.get_build_dir()) for value in attr_values]
+                    return ','.join(values)
 
-            if self.context.solana_summaries:
-                solana_jar_settings.append('-solanaSummaries')
-                solana_jar_settings.append(paths_in_source_dir(self.context.solana_summaries))
+                if self.context.solana_summaries:
+                    rust_jar_settings.append('-solanaSummaries')
+                    rust_jar_settings.append(paths_in_source_dir(self.context.solana_summaries))
 
-            if self.context.solana_inlining:
-                solana_jar_settings.append('-solanaInlining')
-                solana_jar_settings.append(paths_in_source_dir(self.context.solana_inlining))
+                if self.context.solana_inlining:
+                    rust_jar_settings.append('-solanaInlining')
+                    rust_jar_settings.append(paths_in_source_dir(self.context.solana_inlining))
 
-            auth_data["jarSettings"] = solana_jar_settings + jar_settings
-        elif Attrs.is_soroban_app():
-            # We need to strip "../" path component from all file paths because
-            # unzip will also do that.
-            soroban_jar_settings = []
-            # not needed - should be in files
-            if hasattr(self.context, 'build_script') and self.context.build_script:
-                soroban_jar_settings.append(Path(self.context.rust_executables).name)
-            else:
-                for file in self.context.files:
-                    soroban_jar_settings.append(file.split('../')[-1])
-            for arg in jar_settings:
-                soroban_jar_settings.append(arg)
-            auth_data["jarSettings"] = soroban_jar_settings
+            auth_data["jarSettings"] = rust_jar_settings + jar_settings
         else:
             auth_data["jarSettings"] = jar_settings
 
@@ -746,7 +729,10 @@ class CloudVerification:
             result = compress_files(self.ZipFilePath, *paths,
                                     short_output=Ctx.is_minimal_cli_output(self.context))
         elif Attrs.is_rust_app():
-            files_list = [Util.get_certora_metadata_file(), Util.get_configuration_layout_data_file()]
+            files_list = [Util.get_certora_metadata_file(),
+                          Util.get_configuration_layout_data_file(),
+                          Util.get_build_dir() / Path(self.context.files[0]).name]
+
             if Util.get_certora_sources_dir().exists():
                 files_list.append(Util.get_certora_sources_dir())
 
@@ -757,8 +743,6 @@ class CloudVerification:
                 if not result:
                     return False
                 files_list.append(self.logZipFilePath)
-
-                files_list.append(Util.get_build_dir() / Path(self.context.rust_executables).name)
 
                 # Create a .RustExecution file to classify zipInput as a rust source code
                 rust_execution_file = Util.get_build_dir() / ".RustExecution"
@@ -823,6 +807,8 @@ class CloudVerification:
         Util.flush_stdout()
         if not result:
             return False
+        if self.context.test == str(Util.TestValue.CHECK_ZIP):
+            raise Util.TestResultsReady(self.ZipFilePath)
 
         cloud_logger.debug("Uploading files...")
         if self.upload(self.presigned_url, self.ZipFilePath):
@@ -860,6 +846,7 @@ class CloudVerification:
             return False
 
         file_upload_success = self.__compress_and_upload_zip_files()
+
         if not file_upload_success:
             return False
 

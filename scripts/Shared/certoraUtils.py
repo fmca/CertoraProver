@@ -1269,6 +1269,7 @@ class TestValue(NoValEnum):
     AFTER_BUILD_RUST = auto()
     AFTER_RULE_SPLIT = auto()
     SOLANA_BUILD_CMD = auto()
+    CHECK_ZIP = auto()
 
 class FeValue(NoValEnum):
     PRODUCTION = auto()

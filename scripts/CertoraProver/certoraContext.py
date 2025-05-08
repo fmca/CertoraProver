@@ -120,9 +120,9 @@ def get_local_run_cmd(context: CertoraContext) -> List[str]:
     """
     run_args = []
 
-    if hasattr(context, 'rust_executables') and hasattr(context, 'rust_project_directory'):
-        run_args.append(os.path.join(context.rust_project_directory, context.rust_executables))
-    elif context.is_tac or Attrs.is_rust_app():
+    if Attrs.is_rust_app():
+        run_args.append(Path(context.files[0]).name)
+    elif context.is_tac:
         # For Rust app we assume the files holds the executable for the prover, currently we support a single file
         try:
             run_args.append(context.files[0])

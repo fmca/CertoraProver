@@ -43,16 +43,12 @@ def build_rust_app(context: CertoraContext) -> None:
         if context.cargo_features is not None:
             build_command.extend([feature_flag] + context.cargo_features)
 
-        build_command.append('--json')
+        build_command.extend(['--json', '-l'])
 
         if context.test == str(Util.TestValue.SOLANA_BUILD_CMD):
             raise Util.TestResultsReady(build_command)
 
         run_rust_build(context, build_command)
-        if not context.rust_executables:
-            raise Util.CertoraUserInputError("failed to get target executable")
-
-        copy_files_to_build_dir(context)
 
     else:
         if not context.files:
@@ -66,7 +62,7 @@ def build_rust_app(context: CertoraContext) -> None:
         except Exception as e:
             raise Util.CertoraUserInputError(f"Collecting build files failed with the exception: {e}")
 
-        context.rust_executables = context.files[0]
+    copy_files_to_build_dir(context)
 
     sources: Set[Path] = set()
     collect_files_from_rust_sources(context, sources)
@@ -127,8 +123,8 @@ def collect_files_from_rust_sources(context: CertoraContext, sources: Set[Path])
 
 
 def copy_files_to_build_dir(context: CertoraContext) -> None:
-    rust_executable = Path(context.rust_project_directory) / context.rust_executables
-    shutil.copyfile(rust_executable, Util.get_build_dir() / rust_executable.name)
+    assert context.files, "copy_files_to_build_dir: expecting files to be non-empty"
+    shutil.copyfile(context.files[0], Util.get_build_dir() / Path(context.files[0]).name)
 
     if rust_logs := getattr(context, 'rust_logs_stdout', None):
         shutil.copy(Path(rust_logs), Util.get_build_dir() / Path(rust_logs).name)
