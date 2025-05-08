@@ -1280,6 +1280,14 @@ class TestClient(unittest.TestCase):
                              run_flags=['--storage_extension_harnesses', 'Test=Spec1', 'Test=Spec'],
                              expected="Slot 9619688881439974453 added to Test")
 
+    @staticmethod
+    def get_card_object(parent, nested):
+        return next((section for section in parent if section.card_title == nested), None)
+
+    @staticmethod
+    def get_inner_object(parent, nested):
+        return next((section for section in parent if section.inner_title == nested), None)
+
     def test_solidity_configuration_layout_data(self) -> None:
         """
         Tests that the configuration_layout is as expected.
@@ -1290,50 +1298,42 @@ class TestClient(unittest.TestCase):
             run_certora(args)
             raise AssertionError(f"__test_main_spec: No Test Result for {args}")
         except Util.TestResultsReady as e:
+            layout = e.data.configuration_layout
+
             # Validating files section in RunConfigurationLayout
-            assert getattr(e.data, 'files'), \
-                f"Error! files section is expected to exist in configuration layout data!\n{e.data}"
-            assert _p('A.sol') in e.data.files.get('value'), \
-                f"Error! files in configuration layout is {e.data.files.get('value')}, expected {_p('A.sol')}"
-            assert 'prover/cli' in e.data.files.get('doc_link') and 'files' in e.data.files.get('doc_link'), \
-                f"Error! doc_link in configuration layout is {e.data.files.get('doc_link')}\n" \
+            files = self.get_card_object(layout, 'files')
+            assert files, f"Error! files section is expected to exist in configuration layout data!\n{layout}"
+            assert _p('A.sol') in files.content[0].content, \
+                f"Error! files in configuration layout is {files.content[0].content}, expected {_p('A.sol')}"
+            assert 'prover/cli' in files.content[0].doc_link and 'files' in files.content[0].doc_link, \
+                f"Error! doc_link in configuration layout is {files.content[0].doc_link}\n" \
                 f"expected 'prover/cli' and '#files' in link!"
 
             # Validating general section in RunConfigurationLayout
-            assert getattr(e.data, 'general') and getattr(e.data, 'general').get('flags'), \
-                f"Error! flags in general section are expected to exist in configuration layout data!\n{e.data}"
+            assert (general := self.get_card_object(layout, 'general')) and \
+                   (general_flags := self.get_inner_object(general.content, 'flags')), \
+                   f"Error! flags in general section are expected to exist in configuration layout data!\n{layout}"
 
-            verify_data = e.data.general.get('flags').get('verify')
-            assert verify_data and f"A:{_p('spec1.spec')}" == verify_data.get('value'), \
+            verify_data = self.get_inner_object(general.content, 'Verify')
+            assert verify_data and f"A:{_p('spec1.spec')}" == verify_data.content, \
                 f"Error! verify flag in general section is incorrect!\n" \
                 f"expected: 'A:{_p('spec1.spec')}', actual: '{verify_data}'"
 
-            server_data = e.data.general.get('flags').get('server')
-            assert server_data and "production" == server_data.get('value'), \
+            server_data = self.get_inner_object(general_flags.content, 'server')
+            assert server_data and "production" == server_data.content, \
                 f"Error! server flag in general section is incorrect!\n" \
-                f"expected: 'production', actual: '{server_data.get('value')}'"
-
-            # Validating metadata section in RunConfigurationLayout
-            assert getattr(e.data, 'metadata'), \
-                f"Error! metadata section is expected to exist in configuration layout data!\n{e.data}"
-
-            main_spec_data = e.data.metadata.get('main_spec')
-            assert main_spec_data and f"{_p('spec1.spec')}" == main_spec_data.get('value'), \
-                f"Error! main_spec in metadata section is incorrect!\n" \
-                f"expected: '{_p('spec1.spec')}', actual: '{main_spec_data}'"
-
-            assert e.data.metadata.get('solc_version') and e.data.metadata.get('verify'), \
-                f"Error! 'solc_version' and 'verify' must exist on metadata section!\nmetadata: {e.data.metadata}"
+                f"expected: 'production', actual: '{server_data.content}'"
 
             # Validating solidity compiler section in RunConfigurationLayout
-            assert getattr(e.data, 'solidity_compiler') and getattr(e.data, 'solidity_compiler').get('flags'), \
-                f"Error! flags in solidity_compiler section are expected to exist in configuration layout data!\n" \
-                f"{e.data}"
+            assert (solidity_compiler := self.get_card_object(layout, 'solidity_compiler')) \
+                   and (solc_flags := self.get_inner_object(solidity_compiler.content, 'flags')), \
+                   f"Error! flags in solidity_compiler section is expected to exist in configuration layout data!\n" \
+                   f"{layout}"
 
-            solc_data = getattr(e.data, 'solidity_compiler').get('flags').get('solc')
-            assert solc_data and "solc8.28" == solc_data.get('value') and "value" == solc_data.get('flag_type'), \
+            solc_data = self.get_inner_object(solc_flags.content, 'solc')
+            assert solc_data and "solc8.28" == solc_data.content and "FLAG" == solc_data.content_type, \
                 f"Error! solc flag in solidity_compiler section is incorrect!\n" \
-                f"expected: 'solc8.28' of flag_type 'value', actual: '{solc_data}'"
+                f"expected: 'solc8.28' of content_type 'FLAG', actual: '{solc_data}'"
 
     def test_solana_configuration_layout_data(self) -> None:
         """
@@ -1345,29 +1345,32 @@ class TestClient(unittest.TestCase):
             run_solana_prover(args)
             raise AssertionError(f"__test_main_spec: No Test Result for {args}")
         except Util.TestResultsReady as e:
+            layout = e.data.configuration_layout
+
             # Validating files section in RunConfigurationLayout
-            assert getattr(e.data, 'files'), \
-                f"Error! files section is expected to exist in configuration layout data!\n{e.data}"
-            assert _p('empty.so') in e.data.files.get('value'), \
-                f"Error! files in configuration layout is {e.data.files.get('value')}, expected {_p('empty.so')}"
-            assert 'solana' in e.data.files.get('doc_link') and 'files' in e.data.files.get('doc_link'), \
-                f"Error! doc_link in configuration layout is {e.data.files.get('doc_link')}\n" \
+            files = self.get_card_object(layout, 'files')
+            assert files, f"Error! files section is expected to exist in configuration layout data!\n{layout}"
+            assert _p('empty.so') in files.content[0].content, \
+                f"Error! files in configuration layout is {files.content[0].content}, expected {_p('empty.so')}"
+            assert 'solana' in files.content[0].doc_link and 'files' in files.content[0].doc_link, \
+                f"Error! doc_link in configuration layout is {files.content[0].doc_link}\n" \
                 f"expected 'solana' and '#files' in link!"
 
             # Validating general section in RunConfigurationLayout
-            assert getattr(e.data, 'general') and getattr(e.data, 'general').get('flags'), \
-                f"Error! flags in general section are expected to exist in configuration layout data!\n{e.data}"
+            assert (general := self.get_card_object(layout, 'general')) and \
+                   (general_flags := self.get_inner_object(general.content, 'flags')), \
+                   f"Error! flags in general section are expected to exist in configuration layout data!\n{layout}"
 
-            server_data = e.data.general.get('flags').get('server')
-            assert server_data and "production" == server_data.get('value'), \
+            server_data = self.get_inner_object(general_flags.content, 'server')
+            assert server_data and "production" == server_data.content, \
                 f"Error! server flag in general section is incorrect!\n" \
-                f"expected: 'production', actual: '{server_data}'"
+                f"expected: 'production', actual: '{server_data.content}'"
 
-            rule_data = e.data.general.get('rule')
-            assert rule_data and "dummy_rule" in rule_data.get('value') and "list" == rule_data.get('flag_type') \
-                   and "prover/cli" in rule_data.get('doc_link'), \
+            rule_data = self.get_inner_object(general.content, 'rule')
+            assert rule_data and "dummy_rule" in rule_data.content and "SIMPLE" == rule_data.content_type \
+                   and "prover/cli" in rule_data.doc_link, \
                    f"Error! rule subsection in general section is incorrect!\n" \
-                   f"expected: dummy_rule in value, flag_type: list and 'prover/cli' in doc_link,\n" \
+                   f"expected: dummy_rule in content, content_type: SIMPLE and 'prover/cli' in doc_link,\n" \
                    f"actual: '{rule_data}'"
 
     def test_override_base_config(self) -> None:

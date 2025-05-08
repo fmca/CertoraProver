@@ -526,7 +526,7 @@ class EvmAttributes(AttrUtil.Attributes):
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.PACKAGES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
@@ -605,7 +605,7 @@ class EvmAttributes(AttrUtil.Attributes):
         affects_build_cache_key=True,  # not sure, better be careful
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.LINKS
+            main_section=MainSection.NEW_SECTION
         )
     )
 
@@ -740,7 +740,8 @@ class EvmAttributes(AttrUtil.Attributes):
             'action': AttrUtil.UniqueStore
         },
         affects_build_cache_key=False,
-        disables_build_cache=False
+        disables_build_cache=False,
+        config_data=None
     )
 
     BUILD_CACHE = AttrUtil.AttributeDefinition(
@@ -1646,7 +1647,7 @@ class EvmProverAttributes(CommonAttributes, DeprecatedAttributes, EvmAttributes,
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.FILES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
@@ -1663,7 +1664,7 @@ class SorobanProverAttributes(CommonAttributes, InternalUseAttributes, BackendAt
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.FILES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
@@ -1681,7 +1682,7 @@ class SolanaProverAttributes(CommonAttributes, InternalUseAttributes, BackendAtt
         affects_build_cache_key=True,
         disables_build_cache=False,
         config_data=AttributeJobConfigData(
-            main_section=MainSection.FILES
+            main_section=MainSection.NEW_SECTION
         )
     )
 
