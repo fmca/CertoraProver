@@ -92,30 +92,30 @@ data class LabeledOrderedDigraph<@Treapable V, L>(
     /**
         Compare two subgraphs for isomorphism
      */
+    @Suppress("NAME_SHADOWING") // we intentionally shadow the outer v1 and v2
     fun areIsomorphic(
         v1: V,
         v2: V
-    ) = areIsomorphic(v1, v2, mutableSetOf())
-
-    private fun areIsomorphic(
-        v1: V,
-        v2: V,
-        visited: MutableSet<Pair<V, V>>
     ): Boolean {
-        if (labels[v1] != labels[v2]) {
-            return false
-        }
+        val work = arrayDequeOf<Pair<V, V>>(v1 to v2)
+        val visited = mutableSetOf<Pair<V, V>>(v1 to v2)
 
-        val edges1 = edges[v1].orEmpty()
-        val edges2 = edges[v2].orEmpty()
-        if (edges1.size != edges2.size) {
-            return false
-        }
+        while (work.isNotEmpty()) {
+            val (v1, v2) = work.removeLast()
 
-        edges1.zip(edges2).forEach { (e1, e2) ->
-            if (visited.add(e1 to e2)) {
-                if (!areIsomorphic(e1, e2, visited)) {
-                    return false
+            if (labels[v1] != labels[v2]) {
+                return false
+            }
+
+            val edges1 = edges[v1].orEmpty()
+            val edges2 = edges[v2].orEmpty()
+            if (edges1.size != edges2.size) {
+                return false
+            }
+
+            edges1.zip(edges2).forEach { (e1, e2) ->
+                if (visited.add(e1 to e2)) {
+                    work.addLast(e1 to e2)
                 }
             }
         }
