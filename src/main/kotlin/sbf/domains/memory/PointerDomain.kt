@@ -3245,8 +3245,8 @@ class PTAGraph(/** Global node allocator **/
               dstType: SbfType,
               srcType: SbfType,
               @Suppress("UNUSED_PARAMETER") globalsMap: GlobalVariableMap) {
-        if (dstType is SbfType.NumType && srcType is SbfType.NumType) {
-            // the pointer domain doesn't keep track of @dst
+        if (op != BinOp.MOV && (dstType is SbfType.NumType && srcType is SbfType.NumType)) {
+            // op is a binary operation where the two operands are not pointer.
             forget(dst)
             return
         }
