@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@4.0.0
   git-shallow-clone: guitarrapc/git-shallow-clone@2.8.0
+  github-cli: circleci/github-cli@2.7.0
 
 parameters:
   certora_ci_name:
@@ -29,16 +30,26 @@ commands:
 
   prepare_reg_test:
     description: "Prepares environment for regression testing"
+    parameters:
+      certora_cli_package:
+        type: string
+        default: "local"
     steps:
       - run:
           name: Install Python Dependencies
           command: |
-            pip install twine
+            pip install twine setuptools==75.8.2
             pip install -r scripts/certora_cli_requirements.txt
       - run:
           name: Install Certora CLI
           command: |
-            python3 scripts/certora_cli_publish.py --local_install --pip_command pip
+            if [[ "<< parameters.certora_cli_package >>" == "local" ]]; then
+              echo "Installing local Certora CLI version."
+              python3 scripts/certora_cli_publish.py --local_install --pip_command pip
+            else
+              echo "Installing << parameters.certora_cli_package >>==$CIRCLE_TAG."
+              pip install << parameters.certora_cli_package >>==$CIRCLE_TAG
+            fi
 
   run_evm_sanity:
     description: "Runs the EVM sanity tests"
@@ -99,8 +110,8 @@ commands:
       - run:
           name: Get dependencies for publishing python package
           command: |
+            python3 -m pip install twine wheel argcomplete setuptools==75.8.2
             python3 -m pip install -r scripts/certora_cli_requirements.txt
-            python3 -m pip install twine wheel argcomplete
       - download_gambit
       - run:
           name: Run deployment script
@@ -280,6 +291,10 @@ jobs:
             fi
 
   certora_prover_sanity:
+    parameters:
+      certora_cli_package:
+        type: string
+        default: "local"
     docker:
       - image: *img
     working_directory: ~/repo
@@ -290,7 +305,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - prepare_reg_test
+      - prepare_reg_test:
+          certora_cli_package: << parameters.certora_cli_package >>
       - run_evm_sanity
 #      - run_solana_sanity
       - run_soroban_sanity
@@ -324,6 +340,29 @@ jobs:
             --header "Circle-Token: $CIRCLE_TOKEN" \
             --header "content-type: application/json" \
             --data '{"branch":"master"}'
+
+  upload_artifact:
+      parameters:
+        tag_name:
+          type: string
+          default: ${CIRCLE_TAG}
+          description: "The tag name to upload the artifact to"
+      docker:
+        - image: cimg/base:current
+      resource_class: small
+      working_directory: ~/repo/
+      steps:
+        - git-shallow-clone/checkout_advanced:
+            clone_options: '--depth 1'
+        - attach_workspace:
+            at: ~/
+        - github-cli/setup
+        - run:
+            name: Upload artifact to GitHub
+            command: |
+              PROVER_JAR="certora-prover-<< parameters.tag_name >>.jar"
+              cp emv.jar $PROVER_JAR
+              gh release upload << parameters.tag_name >> $PROVER_JAR
 
   # Beta mirror releases - tag based
   release_cli_beta_mirror:
@@ -369,30 +408,37 @@ workflows:
 
   # Release a new certora-cli-beta, beta is released only on tags.
   release-beta:
+    when:
+      and:
+        - not: << pipeline.parameters.release_prod_version >>
     jobs:
       - build:
           filters:
             tags:
               only: &semver /^(\d|[1-9]\d)\.(\d|[1-9]\d)\.(\d|[1-9]\d)$/
             branches:
-              ignore:
-                - *all
+              ignore: *all
       - jar_deploy:
-          context:
-            - aws_artifacts
+          context: aws_artifacts
           requires:
             - build
           filters:
             tags:
               only: *semver
             branches:
-              ignore:
-                - *all
-      - release_cli_beta:
-          context:
-            - opscertora
+              ignore: *all
+      - upload_artifact:
+          context: github-token
           requires:
-            - build
+            - jar_deploy
+          filters:
+            tags:
+              only: *semver
+            branches:
+              ignore: *all
+      - release_cli_beta:
+          context: opscertora
+          requires:
             - jar_deploy
           filters:
             tags:
@@ -401,17 +447,23 @@ workflows:
               ignore:
                 - *all
       - release_cli_beta_mirror:
-          context:
-            - opscertora
+          context: opscertora
           requires:
-            - build
             - jar_deploy
           filters:
             tags:
               only: *semver
             branches:
-              ignore:
-                - *all
+              ignore: *all
+      - certora_prover_sanity:
+          certora_cli_package: "certora-cli-beta"
+          requires:
+            - release_cli_beta
+          filters:
+            tags:
+              only: *semver
+            branches:
+              ignore: *all
 
   release_prod_version_certora_cli:
     when: << pipeline.parameters.release_prod_version >>
@@ -426,6 +478,16 @@ workflows:
       - release_cli:
           requires:
             - build
+          filters:
+            tags:
+              only: *semver
+            branches:
+              ignore:
+                - *all
+      - certora_prover_sanity:
+          certora_cli_package: "certora-cli"
+          requires:
+            - release_cli
           filters:
             tags:
               only: *semver
