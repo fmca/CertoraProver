@@ -234,11 +234,11 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires={required_python_packages},
-    project_urls={
+    project_urls={{
         'Documentation': 'https://docs.certora.com/en/latest/',
         'Source': 'https://github.com/Certora/CertoraProver',
-    },
-    license='GPL-3.0-or-later',
+    }},
+    license="GPL-3.0-or-later",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"
