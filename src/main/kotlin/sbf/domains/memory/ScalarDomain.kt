@@ -839,7 +839,8 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
     }
 
-    private fun analyzeAssume(cond: Condition) {
+    @TestOnly
+    fun analyzeAssume(cond: Condition) {
         val op = cond.op
         val leftReg = cond.left
         val rightVal = cond.right

@@ -81,23 +81,9 @@ class ScalarDomainTest {
             }
         }
         println("$cfg")
-        val globals = newGlobalVariableMap()
-        val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
-        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
-
-        val b0 = cfg.getBlock(Label.Address(0))
-        check (b0 != null)
-        for (locInst in b0.getLocatedInstructions()) {
-            val types = locInst.inst.readRegisters.map {
-                Pair(it.r, regTypes.typeAtInstruction(locInst, it.r))
-            }
-            println("Before ${locInst.inst} -> $types")
-            // We prove the assert by checking that the value of r4 is zero
-            if (locInst.inst.isAssertOrSatisfy()) {
-                val type = regTypes.typeAtInstruction(locInst, SbfRegister.R4_ARG)
-                Assertions.assertEquals(type, sbfTypesFac.toNum(0))
-            }
+        val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
+        for (check in prover.checks) {
+            Assertions.assertEquals(true, check.result)
         }
     }
 
@@ -143,19 +129,10 @@ class ScalarDomainTest {
             }
         }
         println("$cfg")
-        val globals = newGlobalVariableMap()
-        val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
-        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
-
-        val b0 = cfg.getBlock(Label.Address(0))
-        check (b0 != null)
-        val firstInst = b0.getLocatedInstructions().first()
-        val firstType = regTypes.typeAtInstruction(firstInst, SbfRegister.R4_ARG)
-        Assertions.assertEquals(true, firstType.isTop())
-        val secondInst = b0.getLocatedInstructions().drop(1).first()
-        val secondType = regTypes.typeAtInstruction(secondInst, SbfRegister.R4_ARG)
-        Assertions.assertEquals(true, secondType is SbfType.NumType && secondType.value.get() == 5L)
+        val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
+        for (check in prover.checks) {
+            Assertions.assertEquals(true, check.result)
+        }
     }
 
     @Test
@@ -177,23 +154,10 @@ class ScalarDomainTest {
             }
         }
         println("$cfg")
-        val globals:GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
-        val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
-        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
-
-        val b0 = cfg.getBlock(Label.Address(0))
-        check (b0 != null)
-        val loadInst = b0.getLocatedInstructions().drop(3).first()
-        val loadBaseType = regTypes.typeAtInstruction(loadInst, SbfRegister.R1_ARG)
-        println("$loadInst -> $loadBaseType")
-        Assertions.assertEquals(true, loadBaseType is SbfType.PointerType.Stack && loadBaseType.offset.get()  == 3992L)
-
-        val assertInst = b0.getLocatedInstructions().drop(4).first()
-        val assertType = regTypes.typeAtInstruction(assertInst, SbfRegister.R1_ARG)
-        println("$assertInst -> $assertType")
-        Assertions.assertEquals(true, assertType is SbfType.NumType && assertType.value.get()  == 5L)
-
+        val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
+        for (check in prover.checks) {
+            Assertions.assertEquals(true, check.result)
+        }
     }
 
     @Test
@@ -279,29 +243,10 @@ class ScalarDomainTest {
             }
         }
         println("$cfg")
-        val globals = newGlobalVariableMap()
-        val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
-        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
-
-        val b0 = cfg.getEntry()
-        val sb = StringBuffer()
-        for (locInst in b0.getLocatedInstructions()) {
-            val inst = locInst.inst
-            sb.append("$inst = {")
-            for (reg in inst.readRegisters) {
-                val type = regTypes.typeAtInstruction(locInst, reg.r)
-                sb.append("$reg")
-                sb.append(" -> ")
-                sb.append("$type;")
-            }
-            sb.append("}\n")
-            if (inst.isAssertOrSatisfy()) {
-                val assertType = regTypes.typeAtInstruction(locInst, SbfRegister.R5_ARG)
-                Assertions.assertEquals(true, assertType is SbfType.NumType && assertType.value.get()  == 5L)
-            }
+        val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
+        for (check in prover.checks) {
+            Assertions.assertEquals(true, check.result)
         }
-        println(sb.toString())
     }
 
 
@@ -326,19 +271,10 @@ class ScalarDomainTest {
             }
         }
         println("$cfg")
-        val globals = newGlobalVariableMap()
-        val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
-        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
-
-        val b0 = cfg.getBlock(Label.Address(0))
-        check (b0 != null)
-
-        val assertInst = b0.getLocatedInstructions().last()
-        val assertType = regTypes.typeAtInstruction(assertInst, SbfRegister.R1_ARG)
-        println("$assertInst -> $assertType")
-        Assertions.assertEquals(false, assertType is SbfType.NumType && assertType.value.get()  == 5L)
-
+        val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
+        for (check in prover.checks) {
+            Assertions.assertEquals(false, check.result)
+        }
     }
 
     @Test
@@ -362,19 +298,10 @@ class ScalarDomainTest {
             }
         }
         println("$cfg")
-        val globals: GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
-        val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
-        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
-
-        val b0 = cfg.getBlock(Label.Address(0))
-        check (b0 != null)
-
-        val assertInst = b0.getLocatedInstructions().last()
-        val assertType = regTypes.typeAtInstruction(assertInst, SbfRegister.R1_ARG)
-        println("$assertInst -> $assertType")
-        Assertions.assertEquals(true, assertType is SbfType.NumType && assertType.value.get()  == 10L)
-
+        val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
+        for (check in prover.checks) {
+            Assertions.assertEquals(true, check.result)
+        }
     }
 
 }
