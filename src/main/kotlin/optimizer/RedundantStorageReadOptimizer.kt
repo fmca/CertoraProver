@@ -17,24 +17,17 @@
 
 package optimizer
 
-import analysis.LTACCmd
-import analysis.LTACCmdView
-import analysis.TACCommandGraph
-import analysis.narrow
+import analysis.*
 import analysis.worklist.IWorklistScheduler
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StepResult
 import analysis.worklist.WorklistIteration
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import instrumentation.StoragePackedLengthSummarizer
 import tac.NBId
-import utils.keysMatching
-import utils.mapNotNull
-import utils.pointwiseBinopOrNull
+import utils.*
 import vc.data.*
 import verifier.BlockMerger
-import java.util.stream.Collector
 
 /**
  * Finds two decodes of a string length (as determined by
@@ -53,11 +46,16 @@ import java.util.stream.Collector
  * ```
  */
 object RedundantStorageReadOptimizer {
-    sealed class StorageRead {
+    private sealed class StorageRead {
         data class LengthDecode(override val index: TACSymbol) : StorageRead()
-        data class Direct(override val index: TACSymbol) : StorageRead()
+        data class RawSlot(override val index: TACSymbol) : StorageRead()
         abstract val index: TACSymbol
     }
+
+    private data class Rewrite(
+        val lengthVar: TACSymbol.Var,
+        val rawSlotVar: TACSymbol.Var?
+    )
 
     fun optimizeReads(c: CoreTACProgram) : CoreTACProgram {
         val state = mutableMapOf<NBId, TreapMap<TACSymbol.Var, StorageRead>>()
@@ -65,24 +63,48 @@ object RedundantStorageReadOptimizer {
             state[b.id] = treapMapOf()
         }
         val graph = c.analysisCache.graph
+        val replacements = mutableMapOf<CmdPointer, Rewrite>()
 
         /**
          * Given a command that holds [instrumentation.StoragePackedLengthSummarizer.StorageLengthReadSummary], determine
          * whether the decoded length is used immediately to allocate a string.
          */
         val success = object : WorklistIteration<NBId, Unit, Boolean>() {
-            override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph = c.analysisCache.graph)
+            override val scheduler: IWorklistScheduler<NBId> = c.analysisCache.naturalBlockScheduler
 
             override fun process(it: NBId): StepResult<NBId, Unit, Boolean> {
-                val st = state[it]!!.builder()
+                var st = state[it]!!.builder()
                 val knownIndices = mutableSetOf<TACSymbol.Var>()
                 st.mapNotNullTo(knownIndices) {
                     it.value.index as? TACSymbol.Var
                 }
 
                 val block = graph.elab(it)
+
                 for(lc in block.commands) {
-                    stepCommand(lc, st, knownIndices)
+                    /**
+                     * Clear all our state if we see any mutation of storage, this is a very coare grained "may-aliasing"
+                     * check (everything can alias)
+                     */
+                    if(lc.cmd is TACCmd.Simple.WordStore && lc.cmd.base.meta.find(TACMeta.STORAGE_KEY) != null) {
+                        st.clear()
+                    } else if(lc.cmd is TACCmd.Simple.AssigningCmd && lc.cmd.lhs.meta.find(TACMeta.STORAGE_KEY) != null) {
+                        st.clear()
+                    } else if(lc.cmd is TACCmd.Simple.AssigningCmd) {
+                        /*
+                         * Otherwise, kill the state related to the lhs.
+                         */
+                        if(lc.cmd.lhs in st || lc.cmd.lhs in knownIndices) {
+                            st = st.build().updateValues { k: TACSymbol.Var, storageRead: StorageRead ->
+                                if(k == lc.cmd.lhs || storageRead.index == lc.cmd.lhs) {
+                                    null
+                                } else {
+                                    storageRead
+                                }
+                            }.builder()
+                            knownIndices.remove(lc.cmd.lhs)
+                        }
+                    }
                 }
                 val work = mutableListOf<NBId>()
                 for((dst, cond) in graph.pathConditionsOf(it)) {
@@ -90,17 +112,53 @@ object RedundantStorageReadOptimizer {
                         continue
                     }
                     val s = if(cond is TACCommandGraph.PathCondition.Summary && cond.s is StoragePackedLengthSummarizer.StorageLengthReadSummary) {
+                        val finalCmd = block.commands.last()
+                        check(finalCmd.snarrowOrNull<StoragePackedLengthSummarizer.StorageLengthReadSummary>() == cond.s) {
+                            "Impossible path condition, have summary condition: ${cond.s} but the final command of the block is $finalCmd"
+                        }
                         if(dst == cond.s.originalBlockStart) {
                             continue
                         }
                         check(dst == cond.s.skipTarget) {
                             "Unexpected destination"
                         }
-                        val lengthIndex =  getDecodedIndex(cond.s) ?: return StepResult.StopWith(false)
-                        if (lengthIndex != cond.s.outputVar) {
-                            st.build() + (cond.s.outputVar to StorageRead.LengthDecode(lengthIndex))
+                        val decodeIndex =  getDecodedIndex(cond.s) ?: return StepResult.StopWith(false)
+                        // is there something in our state already?
+                        val summ = cond.s
+                        val existingIdx = st.findEntry { _, z ->
+                            z is StorageRead.LengthDecode && z.index == decodeIndex
+                        }
+                        val existingRawSlot = if(summ.storageSlotVar != null) {
+                            st.findEntry { _, z ->
+                                z is StorageRead.RawSlot && z.index == decodeIndex
+                            }
+                        } else { null }
+                        val killed = st.build().updateValues { p: TACSymbol.Var, read: StorageRead ->
+                            if(p !in summ.modifiedVars && read.index !in summ.modifiedVars) {
+                                read
+                            } else {
+                                null
+                            }
+                        }
+                        if(existingIdx != null && (summ.storageSlotVar == null || existingRawSlot != null)) {
+                            replacements[finalCmd.ptr] = Rewrite(
+                                lengthVar = existingIdx.first,
+                                rawSlotVar = existingRawSlot?.first // this is non-null if it has to be by the check above
+                            )
+                            killed
                         } else {
-                            st.build()
+                            replacements.remove(finalCmd.ptr)
+                            // now record this is a fresh alias for later redundant reads
+                            if(summ.outputVar != decodeIndex && summ.storageSlotVar != decodeIndex) {
+                                val withNewBindings = killed.builder()
+                                withNewBindings[summ.outputVar] = StorageRead.LengthDecode(decodeIndex)
+                                if(summ.storageSlotVar != null) {
+                                    withNewBindings[summ.storageSlotVar] = StorageRead.RawSlot(decodeIndex)
+                                }
+                                withNewBindings.build()
+                            } else {
+                                killed
+                            }
                         }
                     } else {
                         st.build()
@@ -129,86 +187,31 @@ object RedundantStorageReadOptimizer {
         if(!success) {
             return c
         }
-        val rewrites = graph.blocks.parallelStream().mapNotNull {
-            val ret = mutableSetOf<RewriteType>()
-            val st = state[it.id]?.toMutableMap() ?: return@mapNotNull null
-            for(lc in it.commands) {
-                if(lc.cmd is TACCmd.Simple.AssigningCmd.WordLoad && lc.cmd.base.meta.find(TACMeta.STORAGE_KEY) != null) {
-                    val index = lc.cmd.loc
-                    val existing = st.keysMatching { _, storageRead ->
-                        storageRead is StorageRead.Direct && storageRead.index == index
-                    }.firstOrNull()
-                    if(existing != null) {
-                        ret.add(RewriteType.AliasVar(
-                            where = lc.narrow<TACCmd.Simple.AssigningCmd>(),
-                            rhs = existing
-                        ))
-                    }
-                } else if(lc.cmd is TACCmd.Simple.SummaryCmd && lc.cmd.summ is StoragePackedLengthSummarizer.StorageLengthReadSummary && it.commands.size == 1) run {
-                    val ind = getDecodedIndex(lc.cmd.summ) ?: return@run
-                    val existing = st.keysMatching { _, storageRead ->
-                        storageRead is StorageRead.LengthDecode && storageRead.index == ind
-                    }.firstOrNull() ?: return@run
-                    ret.add(RewriteType.RemoveSummary(
-                        rhs = existing,
-                        lhs = lc.cmd.summ.outputVar,
-                        summaryBlock = it.id,
-                        target = lc.cmd.summ.skipTarget
-                    ))
-                }
-                stepCommand(lc = lc, st = st, knownIndices = null)
-            }
-            ret
-        }.collect(Collector.of({
-            mutableSetOf<RewriteType>()
-        }, { t: MutableSet<RewriteType>, u ->
-            t.addAll(u)
-        }, { t, u ->
-            t.addAll(u)
-            t
-        }))
-        if(rewrites.isEmpty()) {
+        if(replacements.isEmpty()) {
             return c
         }
         return c.patching { p ->
-            for(r in rewrites) {
-                when(r) {
-                    is RewriteType.AliasVar -> {
-                        /* TODO(jtoman): The storage unpacker will break if we do this; sharing storage accesses
-                            between an unpacked write and unpacked read breaks a pretty fundamental invariant of the
-                            storage unpacker.
-                         */
-                        /*p.replaceCommand(r.where.ptr, listOf(
-                            TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                                lhs = r.where.cmd.lhs,
-                                rhs = r.rhs.asSym(),
-                                meta = r.where.cmd.meta
-                            )
-                        ))*/
-                    }
-                    is RewriteType.RemoveSummary -> {
-                        p.consolidateEdges(r.target, listOf(r.summaryBlock))
-                        p.addBefore(graph.elab(r.target).commands.first().ptr, listOf(
-                            TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                                lhs = r.lhs,
-                                rhs = r.rhs.asSym()
-                            )
-                        ))
-                    }
+            for((where, r) in replacements) {
+                val origSummary = graph.elab(where).snarrowOrNull<StoragePackedLengthSummarizer.StorageLengthReadSummary>()!!
+                val newHead = p.splitBlockBefore(where)
+                p.consolidateEdges(origSummary.skipTarget, listOf(newHead))
+                val toAdd = mutableListOf(
+                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = origSummary.outputVar,
+                        rhs = r.lengthVar
+                    )
+                )
+                if(r.rawSlotVar != null && origSummary.storageSlotVar != null) {
+                    toAdd.add(TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = origSummary.storageSlotVar,
+                        rhs = r.rawSlotVar
+                    ))
                 }
+                p.addBefore(graph.elab(origSummary.skipTarget).commands.first().ptr, toAdd)
             }
         }.let(BlockMerger::mergeBlocks)
     }
 
-    private sealed class RewriteType {
-        data class AliasVar(val where: LTACCmdView<TACCmd.Simple.AssigningCmd>, val rhs: TACSymbol.Var) : RewriteType()
-        data class RemoveSummary(
-            val summaryBlock: NBId,
-            val lhs: TACSymbol.Var,
-            val rhs: TACSymbol.Var,
-            val target: NBId
-        ) : RewriteType()
-    }
 
     private fun getDecodedIndex(s: StoragePackedLengthSummarizer.StorageLengthReadSummary) : TACSymbol? {
         return when(s.readSort) {
@@ -216,32 +219,6 @@ object RedundantStorageReadOptimizer {
             is StoragePackedLengthSummarizer.SizeReadSort.UnpackRead -> s.readSort.read.meta.find(TACMeta.SCALARIZATION_SORT)?.let {
                 it as? ScalarizationSort.Split
             }?.idx?.asTACSymbol()
-        }
-    }
-
-    private fun stepCommand(lc: LTACCmd, st: MutableMap<TACSymbol.Var, StorageRead>, knownIndices: MutableSet<TACSymbol.Var>?) {
-        if(lc.cmd is TACCmd.Simple.WordStore && lc.cmd.base.meta.find(TACMeta.STORAGE_KEY) != null) {
-            st.clear()
-        } else if(lc.cmd is TACCmd.Simple.AssigningCmd && lc.cmd.lhs.meta.find(TACMeta.STORAGE_KEY) != null) {
-            st.clear()
-        } else if(lc.cmd is TACCmd.Simple.AssigningCmd) {
-            if(knownIndices != null && lc.cmd.lhs in knownIndices) {
-                val eIt = st.entries.iterator()
-                while(eIt.hasNext()) {
-                    val (k, _) = eIt.next()
-                    if(k == lc.cmd.lhs) {
-                        eIt.remove()
-                    }
-                }
-            }
-            if(lc.cmd is TACCmd.Simple.AssigningCmd.WordLoad && lc.cmd.base.meta.find(TACMeta.STORAGE_KEY) != null && lc.cmd.lhs != lc.cmd.loc) {
-                if(lc.cmd.loc is TACSymbol.Var && knownIndices != null) {
-                    knownIndices.add(lc.cmd.loc)
-                }
-                st[lc.cmd.lhs] = StorageRead.Direct(
-                    index = lc.cmd.loc
-                )
-            }
         }
     }
 }

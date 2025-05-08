@@ -139,14 +139,13 @@ data class ContractInstanceInSDC(
      * The hints are computed based on the original files, so we need to keep it too
      */
     val origSourceDir: String = ".",
-    val localAssignments: Map<String, LocalAssignmentSourceHint> = emptyMap(),
-    val internalFunctionStarts: List<Int> = listOf()
+    val localAssignments: Map<String, LocalAssignmentSourceHint> = emptyMap()
 ): SerializableWithAdapter {
 
     override fun hashCode() = hash {
         it + name + original_file + lang + file + address + methods + bytecode + constructorBytecode + srcmap +
         varmap + constructorSrcmap + storageLayout + state + structLinkingInfo + legacyStructLinking +
-            srclist + linkCandidates + immutables + allMethods + internalFunctions + is_static_address + sourceBytes + internalFunctionStarts
+            srclist + linkCandidates + immutables + allMethods + internalFunctions + is_static_address + sourceBytes
         // no need to include compiler name and flags, those all impact the bytecode and constructorBytecode
     }
 

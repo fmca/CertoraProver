@@ -1518,8 +1518,7 @@ class CertoraBuildGenerator:
             sources_dict = {str(contract_file_posix_abs): {
                 "urls": [str(contract_file_posix_abs)]}}  # type: Dict[str, Dict[str, Any]]
             output_selection = ["transientStorageLayout", "storageLayout", "abi", "evm.bytecode",
-                                "evm.deployedBytecode", "evm.methodIdentifiers", "evm.assembly",
-                                "evm.bytecode.functionDebugData"]
+                                "evm.deployedBytecode", "evm.methodIdentifiers", "evm.assembly"]
             ast_selection = ["id", "ast"]
         elif compiler_collector_lang == CompilerLangVy():
             with open(contract_file_posix_abs) as f:
@@ -2249,14 +2248,6 @@ class CertoraBuildGenerator:
                                                          build_arg_contract_file)
         immutables = self.collect_immutables(contract_data, build_arg_contract_file, compiler_lang)
 
-        internal_function_entrypoints = set([])
-
-        if compiler_lang == CompilerLangSol() and "functionDebugData" in contract_data["evm"]["deployedBytecode"]:
-            debug = contract_data["evm"]["deployedBytecode"]["functionDebugData"]
-            for (_, v) in debug.items():
-                if "entryPoint" in v and v["entryPoint"] is not None:
-                    internal_function_entrypoints.add(v["entryPoint"])
-
         if self.context.internal_funcs is not None:
             all_internal_functions: Dict[str, Any] = \
                 Util.read_json_file(self.context.internal_funcs)
@@ -2307,8 +2298,7 @@ class CertoraBuildGenerator:
                              extension_contracts=list(),
                              local_assignments={},
                              branches={},
-                             requires={},
-                             internal_starts=list(internal_function_entrypoints)
+                             requires={}
                              )
 
     @staticmethod

@@ -72,7 +72,8 @@ object StoragePackedLengthSummarizer {
         override val modifiedVars: Set<TACSymbol.Var>,
         override val summarizedBlocks: Set<NBId>,
         val readSort: SizeReadSort,
-        val outputVar: TACSymbol.Var
+        val outputVar: TACSymbol.Var,
+        val storageSlotVar: TACSymbol.Var?
     ) : ConditionalBlockSummary {
         override val variables: Set<TACSymbol.Var>
             get() = setOf()
@@ -97,7 +98,8 @@ object StoragePackedLengthSummarizer {
                         )
                     }
                 },
-                outputVar = f(outputVar)
+                outputVar = f(outputVar),
+                storageSlotVar = storageSlotVar?.let(f)
             )
         }
 
@@ -109,7 +111,8 @@ object StoragePackedLengthSummarizer {
                 modifiedVars = modifiedVars,
                 summarizedBlocks = summarizedBlocks.mapNotNullTo(mutableSetOf(), f),
                 readSort = readSort,
-                outputVar = outputVar
+                outputVar = outputVar,
+                storageSlotVar = storageSlotVar
             )
         }
     }
@@ -132,7 +135,7 @@ object StoragePackedLengthSummarizer {
             override val output: TACSymbol.Var,
             val commute: List<LTACCmdView<TACCmd.Simple.AssigningCmd>>,
             val commuteTarget: LTACCmd,
-            override val readLoc: LTACCmd
+            override val readLoc: LTACCmd,
         ) : SummarizationMutSpec()
 
         /**
@@ -146,7 +149,8 @@ object StoragePackedLengthSummarizer {
             override val output: TACSymbol.Var,
             val intermediateBlocks: Set<NBId>,
             val decodeSuccessor: NBId,
-            override val readLoc: LTACCmd
+            override val readLoc: LTACCmd,
+            val storageSlotVar: TACSymbol.Var?
         ) : SummarizationMutSpec()
     }
 
@@ -230,7 +234,8 @@ object StoragePackedLengthSummarizer {
                         originalBlockStart = block,
                         skipTarget = succ.first(),
                         summarizedBlocks = setOf(block),
-                        modifiedVars = mut.mutVariables
+                        modifiedVars = mut.mutVariables,
+                        storageSlotVar = null
                     )
                 }
                 is SummarizationMutSpec.MultiBlockSplit -> {
@@ -245,7 +250,8 @@ object StoragePackedLengthSummarizer {
                         summarizedBlocks = mut.intermediateBlocks + head,
                         skipTarget = mut.decodeSuccessor,
                         originalBlockStart = head,
-                        outputVar = mut.output
+                        outputVar = mut.output,
+                        storageSlotVar = mut.storageSlotVar
                     )
                 }
             }
@@ -396,8 +402,9 @@ object StoragePackedLengthSummarizer {
                more than one, give up
              */
             val rawSlotVar = bitTest.readLoc.narrow<TACCmd.Simple.AssigningCmd>().cmd.lhs
+            val finalJoin = g.elab(joinPoint).commands.last().ptr
             val resultVar = summarization.transFormula.assignedVars.singleOrNull {
-                g.cache.lva.isLiveAfter(g.elab(joinPoint).commands.last().ptr, it.sym) && it.sym != rawSlotVar
+                g.cache.lva.isLiveAfter(finalJoin, it.sym) && it.sym != rawSlotVar
             } ?: return null
             val smtVar = summarization.transFormula.outVars[resultVar]
                 ?: error("TransFormula class invariant violated: assigned var must be an outVar.")
@@ -547,7 +554,10 @@ object StoragePackedLengthSummarizer {
                         revert.first()
                     ) + diamond,
                     decodeSuccessor = goodPath.single(),
-                    readLoc = bitTest.readLoc
+                    readLoc = bitTest.readLoc,
+                    storageSlotVar = rawSlotVar.takeIf { _ ->
+                        g.cache.strictDef.source(finalJoin, rawSlotVar) == g.cache.strictDef.source(bitTest.maskLocation.ptr, rawSlotVar)
+                    }
                 ))
             }
         }
