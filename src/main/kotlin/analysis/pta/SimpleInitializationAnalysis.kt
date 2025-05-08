@@ -193,7 +193,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
         val failurePoints: Set<CmdPointer>,
         val markLengthReads: Set<CmdPointer>,
         val deadAllocations: Set<AllocationAnalysis.AbstractLocation>,
-        val markDefiniteBounds: Set<CmdPointer>
+        val markDefiniteBounds: Set<CmdPointer>,
+        val inferredLoopBounds: Map<NBId, BigInteger>
     )
 
     private fun outerAnalysisLoop(): InitLoopResult {
@@ -258,7 +259,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                     )
                     store.ptr.copy(pos = store.ptr.pos + 1)
                 } ?: loc.sort.finalWrite
-                toRet[loc] = AnalysisResult.Complete(close = closePoint.toBefore(), nested = setOf(), mutated = setOf(), markTop = setOf(), markDefiniteBounds = setOf())
+                toRet[loc] = AnalysisResult.Complete(close = closePoint.toBefore(), nested = setOf(), mutated = setOf(), markTop = setOf(), markDefiniteBounds = setOf(), loopBounds = mapOf())
                 logger.debug {
                     "Initialization for $loc (a packed byte array) trivially ends at final write ${loc.sort.finalWrite}"
                 }
@@ -270,7 +271,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                     nested = setOf(),
                     mutated = setOf(),
                     markTop = setOf(),
-                    markDefiniteBounds = setOf()
+                    markDefiniteBounds = setOf(),
+                    loopBounds = mapOf()
                 )
                 continue
             }
@@ -279,7 +281,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                     failures.addAll(readSites)
                     failLocs.add(loc)
                     null
-                } ?: continue, nested = setOf(), mutated = setOf(), markTop = setOf(), markDefiniteBounds = setOf())
+                } ?: continue, nested = setOf(), mutated = setOf(), markTop = setOf(), markDefiniteBounds = setOf(), loopBounds = mapOf())
                 continue
             }
             // find the "first" read
@@ -314,7 +316,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             nested = setOf(),
                             mutated = setOf(),
                             markTop = setOf(),
-                            markDefiniteBounds = setOf()
+                            markDefiniteBounds = setOf(),
+                            loopBounds = mapOf()
                         )
                         continue
                     }
@@ -469,7 +472,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                         dep = setOf(),
                         mutated = setOf(),
                         markTop = setOf(),
-                        markDefiniteBounds = setOf()
+                        markDefiniteBounds = setOf(),
+                        loopBounds = treapMapOf()
                     )
                 )
             } else {
@@ -497,7 +501,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             dep = setOf(),
                             mutated = setOf(),
                             markTop = setOf(),
-                            markDefiniteBounds = setOf()
+                            markDefiniteBounds = setOf(),
+                            loopBounds = treapMapOf()
                         )
                 )
             }
@@ -599,25 +604,29 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
         failLocs.flatMapTo(failures) {
             sites[it].orEmpty()
         }
-        return toRet.mapValues {
+        val withDependencies = toRet.mapValues {
             it.value.copy(
-                nested = depMap[it.key] ?: setOf()
-            )
-        }.let {
-
-            InitLoopResult(
-                closePoints = it,
-                fourByteWrite = fourByteWrites,
-                failurePoints = failures,
-                markLengthReads = it.flatMapTo(mutableSetOf()) {
-                    it.value.markTop
-                },
-                deadAllocations = deadAllocations,
-                markDefiniteBounds = it.flatMapTo(mutableSetOf()) {
-                    it.value.markDefiniteBounds
-                }
+                nested = depMap[it.key].orEmpty()
             )
         }
+        val inferredBounds = toRet.flatMap { (_, comp) ->
+            comp.loopBounds.entries
+        }.groupBy({ it.key }, { it.value }).mapValues { (l, bounds) ->
+            bounds.uniqueOrNull() ?: error("Conflicting bounds for loop $l: $bounds, this can't be right")
+        }
+        return InitLoopResult(
+            closePoints = withDependencies,
+            fourByteWrite = fourByteWrites,
+            failurePoints = failures,
+            markLengthReads = withDependencies.flatMapTo(mutableSetOf()) {
+                it.value.markTop
+            },
+            deadAllocations = deadAllocations,
+            markDefiniteBounds = withDependencies.flatMapTo(mutableSetOf()) {
+                it.value.markDefiniteBounds
+            },
+            inferredLoopBounds = inferredBounds
+        )
     }
 
     private val storageArrayLengthFinder by lazy {
@@ -729,6 +738,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
         val mutated = start.mutated.toMutableSet()
         val markTop = start.markTop.toMutableSet()
         val markDefiniteBounds = start.markDefiniteBounds.toMutableSet()
+        val loopBounds = start.loopBounds.builder()
         return (object : StatefulWorklistIteration<CmdPointer, AnalysisIR, AnalysisResult?>() {
             override val scheduler: IWorklistScheduler<CmdPointer> = object : IWorklistScheduler<CmdPointer> {
                 private val wrapped = blockScheduler
@@ -811,7 +821,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             CloseLocation.AlongEdge(from = pred, to = curr, zeroWritePointer = zeroWritePoint.singleOrNull())
                         }
                     } ?: error("$inducedClose & $close for $thisLoc"))
-                    return AnalysisResult.Complete(close = closePoint, nested = setOf(), mutated = mutated, markTop = markTop, markDefiniteBounds = markDefiniteBounds)
+                    return AnalysisResult.Complete(close = closePoint, nested = setOf(), mutated = mutated, markTop = markTop, markDefiniteBounds = markDefiniteBounds, loopBounds = loopBounds)
                 } else {
                     logger.debug { "In analyzing $thisLoc, encountered new nested dependency on $nested. Suspending" }
                     val newIr : MutableList<AnalysisIR.InitClose> = start.ir.toMutableList()
@@ -832,7 +842,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                         dep = start.dep + nested,
                         mutated = mutated,
                         markTop = markTop,
-                        markDefiniteBounds = markDefiniteBounds
+                        markDefiniteBounds = markDefiniteBounds,
+                        loopBounds = loopBounds.build()
                     )
                 }
             }
@@ -888,6 +899,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                 }
                 val writeSummarizer = InitializationLoopSummarization(state, thisLoc, blaster)
                 val writeEvery = pool.run(writeSummarizer.isArrayWriteStride(summ)).singleOrNull()
+
                 if(writeEvery == null) {
                     logger.info {
                         "This loop $l writes memory but it is not an array write stride. marking writes with bounded proof obligation"
@@ -905,23 +917,51 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                     }
                     return skipLoop()
                 }
-                if(state.elemSize == null) {
-                    if(writeEvery.assumedSize == 32.toBigInteger() && writeEvery.roles.entries.firstOrNull {
-                            it.value == AbstractArraySummaryExtractor.LoopRole.LENGTH
-                        }?.key?.let {
-                            state.num[it]?.x?.isConstant == true
-                        } == true) {
-                        val s = l.exitEdge ?: return run {
-                            logger.warn {
-                                "Failed to find unique successor of loop $l. Failing analysis of $thisLoc"
-                            }
-                            this.halt(null)
-                        }
-                        havocMutSet(state, mutated, summ.iterationEffect.keys)
-                        return this.result(AnalysisIR.InitClose(v = s.second, pathInducedClose = false, pred = s.first, zeroWritePoint = null))
+                // if this is a constant array allocation loop, record that information as a hint to the unroller later
+                if(thisLoc.sort is AllocationAnalysis.InterpAsConstantArray) {
+                    val sz = thisLoc.sort.interpAsConstantArraySize()
+                    val eSize = when(thisLoc.sort) {
+                        is AllocationAnalysis.Alloc.ConstBlock -> EVM_WORD_SIZE
+                        is AllocationAnalysis.Alloc.ConstantArrayAlloc -> thisLoc.sort.eSz
+                        is AllocationAnalysis.Alloc.ConstantStringAlloc -> BigInteger.ONE
                     }
+                    val numBytes = eSize * sz
+                    val numIterations = numBytes.divRoundUp(writeEvery.strideBy)
+                    loopBounds[l.head] = numIterations
                 }
-                if(writeEvery.assumedSize != state.elemSize && thisLoc.sort !is AllocationAnalysis.Alloc.ConstBlock) {
+                if(state.elemSize == null) {
+                    if(thisLoc.sort !is AllocationAnalysis.Alloc.ConstBlock) {
+                        logger.warn {
+                            "How can we have a null element size for dynamic type $thisLoc? Conservatively halting"
+                        }
+                        return this.halt(null)
+                    }
+                    if(writeEvery.assumedSize != EVM_WORD_SIZE || writeEvery.strideBy != EVM_WORD_SIZE) {
+                        logger.warn {
+                            "Loop analysis succeeded, but initialization stride was not word aligned: $writeEvery"
+                        }
+                        return this.halt(null)
+                    }
+                    if(writeEvery.roles.entries.any { (v, r) ->
+                            r == AbstractArraySummaryExtractor.LoopRole.LENGTH && state.num[v]?.x?.takeIf {
+                                it.isConstant
+                            }?.c != thisLoc.sort.interpAsConstantArraySize()
+                        }) {
+                        logger.warn {
+                            "Loop analysis assumed that length var ${writeEvery.roles} was not equal to length of block: ${thisLoc.sort.interpAsConstantArraySize()}"
+                        }
+                        return this.halt(null)
+                    }
+                    val s = l.exitEdge ?: return run {
+                        logger.warn {
+                            "Failed to find unique successor of loop $l. Failing analysis of $thisLoc"
+                        }
+                        this.halt(null)
+                    }
+                    havocMutSet(state, mutated, summ.iterationEffect.keys)
+                    return this.result(AnalysisIR.InitClose(v = s.second, pathInducedClose = false, pred = s.first, zeroWritePoint = null))
+                }
+                if(writeEvery.assumedSize != state.elemSize) {
                     logger.warn {
                         "Assumed size in loop summary ${writeEvery.assumedSize} != ${state.elemSize}. Failing analysis of $thisLoc"
                     }
@@ -946,7 +986,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                         is CommonFixupReasoning.PostWriteFixup.SplitFixup -> graph.succ(d.finalWrite).first()
                     }
                 }
-                if(state.seenLengthWrite != true && thisLoc.sort !is AllocationAnalysis.Alloc.ConstBlock) {
+                if(state.seenLengthWrite != true) {
                     logger.info {
                         "Loop finished, but length not yet written, updating bounds and continuing"
                     }
@@ -1530,16 +1570,12 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
             }?.factors?.get("scale")
         }
 
-        override fun isConstantSizeArray(): BigInteger? {
-            return (thisLoc.sort as? AllocationAnalysis.Alloc.ConstantArrayAlloc)?.constSize
-                ?: (thisLoc.sort as? AllocationAnalysis.Alloc.ConstBlock)?.sz?.divide(EVM_WORD_SIZE)
+        override public fun isConstantSizeArray(): BigInteger? {
+            return (thisLoc.sort as? AllocationAnalysis.InterpAsConstantArray)?.interpAsConstantArraySize()
         }
 
         override fun plausibleArraySize(l: Loop, sz: BigInteger): Boolean {
-            if(sz != state.elemSize && (thisLoc.sort !is AllocationAnalysis.Alloc.ConstBlock || sz != 32.toBigInteger())) {
-                return false
-            }
-            return true
+            return sz == state.elemSize || (thisLoc.sort is AllocationAnalysis.Alloc.ConstBlock && sz == 32.toBigInteger())
         }
     }
 
@@ -1660,13 +1696,14 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
             return null
         }
         return SimpleInitializationAnalysis.Result(
-            popResults,
-            edgeResults,
-            zeroWriteMarkers,
-            initOps.fourByteWrite,
-            initOps.failurePoints,
-            initOps.markLengthReads,
-            initOps.markDefiniteBounds
+            closePoints = popResults,
+            closeEdges = edgeResults,
+            zeroWriteMarkers = zeroWriteMarkers,
+            fourByteWrite = initOps.fourByteWrite,
+            failurePoints = initOps.failurePoints,
+            markTopLocs = initOps.markLengthReads,
+            markDefiniteBounds = initOps.markDefiniteBounds,
+            inferredLoopBounds = initOps.inferredLoopBounds
         )
     }
 
@@ -1865,7 +1902,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
             val nested: Set<AllocationAnalysis.AbstractLocation>,
             override val mutated: Set<TACSymbol.Var>,
             override val markTop: Set<CmdPointer>,
-            override val markDefiniteBounds: Set<CmdPointer>
+            override val markDefiniteBounds: Set<CmdPointer>,
+            val loopBounds: Map<NBId, BigInteger>
         ) : AnalysisResult(), SideResults
 
         // For nested allocations
@@ -1876,7 +1914,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
             val dep: Set<AllocationAnalysis.AbstractLocation>,
             override val markTop: Set<CmdPointer>,
             override val mutated: Set<TACSymbol.Var>,
-            override val markDefiniteBounds: Set<CmdPointer>
+            override val markDefiniteBounds: Set<CmdPointer>,
+            val loopBounds: TreapMap<NBId, BigInteger>
         ) : AnalysisResult(), SideResults
 
         object Ignored : AnalysisResult()
@@ -2428,7 +2467,8 @@ object SimpleInitializationAnalysis {
         val fourByteWrite: Map<CmdPointer, FourByteWrite>,
         val failurePoints: Set<CmdPointer>,
         val markTopLocs: Set<CmdPointer>,
-        val markDefiniteBounds: Set<CmdPointer>
+        val markDefiniteBounds: Set<CmdPointer>,
+        val inferredLoopBounds: Map<NBId, BigInteger>
     )
 
     fun analyze(g: TACCommandGraph, alloc: AllocationInformation) = ParallelPool.allocInScope(2000, {timeout -> Z3BlasterPool(z3TimeoutMs = timeout)}) {

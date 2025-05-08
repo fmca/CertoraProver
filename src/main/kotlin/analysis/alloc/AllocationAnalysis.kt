@@ -75,15 +75,22 @@ object AllocationAnalysis {
         NULL;
     }
 
-    interface WithElementSize {
+    sealed interface WithElementSize {
         fun getElementSize(): BigInteger
+    }
+    sealed interface InterpAsConstantArray {
+        fun interpAsConstantArraySize(): BigInteger
     }
 
     @KSerializable
     @Treapable
     sealed class Alloc : AmbiSerializable, TransformableVarEntity<Alloc> {
         @KSerializable
-        data class ConstBlock(val sz: BigInteger) : Alloc()
+        data class ConstBlock(val sz: BigInteger) : Alloc(), InterpAsConstantArray {
+            override fun interpAsConstantArraySize(): BigInteger {
+                return sz.divide(EVM_WORD_SIZE)
+            }
+        }
 
         @KSerializable
         data class DynamicBlock(val eSz: BigInteger, val lengthSym: Pair<CmdPointer, TACSymbol.Var>) : Alloc(),
@@ -113,14 +120,23 @@ object AllocationAnalysis {
         }
 
         @KSerializable
-        data class ConstantStringAlloc(val constLen: BigInteger, val dataCopy: CmdPointer) : Alloc(), WithElementSize {
+        data class ConstantStringAlloc(val constLen: BigInteger, val dataCopy: CmdPointer) : Alloc(), WithElementSize, InterpAsConstantArray {
             override fun getElementSize(): BigInteger = BigInteger.ONE
+            override fun interpAsConstantArraySize(): BigInteger {
+                return constLen
+            }
         }
 
+        /**
+         * [constSize] is the *logical* length
+         */
         // TODO(jtoman): refactor constarrayalloc and dynamic block into a common (sealed) class
         @KSerializable
-        data class ConstantArrayAlloc(val eSz: BigInteger, val constSize: BigInteger) : Alloc(), WithElementSize {
+        data class ConstantArrayAlloc(val eSz: BigInteger, val constSize: BigInteger) : Alloc(), WithElementSize, InterpAsConstantArray {
             override fun getElementSize(): BigInteger = eSz
+            override fun interpAsConstantArraySize(): BigInteger {
+                return constSize
+            }
         }
 
         override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Alloc = this

@@ -42,6 +42,8 @@ val CONSTANT_OFFSET_ALLOC_PLACEHOLDER = MetaKey.Nothing("pta.constant-offset-all
 private val logger = Logger(LoggerTypes.INITIALIZATION)
 
 object InitAnnotation {
+    val INIT_LOOP_HINT = MetaKey<BigInteger>("init.loop.constant-bound")
+
     @KSerializable
     @Treapable
     data class ExpectBoundedWrite(
@@ -201,6 +203,14 @@ object InitAnnotation {
                 patch.replace(ptr) { c ->
                     listOf(c.plusMeta(TACMeta.NON_ALIASED_LENGTH_READ))
                 }
+            }
+
+            for((loopHead, bound) in cmds.inferredLoopBounds) {
+                patch.addBefore(g.elab(loopHead).commands.first().ptr, listOf(
+                    TACCmd.Simple.AnnotationCmd(
+                        INIT_LOOP_HINT, bound
+                    )
+                ))
             }
             for(ptr in cmds.markDefiniteBounds) {
                 val loc = when(val accessCmd = p.analysisCache.graph.elab(ptr).cmd) {

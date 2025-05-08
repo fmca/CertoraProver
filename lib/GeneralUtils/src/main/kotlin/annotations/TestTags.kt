@@ -24,6 +24,7 @@ object TestTags {
       Note that in order to run tests marked "expensive" locally, either
        - run using the appropriate filter, like this: `./gradlew test --tests <my.test.class> -Ptest.filter=expensive`
        - temporarily comment the annotation in the test file
+       - or just change this string constant to something that is not "expensive"
     */
     const val EXPENSIVE = "expensive"
 

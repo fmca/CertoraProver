@@ -23,6 +23,7 @@ import analysis.icfg.CallGraphBuilder
 import analysis.icfg.InlinedMethodCallStack
 import analysis.icfg.Inliner
 import analysis.pta.ABICodeFinder
+import analysis.pta.InitAnnotation
 import analysis.pta.LoopCopyAnalysis
 import analysis.pta.abi.ABIAnnotator
 import analysis.pta.abi.SerializationRangeMarker
@@ -985,7 +986,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
     }
 
     private fun calculateUnrollConst(loop: Loop): Int {
-        val guessedUnrollConst = guessUnrollConst(loop)?.takeIf { guessedBound ->
+        val guessedUnrollConst = (guessUnrollConst(loop) ?: checkUnrollHint(loop))?.takeIf { guessedBound ->
             (guessedBound < Config.LoopUnrollBoundGuessingUpperLimit.get().toBigInteger()).also {
                 if (!it) {
                     Logger.regression { "Guessed an unroll constant of $guessedBound, but we ignore it as it reaches" +
@@ -1008,6 +1009,12 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
         } else {
             UNROLL_CONST
         }
+    }
+
+    private fun checkUnrollHint(loop: Loop): BigInteger? {
+        return this.code.analysisCache.graph.elab(loop.head).commands.mapNotNull {
+            it.maybeAnnotation(InitAnnotation.INIT_LOOP_HINT)
+        }.singleOrNull()
     }
 
     /**
@@ -1163,6 +1170,11 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
     internal fun guessUnrollConst(loop: Loop): BigInteger? {
         val g = this.code.analysisCache.graph
         val def = this.code.analysisCache.def
+        val mca = MustBeConstantAnalysis(graph = g)
+        fun TACExpr.interpAsConstant(where: CmdPointer) = this.getAsConst() ?: when(this) {
+            is TACExpr.Sym.Var -> mca.mustBeConstantAt(where, this.s)
+            else -> null
+        }
         val condBlock = g.elab(loop.head)
 
         // Get the condition used by the head block to determine if to enter the loop or not (if such exists)
@@ -1267,7 +1279,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
                     logger.info { "lhs of Lt expression is not a variable ${defCmdOfCond.cmd.rhs.o1}" }
                     return null
                 }
-                val o2 = defCmdOfCond.cmd.rhs.o2.getAsConst() ?: run {
+                val o2 = defCmdOfCond.cmd.rhs.o2.interpAsConstant(defPtrOfCond) ?: run {
                     logger.info { "rhs of Lt expression is not a constant, it is ${defCmdOfCond.cmd.rhs.o2}" }
                     return null
                 }
