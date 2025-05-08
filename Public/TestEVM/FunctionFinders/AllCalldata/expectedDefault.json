@@ -1,0 +1,9 @@
+{
+	"assertMessages": {
+		"Test-doIt()": "null"
+	},
+	"rules": {
+		"Test-constructor()": "SUCCESS",
+		"Test-doIt()": "FAIL"
+	}
+}
