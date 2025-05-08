@@ -38,6 +38,13 @@ pub mod rt_decls {
         pub fn CVT_nondet_i64() -> i64;
         pub fn CVT_nondet_small_i128() -> i128;
         pub fn CVT_nondet_i128() -> i128;
+
+        // For creating nestings in the call trace.
+        // It's the responsibility of the user to ensure that
+        // every CVT_calltrace_scope_start has a matching CVT_calltrace_scope_end.
+        // Otherwise, the call trace can be broken.
+        pub fn CVT_calltrace_scope_start(prefix: &str);
+        pub fn CVT_calltrace_scope_end(prefix: &str);
     }
 }
 pub use rt_decls::*;
@@ -147,3 +154,15 @@ macro_rules! cvt_print_i128 {
     };
 }
 pub use cvt_print_i128;
+
+#[macro_export]
+macro_rules! cvt_scope_start_with_location {
+    ($tag:expr) => {
+        unsafe {
+            let _tag = $tag;
+            $crate::intrinsics::CVT_calltrace_attach_location(std::file!(), std::line!());
+            $crate::intrinsics::CVT_calltrace_scope_start(_tag);
+        }
+    };
+}
+pub use cvt_scope_start_with_location;

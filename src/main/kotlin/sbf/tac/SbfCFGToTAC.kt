@@ -1325,6 +1325,12 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                             CVTCalltrace.RULE_LOCATION -> {
                                 listOf(Calltrace.ruleLocation(locInst))
                             }
+                            CVTCalltrace.SCOPE_END -> {
+                                listOf(Calltrace.endScope(locInst))
+                            }
+                            CVTCalltrace.SCOPE_START -> {
+                                listOf(Calltrace.startScope(locInst))
+                            }
                         }
                     }
 

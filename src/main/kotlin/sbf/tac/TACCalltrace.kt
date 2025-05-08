@@ -61,6 +61,20 @@ object Calltrace {
     }
 
     context(SbfCFGToTAC<TNum, TOffset>)
+    fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>>
+        startScope(locInst: LocatedSbfInstruction): TACCmd.Simple {
+        val scopeName = getString(locInst, SbfRegister.R1_ARG)
+        return SnippetCmd.CvlrSnippetCmd.ScopeStart(scopeName).toAnnotation()
+    }
+
+    context(SbfCFGToTAC<TNum, TOffset>)
+    fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>>
+        endScope(locInst: LocatedSbfInstruction): TACCmd.Simple {
+        val scopeName = getString(locInst, SbfRegister.R1_ARG)
+        return SnippetCmd.CvlrSnippetCmd.ScopeEnd(scopeName).toAnnotation()
+    }
+
+    context(SbfCFGToTAC<TNum, TOffset>)
     fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>>  print128BitsValue(locInst: LocatedSbfInstruction, signed: Boolean): TACCmd.Simple {
         val tag = getString(locInst, SbfRegister.R1_ARG)
         val low = exprBuilder.mkVar(SbfRegister.R3_ARG)

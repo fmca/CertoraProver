@@ -18,7 +18,7 @@
 package solver
 
 
-import annotations.PollutesGlobalState
+import datastructures.stdcollections.*
 import handleSolanaFlow
 import infra.CertoraBuildKind
 import infra.CertoraBuild
@@ -33,10 +33,8 @@ import report.calltrace.CallInstance
 import report.calltrace.CallTrace
 import report.calltrace.formatter.AlternativeRepresentations
 import rules.RuleCheckResult
-import sbf.SolanaConfig
 import utils.Range
 import utils.*
-import vc.data.ProcedureId
 import java.math.BigInteger
 import kotlin.io.path.Path
 
@@ -124,6 +122,10 @@ class SolanaCallTraceTest {
                 "rule_attach_location_satisfy_other_module",
                 "rule_function_call_in_main_body",
                 "rule_nested_function_call_in_main_body",
+                "rule_print_simple_struct",
+                "rule_print_nested_struct",
+                "rule_print_incorrectly_balanced_struct1",
+                "rule_print_incorrectly_balanced_struct2",
             )
 
         /**
@@ -623,6 +625,39 @@ class SolanaCallTraceTest {
         )
     }
 
+    @Test
+    fun printSimpleStruct() {
+        val calltrace = getCalltraceOfRule("rule_print_simple_struct", results)
+        callTraceContainsScopesWithPrints(calltrace, mapOf(
+            CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 6U, 1U)) to setOf("fieldOfStruct")
+        ))
+    }
+
+    @Test
+    fun printNestedStruct() {
+        val calltrace = getCalltraceOfRule("rule_print_nested_struct", results)
+        callTraceContainsScopesWithPrints(calltrace,
+            mapOf(
+                CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 16U, 1U)) to setOf("fieldOfStruct"),
+                CallInstance.InvokingInstance.CVLRScope("nestedStruct", callInstanceRange("src/print_structs.rs", 18U, 1U)) to setOf("fieldOfNestedStruct")
+            )
+        )
+    }
+
+    @Test
+    fun printIncorrectlyBalancedStruct1() {
+        val calltrace = getCalltraceOfRule("rule_print_incorrectly_balanced_struct1", results)
+        callTraceContainsScopesWithPrints(calltrace,
+            mapOf(CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 29U, 1U))  to setOf("fieldOfStruct")))
+    }
+
+    @Test
+    fun printIncorrectlyBalancedStruct2() {
+        val calltrace = getCalltraceOfRule("rule_print_incorrectly_balanced_struct2", results)
+        callTraceContainsScopesWithPrints(calltrace,
+            mapOf(CallInstance.InvokingInstance.CVLRScope("someStruct", callInstanceRange("src/print_structs.rs", 40U, 1U))  to setOf("fieldOfStruct"))
+        )
+    }
 
     private fun ruleContainsSolanaUserAssertAt(
         ruleName: String,
@@ -632,6 +667,38 @@ class SolanaCallTraceTest {
         val solanaUserAsserts = getUserAsserts(ruleName, results)
         val existsAssertWithExpectedRange = existsCallInstanceAtRange(solanaUserAsserts, expectedRange)
         assert(existsAssertWithExpectedRange) { "Did not find any asserts with range ${expectedRange.file}:${expectedRange.lineNumber}" }
+    }
+
+
+    private fun callTraceContainsScopesWithPrints(
+        callTrace: CallTrace,
+        expectedScopeNamesToPrints: Map<CallInstance.InvokingInstance.CVLRScope, Set<String>>
+    ) {
+        val actualEntry = callTrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.InvokingInstance.CVLRScope> { true }.toSet()
+        assertEquals(expectedScopeNamesToPrints.keys, actualEntry, "Did not find expected scopes\n" +
+            expectedScopeNamesToPrints.keys.filter { actualEntry.contains(it) }.let {
+                if (it.isNotEmpty()) {
+                    "Missing expected entries: $it\n"
+                } else {
+                    ""
+                }
+            } +
+            actualEntry.filter { expectedScopeNamesToPrints.containsKey(it) }.let {
+                if (it.isNotEmpty()) {
+                    "Missing actual entries: $it\n"
+                } else {
+                    ""
+                }
+            })
+
+        expectedScopeNamesToPrints.forEachEntry { (expectedStructName, expectedFieldNames) ->
+            val actualToBePrinted = actualEntry.filter { it.name == expectedStructName.name }.single().children.filterIsInstance<CallInstance.CvlrCexPrintValues>().map { it.name }
+            actualToBePrinted.forEach { actualStructFieldName ->
+                expectedFieldNames.forEach { expected ->
+                    assert(actualStructFieldName.contains(expected)) { "Did not expect to find a field with name $actualStructFieldName" }
+                }
+            }
+        }
     }
 
     private fun getUserAsserts(

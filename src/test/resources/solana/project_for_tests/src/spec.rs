@@ -9,5 +9,6 @@ mod print_fixed;
 mod print_locations;
 mod print_tags;
 mod print_values;
+mod print_structs;
 mod tree_view;
 mod functions;

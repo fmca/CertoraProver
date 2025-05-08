@@ -279,6 +279,8 @@ sealed class CallInstance : TreeViewReportable {
         // wasm
         class WasmFunctionInstance(override val name: String, val funcName: String) : ScopeInstance()
 
+        data class CVLRScope(override val name: String, override val range: Range.Range?) : ScopeInstance()
+
         /**
          * The root of the rule (and the [CallTrace]).
          */

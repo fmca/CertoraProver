@@ -1513,6 +1513,11 @@ sealed class SnippetCmd: AmbiSerializable {
 
         @KSerializable
         data class CexPrintTag(val displayMessage: String) : CvlrSnippetCmd()
+
+        @KSerializable
+        data class ScopeStart(val scopeName: String) : CvlrSnippetCmd()
+        @KSerializable
+        data class ScopeEnd(val scopeName: String) : CvlrSnippetCmd()
     }
 
     /**
