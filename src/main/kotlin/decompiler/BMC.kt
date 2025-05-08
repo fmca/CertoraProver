@@ -16,6 +16,7 @@
  */
 
 package decompiler
+import algorithms.dominates
 import allocator.Allocator
 import analysis.*
 import analysis.icfg.CallGraphBuilder
@@ -1171,11 +1172,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
             }
 
         // Get the TACSymbol.Var that is checked in the condition
-        val underlyingVar = when (cond) {
-            is TACCommandGraph.PathCondition.EqZero -> cond.v
-            is TACCommandGraph.PathCondition.NonZero -> cond.v
-            else -> return null
-        }
+        val underlyingVar = (cond as? TACCommandGraph.PathCondition.ConditionalOn)?.v ?: return null
 
         // Get the CmdPointer that points to the initial definition site of our variable
         val defPtrOfCond = def.defSitesOf(underlyingVar, condBlock.commands.last().ptr)
@@ -1190,6 +1187,81 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
         }
 
         return when (defCmdOfCond.cmd.rhs) {
+            is TACExpr.BinRel.Eq -> {
+                if(!defCmdOfCond.cmd.rhs.operandsAreSyms()) {
+                    return null
+                }
+                val (v, c) = defCmdOfCond.cmd.rhs.getOperands().partitionMap { e ->
+                    check(e is TACExpr.Sym) {
+                        "operandsAreSyms for ${defCmdOfCond.cmd.rhs} was true but have non-sym operand: $e"
+                    }
+                    when(e) {
+                        is TACExpr.Sym.Var -> e.s.toLeft()
+                        is TACExpr.Sym.Const -> e.s.value.toRight()
+                    }
+                }
+                if(v.size != 1 || c.size != 1) {
+                    return null
+                }
+                val loopVar = v.single()
+                val compVal = c.single()
+                val nonTriv = NonTrivialDefAnalysis(
+                    graph = g
+                )
+                val defs = nonTriv.nontrivialDef(loopVar, defCmdOfCond.ptr)
+                if(defs.size < 2) {
+                    return null
+                }
+                val (constInit, complex) = defs.monadicMap { defSite ->
+                    g.elab(defSite).maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()
+                }?.partitionMap {
+                    when(val e = it.cmd.rhs) {
+                        is TACExpr.Sym.Const -> (it.ptr to e.s.value).toLeft()
+                        else -> (it.ptr to e).toRight()
+                    }
+                } ?: return null
+                if(constInit.isEmpty() || !constInit.all { (where, _) ->
+                        where.block !in loop.body && g.cache.domination.dominates(where.block, loop.head)
+                    } || complex.isEmpty() || complex.any {
+                        it.first.block !in loop.body
+                    }) {
+                    return null
+                }
+                val isProbablyDoLoop = complex.any { (where, _) ->
+                    g.cache.domination.dominates(where, g.elab(loop.head).commands.last().ptr)
+                }
+
+                val constInitVal = constInit.map {
+                    it.second
+                }.uniqueOrNull() ?: return null
+                val diff = if(constInitVal == compVal) {
+                    return null
+                } else if(constInitVal < compVal) {
+                    // monotone increasing?
+                    if(!complex.all { (_, e) ->
+                        e is TACExpr.Vec.Add && e.operandsAreSyms() && e.getOperands().any {
+                            it is TACExpr.Sym.Const && it.s.value == BigInteger.ONE
+                        } && e.getOperands().any {
+                            it is TACExpr.Sym.Var && it.s == loopVar
+                        }
+                    }) {
+                        return null
+                    }
+                    compVal - constInitVal
+                } else {
+                    // monotone decreasing?
+                    if(!complex.all { (_, e) ->
+                            e is TACExpr.BinOp.Sub && e.o1 is TACExpr.Sym.Var && e.o1.s == loopVar &&
+                                e.o2 is TACExpr.Sym.Const && e.o2.s.value == BigInteger.ONE
+                        }) {
+                        return null
+                    }
+                    constInitVal - compVal
+                }
+                return diff.letIf(isProbablyDoLoop) {
+                    it + BigInteger.ONE
+                }
+            }
             is TACExpr.BinRel -> {
                 val o1 = defCmdOfCond.cmd.rhs.o1 as? TACExpr.Sym.Var ?: run {
                     logger.info { "lhs of Lt expression is not a variable ${defCmdOfCond.cmd.rhs.o1}" }

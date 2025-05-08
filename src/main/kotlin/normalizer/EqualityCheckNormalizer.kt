@@ -19,7 +19,6 @@ package normalizer
 
 import analysis.*
 import analysis.PatternMatcher.Pattern.Companion.toBuildable
-import analysis.dataflow.StrictDefAnalysis
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import tac.Tag
@@ -67,7 +66,6 @@ object EqualityCheckNormalizer {
 
     fun rewrite(c: CoreTACProgram) : CoreTACProgram {
         val matcher = PatternMatcher.compilePattern(graph = c.analysisCache.graph, patt = pattern)
-        val def = c.analysisCache.strictDef
         val rewrites = c.parallelLtacStream().mapNotNull {
             it.maybeNarrow<TACCmd.Simple.JumpiCmd>()
         }.mapNotNull {
@@ -80,28 +78,6 @@ object EqualityCheckNormalizer {
                     k = const,
                     subLocation = subLoc
                 )
-            }
-        }.filter { r ->
-            /**
-             * Exclude those subtractions that are *quite* likely to be part of a loop countdown.
-             *
-             * The above excludes the pattern:
-             * H:
-             * x = z - c
-             * if * goto L else L2
-             *
-             * L2:
-             *   z = x
-             *   goto H
-             */
-            val s = def.source(r.target.ptr, r.target.symbol) as? StrictDefAnalysis.Source.Defs ?: return@filter true
-            /*
-             * Check none of the definition sites for `z` come from `x`, that is, this isn't a loop variable being decremented
-             */
-            s.ptrs.none { subFromDef ->
-                subFromDef != null && c.analysisCache.graph.elab(subFromDef).maybeExpr<TACExpr.Sym.Var>()?.exp?.s?.let { rhs ->
-                    def.defSitesOf(rhs, subFromDef)
-                } == setOf(r.subLocation.ptr)
             }
         }.toList()
         if(rewrites.isEmpty()) {
