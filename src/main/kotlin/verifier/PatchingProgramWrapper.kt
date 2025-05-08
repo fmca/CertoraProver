@@ -102,7 +102,7 @@ class PatchingProgramWrapper(private val code: CoreTACProgram) {
         val (ptr, cmd) = graph.elab(src).commands.last()
         require(cmd is TACCmd.Simple.JumpiCmd)
         val assumeCmd = when {
-            cmd.dst == dst -> TACCmd.Simple.AssumeCmd(cmd.cond, "jumpiTojump")
+            cmd.dst == dst -> TACCmd.Simple.AssumeCmd(cmd.cond)
             cmd.elseDst == dst -> TACCmd.Simple.AssumeNotCmd(cmd.cond)
             else -> error("$dst is not one of the destinations of $cmd")
         }

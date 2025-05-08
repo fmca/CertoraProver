@@ -140,7 +140,8 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
 
         if context.local:
             check_cmd = Ctx.get_local_run_cmd(context)
-            print(f"Verifier run command:\n {check_cmd}", flush=True)
+            check_cmd_string = " ".join(check_cmd)
+            print(f"Verifier run command:\n {check_cmd_string}", flush=True)
 
             compare_with_tool_output = False
             run_result = Util.run_jar_cmd(check_cmd, compare_with_tool_output, logger_topic="verification",
@@ -151,7 +152,7 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
                 exit_code = 1
             else:
                 Util.print_completion_message("Finished running verifier:")
-                print(f"\t{check_cmd}")
+                print(f"\t{check_cmd_string}")
         else:
             validate_version_and_branch(context)
             context.key = Cv.validate_certora_key()
@@ -196,9 +197,10 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
                 compare_with_expected_file = Path(context.expected_file).exists()
 
                 check_cmd = Ctx.get_local_run_cmd(context)
+                check_cmd_string = " ".join(check_cmd)
 
                 # In local mode, this is reserved for Certora devs, so let the script print it
-                print(f"Verifier run command:\n {' '.join(check_cmd)}", flush=True)
+                print(f"Verifier run command:\n {check_cmd_string}", flush=True)
                 run_result = \
                     Util.run_jar_cmd(check_cmd, compare_with_expected_file,
                                      logger_topic="verification", print_output=True)
@@ -209,7 +211,7 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
                     exit_code = run_result
                 else:
                     Util.print_completion_message("Finished running verifier:")
-                    print(f"\t{check_cmd}")
+                    print(f"\t{check_cmd_string}")
                     if compare_with_expected_file:
                         print("Comparing tool output to the expected output:")
                         output_path = (context.tool_output if context.tool_output else

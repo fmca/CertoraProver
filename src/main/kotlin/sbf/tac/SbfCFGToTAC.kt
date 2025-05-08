@@ -216,7 +216,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
         // r10 points to the end of the stack frame
         return listOf(
             assign(b, exprBuilder.mkBinRelExp(CondOp.EQ, TACExpr.Sym.Var(r10), SBF_STACK_START + SBF_STACK_FRAME_SIZE)),
-            TACCmd.Simple.AssumeCmd(b, "InitialPreconditions"))
+            TACCmd.Simple.AssumeCmd(b))
     }
 
     private fun addGlobalInitializers(): List<TACCmd.Simple> {
@@ -247,16 +247,16 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
         return if (isUnsigned) {
             listOf(
                 assign(lbBool, exprBuilder.mkBinRelExp(CondOp.GE, v.asSym(), lb)),
-                TACCmd.Simple.AssumeCmd(lbBool, "inRange"),
+                TACCmd.Simple.AssumeCmd(lbBool),
                 assign(ubBool, exprBuilder.mkBinRelExp(CondOp.LT, v.asSym(), ub)),
-                TACCmd.Simple.AssumeCmd(ubBool, "inRange")
+                TACCmd.Simple.AssumeCmd(ubBool)
             )
         } else {
             listOf(
                 assign(lbBool, exprBuilder.mkBinRelExp(CondOp.SGE, v.asSym(), lb)),
-                TACCmd.Simple.AssumeCmd(lbBool, "inRange"),
+                TACCmd.Simple.AssumeCmd(lbBool),
                 assign(ubBool, exprBuilder.mkBinRelExp(CondOp.SLT, v.asSym(), ub)),
-                TACCmd.Simple.AssumeCmd(ubBool, "inRange")
+                TACCmd.Simple.AssumeCmd(ubBool)
             )
         }
     }
@@ -507,7 +507,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             val cmd = translateCond(inst.cond)
             listOf(
                 cmd,
-                TACCmd.Simple.AssumeCmd(cmd.lhs, "translateAssume")
+                TACCmd.Simple.AssumeCmd(cmd.lhs)
             )
         }
     }

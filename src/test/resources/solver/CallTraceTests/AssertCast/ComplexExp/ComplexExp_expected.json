@@ -350,11 +350,11 @@
                                 "text": "sumNew ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0x8",
+                                        "value": "0x0",
                                         "values": [
-                                            "0x8",
-                                            "8",
-                                            "0x8"
+                                            "0x0",
+                                            "0",
+                                            "0x0"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -381,11 +381,11 @@
                                 "text": "require_uint256(sumOld + newVal - oldVal) ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0x8",
+                                        "value": "0x0",
                                         "values": [
-                                            "0x8",
-                                            "8",
-                                            "0x8"
+                                            "0x0",
+                                            "0",
+                                            "0x0"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -454,11 +454,11 @@
                                 "text": "sumOld + newVal - oldVal ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0x8",
+                                        "value": "0x0",
                                         "values": [
-                                            "0x8",
-                                            "8",
-                                            "0x8"
+                                            "0x0",
+                                            "0",
+                                            "0x0"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -472,14 +472,14 @@
                                         "text": "sumOld + newVal ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xb",
+                                                "value": "2^256 - 1",
                                                 "values": [
-                                                    "0xb",
-                                                    "11",
-                                                    "0xb"
+                                                    "2^256 - 1",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
                                                 ],
                                                 "tooltip": "value of expression",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -490,14 +490,14 @@
                                                 "text": "sumOld ↪ '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0x4",
+                                                        "value": "MAX_UINT256",
                                                         "values": [
-                                                            "0x4",
-                                                            "4",
-                                                            "0x4"
+                                                            "MAX_UINT256",
+                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
                                                         ],
                                                         "tooltip": "value of expression",
-                                                        "truncatable": true
+                                                        "truncatable": false
                                                     }
                                                 ]
                                             },
@@ -521,11 +521,11 @@
                                                 "text": "newVal ↪ '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0x7",
+                                                        "value": "0x0",
                                                         "values": [
-                                                            "0x7",
-                                                            "7",
-                                                            "0x7"
+                                                            "0x0",
+                                                            "0",
+                                                            "0x0"
                                                         ],
                                                         "tooltip": "value of expression",
                                                         "truncatable": true
@@ -565,14 +565,14 @@
                                         "text": "oldVal ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0x3",
+                                                "value": "MAX_UINT256",
                                                 "values": [
-                                                    "0x3",
-                                                    "3",
-                                                    "0x3"
+                                                    "MAX_UINT256",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
                                                 ],
                                                 "tooltip": "value of expression",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },

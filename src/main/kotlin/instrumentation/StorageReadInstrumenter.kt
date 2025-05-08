@@ -103,7 +103,7 @@ class StorageReadInstrumenter(private val readTracking: Map<TACSymbol.Var, TACSy
                                 )
                             )
                         ),
-                        TACCmd.Simple.AssumeCmd(assume, "StorageReadInstrumenter"),
+                        TACCmd.Simple.AssumeCmd(assume),
                         it.cmd
                     ))
                     patcher.addVars(prev, hasRead, assume, tracker)

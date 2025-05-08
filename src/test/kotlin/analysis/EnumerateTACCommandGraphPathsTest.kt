@@ -27,7 +27,7 @@ import vc.data.*
 internal class EnumerateTACCommandGraphPathsTest {
     @Test
     fun testTacCommandGraphCreation01() {
-        val dummyCmd = TACCmd.Simple.AssumeCmd(TACSymbol.True, "")
+        val dummyCmd = TACCmd.Simple.AssumeCmd(TACSymbol.True)
         val n1 = StartBlock.copy(origStartPc = 0)
         val n2 = StartBlock.copy(origStartPc = 1)
         val n3 = StartBlock.copy(origStartPc = 2)

@@ -665,7 +665,7 @@ class CVLInvocationCompiler(private val compiler: CVLCompiler, private val compi
                         initMap.asSym(), listOf(TACExpr.zeroExpr, calldataSize.asSym(), sigHash.asTACExpr)
                     ) shiftRLog  ((EVM_WORD_SIZE_INT - DEFAULT_SIGHASH_SIZE_INT) * EVM_BYTE_SIZE_INT).asTACExpr) eq sigHash.asTACExpr
                 }) {
-                    TACCmd.Simple.AssumeCmd(it.s, "sighashBind")
+                    TACCmd.Simple.AssumeCmd(it.s)
                 }
             }
 
@@ -712,7 +712,7 @@ class CVLInvocationCompiler(private val compiler: CVLCompiler, private val compi
                         calldataSize.asSym()
                     )
                 ),
-                TACCmd.Simple.AssumeCmd(sizeConstraint, "constrain calldata size")
+                TACCmd.Simple.AssumeCmd(sizeConstraint)
             ), setOf(
                 calldataSize, output.outputPointer, buffer, sizeConstraint, actualCalldataSize
             ))
@@ -929,7 +929,7 @@ class CVLInvocationCompiler(private val compiler: CVLCompiler, private val compi
                         )
                     ),
                     TACCmd.Simple.AssumeCmd(
-                        minCalldatasize, "minCalldatasize"
+                        minCalldatasize
                     ),
                     // With ABIEncoderV2 calldatasize is signed, so need to make sure it's positive
                     // CVLTODO: Do we need to support larger calldatasize for ABIEncoderV1? how?
@@ -941,7 +941,7 @@ class CVLInvocationCompiler(private val compiler: CVLCompiler, private val compi
                         )
                     ),
                     TACCmd.Simple.AssumeCmd(
-                        maxCalldatasize, "maxCalldatasize"
+                        maxCalldatasize
                     )
                 ))
             }

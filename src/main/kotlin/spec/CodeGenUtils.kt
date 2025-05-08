@@ -92,7 +92,7 @@ object CodeGenUtils {
                     )
                 ),
                 TACCmd.Simple.AssumeCmd(
-                    iAssume, "wordAlignSymbol"
+                    iAssume
                 ),
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(
                     lhs = prevIdx,
@@ -119,7 +119,7 @@ object CodeGenUtils {
                     )
                 ),
                 TACCmd.Simple.AssumeCmd(
-                    prevAssume, "wordAlignSymbol"
+                    prevAssume
                 ),
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(
                     lhs = bumpAmount,

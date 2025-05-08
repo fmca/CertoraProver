@@ -229,7 +229,7 @@ Program {
 		AssignExpCmd certora_certoraAssumet2t2 Le(certora_Intcertora_certoraAssumet2t2t1 certora_Intcertora_certoraAssumet2t2t2)
 		AssignExpCmd certora_certoraAssumet2 LAnd(certora_certoraAssumet2t1 certora_certoraAssumet2t2)
 		AssignExpCmd certoraAssume LOr(certora_certoraAssumet1 certora_certoraAssumet2)
-		AssumeCmd certoraAssume ""
+		AssumeCmd certoraAssume
 		AssignExpCmd certoraArg0 x_prec
 		AssignExpCmd certoraArg1 ta
 		AssignExpCmd certoraArg2 tu_prec
@@ -239,48 +239,48 @@ Program {
 	Block 0_0_0_1_0_10 Succ [271_1019_0_1_0_14, 263_1019_0_1_0_22] {
 		AssignExpCmd tacOrigBalance!0 tacBalance
 		AssignExpCmd certoraTmp Eq(tacCallvalue@1 0x0)
-		AssumeCmd certoraTmp ""
+		AssumeCmd certoraTmp
 		AssignHavocCmd certoraOutVar0
 		AssignExpCmd certora_returnSizeMatch1 true
 		AssignExpCmd tacTmp LOr(LAnd(Lt(tacCalldatasize@1 0x8000000000000000000000000000000000000000000000000000000000000000) LNot(Lt(0x63 0x8000000000000000000000000000000000000000000000000000000000000000))) LAnd(Eq(Lt(tacCalldatasize@1 0x8000000000000000000000000000000000000000000000000000000000000000) Lt(0x63 0x8000000000000000000000000000000000000000000000000000000000000000)) Gt(tacCalldatasize@1 0x63)))
-		AssumeCmd tacTmp ""
+		AssumeCmd tacTmp
 		ByteLoad certoraInput 0x0 tacCalldatabuf@1
 		AssignExpCmd tmpLastMsgSig Eq(lastMsgSig certoraInput)
-		AssumeCmd tmpLastMsgSig ""
+		AssumeCmd tmpLastMsgSig
 		AssignExpCmd certoraInput ShiftRightLogical(certoraInput 0xe0)
 		AssignExpCmd certoraIsMethod Eq(certoraInput 0x8a0de8f2)
-		AssumeCmd certoraIsMethod ""
+		AssumeCmd certoraIsMethod
 		AssignExpCmd datasizeCheck Lt(tacCalldatasize@1 0x4)
 		AssumeNotCmd datasizeCheck
 		ByteLoad certoraParam0 0x4 tacCalldatabuf@1
 		AssignExpCmd certoraEqParam Eq(certoraParam0 certoraArg0)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		ByteLoad certoraParam1 0x24 tacCalldatabuf@1
 		AssignExpCmd certoraEqParam Eq(certoraParam1 certoraArg1)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		ByteLoad certoraParam2 0x44 tacCalldatabuf@1
 		AssignExpCmd certoraEqParam Eq(certoraParam2 certoraArg2)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		AssignExpCmd certoraNumEvents 0x0
 		LabelCmd "Start procedure CeloUnitsVotes-unitsToVotes"
 		AssignExpCmd lastHasThrown@1 false
 		AssignExpCmd lastReverted@1 false
 		AssignExpCmd tacTmp@1 tacAddress@1
 		AssignExpCmd tacTmpbool@1 Eq(tacAddress@1 0x0)
-		AssumeCmd tacTmpbool@1 ""
+		AssumeCmd tacTmpbool@1
 		AssignExpCmd tacM0x40@1 0x80
 		AssignExpCmd:0 L1024@1 tacCallvalue@1
 		AssignExpCmd L1023bool@1 Eq(tacCallvalue@1 0x0)
 		AssignExpCmd:1 L1022@1 0x10
 		AssignExpCmd b Gt(L1023@1 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 16_1024_0_1_0_11
 		ByteLoad:0 L1024@1 0x0 tacCalldatabuf@1
 		AssignExpCmd:0 L1024@1 ShiftRightLogical(L1024@1 0xe0)
 		AssignExpCmd:0 L1023bool@1 Eq(0x8a0de8f2 L1024@1)
 		AssignExpCmd:0 L1022@1 0x87
 		AssignExpCmd b Gt(L1023@1 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 135_1024_0_1_0_12
 		AssignExpCmd:2 L1023@1 0xc7
 		AssignExpCmd:2 L1022@1 0x4
@@ -289,7 +289,7 @@ Program {
 		AssignExpCmd L1020bool@1 Eq(L1020@1 0x0)
 		AssignExpCmd:4 L1019@1 0x9d
 		AssignExpCmd b Gt(L1020@1 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 157_1021_0_1_0_13
 		ByteLoad:2 L1019@1 0x4 tacCalldatabuf@1
 		AssignExpCmd:2 L1022@1 L1019@1
@@ -332,13 +332,13 @@ Program {
 		AssignExpCmd:19 L1008@1 L1015@1
 		AssignExpCmd:19 L1007@1 0x162
 		AssignExpCmd b Gt(L1008@1 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 354_1009_0_1_0_16
 		AssignExpCmd:19 L1010@1 Div(L1009@1 L1010@1)
 		AssignExpCmd:20 L1011bool@1 Eq(L1010@1 L1011@1)
 		AssignExpCmd:21 L1010@1 0x16d
 		AssignExpCmd b Gt(L1011@1 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 365_1012_0_1_0_17
 		AssignExpCmd:22 L0@1 L1012@1
 		AssignExpCmd:22 L1011@1 0x0
@@ -362,7 +362,7 @@ Program {
 		AssignExpCmd:25 L1014bool@1 Gt(L1016@1 0x0)
 		AssignExpCmd:26 L1013@1 0x186
 		AssignExpCmd b Gt(L1014@1 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 390_1015_0_1_0_20
 		AssignExpCmd:27 L1014@1 0x0
 		AssignExpCmd:28 L1013@1 L1016@1
@@ -370,7 +370,7 @@ Program {
 		AssignExpCmd:30 L1011@1 L1016@1
 		AssignExpCmd:30 L1010@1 0x191
 		AssignExpCmd b Gt(L1011@1 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 401_1012_0_1_0_21
 		AssignExpCmd:30 L1013@1 Div(L1012@1 L1013@1)
 		AssignExpCmd:31 L0@1 L1013@1
@@ -415,45 +415,45 @@ Program {
 	Block 0_0_0_2_0_24 Succ [37_0_0_0_0_0] {
 		AssignExpCmd tacOrigBalance!1 tacBalance
 		AssignExpCmd certoraTmp Eq(tacCallvalue@2 0x0)
-		AssumeCmd certoraTmp ""
+		AssumeCmd certoraTmp
 		AssignHavocCmd certoraOutVar0
 		AssignExpCmd certora_returnSizeMatch2 true
 		AssignExpCmd tacTmp LOr(LAnd(Lt(tacCalldatasize@2 0x8000000000000000000000000000000000000000000000000000000000000000) LNot(Lt(0x43 0x8000000000000000000000000000000000000000000000000000000000000000))) LAnd(Eq(Lt(tacCalldatasize@2 0x8000000000000000000000000000000000000000000000000000000000000000) Lt(0x43 0x8000000000000000000000000000000000000000000000000000000000000000)) Gt(tacCalldatasize@2 0x43)))
-		AssumeCmd tacTmp ""
+		AssumeCmd tacTmp
 		ByteLoad certoraInput 0x0 tacCalldatabuf@2
 		AssignExpCmd tmpLastMsgSig Eq(lastMsgSig certoraInput)
-		AssumeCmd tmpLastMsgSig ""
+		AssumeCmd tmpLastMsgSig
 		AssignExpCmd certoraInput ShiftRightLogical(certoraInput 0xe0)
 		AssignExpCmd certoraIsMethod Eq(certoraInput 0x771602f7)
-		AssumeCmd certoraIsMethod ""
+		AssumeCmd certoraIsMethod
 		AssignExpCmd datasizeCheck Lt(tacCalldatasize@2 0x4)
 		AssumeNotCmd datasizeCheck
 		ByteLoad certoraParam0 0x4 tacCalldatabuf@2
 		AssignExpCmd certoraEqParam Eq(certoraParam0 certoraArg0)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		ByteLoad certoraParam1 0x24 tacCalldatabuf@2
 		AssignExpCmd certoraEqParam Eq(certoraParam1 certoraArg1)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		AssignExpCmd certoraNumEvents 0x0
 		LabelCmd "Start procedure CeloUnitsVotes-add"
 		AssignExpCmd lastHasThrown@2 false
 		AssignExpCmd lastReverted@2 false
 		AssignExpCmd tacTmp@2 tacAddress@2
 		AssignExpCmd tacTmpbool@2 Eq(tacAddress@2 0x0)
-		AssumeCmd tacTmpbool@2 ""
+		AssumeCmd tacTmpbool@2
 		AssignExpCmd tacM0x40@2 0x80
 		AssignExpCmd:0 L1024@2 tacCallvalue@2
 		AssignExpCmd L1023bool@2 Eq(tacCallvalue@2 0x0)
 		AssignExpCmd:1 L1022@2 0x10
 		AssignExpCmd b Gt(L1023@2 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 16_1024_0_2_0_25
 		ByteLoad:0 L1024@2 0x0 tacCalldatabuf@2
 		AssignExpCmd:0 L1024@2 ShiftRightLogical(L1024@2 0xe0)
 		AssignExpCmd:0 L1023bool@2 Eq(0x771602f7 L1024@2)
 		AssignExpCmd:0 L1022@2 0x3b
 		AssignExpCmd b Gt(L1023@2 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 59_1024_0_2_0_26
 		AssignExpCmd:36 L1023@2 0x71
 		AssignExpCmd:36 L1022@2 0x4
@@ -462,7 +462,7 @@ Program {
 		AssignExpCmd L1020bool@2 Eq(L1020@2 0x0)
 		AssignExpCmd:4 L1019@2 0x51
 		AssignExpCmd b Gt(L1020@2 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 81_1021_0_2_0_27
 		ByteLoad:36 L1019@2 0x4 tacCalldatabuf@2
 		AssignExpCmd:36 L1022@2 L1019@2
@@ -477,7 +477,7 @@ Program {
 		AssignExpCmd L1018bool@2 Eq(L1018@2 0x0)
 		AssignExpCmd:41 L1017@2 0xf2
 		AssignExpCmd b Gt(L1018@2 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 242_1019_0_2_0_28
 		JumpdestCmd 113_1023_0_0_0_0
 		ByteStore:36 0x80 L1019@2 tacM@2
@@ -504,45 +504,45 @@ Program {
 	Block 0_0_0_3_0_29 Succ [44_0_0_0_0_0] {
 		AssignExpCmd tacOrigBalance!2 tacBalance
 		AssignExpCmd certoraTmp Eq(tacCallvalue@3 0x0)
-		AssumeCmd certoraTmp ""
+		AssumeCmd certoraTmp
 		AssignHavocCmd certoraOutVar0
 		AssignExpCmd certora_returnSizeMatch3 true
 		AssignExpCmd tacTmp LOr(LAnd(Lt(tacCalldatasize@3 0x8000000000000000000000000000000000000000000000000000000000000000) LNot(Lt(0x43 0x8000000000000000000000000000000000000000000000000000000000000000))) LAnd(Eq(Lt(tacCalldatasize@3 0x8000000000000000000000000000000000000000000000000000000000000000) Lt(0x43 0x8000000000000000000000000000000000000000000000000000000000000000)) Gt(tacCalldatasize@3 0x43)))
-		AssumeCmd tacTmp ""
+		AssumeCmd tacTmp
 		ByteLoad certoraInput 0x0 tacCalldatabuf@3
 		AssignExpCmd tmpLastMsgSig Eq(lastMsgSig certoraInput)
-		AssumeCmd tmpLastMsgSig ""
+		AssumeCmd tmpLastMsgSig
 		AssignExpCmd certoraInput ShiftRightLogical(certoraInput 0xe0)
 		AssignExpCmd certoraIsMethod Eq(certoraInput 0x771602f7)
-		AssumeCmd certoraIsMethod ""
+		AssumeCmd certoraIsMethod
 		AssignExpCmd datasizeCheck Lt(tacCalldatasize@3 0x4)
 		AssumeNotCmd datasizeCheck
 		ByteLoad certoraParam0 0x4 tacCalldatabuf@3
 		AssignExpCmd certoraEqParam Eq(certoraParam0 certoraArg0)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		ByteLoad certoraParam1 0x24 tacCalldatabuf@3
 		AssignExpCmd certoraEqParam Eq(certoraParam1 certoraArg1)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		AssignExpCmd certoraNumEvents 0x0
 		LabelCmd "Start procedure CeloUnitsVotes-add"
 		AssignExpCmd lastHasThrown@3 false
 		AssignExpCmd lastReverted@3 false
 		AssignExpCmd tacTmp@3 tacAddress@3
 		AssignExpCmd tacTmpbool@3 Eq(tacAddress@3 0x0)
-		AssumeCmd tacTmpbool@3 ""
+		AssumeCmd tacTmpbool@3
 		AssignExpCmd tacM0x40@3 0x80
 		AssignExpCmd:0 L1024@3 tacCallvalue@3
 		AssignExpCmd L1023bool@3 Eq(tacCallvalue@3 0x0)
 		AssignExpCmd:1 L1022@3 0x10
 		AssignExpCmd b Gt(L1023@3 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 16_1024_0_3_0_30
 		ByteLoad:0 L1024@3 0x0 tacCalldatabuf@3
 		AssignExpCmd:0 L1024@3 ShiftRightLogical(L1024@3 0xe0)
 		AssignExpCmd:0 L1023bool@3 Eq(0x771602f7 L1024@3)
 		AssignExpCmd:0 L1022@3 0x3b
 		AssignExpCmd b Gt(L1023@3 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 59_1024_0_3_0_31
 		AssignExpCmd:36 L1023@3 0x71
 		AssignExpCmd:36 L1022@3 0x4
@@ -551,7 +551,7 @@ Program {
 		AssignExpCmd L1020bool@3 Eq(L1020@3 0x0)
 		AssignExpCmd:4 L1019@3 0x51
 		AssignExpCmd b Gt(L1020@3 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 81_1021_0_3_0_32
 		ByteLoad:36 L1019@3 0x4 tacCalldatabuf@3
 		AssignExpCmd:36 L1022@3 L1019@3
@@ -566,7 +566,7 @@ Program {
 		AssignExpCmd L1018bool@3 Eq(L1018@3 0x0)
 		AssignExpCmd:41 L1017@3 0xf2
 		AssignExpCmd b Gt(L1018@3 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 242_1019_0_3_0_33
 		JumpdestCmd 113_1023_0_0_0_0
 		ByteStore:36 0x80 L1019@3 tacM@3
@@ -594,48 +594,48 @@ Program {
 	Block 0_0_0_4_0_34 Succ [271_1019_0_4_0_38, 263_1019_0_4_0_46] {
 		AssignExpCmd tacOrigBalance!3 tacBalance
 		AssignExpCmd certoraTmp Eq(tacCallvalue@4 0x0)
-		AssumeCmd certoraTmp ""
+		AssumeCmd certoraTmp
 		AssignHavocCmd certoraOutVar0
 		AssignExpCmd certora_returnSizeMatch4 true
 		AssignExpCmd tacTmp LOr(LAnd(Lt(tacCalldatasize@4 0x8000000000000000000000000000000000000000000000000000000000000000) LNot(Lt(0x63 0x8000000000000000000000000000000000000000000000000000000000000000))) LAnd(Eq(Lt(tacCalldatasize@4 0x8000000000000000000000000000000000000000000000000000000000000000) Lt(0x63 0x8000000000000000000000000000000000000000000000000000000000000000)) Gt(tacCalldatasize@4 0x63)))
-		AssumeCmd tacTmp ""
+		AssumeCmd tacTmp
 		ByteLoad certoraInput 0x0 tacCalldatabuf@4
 		AssignExpCmd tmpLastMsgSig Eq(lastMsgSig certoraInput)
-		AssumeCmd tmpLastMsgSig ""
+		AssumeCmd tmpLastMsgSig
 		AssignExpCmd certoraInput ShiftRightLogical(certoraInput 0xe0)
 		AssignExpCmd certoraIsMethod Eq(certoraInput 0x8a0de8f2)
-		AssumeCmd certoraIsMethod ""
+		AssumeCmd certoraIsMethod
 		AssignExpCmd datasizeCheck Lt(tacCalldatasize@4 0x4)
 		AssumeNotCmd datasizeCheck
 		ByteLoad certoraParam0 0x4 tacCalldatabuf@4
 		AssignExpCmd certoraEqParam Eq(certoraParam0 certoraArg0)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		ByteLoad certoraParam1 0x24 tacCalldatabuf@4
 		AssignExpCmd certoraEqParam Eq(certoraParam1 certoraArg1)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		ByteLoad certoraParam2 0x44 tacCalldatabuf@4
 		AssignExpCmd certoraEqParam Eq(certoraParam2 certoraArg2)
-		AssumeCmd certoraEqParam ""
+		AssumeCmd certoraEqParam
 		AssignExpCmd certoraNumEvents 0x0
 		LabelCmd "Start procedure CeloUnitsVotes-unitsToVotes"
 		AssignExpCmd lastHasThrown@4 false
 		AssignExpCmd lastReverted@4 false
 		AssignExpCmd tacTmp@4 tacAddress@4
 		AssignExpCmd tacTmpbool@4 Eq(tacAddress@4 0x0)
-		AssumeCmd tacTmpbool@4 ""
+		AssumeCmd tacTmpbool@4
 		AssignExpCmd tacM0x40@4 0x80
 		AssignExpCmd:0 L1024@4 tacCallvalue@4
 		AssignExpCmd L1023bool@4 Eq(tacCallvalue@4 0x0)
 		AssignExpCmd:1 L1022@4 0x10
 		AssignExpCmd b Gt(L1023@4 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 16_1024_0_4_0_35
 		ByteLoad:0 L1024@4 0x0 tacCalldatabuf@4
 		AssignExpCmd:0 L1024@4 ShiftRightLogical(L1024@4 0xe0)
 		AssignExpCmd:0 L1023bool@4 Eq(0x8a0de8f2 L1024@4)
 		AssignExpCmd:0 L1022@4 0x87
 		AssignExpCmd b Gt(L1023@4 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 135_1024_0_4_0_36
 		AssignExpCmd:2 L1023@4 0xc7
 		AssignExpCmd:2 L1022@4 0x4
@@ -644,7 +644,7 @@ Program {
 		AssignExpCmd L1020bool@4 Eq(L1020@4 0x0)
 		AssignExpCmd:4 L1019@4 0x9d
 		AssignExpCmd b Gt(L1020@4 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 157_1021_0_4_0_37
 		ByteLoad:2 L1019@4 0x4 tacCalldatabuf@4
 		AssignExpCmd:2 L1022@4 L1019@4
@@ -687,13 +687,13 @@ Program {
 		AssignExpCmd:19 L1008@4 L1015@4
 		AssignExpCmd:19 L1007@4 0x162
 		AssignExpCmd b Gt(L1008@4 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 354_1009_0_4_0_40
 		AssignExpCmd:19 L1010@4 Div(L1009@4 L1010@4)
 		AssignExpCmd:20 L1011bool@4 Eq(L1010@4 L1011@4)
 		AssignExpCmd:21 L1010@4 0x16d
 		AssignExpCmd b Gt(L1011@4 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 365_1012_0_4_0_41
 		AssignExpCmd:22 L0@4 L1012@4
 		AssignExpCmd:22 L1011@4 0x0
@@ -717,7 +717,7 @@ Program {
 		AssignExpCmd:25 L1014bool@4 Gt(L1016@4 0x0)
 		AssignExpCmd:26 L1013@4 0x186
 		AssignExpCmd b Gt(L1014@4 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 390_1015_0_4_0_44
 		AssignExpCmd:27 L1014@4 0x0
 		AssignExpCmd:28 L1013@4 L1016@4
@@ -725,7 +725,7 @@ Program {
 		AssignExpCmd:30 L1011@4 L1016@4
 		AssignExpCmd:30 L1010@4 0x191
 		AssignExpCmd b Gt(L1011@4 0x0)
-		AssumeCmd b ""
+		AssumeCmd b
 		JumpdestCmd 401_1012_0_4_0_45
 		AssignExpCmd:30 L1013@4 Div(L1012@4 L1013@4)
 		AssignExpCmd:31 L0@4 L1013@4

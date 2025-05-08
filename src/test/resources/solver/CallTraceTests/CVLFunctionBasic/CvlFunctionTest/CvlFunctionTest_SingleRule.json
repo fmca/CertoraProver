@@ -189,7 +189,6 @@
                     }
                 }
             },
-            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -362,7 +361,6 @@
                     }
                 }
             },
-            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -535,7 +533,6 @@
                     }
                 }
             },
-            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -708,7 +705,7 @@
                     }
                 }
             },
-            "description": null,
+            "description": "num != 10",
             "scope": {
                 "scopeStack": [
                     {
@@ -1078,7 +1075,6 @@
                                         }
                                     }
                                 },
-                                "description": null,
                                 "scope": {
                                     "scopeStack": [
                                         {
@@ -1243,7 +1239,6 @@
                                         }
                                     }
                                 },
-                                "description": null,
                                 "scope": {
                                     "scopeStack": [
                                         {
@@ -1408,7 +1403,7 @@
                                         }
                                     }
                                 },
-                                "description": null,
+                                "description": "num != 20",
                                 "scope": {
                                     "scopeStack": [
                                         {
@@ -1942,7 +1937,7 @@
                 },
                 "twoStateIndex": "NEITHER"
             },
-            "description": null,
+            "description": "r",
             "scope": {
                 "scopeStack": [
                     {

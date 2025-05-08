@@ -98,9 +98,6 @@ private val erasureMapper = object : DefaultTACCmdSpecMapper() {
     override fun mapAssertCmd(t: TACCmd.Simple.AssertCmd): TACCmd.Simple =
         super.mapAssertCmd(t.copy(description = ERASED))
 
-    override fun mapAssumeCmd(t: TACCmd.Simple.AssumeCmd): TACCmd.Simple =
-        super.mapAssumeCmd(t.copy(msg = ERASED))
-
     override fun mapLabelCmd(t: TACCmd.Simple.LabelCmd): TACCmd.Simple =
         super.mapLabelCmd(t.copy(_msg = ERASED))
 

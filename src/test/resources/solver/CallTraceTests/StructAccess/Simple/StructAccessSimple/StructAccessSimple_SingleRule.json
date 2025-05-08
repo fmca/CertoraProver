@@ -318,7 +318,7 @@
                     }
                 }
             },
-            "description": null,
+            "description": "myStruct.num != 8",
             "scope": {
                 "scopeStack": [
                     {

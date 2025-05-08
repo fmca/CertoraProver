@@ -394,7 +394,7 @@
                     }
                 }
             },
-            "description": null,
+            "description": "false",
             "scope": {
                 "scopeStack": [
                     {
