@@ -37,24 +37,6 @@ import sbf.domains.Constant
  * Initially, r10 points to the end of the stack.
  * The register r10 is read-only.
  *
- * More concretely, the type of a register is defined by this finite lattice:
- *
- *             ----------------- Top
- *           /                    |
- *          /         -------- Pointer ---------
- *        /         /          |         |      \
- *      Num       Stack     Input    Heap   Global
- *        \            \      |        /       /
- *          -------------- Bottom -------------
- *  where
- *  - Top: any type
- *  - Bottom: type error
- *  - Num: number
- *  - Stack: pointer to the stack (i.e., it contains a stack offset)
- *  - Input: pointer to the input region
- *  - Heap: pointer to the heap (i.e, an integer between [0x300000000, 0x3000077f8])
- *  - Global: pointer to a global variable
- *
  *  In SBF, numbers and pointers are indistinguishable so there are implicit casts
  *  from numbers to pointers, and vice-versa.
  **/
@@ -83,9 +65,73 @@ const val SBF_INPUT_END = SBF_INPUT_START + (2 * MAX_SOLANA_ACCOUNTS * SOLANA_AC
 // We have split the input memory region into two parts: the first half for solana accounts and the second half for external allocations.
 const val SBF_EXTERNAL_START = SBF_INPUT_START + (MAX_SOLANA_ACCOUNTS * SOLANA_ACCOUNT_SIZE)
 
+
+sealed class SbfRegisterType {
+    data class NumType(val value: Constant) : SbfRegisterType() {
+        override fun toString() = if (value.isTop()) {
+            "num"
+        } else {
+            "num($value)"
+        }
+    }
+
+    sealed class PointerType : SbfRegisterType() {
+        abstract val offset: Constant
+
+        data class Stack(override val offset: Constant) : PointerType() {
+            override fun toString() = "sp($offset)"
+        }
+
+        data class Input(override val offset: Constant) : PointerType() {
+            override fun toString() = "input($offset)"
+        }
+
+        data class Heap(override val offset: Constant) : PointerType() {
+            override fun toString() = "heap($offset)"
+        }
+
+        // global.address is the start address of the global variable.
+        // offset is actually an absolute address between [global.address, global.address+size)
+        data class Global(override val offset: Constant, val global: SbfGlobalVariable?) : PointerType() {
+            override fun toString(): String {
+                return if (global != null) {
+                    if (global is SbfConstantStringGlobalVariable) {
+                        "global($global)"
+                    } else {
+                        "global(${global.name}, $offset)"
+                    }
+                } else {
+                    "global($offset)"
+                }
+            }
+        }
+    }
+}
+
+
 typealias ConstantNum = Constant
 typealias ConstantOffset = Constant
 
+/**
+ * An "abstract" version [SbfRegisterType], that extends it with top/bot elements and
+ * lattice operations such as join and inclusion
+ *
+ *             ----------------- Top
+ *           /                    |
+ *          /         -------- Pointer ---------
+ *        /         /          |         |      \
+ *      Num       Stack     Input    Heap   Global
+ *        \            \      |        /       /
+ *          -------------- Bottom -------------
+ *  where
+ *  - Top: any type
+ *  - Bottom: type error
+ *  - Num: number
+ *  - Stack: pointer to the stack (i.e., it contains a stack offset)
+ *  - Input: pointer to the input region
+ *  - Heap: pointer to the heap (i.e, an integer between [0x300000000, 0x3000077f8])
+ *  - Global: pointer to a global variable
+ **/
 sealed class SbfType {
     // To represent type errors
     object Bottom : SbfType() {
@@ -207,6 +253,21 @@ sealed class SbfType {
             offset.lessOrEqual(other.offset)
         } else {
             false
+        }
+    }
+
+    fun concretize(): SbfRegisterType? {
+        return when (this) {
+            is Top, is Bottom -> null
+            is NumType -> SbfRegisterType.NumType(this.value)
+            is PointerType -> {
+                when (this) {
+                    is PointerType.Stack -> SbfRegisterType.PointerType.Stack(this.offset)
+                    is PointerType.Input -> SbfRegisterType.PointerType.Input(this.offset)
+                    is PointerType.Heap -> SbfRegisterType.PointerType.Heap(this.offset)
+                    is PointerType.Global -> SbfRegisterType.PointerType.Global(this.offset, this.global)
+                }
+            }
         }
     }
 }

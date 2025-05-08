@@ -39,11 +39,11 @@ fun annotateWithTypes(cfg: MutableSbfCFG, globals: GlobalVariableMap, memSummari
  * Annotate the instructions of [cfg] the with types extracted from [scalarAnalysis].
  **/
 fun annotateWithTypes(cfg: MutableSbfCFG, scalarAnalysis: ScalarAnalysis) {
-    fun getType(v: Value, absVal: ScalarDomain): SbfType? {
+    fun getType(v: Value, absVal: ScalarDomain): SbfRegisterType? {
         return if (v is Value.Imm) {
             null
         } else {
-            absVal.getValue(v).get()
+            absVal.getValue(v).get().concretize()
         }
     }
     fun getPre(block: Label) = scalarAnalysis.getPre(block)

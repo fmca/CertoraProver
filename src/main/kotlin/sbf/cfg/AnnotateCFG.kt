@@ -31,7 +31,7 @@ fun <T: AbstractDomain<T>> annotateCFGWithTypes(cfg: MutableSbfCFG,
                                                 globalsMap: GlobalVariableMap,
                                                 memSummaries: MemorySummaries,
                                                 preMap: (Label) -> T?,
-                                                getType: (Value, T) -> SbfType?) {
+                                                getType: (Value, T) -> SbfRegisterType?) {
 
     fun annotateCondWithTypes(cond: Condition, types: T): Condition {
         return cond.copy(leftType = getType(cond.left, types),
