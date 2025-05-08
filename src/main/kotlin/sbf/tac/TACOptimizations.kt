@@ -35,6 +35,8 @@ import sbf.SolanaConfig
 import tac.DumpTime
 import utils.*
 import vc.data.CoreTACProgram
+import vc.data.TACExpr
+import vc.data.tacexprutil.ExprUnfolder.Companion.unfoldAll
 import verifier.BlockMerger
 import verifier.CoreToCoreTransformer
 import verifier.SimpleMemoryOptimizer
@@ -55,6 +57,15 @@ fun optimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProgram {
             DumpTime.AGNOSTIC)
         }
         .mapIf(isSatisfyRule, CoreToCoreTransformer(ReportTypes.REWRITE_ASSERTS, WasmEntryPoint::rewriteAsserts))
+        .map(CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) {
+            unfoldAll(it) { e ->
+                    e.rhs is TACExpr.BinOp.BWXOr ||
+                    e.rhs is TACExpr.BinOp.BWOr ||
+                    e.rhs is TACExpr.UnaryExp.LNot
+            }.let {
+                PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList)
+            }
+        })
         // constant propagation + cleanup + merging blocks
         .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.PROPAGATOR_SIMPLIFIER) {
             ConstantPropagatorAndSimplifier(it).rewrite().let {
@@ -72,7 +83,6 @@ fun optimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProgram {
             }.let(BlockMerger::mergeBlocks)
         })
         .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.NEGATION_NORMALIZER) { NegationNormalizer(it).rewrite() })
-        .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) { PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList) })
         // We remove unused map writes. It might also help the map scalarizer if a dead write does not have a constant index
         .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.REMOVE_UNUSED_WRITES, SimpleMemoryOptimizer::removeUnusedWrites))
         .mapIf(optLevel >= 3, CoreToCoreTransformer(ReportTypes.INTERVALS_OPTIMIZE) {
@@ -138,6 +148,16 @@ fun legacyOptimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProg
                 DumpTime.AGNOSTIC)
         }
         .mapIf(isSatisfyRule, CoreToCoreTransformer(ReportTypes.REWRITE_ASSERTS, WasmEntryPoint::rewriteAsserts))
+        .map(CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) {
+            // We need to ensure 3 address code before applying the pattern rewriter.
+            unfoldAll(it) { e ->
+                    e.rhs is TACExpr.BinOp.BWXOr ||
+                    e.rhs is TACExpr.BinOp.BWOr ||
+                    e.rhs is TACExpr.UnaryExp.LNot
+            }.let {
+                PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList)
+            }
+        })
 
     val maybeOptimized1 = runIf(optLevel >= 1) {
         preprocessed
@@ -146,7 +166,6 @@ fun legacyOptimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProg
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE_BOOL_VARIABLES) { c -> BoolOptimizer(c).go() })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.PROPAGATOR_SIMPLIFIER) { ConstantPropagatorAndSimplifier(it).rewrite() })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.NEGATION_NORMALIZER) { NegationNormalizer(it).rewrite() })
-            .mapIfAllowed(CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) { PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList) })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.GLOBAL_INLINER1) { GlobalInliner.inlineAll(it) })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.UNUSED_ASSIGNMENTS) {
                 optimizeAssignments(it, FilteringFunctions.default(it, keepRevertManagment = true))
