@@ -261,7 +261,8 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
     POST_SUMMARIZATION_STORAGE_CLEANUP(LoggerTypes.SUMMARIZATION),
     ARRAY_LENGTH_UPDATE_INSTRUMENTATION(LoggerTypes.ALIAS_ANALYSIS),
     OPTIMIZE_WASM_BITOPS(LoggerTypes.OPTIMIZE),
-    LOG_FP_REUSE_NORMALIZATION(LoggerTypes.ALLOC)
+    LOG_FP_REUSE_NORMALIZATION(LoggerTypes.ALLOC),
+    BMC_FUNC(LoggerTypes.BOUNDED_MODEL_CHECKER)
     ;
 
     override fun isEnabled(): Boolean = this == NONE || Config.isEnabledLogger(this.loggerCategory) || Config.isEnabledReport(this)

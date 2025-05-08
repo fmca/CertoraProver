@@ -88,7 +88,11 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
             TACKeyword.TMP(
                 Tag.GhostMap(origGhost.paramTypes.map { it.toTag() }, Tag.Bool),
                 "_is_accessed_${origGhost.id}"
-            )
+            ).let {
+                it.withMeta(TACMeta.CVL_GHOST)
+                    .withMeta(TACMeta.CVL_DISPLAY_NAME, it.namePrefix)
+                    .withMeta(TACMeta.CVL_TYPE, origGhost.type)
+            }
         }
     }
 
@@ -100,7 +104,11 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
      */
     private fun getUnaccessedGhost(usumGhost: CVLGhostDeclaration.Sum): TACSymbol.Var {
         return unaccessedGhosts.getOrPut(usumGhost.id) {
-            TACKeyword.TMP(usumGhost.type.toTag(), "_unaccessed_${usumGhost.id}")
+            TACKeyword.TMP(usumGhost.type.toTag(), "_unaccessed_${usumGhost.id}").let {
+                it.withMeta(TACMeta.CVL_GHOST)
+                    .withMeta(TACMeta.CVL_DISPLAY_NAME, it.namePrefix)
+                    .withMeta(TACMeta.CVL_TYPE, usumGhost.type)
+            }
         }
     }
 

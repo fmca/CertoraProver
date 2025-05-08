@@ -24,6 +24,7 @@ import analysis.storage.StorageAnalysisResult
 import bridge.NamedContractIdentifier
 import com.certora.collect.*
 import config.Config
+import config.ReportTypes
 import datastructures.stdcollections.*
 import instrumentation.transformers.InitialCodeInstrumentation
 import log.*
@@ -111,7 +112,11 @@ class BoundedModelChecker(
                 return storage.isEmpty() && !hasTransient && ghosts.isEmpty()
             }
 
-            fun overlaps(other: StateModificationFootprint): Boolean {
+            fun overlaps(other: StateModificationFootprint?): Boolean {
+                if (other == null) {
+                    // We don't have info on the other one, so assume there could be overlapping
+                    return true
+                }
                 return this.storage.any { it in other.storage } ||
                     (this.hasTransient && other.hasTransient) ||
                     this.ghosts.any { it in other.ghosts }
@@ -326,7 +331,7 @@ class BoundedModelChecker(
             val prog = compiler.generateRuleSetupCode().transformToCore(scene) andThen compiler.compileCommands(block, "intialization code").toCore(scene)
 
             InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(
-                prog,
+                prog.copy(name = "initialization code"),
                 scene,
                 cvl,
                 IRule.createDummyRule("initialization").copy(ruleType = SpecType.Single.BMC),
@@ -336,7 +341,7 @@ class BoundedModelChecker(
 
         setupFunctionProg = run {
             val callSetup = withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
-                this@run.cvl.subs.find { it.declarationId == SETUP_FUNC_NAME }?.let {
+                this@run.cvl.subs.find { it.declarationId == SETUP_FUNC_NAME && it.params.isEmpty() }?.let {
                     CVLCmd.Simple.Apply(
                         range,
                         CVLExp.ApplyExp.CVLFunction(
@@ -477,7 +482,7 @@ class BoundedModelChecker(
 
             val prog = paramDeclarations andThen preservedDispatch andThen call
 
-            return prog to callId
+            return prog.copy(name = func.abiWithContractStr()) to callId
         }
 
         invProgs = invariants.mapValues { (inv, _) ->
@@ -507,8 +512,17 @@ class BoundedModelChecker(
                 val (prog, callId) = progAndCallId
                 val rule = IRule.createDummyRule("rule for $contractFunc").copy(ruleType = SpecType.Single.BMC)
 
-                contractFunc to (InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(prog, scene, cvl, rule, null)
-                    .optimize(scene) to callId)
+                val code = InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(prog, scene, cvl, rule, null)
+                val optimized = code.optimize(scene)
+
+                ArtifactManagerFactory().dumpMandatoryCodeArtifacts(
+                    optimized,
+                    ReportTypes.BMC_FUNC,
+                    StaticArtifactLocation.Outputs,
+                    DumpTime.AGNOSTIC
+                )
+
+                contractFunc to (optimized to callId)
             }
             .filter { (_, progAndCallId) ->
                 val (prog, callId) = progAndCallId
@@ -801,6 +815,9 @@ class BoundedModelChecker(
         val allResults = if (!isVacuous(constructorProg, constructorsRule)) {
             val constructorRes = checkProg(constructorProg, constructorsRule)
             nSequencesChecked.getAndIncrement()
+            if (constructorRes is RuleCheckResult.Single && constructorRes.result == SolverResult.SAT) {
+                nViolationsFound.getAndIncrement()
+            }
 
             listOf(constructorRes) + if (Config.BoundedModelChecking.get() > 0) {
                 checkRecursive(constructorsRule, treapListOf())

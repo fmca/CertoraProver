@@ -188,10 +188,7 @@ class CVLCompiler(
                     val tag = ghost.type.toTag()
                     val allocatedVar = TACSymbol.Var(name, tag)
                         .toUnique()
-                        .withMeta(CVL_GHOST)
-                        .withMeta(CVL_VAR, true)
-                        .withMeta(CVL_DISPLAY_NAME, ghost.id)
-                        .withMeta(CVL_TYPE, ghost.type)
+                        .withMeta(ghostMeta(ghost.id, ghost.type))
                     allocatedTACSymbols.extendGlobal(name, allocatedVar)
                 }
 
@@ -207,6 +204,12 @@ class CVLCompiler(
             }
         }
     }
+
+    fun ghostMeta(name: String, type: CVLType.PureCVLType) =
+        MetaMap(CVL_GHOST)
+            .plus(CVL_VAR to true)
+            .plus(CVL_DISPLAY_NAME to name)
+            .plus(CVL_TYPE to type)
 
     private fun ghostToTACUF(ghost: CVLGhostDeclaration, allocatedTACSymbols: TACSymbolAllocation): FunctionInScope.UF =
         FunctionInScope.UF(
@@ -1291,7 +1294,7 @@ class CVLCompiler(
                     havocdOldVarName,
                     tag
                 )
-            }.withMeta(CVL_GHOST).withMeta(CVL_DISPLAY_NAME, havocdVar.originalName)
+            }.withMeta(ghostMeta(havocdVar.originalName, havocdVar.getPureCVLType()))
             val havocdNewVar = if (allocatedTACSymbols.isAllocated(havocdNewVarName)) {
                 allocatedTACSymbols.get(havocdNewVarName, tag)
             } else {
@@ -1299,7 +1302,7 @@ class CVLCompiler(
                     havocdNewVarName,
                     tag
                 )
-            }.withMeta(CVL_GHOST).withMeta(CVL_DISPLAY_NAME, havocdVar.originalName)
+            }.withMeta(ghostMeta(havocdVar.originalName, havocdVar.getPureCVLType()))
 
             // some of the types here would be invalid for a ghost, but input is assumed to be correct at this point
             val ghostSort = when (havocdSymbolType) {

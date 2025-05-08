@@ -371,7 +371,9 @@ private data object FunctionNonModifyingFilter : BoundedModelCheckerFilter {
 
             val readFromG = sequence.subList(i + 1, sequence.size).map { func ->
                 secondReadsFromFirst.computeIfAbsent(g to func) {
-                    funcWrites[g]!!.overlaps(funcReads[func]!!)
+                    check(g in funcWrites) { "$g not in funcWrites!" }
+                    check(func in funcReads) { "$func not in funcReads!" }
+                    funcWrites[g]?.overlaps(funcReads[func]) ?: true
                 }
             }
 

@@ -1567,14 +1567,13 @@ class CVLExpressionCompiler(
             }
         ) { baseVar, args, ty ->
             compileGhostAccess(
-                out = out,
                 baseVar = baseVar,
                 args = args,
+                out = out,
                 ghostAccessExp = exp,
                 types = ty,
                 sort = GhostSort.Function,
-                persistent = persistent,
-                name = exp.id
+                persistent = persistent
             )
         }
     }
@@ -1783,7 +1782,27 @@ class CVLExpressionCompiler(
         }
 
         // this may be called for an assignment to wildcard, in which case a tag is required to disambiguate
-        fun getOutVar() = allocatedTACSymbols.get(out.id, outType.toTag())
+        fun getOutVar(): TACSymbol.Var {
+            val metaMap = when (exp) {
+                is CVLExp.ArrayDerefExp -> if (exp.baseArray.getCVLType() is CVLType.PureCVLType.Ghost.Mapping) {
+                    cvlCompiler.ghostMeta(exp.baseArray.toString(), exp.baseArray.getOrInferPureCVLType())
+                } else {
+                    MetaMap()
+                }
+
+                is CVLExp.VariableExp -> cvlCompiler.cvl.ghosts.find { it.id == exp.id }?.let {
+                    cvlCompiler.ghostMeta(exp.id, exp.getOrInferPureCVLType())
+                } ?: MetaMap()
+
+                is CVLExp.SumExp -> cvlCompiler.ghostMeta(exp.sumGhostName, exp.getOrInferPureCVLType())
+
+                is CVLExp.ApplyExp.Ghost -> cvlCompiler.ghostMeta(exp.id, exp.getOrInferPureCVLType())
+
+                else -> MetaMap()
+            }
+
+            return allocatedTACSymbols.get(out.id, outType.toTag()).withMeta(metaMap)
+        }
 
         when (exp.tag.annotation) {
             ComplexMarker -> return compileComplexAccess(
@@ -2726,8 +2745,7 @@ class CVLExpressionCompiler(
             ghostAccessExp = exp,
             types = arrayType.getKeys(),
             sort = GhostSort.Mapping,
-            persistent = cvlCompiler.fetchGhostDeclaration(array.id)?.persistent == true,
-            name = array.id
+            persistent = cvlCompiler.fetchGhostDeclaration(array.id)?.persistent == true
         )
     }
 
@@ -2739,14 +2757,9 @@ class CVLExpressionCompiler(
         ghostAccessExp: CVLExp,
         types: List<CVLType.PureCVLType>,
         sort: GhostSort,
-        persistent: Boolean,
-        name: String
+        persistent: Boolean
     ) : ParametricInstantiation<CVLTACProgram> {
-        val sym = out
-            .withMeta(CVL_GHOST)
-            .withMeta(CVL_VAR, true)
-            .withMeta(CVL_TYPE, ghostAccessExp.getOrInferPureCVLType())
-            .withMeta(CVL_DISPLAY_NAME, name)
+        check(CVL_GHOST in out.meta) { "Expected a ghost meta for ghost access compilation" }
         val compiledArgs = args.map { argExp ->
             compileExp(argExp).withMeta(CVL_TYPE, argExp.getOrInferPureCVLType())
         }
@@ -2769,11 +2782,11 @@ class CVLExpressionCompiler(
 
         val cmds = listOf(
             TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                lhs = sym,
+                lhs = out,
                 rhs = TACExpr.Select.buildMultiDimSelect(baseVar.asSym(), wrappedIndex)
             ),
             SnippetCmd.CVLSnippetCmd.GhostRead(
-                returnValueSym = sym,
+                returnValueSym = out,
                 returnValueExp = ghostAccessExp,
                 indices = compiledArgs.map { it.out },
                 sort = sort,

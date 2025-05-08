@@ -3128,7 +3128,7 @@ object Config {
             setOf(
                 ReportTypes.REPORT,
                 ReportTypes.ENVFREE,
-                ReportTypes.ERROR
+                ReportTypes.ERROR,
             )
         }/*
             Until Presimplified dumps get unf--ked this needs to be turned off I guess
