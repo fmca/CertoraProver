@@ -19,16 +19,17 @@ package rules
 
 import cache.CacheKey
 import cache.ICacheManager
+import config.Config
 import config.ReportTypes
 import datastructures.stdcollections.*
 import kotlin.time.measureTimedValue
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
-import log.Logger
-import log.LoggerTypes
+import log.*
 import report.LiveStatsReporter
 import rules.IsFromCache.*
 import scene.SceneIdentifiers
+import smt.CoverageInfoEnum
 import solver.SolverResult
 import spec.rules.CVLSingleRule
 import statistics.IStatsJson
@@ -132,8 +133,12 @@ class CachingCompiledRule(
             // cache result only on definitive answer
             val cachedResults =
                 it.finalResult == SolverResult.UNSAT || it.finalResult == SolverResult.SAT || it.finalResult == SolverResult.SANITY_FAIL
-            // Do not cache results of unsat cores for now (see CERT-5757)
-            if (cachedResults && !cache.exists(solverResponseKey)) {
+            // FIXME: Coverage Info is currently not cacheable (see CERT-5757)
+            val requestsCoverageInfo = (it.finalResult == SolverResult.UNSAT || it.finalResult == SolverResult.SANITY_FAIL)
+                && Config.CoverageInfoMode.get() != CoverageInfoEnum.NONE
+            if (cachedResults && !requestsCoverageInfo && !cache.exists(solverResponseKey)) {
+                // FIXME: Unsat Cores are currently not cacheable (see CERT-5757)
+                // Note that the result might contain unsat cores even if the coverage info is not requested
                 putResult(it.dropUnsatCoreData())
             }
         }
