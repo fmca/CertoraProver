@@ -20,7 +20,7 @@ Program {
 	}
 	Block 3_0_0_0_0_0 Succ [8_0_0_0_0_0] {
 		AssignExpCmd b1 LNot(Eq(i1 i2))
-		AssumeCmd b1
+		AssumeCmd b1 ""
 		AssignExpCmd b2 LNot(Eq(i1 i3))
 		AssignExpCmd b3 LNot(Eq(i2 i3))
 		AssignExpCmd b4 LOr(b2 b3)

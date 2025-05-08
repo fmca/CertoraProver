@@ -218,7 +218,7 @@
                     }
                 }
             },
-            "description": "a > 0",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -391,7 +391,7 @@
                     }
                 }
             },
-            "description": "a == 0",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -564,7 +564,7 @@
                     }
                 }
             },
-            "description": "a < 0",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -807,7 +807,7 @@
                             }
                         }
                     },
-                    "description": "a > 0",
+                    "description": null,
                     "scope": {
                         "scopeStack": [
                             {
@@ -980,7 +980,7 @@
                             }
                         }
                     },
-                    "description": "a == 0",
+                    "description": null,
                     "scope": {
                         "scopeStack": [
                             {
@@ -1153,7 +1153,7 @@
                             }
                         }
                     },
-                    "description": "a < 0",
+                    "description": null,
                     "scope": {
                         "scopeStack": [
                             {

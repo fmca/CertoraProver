@@ -410,6 +410,7 @@ object Summarizer {
                 } else {
                     TACCmd.Simple.AssumeCmd(
                         cond = TACSymbol.False,
+                        "recursion limit pruning"
                     )
                 }
             } else {
@@ -641,7 +642,7 @@ object Summarizer {
                     t,
                     TACSymbol.False
                 ),
-                TACCmd.Simple.AssumeCmd(t),
+                TACCmd.Simple.AssumeCmd(t, "optimistic dispatcher"),
                 TACCmd.Simple.AnnotationCmd(
                     SummaryStack.END_EXTERNAL_SUMMARY, SummaryStack.SummaryEnd.External(
                         appliedSummary,
@@ -692,7 +693,8 @@ object Summarizer {
                     } else {
                         listOf(
                             TACCmd.Simple.AssumeCmd(
-                                cond = TACSymbol.False
+                                cond = TACSymbol.False,
+                                "dispatcher recursion pruning"
                             )
                         )
                     }
@@ -1415,7 +1417,7 @@ object Summarizer {
                                     TACSymbol.Zero.asSym()
                                 )
                             ),
-                            TACCmd.Simple.AssumeCmd(extcodesizeAssumptionVar)
+                            TACCmd.Simple.AssumeCmd(extcodesizeAssumptionVar, "extcodesizeAssumption")
                         )
                     )
                     patching.addVarDecl(extcodesizeAssumptionVar)
@@ -1992,6 +1994,7 @@ object Summarizer {
                         } else {
                             TACCmd.Simple.AssumeCmd(
                                 cond = TACSymbol.False,
+                                "recursion limit pruning"
                             )
                         }
                     ))),

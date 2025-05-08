@@ -11,7 +11,7 @@ TACSymbolTable {
 Program {
 	Block 0_0_0_0_0_0 Succ [] {
 		AssignExpCmd t Gt(x1 0x0)
-		AssumeCmd t
+		AssumeCmd t ""
 		AssignExpCmd x1 0x20
 	}
 }

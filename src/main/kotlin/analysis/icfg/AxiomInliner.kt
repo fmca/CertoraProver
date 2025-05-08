@@ -130,7 +130,7 @@ object AxiomInliner : CodeTransformer()  {
         return listOf(
             TACCmd.Simple.AnnotationCmd(TACMeta.AXIOM_INLINED, placementInfo),
             TACCmd.Simple.AssigningCmd.AssignExpCmd(assumeVar, axiom.exp),
-            TACCmd.Simple.AssumeCmd(assumeVar)
+            TACCmd.Simple.AssumeCmd(assumeVar, "inlined axiom")
         )
     }
 

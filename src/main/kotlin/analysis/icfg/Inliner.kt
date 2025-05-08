@@ -252,7 +252,7 @@ object Inliner {
                 TACCmd.Simple.LabelCmd(
                     "Contract recursion limit reached (pruning)"
                 ),
-                TACCmd.Simple.AssumeCmd(cond = TACSymbol.False)
+                TACCmd.Simple.AssumeCmd(cond = TACSymbol.False, "recursion pruning")
             )
         } else {
             listOf(

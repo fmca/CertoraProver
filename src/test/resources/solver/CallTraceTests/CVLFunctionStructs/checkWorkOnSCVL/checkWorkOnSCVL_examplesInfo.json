@@ -190,6 +190,27 @@
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
                 },
                 {
+                    "namePrefix": "B9",
+                    "tag": {
+                        "type": "tac.Tag.Bool"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "tac.is-temp-var",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
+                },
+                {
                     "namePrefix": "R0",
                     "tag": {
                         "type": "tac.Tag.Bit256"
@@ -241,7 +262,7 @@
                     "value": "1"
                 },
                 {
-                    "namePrefix": "R5",
+                    "namePrefix": "R3",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
@@ -281,7 +302,7 @@
                     "value": "1"
                 },
                 {
-                    "namePrefix": "R6",
+                    "namePrefix": "R4",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
@@ -321,7 +342,7 @@
                     "value": "2"
                 },
                 {
-                    "namePrefix": "R7",
+                    "namePrefix": "R5",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
@@ -361,176 +382,7 @@
                     "value": "4"
                 },
                 {
-                    "namePrefix": "B20",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.is-temp-var",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
-                },
-                {
-                    "namePrefix": "B23",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
-                },
-                {
-                    "namePrefix": "B35",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.is-temp-var",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
-                },
-                {
-                    "namePrefix": "B38",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
-                },
-                {
-                    "namePrefix": "B43",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
-                },
-                {
-                    "namePrefix": "B46",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
-                },
-                {
-                    "namePrefix": "B48",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
-                },
-                {
-                    "namePrefix": "I21",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
-                },
-                {
-                    "namePrefix": "I22",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "3"
-                },
-                {
-                    "namePrefix": "I24",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
-                },
-                {
-                    "namePrefix": "I32",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
-                },
-                {
-                    "namePrefix": "I39",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
-                },
-                {
-                    "namePrefix": "I44",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
-                },
-                {
-                    "namePrefix": "I45",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "3"
-                },
-                {
-                    "namePrefix": "R16",
+                    "namePrefix": "R6",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
@@ -579,7 +431,7 @@
                     "value": "9"
                 },
                 {
-                    "namePrefix": "R18",
+                    "namePrefix": "R7",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
@@ -610,10 +462,19 @@
                     "value": "1"
                 },
                 {
-                    "namePrefix": "R33",
+                    "namePrefix": "B12",
                     "tag": {
-                        "type": "tac.Tag.UserDefined.UninterpretedSort",
-                        "name": "skey"
+                        "type": "tac.Tag.Bool"
+                    },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
+                },
+                {
+                    "namePrefix": "B24",
+                    "tag": {
+                        "type": "tac.Tag.Bool"
                     },
                     "callIndex": 0,
                     "meta": [
@@ -629,337 +490,345 @@
                     ]
                 },
                 {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "9ea5"
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "R34",
+                    "namePrefix": "B27",
                     "tag": {
-                        "type": "tac.Tag.UserDefined.UninterpretedSort",
-                        "name": "skey"
+                        "type": "tac.Tag.Bool"
                     },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.is-temp-var",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.access-paths",
-                                "type": "analysis.storage.StorageAnalysisResult$AccessPaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "paths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysis.AnalysisPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysis.AnalysisPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysis.AnalysisPath.Root",
-                                                "slot": "0"
-                                            },
-                                            "key": {
-                                                "type": "vc.data.TACSymbol.Var.Full",
-                                                "namePrefix": "I32",
-                                                "tag": {
-                                                    "type": "tac.Tag.Int"
-                                                },
-                                                "callIndex": 0
-                                            },
-                                            "baseSlot": {
-                                                "type": "vc.data.TACSymbol.Const",
-                                                "value": "0"
-                                            },
-                                            "hashResult": {
-                                                "type": "vc.data.TACSymbol.Const",
-                                                "value": "0"
-                                            }
-                                        },
-                                        "offset": {
-                                            "type": "analysis.storage.StorageAnalysis.Offset.Bytes",
-                                            "numBytes": "36"
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
+                    "callIndex": 0
                 },
                 {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "9ea6"
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
                 },
                 {
-                    "namePrefix": "R36",
+                    "namePrefix": "B32",
                     "tag": {
-                        "type": "tac.Tag.Bit256"
+                        "type": "tac.Tag.Bool"
                     },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.is-temp-var",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        }
-                    ]
+                    "callIndex": 0
                 },
                 {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "R40",
+                    "namePrefix": "B35",
                     "tag": {
-                        "type": "tac.Tag.UserDefined.UninterpretedSort",
-                        "name": "skey"
+                        "type": "tac.Tag.Bool"
                     },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.is-temp-var",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        }
-                    ]
+                    "callIndex": 0
                 },
                 {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "9ea5"
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "R41",
+                    "namePrefix": "B37",
                     "tag": {
-                        "type": "tac.Tag.UserDefined.UninterpretedSort",
-                        "name": "skey"
+                        "type": "tac.Tag.Bool"
                     },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.is-temp-var",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.access-paths",
-                                "type": "analysis.storage.StorageAnalysisResult$AccessPaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "paths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysis.AnalysisPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysis.AnalysisPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysis.AnalysisPath.Root",
-                                                "slot": "0"
-                                            },
-                                            "key": {
-                                                "type": "vc.data.TACSymbol.Var.Full",
-                                                "namePrefix": "I39",
-                                                "tag": {
-                                                    "type": "tac.Tag.Int"
-                                                },
-                                                "callIndex": 0
-                                            },
-                                            "baseSlot": {
-                                                "type": "vc.data.TACSymbol.Const",
-                                                "value": "0"
-                                            },
-                                            "hashResult": {
-                                                "type": "vc.data.TACSymbol.Const",
-                                                "value": "0"
-                                            }
-                                        },
-                                        "offset": {
-                                            "type": "analysis.storage.StorageAnalysis.Offset.Bytes",
-                                            "numBytes": "36"
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
+                    "callIndex": 0
                 },
                 {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "9ea6"
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "R42",
-                    "tag": {
-                        "type": "tac.Tag.Bit256"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.is-temp-var",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
-                },
-                {
-                    "namePrefix": "CANON16",
+                    "namePrefix": "I10",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "0"
+                },
+                {
+                    "namePrefix": "I11",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "3"
+                },
+                {
+                    "namePrefix": "I13",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "0"
+                },
+                {
+                    "namePrefix": "I21",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "0"
+                },
+                {
+                    "namePrefix": "I28",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "0"
+                },
+                {
+                    "namePrefix": "I33",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "0"
+                },
+                {
+                    "namePrefix": "I34",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "3"
+                },
+                {
+                    "namePrefix": "R22",
+                    "tag": {
+                        "type": "tac.Tag.UserDefined.UninterpretedSort",
+                        "name": "skey"
+                    },
                     "callIndex": 0,
                     "meta": [
                         {
                             "key": {
-                                "name": "cvl.struct.path",
-                                "type": "spec.cvlast.CVLStructPathNode",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "rootStructType": {
-                                    "name": "TestContract.Simple",
-                                    "fields": [
-                                        {
-                                            "fieldName": "x",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "y",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "x2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "fields": [
-                                    {
-                                        "fieldName": "x",
-                                        "cvlType": {
-                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                            "k": 256
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.def.site",
-                                "type": "spec.CVLDefinitionSite",
+                                "name": "tac.is-temp-var",
+                                "type": "tac.MetaMap$Companion$NothingValue",
                                 "erasureStrategy": "Canonical"
                             },
                             "value": {
-                                "type": "spec.CVLDefinitionSite.Rule",
-                                "range": {
-                                    "type": "utils.Range.Range",
-                                    "specFile": "test.spec",
-                                    "start": {
-                                        "line": 23,
-                                        "charByteOffset": 4
-                                    },
-                                    "end": {
-                                        "line": 23,
-                                        "charByteOffset": 26
-                                    }
-                                }
                             }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.type",
-                                "type": "spec.cvlast.CVLType$PureCVLType",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                "k": 256
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl",
-                                "type": "java.lang.Boolean",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": true
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.display",
-                                "type": "java.lang.String",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": "s.x"
                         }
                     ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "8"
+                    "value": "4538"
                 },
                 {
-                    "namePrefix": "CANON17",
+                    "namePrefix": "R23",
+                    "tag": {
+                        "type": "tac.Tag.UserDefined.UninterpretedSort",
+                        "name": "skey"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "tac.is-temp-var",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "tac.storage.access-paths",
+                                "type": "analysis.storage.StorageAnalysisResult$AccessPaths",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "paths": [
+                                    {
+                                        "type": "analysis.storage.StorageAnalysis.AnalysisPath.StructAccess",
+                                        "base": {
+                                            "type": "analysis.storage.StorageAnalysis.AnalysisPath.MapAccess",
+                                            "base": {
+                                                "type": "analysis.storage.StorageAnalysis.AnalysisPath.Root",
+                                                "slot": "0"
+                                            },
+                                            "key": {
+                                                "type": "vc.data.TACSymbol.Var.Full",
+                                                "namePrefix": "I21",
+                                                "tag": {
+                                                    "type": "tac.Tag.Int"
+                                                },
+                                                "callIndex": 0
+                                            },
+                                            "baseSlot": {
+                                                "type": "vc.data.TACSymbol.Const",
+                                                "value": "0"
+                                            },
+                                            "hashResult": {
+                                                "type": "vc.data.TACSymbol.Const",
+                                                "value": "0"
+                                            }
+                                        },
+                                        "offset": {
+                                            "type": "analysis.storage.StorageAnalysis.Offset.Bytes",
+                                            "numBytes": "36"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "4539"
+                },
+                {
+                    "namePrefix": "R25",
+                    "tag": {
+                        "type": "tac.Tag.Bit256"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "tac.is-temp-var",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "0"
+                },
+                {
+                    "namePrefix": "R29",
+                    "tag": {
+                        "type": "tac.Tag.UserDefined.UninterpretedSort",
+                        "name": "skey"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "tac.is-temp-var",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "4538"
+                },
+                {
+                    "namePrefix": "R30",
+                    "tag": {
+                        "type": "tac.Tag.UserDefined.UninterpretedSort",
+                        "name": "skey"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "tac.is-temp-var",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "tac.storage.access-paths",
+                                "type": "analysis.storage.StorageAnalysisResult$AccessPaths",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "paths": [
+                                    {
+                                        "type": "analysis.storage.StorageAnalysis.AnalysisPath.StructAccess",
+                                        "base": {
+                                            "type": "analysis.storage.StorageAnalysis.AnalysisPath.MapAccess",
+                                            "base": {
+                                                "type": "analysis.storage.StorageAnalysis.AnalysisPath.Root",
+                                                "slot": "0"
+                                            },
+                                            "key": {
+                                                "type": "vc.data.TACSymbol.Var.Full",
+                                                "namePrefix": "I28",
+                                                "tag": {
+                                                    "type": "tac.Tag.Int"
+                                                },
+                                                "callIndex": 0
+                                            },
+                                            "baseSlot": {
+                                                "type": "vc.data.TACSymbol.Const",
+                                                "value": "0"
+                                            },
+                                            "hashResult": {
+                                                "type": "vc.data.TACSymbol.Const",
+                                                "value": "0"
+                                            }
+                                        },
+                                        "offset": {
+                                            "type": "analysis.storage.StorageAnalysis.Offset.Bytes",
+                                            "numBytes": "36"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "4539"
+                },
+                {
+                    "namePrefix": "R31",
+                    "tag": {
+                        "type": "tac.Tag.Bit256"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "tac.is-temp-var",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "0"
+                },
+                {
+                    "namePrefix": "CANON10",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -1088,7 +957,7 @@
                     "value": "401"
                 },
                 {
-                    "namePrefix": "CANON18",
+                    "namePrefix": "CANON11",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -1219,7 +1088,7 @@
                     "value": "7"
                 },
                 {
-                    "namePrefix": "CANON19",
+                    "namePrefix": "CANON12",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -1350,7 +1219,7 @@
                     "value": "6"
                 },
                 {
-                    "namePrefix": "CANON20",
+                    "namePrefix": "CANON13",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -1481,7 +1350,7 @@
                     "value": "5"
                 },
                 {
-                    "namePrefix": "CANON21",
+                    "namePrefix": "CANON14",
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
@@ -1609,7 +1478,7 @@
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "CANON22",
+                    "namePrefix": "CANON15",
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
@@ -1737,7 +1606,7 @@
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "CANON24",
+                    "namePrefix": "CANON17",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -1799,7 +1668,7 @@
                     "value": "0"
                 },
                 {
-                    "namePrefix": "CANON32",
+                    "namePrefix": "CANON25",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -1930,7 +1799,7 @@
                     "value": "8"
                 },
                 {
-                    "namePrefix": "CANON33",
+                    "namePrefix": "CANON26",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -2059,7 +1928,7 @@
                     "value": "401"
                 },
                 {
-                    "namePrefix": "CANON34",
+                    "namePrefix": "CANON27",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -2190,7 +2059,7 @@
                     "value": "7"
                 },
                 {
-                    "namePrefix": "CANON35",
+                    "namePrefix": "CANON28",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -2321,7 +2190,7 @@
                     "value": "6"
                 },
                 {
-                    "namePrefix": "CANON36",
+                    "namePrefix": "CANON29",
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
@@ -2449,7 +2318,7 @@
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "CANON37",
+                    "namePrefix": "CANON30",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -2580,7 +2449,7 @@
                     "value": "5"
                 },
                 {
-                    "namePrefix": "CANON38",
+                    "namePrefix": "CANON31",
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
@@ -2708,7 +2577,7 @@
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "CANON53",
+                    "namePrefix": "CANON47",
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
@@ -2828,6 +2697,137 @@
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
                     "value": "9"
+                },
+                {
+                    "namePrefix": "CANON9",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.struct.path",
+                                "type": "spec.cvlast.CVLStructPathNode",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "rootStructType": {
+                                    "name": "TestContract.Simple",
+                                    "fields": [
+                                        {
+                                            "fieldName": "x",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "y",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "x2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "fields": [
+                                    {
+                                        "fieldName": "x",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                            "k": 256
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.def.site",
+                                "type": "spec.CVLDefinitionSite",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "spec.CVLDefinitionSite.Rule",
+                                "range": {
+                                    "type": "utils.Range.Range",
+                                    "specFile": "test.spec",
+                                    "start": {
+                                        "line": 23,
+                                        "charByteOffset": 4
+                                    },
+                                    "end": {
+                                        "line": 23,
+                                        "charByteOffset": 26
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl",
+                                "type": "java.lang.Boolean",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": true
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.display",
+                                "type": "java.lang.String",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": "s.x"
+                        }
+                    ]
+                },
+                {
+                    "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
+                    "value": "8"
                 },
                 {
                     "namePrefix": "OK_0_0_0_0_0_0",
@@ -3007,7 +3007,46 @@
             ],
             "havocedVariables": [
                 {
-                    "namePrefix": "B35",
+                    "namePrefix": "tacExtcodesize!!1",
+                    "tag": {
+                        "type": "tac.Tag.WordMap"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "Tac.symbol.keyword",
+                                "type": "vc.data.TACSymbol$Var$KeywordEntry",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
+                                "name": "tacExtcodesize",
+                                "maybeTACKeywordOrdinal": 25
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "tac.no.callindex",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "tac.is.extcodesize",
+                                "type": "tac.MetaMap$Companion$NothingValue",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                            }
+                        }
+                    ]
+                },
+                {
+                    "namePrefix": "B24",
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
@@ -3063,638 +3102,7 @@
                     ]
                 },
                 {
-                    "namePrefix": "CANON4!!10",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path.family",
-                                "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "storagePaths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                                "slot": "0"
-                                            }
-                                        },
-                                        "offset": "1"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.scalarization.sort",
-                                "type": "vc.data.ScalarizationSort",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.ScalarizationSort.Packed",
-                                "packedStart": {
-                                    "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-                                },
-                                "start": 0
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.bit-width",
-                                "type": "java.lang.Integer",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": 160
-                        },
-                        {
-                            "key": {
-                                "name": "tac.slot.type",
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.address"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path",
-                                "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                "base": {
-                                    "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                    "base": {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                        "slot": "0"
-                                    }
-                                },
-                                "offset": "1"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON20",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "cvl.struct.path",
-                                "type": "spec.cvlast.CVLStructPathNode",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "rootStructType": {
-                                    "name": "TestContract.Simple",
-                                    "fields": [
-                                        {
-                                            "fieldName": "x",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "y",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "x2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "fields": [
-                                    {
-                                        "fieldName": "x2",
-                                        "cvlType": {
-                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                            "k": 256
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.def.site",
-                                "type": "spec.CVLDefinitionSite",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.CVLDefinitionSite.Rule",
-                                "range": {
-                                    "type": "utils.Range.Range",
-                                    "specFile": "test.spec",
-                                    "start": {
-                                        "line": 23,
-                                        "charByteOffset": 4
-                                    },
-                                    "end": {
-                                        "line": 23,
-                                        "charByteOffset": 26
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.type",
-                                "type": "spec.cvlast.CVLType$PureCVLType",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                "k": 256
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl",
-                                "type": "java.lang.Boolean",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": true
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.display",
-                                "type": "java.lang.String",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": "s.x2"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON21",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "cvl.struct.path",
-                                "type": "spec.cvlast.CVLStructPathNode",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "rootStructType": {
-                                    "name": "TestContract.Simple",
-                                    "fields": [
-                                        {
-                                            "fieldName": "x",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "y",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "x2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "fields": [
-                                    {
-                                        "fieldName": "b1",
-                                        "cvlType": {
-                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.def.site",
-                                "type": "spec.CVLDefinitionSite",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.CVLDefinitionSite.Rule",
-                                "range": {
-                                    "type": "utils.Range.Range",
-                                    "specFile": "test.spec",
-                                    "start": {
-                                        "line": 23,
-                                        "charByteOffset": 4
-                                    },
-                                    "end": {
-                                        "line": 23,
-                                        "charByteOffset": 26
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.type",
-                                "type": "spec.cvlast.CVLType$PureCVLType",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl",
-                                "type": "java.lang.Boolean",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": true
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.display",
-                                "type": "java.lang.String",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": "s.b1"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON22",
-                    "tag": {
-                        "type": "tac.Tag.Bool"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "cvl.struct.path",
-                                "type": "spec.cvlast.CVLStructPathNode",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "rootStructType": {
-                                    "name": "TestContract.Simple",
-                                    "fields": [
-                                        {
-                                            "fieldName": "x",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "y",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "x2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "fields": [
-                                    {
-                                        "fieldName": "b2",
-                                        "cvlType": {
-                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.def.site",
-                                "type": "spec.CVLDefinitionSite",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.CVLDefinitionSite.Rule",
-                                "range": {
-                                    "type": "utils.Range.Range",
-                                    "specFile": "test.spec",
-                                    "start": {
-                                        "line": 23,
-                                        "charByteOffset": 4
-                                    },
-                                    "end": {
-                                        "line": 23,
-                                        "charByteOffset": 26
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.type",
-                                "type": "spec.cvlast.CVLType$PureCVLType",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl",
-                                "type": "java.lang.Boolean",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": true
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.display",
-                                "type": "java.lang.String",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": "s.b2"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON7!!13",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path.family",
-                                "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "storagePaths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                                "slot": "0"
-                                            }
-                                        },
-                                        "offset": "1"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.scalarization.sort",
-                                "type": "vc.data.ScalarizationSort",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.ScalarizationSort.Packed",
-                                "packedStart": {
-                                    "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-                                },
-                                "start": 160
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.bit-width",
-                                "type": "java.lang.Integer",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": 8
-                        },
-                        {
-                            "key": {
-                                "name": "tac.slot.type",
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK",
-                                "bitwidth": 8
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path",
-                                "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                "base": {
-                                    "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                    "base": {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                        "slot": "0"
-                                    }
-                                },
-                                "offset": "1"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "tacExtcodesize!!3",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "Tac.symbol.keyword",
-                                "type": "vc.data.TACSymbol$Var$KeywordEntry",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-                                "name": "tacExtcodesize",
-                                "maybeTACKeywordOrdinal": 25
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.no.callindex",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.is.extcodesize",
-                                "type": "tac.MetaMap$Companion$NothingValue",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                            }
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "R16",
-                    "tag": {
-                        "type": "tac.Tag.Bit256"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "Tac.symbol.keyword",
-                                "type": "vc.data.TACSymbol$Var$KeywordEntry",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-                                "name": "tacContractAt"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.contract.sym.addr.name",
-                                "type": "java.lang.String",
-                                "erasureStrategy": "Erased"
-                            },
-                            "value": "TestContract"
-                        },
-                        {
-                            "key": {
-                                "name": "tac.contract.sym.addr",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Erased"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON17",
+                    "namePrefix": "CANON10",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -3819,96 +3227,7 @@
                     ]
                 },
                 {
-                    "namePrefix": "CANON9!!15",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path.family",
-                                "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "storagePaths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                                "slot": "0"
-                                            }
-                                        },
-                                        "offset": "1"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.scalarization.sort",
-                                "type": "vc.data.ScalarizationSort",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.ScalarizationSort.Packed",
-                                "packedStart": {
-                                    "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-                                },
-                                "start": 176
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.bit-width",
-                                "type": "java.lang.Integer",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": 8
-                        },
-                        {
-                            "key": {
-                                "name": "tac.slot.type",
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path",
-                                "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                "base": {
-                                    "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                    "base": {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                        "slot": "0"
-                                    }
-                                },
-                                "offset": "1"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON18",
+                    "namePrefix": "CANON11",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -4035,309 +3354,7 @@
                     ]
                 },
                 {
-                    "namePrefix": "CANON19",
-                    "tag": {
-                        "type": "tac.Tag.Int"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "cvl.struct.path",
-                                "type": "spec.cvlast.CVLStructPathNode",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "rootStructType": {
-                                    "name": "TestContract.Simple",
-                                    "fields": [
-                                        {
-                                            "fieldName": "x",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "y",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "z2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 8
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b1",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "x2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                                "k": 256
-                                            }
-                                        },
-                                        {
-                                            "fieldName": "b2",
-                                            "cvlType": {
-                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "fields": [
-                                    {
-                                        "fieldName": "z2",
-                                        "cvlType": {
-                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                            "k": 8
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.def.site",
-                                "type": "spec.CVLDefinitionSite",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.CVLDefinitionSite.Rule",
-                                "range": {
-                                    "type": "utils.Range.Range",
-                                    "specFile": "test.spec",
-                                    "start": {
-                                        "line": 23,
-                                        "charByteOffset": 4
-                                    },
-                                    "end": {
-                                        "line": 23,
-                                        "charByteOffset": 26
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.type",
-                                "type": "spec.cvlast.CVLType$PureCVLType",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
-                                "k": 8
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "cvl",
-                                "type": "java.lang.Boolean",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": true
-                        },
-                        {
-                            "key": {
-                                "name": "cvl.display",
-                                "type": "java.lang.String",
-                                "erasureStrategy": "CallTrace"
-                            },
-                            "value": "s.z2"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON3!!9",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path.family",
-                                "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "storagePaths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                                "slot": "0"
-                                            }
-                                        },
-                                        "offset": "3"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.scalarization.sort",
-                                "type": "vc.data.ScalarizationSort",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.ScalarizationSort.Packed",
-                                "packedStart": {
-                                    "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-                                },
-                                "start": 0
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.bit-width",
-                                "type": "java.lang.Integer",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": 8
-                        },
-                        {
-                            "key": {
-                                "name": "tac.slot.type",
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path",
-                                "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                "base": {
-                                    "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                    "base": {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                        "slot": "0"
-                                    }
-                                },
-                                "offset": "3"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON5!!11",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path.family",
-                                "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "storagePaths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                                "slot": "0"
-                                            }
-                                        },
-                                        "offset": "2"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.scalarization.sort",
-                                "type": "vc.data.ScalarizationSort",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.bit-width",
-                                "type": "java.lang.Integer",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": 256
-                        },
-                        {
-                            "key": {
-                                "name": "tac.slot.type",
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK",
-                                "bitwidth": 256
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path",
-                                "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                "base": {
-                                    "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                    "base": {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                        "slot": "0"
-                                    }
-                                },
-                                "offset": "2"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON16",
+                    "namePrefix": "CANON9",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
@@ -4464,7 +3481,511 @@
                     ]
                 },
                 {
-                    "namePrefix": "CANON8!!14",
+                    "namePrefix": "CANON12",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.struct.path",
+                                "type": "spec.cvlast.CVLStructPathNode",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "rootStructType": {
+                                    "name": "TestContract.Simple",
+                                    "fields": [
+                                        {
+                                            "fieldName": "x",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "y",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "x2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "fields": [
+                                    {
+                                        "fieldName": "z2",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                            "k": 8
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.def.site",
+                                "type": "spec.CVLDefinitionSite",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "spec.CVLDefinitionSite.Rule",
+                                "range": {
+                                    "type": "utils.Range.Range",
+                                    "specFile": "test.spec",
+                                    "start": {
+                                        "line": 23,
+                                        "charByteOffset": 4
+                                    },
+                                    "end": {
+                                        "line": 23,
+                                        "charByteOffset": 26
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 8
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl",
+                                "type": "java.lang.Boolean",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": true
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.display",
+                                "type": "java.lang.String",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": "s.z2"
+                        }
+                    ]
+                },
+                {
+                    "namePrefix": "CANON13",
+                    "tag": {
+                        "type": "tac.Tag.Int"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.struct.path",
+                                "type": "spec.cvlast.CVLStructPathNode",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "rootStructType": {
+                                    "name": "TestContract.Simple",
+                                    "fields": [
+                                        {
+                                            "fieldName": "x",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "y",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "x2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "fields": [
+                                    {
+                                        "fieldName": "x2",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                            "k": 256
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.def.site",
+                                "type": "spec.CVLDefinitionSite",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "spec.CVLDefinitionSite.Rule",
+                                "range": {
+                                    "type": "utils.Range.Range",
+                                    "specFile": "test.spec",
+                                    "start": {
+                                        "line": 23,
+                                        "charByteOffset": 4
+                                    },
+                                    "end": {
+                                        "line": 23,
+                                        "charByteOffset": 26
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl",
+                                "type": "java.lang.Boolean",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": true
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.display",
+                                "type": "java.lang.String",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": "s.x2"
+                        }
+                    ]
+                },
+                {
+                    "namePrefix": "CANON14",
+                    "tag": {
+                        "type": "tac.Tag.Bool"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.struct.path",
+                                "type": "spec.cvlast.CVLStructPathNode",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "rootStructType": {
+                                    "name": "TestContract.Simple",
+                                    "fields": [
+                                        {
+                                            "fieldName": "x",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "y",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "x2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "fields": [
+                                    {
+                                        "fieldName": "b1",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.def.site",
+                                "type": "spec.CVLDefinitionSite",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "spec.CVLDefinitionSite.Rule",
+                                "range": {
+                                    "type": "utils.Range.Range",
+                                    "specFile": "test.spec",
+                                    "start": {
+                                        "line": 23,
+                                        "charByteOffset": 4
+                                    },
+                                    "end": {
+                                        "line": 23,
+                                        "charByteOffset": 26
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl",
+                                "type": "java.lang.Boolean",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": true
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.display",
+                                "type": "java.lang.String",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": "s.b1"
+                        }
+                    ]
+                },
+                {
+                    "namePrefix": "CANON15",
+                    "tag": {
+                        "type": "tac.Tag.Bool"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.struct.path",
+                                "type": "spec.cvlast.CVLStructPathNode",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "rootStructType": {
+                                    "name": "TestContract.Simple",
+                                    "fields": [
+                                        {
+                                            "fieldName": "x",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "y",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "z2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 8
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b1",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "x2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                "k": 256
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "b2",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "fields": [
+                                    {
+                                        "fieldName": "b2",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.def.site",
+                                "type": "spec.CVLDefinitionSite",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "spec.CVLDefinitionSite.Rule",
+                                "range": {
+                                    "type": "utils.Range.Range",
+                                    "specFile": "test.spec",
+                                    "start": {
+                                        "line": 23,
+                                        "charByteOffset": 4
+                                    },
+                                    "end": {
+                                        "line": 23,
+                                        "charByteOffset": 26
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "cvl",
+                                "type": "java.lang.Boolean",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": true
+                        },
+                        {
+                            "key": {
+                                "name": "cvl.display",
+                                "type": "java.lang.String",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": "s.b2"
+                        }
+                    ]
+                },
+                {
+                    "namePrefix": "CANON37!!2",
                     "tag": {
                         "type": "tac.Tag.WordMap"
                     },
@@ -4503,7 +4024,7 @@
                                 "packedStart": {
                                     "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
                                 },
-                                "start": 168
+                                "start": 176
                             }
                         },
                         {
@@ -4521,8 +4042,7 @@
                                 "erasureStrategy": "Canonical"
                             },
                             "value": {
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK",
-                                "bitwidth": 8
+                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"
                             }
                         },
                         {
@@ -4541,128 +4061,6 @@
                                     }
                                 },
                                 "offset": "1"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "R7",
-                    "tag": {
-                        "type": "tac.Tag.Bit256"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "Tac.symbol.keyword",
-                                "type": "vc.data.TACSymbol$Var$KeywordEntry",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
-                                "name": "tacContractAt"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.contract.sym.addr.name",
-                                "type": "java.lang.String",
-                                "erasureStrategy": "Erased"
-                            },
-                            "value": "identity"
-                        },
-                        {
-                            "key": {
-                                "name": "tac.contract.sym.addr",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Erased"
-                            },
-                            "value": "4"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "CANON6!!12",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path.family",
-                                "type": "analysis.storage.StorageAnalysisResult$StoragePaths",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "storagePaths": [
-                                    {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                        "base": {
-                                            "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                            "base": {
-                                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                                "slot": "0"
-                                            }
-                                        },
-                                        "offset": "0"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.scalarization.sort",
-                                "type": "vc.data.ScalarizationSort",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.bit-width",
-                                "type": "java.lang.Integer",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": 256
-                        },
-                        {
-                            "key": {
-                                "name": "tac.slot.type",
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMValueType",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK",
-                                "bitwidth": 256
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage.non-indexed-path",
-                                "type": "analysis.storage.StorageAnalysisResult$NonIndexedPath",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.StructAccess",
-                                "base": {
-                                    "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.MapAccess",
-                                    "base": {
-                                        "type": "analysis.storage.StorageAnalysisResult.NonIndexedPath.Root",
-                                        "slot": "0"
-                                    }
-                                },
-                                "offset": "0"
                             }
                         },
                         {
@@ -4699,7 +4097,7 @@
                                 "type": "java.lang.String",
                                 "erasureStrategy": "Erased"
                             },
-                            "value": "ecrecover"
+                            "value": "identity"
                         },
                         {
                             "key": {
@@ -4707,46 +4105,7 @@
                                 "type": "java.math.BigInteger",
                                 "erasureStrategy": "Erased"
                             },
-                            "value": "1"
-                        }
-                    ]
-                },
-                {
-                    "namePrefix": "tacSCANON0!!17",
-                    "tag": {
-                        "type": "tac.Tag.WordMap"
-                    },
-                    "callIndex": 0,
-                    "meta": [
-                        {
-                            "key": {
-                                "name": "Tac.symbol.keyword",
-                                "type": "vc.data.TACSymbol$Var$KeywordEntry",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry",
-                                "name": "tacS",
-                                "maybeTACKeywordOrdinal": 2
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.scalarization.sort",
-                                "type": "vc.data.ScalarizationSort",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": {
-                                "type": "vc.data.ScalarizationSort.UnscalarizedBuffer"
-                            }
-                        },
-                        {
-                            "key": {
-                                "name": "tac.storage",
-                                "type": "java.math.BigInteger",
-                                "erasureStrategy": "Canonical"
-                            },
-                            "value": "ce4604a0000000000000000000000001"
+                            "value": "4"
                         }
                     ]
                 },
@@ -4810,6 +4169,78 @@
                 },
                 {
                     "namePrefix": "R6",
+                    "tag": {
+                        "type": "tac.Tag.Bit256"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "Tac.symbol.keyword",
+                                "type": "vc.data.TACSymbol$Var$KeywordEntry",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
+                                "name": "tacContractAt"
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "tac.contract.sym.addr.name",
+                                "type": "java.lang.String",
+                                "erasureStrategy": "Erased"
+                            },
+                            "value": "TestContract"
+                        },
+                        {
+                            "key": {
+                                "name": "tac.contract.sym.addr",
+                                "type": "java.math.BigInteger",
+                                "erasureStrategy": "Erased"
+                            },
+                            "value": "ce4604a0000000000000000000000001"
+                        }
+                    ]
+                },
+                {
+                    "namePrefix": "R3",
+                    "tag": {
+                        "type": "tac.Tag.Bit256"
+                    },
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "Tac.symbol.keyword",
+                                "type": "vc.data.TACSymbol$Var$KeywordEntry",
+                                "erasureStrategy": "Canonical"
+                            },
+                            "value": {
+                                "type": "vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry",
+                                "name": "tacContractAt"
+                            }
+                        },
+                        {
+                            "key": {
+                                "name": "tac.contract.sym.addr.name",
+                                "type": "java.lang.String",
+                                "erasureStrategy": "Erased"
+                            },
+                            "value": "ecrecover"
+                        },
+                        {
+                            "key": {
+                                "name": "tac.contract.sym.addr",
+                                "type": "java.math.BigInteger",
+                                "erasureStrategy": "Erased"
+                            },
+                            "value": "1"
+                        }
+                    ]
+                },
+                {
+                    "namePrefix": "R4",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },

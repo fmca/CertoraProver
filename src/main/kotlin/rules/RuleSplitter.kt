@@ -153,7 +153,7 @@ object RuleSplitter {
                                 if (cmd.meta.containsKey(TACMeta.ISOLATED_ASSERT)) {
                                     TACCmd.Simple.NopCmd
                                 } else {
-                                    TACCmd.Simple.AssumeCmd(cmd.o)
+                                    TACCmd.Simple.AssumeCmd(cmd.o, "replacing assert: ${cmd.msg}")
                                 }
                             }
 

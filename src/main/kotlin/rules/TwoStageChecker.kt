@@ -90,7 +90,7 @@ private fun CoreTACProgram.eliminateBlocks(blocks: Set<NBId>): CoreTACProgram {
             logger.debug { "eliminating ${blk}" }
             val succs = blockgraph[blk]
             listOfNotNull(
-                TACCmd.Simple.AssumeCmd(TACSymbol.False),
+                TACCmd.Simple.AssumeCmd(TACSymbol.False, "eliminateBlocks"),
                 when {
                     succs.isNullOrEmpty() -> null
                     succs.size == 1 -> TACCmd.Simple.JumpCmd(succs.single())

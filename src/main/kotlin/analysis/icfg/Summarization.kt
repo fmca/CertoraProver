@@ -145,7 +145,7 @@ object Summarization {
                 ExprUnfolder.unfoldPlusOneCmd("link", with(TACExprFactTypeCheckedOnlyPrimitives) {
                     Eq(linkVar!!.asSym(), summ.toVar.asSym())
                 }) {
-                    TACCmd.Simple.AssumeCmd(it.s)
+                    TACCmd.Simple.AssumeCmd(it.s, "link internal summaries")
                 }.merge(rewritten)
             };
             { patcher: SimplePatchingProgram ->
@@ -923,7 +923,7 @@ object Summarization {
             val linkingRequire = ExprUnfolder.unfoldPlusOneCmd("linking", with(TACExprFactTypeCheckedOnlyPrimitives) {
                 Eq(outputLink.asSym(), summ.toVar.asSym())
             }) { s ->
-                TACCmd.Simple.AssumeCmd(s.s)
+                TACCmd.Simple.AssumeCmd(s.s, "link summary")
             }
             patching.addBefore(n.ptr, linkingRequire)
             modified = true

@@ -138,8 +138,9 @@ class ConstantPropagatorAndSimplifier(val code: CoreTACProgram, private val hand
                     is TACCmd.Simple.Assume -> {
                         if (cmd.condExpr !is TACExpr.Sym.Const) {
                             val newCond = simplify(cmd.condExpr)
+                            val description = (cmd as? TACCmd.Simple.AssumeCmd)?.msg.orEmpty()
                             newCond.getAsConst()?.let {
-                                patcher.replace(ptr, TACCmd.Simple.AssumeCmd(cond = it.asBoolTACSymbol()))
+                                patcher.replace(ptr, TACCmd.Simple.AssumeCmd(cond = it.asBoolTACSymbol(), msg = description))
                             }
                         }
                     }
