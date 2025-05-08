@@ -351,7 +351,6 @@ class EvmAttributes(AttrUtil.Attributes):
 
     SOLC_EXPERIMENTAL_VIA_IR = AttrUtil.AttributeDefinition(
         arg_type=AttrUtil.AttrArgType.BOOLEAN,
-        help_msg="Pass the `--experimental-via-ir` flag to the Solidity compiler",
         default_desc="",
         argparse_args={
             'action': AttrUtil.STORE_TRUE
@@ -545,9 +544,10 @@ class EvmAttributes(AttrUtil.Attributes):
 
     STRICT_SOLC_OPTIMIZER = AttrUtil.AttributeDefinition(
         arg_type=AttrUtil.AttrArgType.BOOLEAN,
-        help_msg="Allow Solidity compiler optimizations that can interfere with internal function finders",
-        default_desc="Disables optimizations that may invalidate the bytecode annotations that identify "
-                     "internal functions",
+        # This is a hidden flag, the following two attributes are left intentionally as comments to help devs
+        # help_msg="Allow Solidity compiler optimizations that can interfere with internal function finders",
+        # default_desc="Disables optimizations that may invalidate the bytecode annotations that identify "
+        #              "internal functions",
         argparse_args={
             'action': AttrUtil.STORE_TRUE
         },
@@ -573,7 +573,8 @@ class EvmAttributes(AttrUtil.Attributes):
 
     YUL_ABI = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_json_file,
-        help_msg="An auxiliary ABI file for yul contracts",
+        # This is a hidden flag, the following two attributes are left intentionally as comments to help devs
+        # help_msg="An auxiliary ABI file for yul contracts",
         default_desc="",
         argparse_args={
             'action': AttrUtil.UniqueStore
@@ -640,9 +641,10 @@ class EvmAttributes(AttrUtil.Attributes):
 
     STORAGE_EXTENSION_HARNESSES = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_storage_extension_harness_attr,
-        help_msg="List of ContractA=ContractB where ContractB is the name of a 'storage extension prototype`. "
-                 "See the documentation for details",
-        default_desc="",
+        # The docs aren't ready yet. The flag is hidden; the lines below are commented to help us devs
+        # help_msg="List of ContractA=ContractB where ContractB is the name of a 'storage extension prototype`. "
+        #          "See the documentation for details",
+        # default_desc="",
         disables_build_cache=False,
         affects_build_cache_key=True,
         arg_type=AttrUtil.AttrArgType.LIST,
@@ -751,11 +753,13 @@ class EvmAttributes(AttrUtil.Attributes):
         affects_build_cache_key=False,
         disables_build_cache=False
     )
+
     FUNCTION_FINDER_MODE = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_function_finder_mode,
-        help_msg="Use `relaxed` mode to increase internal function finders precision, "
-                 "but may cause `stack too deep` errors unless using `via-ir`",
-        default_desc="Takes less stack space but internal functions may be missed",
+        # This is a hidden flag, the following two attributes are left intentionally as comments to help devs
+        # help_msg="Use `relaxed` mode to increase internal function finders precision, "
+        #          "but may cause `stack too deep` errors unless using `via-ir`",
+        # default_desc="Takes less stack space but internal functions may be missed",
         argparse_args={
             'nargs': AttrUtil.SINGLE_OR_NONE_OCCURRENCES,
             'action': AttrUtil.UniqueStore,
@@ -823,7 +827,6 @@ class EvmAttributes(AttrUtil.Attributes):
         attr_validation_func=Vf.validate_json_file,
         arg_type=AttrUtil.AttrArgType.LIST,
         jar_flag='-bytecode',
-        help_msg="List of EVM bytecode JSON descriptors",
         default_desc="",
         argparse_args={
             'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
@@ -836,7 +839,6 @@ class EvmAttributes(AttrUtil.Attributes):
     BYTECODE_SPEC = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_spec_file,
         jar_flag='-spec',
-        help_msg="Spec to use for the provided bytecodes",
         default_desc="",
         argparse_args={
             'action': AttrUtil.UniqueStore
@@ -1076,7 +1078,7 @@ class EvmAttributes(AttrUtil.Attributes):
         },
         affects_build_cache_key=True,
         disables_build_cache=False,
-        help_msg="Verify all foundry fuzz test in the current project",
+        help_msg="Verify all Foundry fuzz tests in the current project",
         default_desc="",
     )
 
