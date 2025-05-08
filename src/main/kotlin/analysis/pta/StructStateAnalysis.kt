@@ -46,8 +46,21 @@ fun StructStateDomain.join(
         leftContext: PointsToGraph,
         rightContext: PointsToGraph
 ) : StructStateDomain {
-    return this.merge(other) { _, v, otherV ->
+    return this.merge(other) { k, v, otherV ->
         if (v == null || otherV == null || otherV.base != v.base) {
+            if(v != null && otherV != null && otherV.sort == v.sort && otherV.sort == StructStateAnalysis.ValueSort.FieldPointer(BigInteger.ZERO)) {
+                val leftPointerBase = leftContext.store[v.base] as? Pointer.BlockPointerBase
+                val rightPointerBase = rightContext.store[otherV.base] as? Pointer.BlockPointerBase
+                if(leftPointerBase == null || rightPointerBase == null || leftPointerBase.getType(leftContext.h) != rightPointerBase.getType(rightContext.h)) {
+                    return@merge null
+                }
+                return@merge StructStateAnalysis.Value(
+                    base = k,
+                    sort = StructStateAnalysis.ValueSort.FieldPointer(BigInteger.ZERO),
+                    indexVars = v.indexVars.intersect(otherV.indexVars),
+                    untilEndVars = v.untilEndVars.intersect(otherV.untilEndVars)
+                )
+            }
             return@merge null
         }
         if(otherV.sort != v.sort &&
