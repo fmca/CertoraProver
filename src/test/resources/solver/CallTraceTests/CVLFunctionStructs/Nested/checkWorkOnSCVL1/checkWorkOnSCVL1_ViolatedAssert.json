@@ -37,7 +37,7 @@
                     "type": "java.lang.Integer",
                     "erasureStrategy": "Canonical"
                 },
-                "value": 1
+                "value": 2
             },
             {
                 "key": {

@@ -971,6 +971,20 @@ class EvmAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    EXCLUDE_METHOD = AttrUtil.AttributeDefinition(
+        attr_validation_func=Vf.validate_method_flag,
+        jar_flag='-excludeMethod',
+        arg_type=AttrUtil.AttrArgType.LIST,
+        help_msg="Filter out methods to be verified by their signature",
+        default_desc="Verifies all public or external methods. In invariants pure and view functions are ignored",
+        argparse_args={
+            'nargs': AttrUtil.ONE_OR_MORE_OCCURRENCES,
+            'action': AttrUtil.APPEND
+        },
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
+
     OPTIMISTIC_CONTRACT_RECURSION = AttrUtil.AttributeDefinition(
         arg_type=AttrUtil.AttrArgType.BOOLEAN,
         help_msg="Assume the recursion limit is never reached in cases of "

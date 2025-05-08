@@ -2552,10 +2552,10 @@ class ResetStorageOnNonContract private constructor(override val location: Range
 class NoFoundryTestsLeft private constructor(override val location: Range, override val message: String) : CVLError() {
     constructor(range: Range, ruleName: String, mainContract: String) : this(
         range,
-        if (Config.MethodChoices == null) {
+        if (!Config.methodsAreFiltered) {
             "Rule `$ruleName` found no fuzz tests in contract `$mainContract`!\""
         } else {
-            "After filtering to methods specified by `--method` ${Config.MethodChoices}, no fuzz test methods were left."
+            "After filtering to methods specified by ${Config.methodChoiceFlagsUserFacingNames}, no fuzz test methods were left."
         }
     )
 }

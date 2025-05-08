@@ -19,7 +19,7 @@ package spec
 
 import bridge.*
 import config.Config
-import config.Config.MethodChoices
+import config.Config.containsMethodFilteredByConfig
 import datastructures.stdcollections.*
 import scene.MethodAttribute
 import spec.cvlast.*
@@ -203,7 +203,7 @@ class CalculateMethodParamFilters(
                         } else {
                             // If `-method` was provided, it's not enough to pass the filter, we must check it's one of the
                             // requested methods as well.
-                            if (MethodChoices.containsMethod(method.getABIString(), contract.name, primaryContract.name)) {
+                            if (methods.map { it.getABIStringWithContract() }.containsMethodFilteredByConfig(method.getABIStringWithContract(), primaryContract.name)) {
                                 method
                             } else {
                                 null
@@ -230,12 +230,12 @@ class CalculateMethodParamFilters(
                             CVLWarningLogger.generalWarning(
                                 "No payable methods were found, skipping rule ${rule.declarationId}"
                             )
-                        ruleType is SpecType.Single.FromUser && MethodChoices != null ->
+                        ruleType is SpecType.Single.FromUser && Config.methodsAreFiltered ->
 
                             CVLWarningLogger.generalWarning(
                                 "The rule ${rule.declarationId} " +
-                                    "does not apply to $MethodChoices (it was filtered out by the method parameter's filter), " +
-                                    "skipping this rule"
+                                    "does not apply to any method that was chosen via the ${Config.methodChoiceFlagsUserFacingNames} flags " +
+                                    "(it was filtered out by the method parameter's filter), skipping this rule"
                             )
                         else ->
                             collectError(NoValidInstantiationsLeft(rule.range, methodArg, rule.declarationId))
@@ -361,45 +361,4 @@ class CalculateMethodParamFilters(
 
         return this.copy(params = this.params - unusedMethodArgs)
     }
-
-    companion object {
-        fun String.splitToContractAndMethod(defaultContract: String): Pair<String, String> {
-            val (contract, method) = this.splitOnce(".")
-                ?: return defaultContract to this
-
-            @Suppress("ForbiddenMethodCall")
-            check(!method.contains(".")) { "Expected `contract.method(...)`, got $this" }
-
-            return contract to method
-        }
-
-        /**
-         * [this] is assumed to be a set of method signatures, with or without an explicit hostname (or `_` to represent
-         * a wildcard contract).
-         *
-         * If [this] is `null` - returns true.
-         *
-         * Otherwise, returns whether the provided [methodSig] from contract [contract] is in the set.
-         * [methodSig] should be the ABI representation of a method.
-         * Signatures in [this] that don't have an explicit host name are assumed to belong to the [mainContract]
-         */
-        fun Set<String>?.containsMethod(methodSig: String, contract: String, mainContract: String): Boolean {
-            if (this == null) {
-                return true
-            }
-
-            return this.any { m ->
-                val (c, f) = m.splitToContractAndMethod(mainContract)
-
-                f == methodSig && (c == CVLKeywords.wildCardExp.keyword || contract == CVLKeywords.wildCardExp.keyword || c == contract)
-            }
-        }
-    }
 }
-
-@Suppress("ForbiddenMethodCall")
-private fun String.splitOnce(delimiter: String): Pair<String, String>? =
-    this
-        .split(delimiter, limit = 2)
-        .takeIf { it.size > 1 }
-        ?.let { it[0] to it[1] }

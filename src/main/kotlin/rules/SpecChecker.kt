@@ -19,7 +19,6 @@ package rules
 
 import bridge.NamedContractIdentifier
 import config.Config
-import config.Config.MethodChoices
 import config.Config.TreeViewReportUpdateInterval
 import datastructures.stdcollections.*
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -67,7 +66,7 @@ class SpecChecker(
      * Additionally, when in foundry mode there are many summaries for different cheatcodes, and likely most of them
      * will be unused in a specific test run, so disable it in this case as well.
      */
-    private val summaryMonitor = if (MethodChoices == null && !Config.areRulesFiltered() && !Config.Foundry.get()) {
+    private val summaryMonitor = if (!Config.methodsAreFiltered && !Config.areRulesFiltered() && !Config.Foundry.get()) {
         SummaryMonitor(cvl.external, cvl.internal, cvl.unresolvedSummaries)
     } else {
         null

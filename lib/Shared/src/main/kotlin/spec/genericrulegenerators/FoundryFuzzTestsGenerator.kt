@@ -19,12 +19,11 @@ package spec.genericrulegenerators
 
 import bridge.ContractInstanceInSDC
 import bridge.EVMExternalMethodInfo.Companion.selectorField
-import config.Config
+import config.Config.containsMethodFilteredByConfig
 import datastructures.stdcollections.*
 import report.CVTAlertType
 import spec.CVLKeywords
 import spec.CVLWarningLogger
-import spec.CalculateMethodParamFilters.Companion.containsMethod
 import spec.cvlast.*
 import spec.cvlast.typechecker.CVLError
 import spec.cvlast.typechecker.NoFoundryTestsLeft
@@ -65,7 +64,8 @@ class FoundryFuzzTestsGenerator(val withRevert: Boolean) : BuiltInRuleGenerator(
             }
             .filter { func ->
                 // If the user specified specific functions, filter only to them.
-                Config.MethodChoices.containsMethod(func.getMethodInfo().toExternalABIName(), func.getMethodInfo().contractName, mainContract)
+                importedFuncs.mapNotNull { it.evmExternalMethodInfo?.toExternalABINameWithContract() }
+                    .containsMethodFilteredByConfig(func.getMethodInfo().toExternalABINameWithContract(), mainContract)
             }
             .partition { func -> func.methodSignature.params.all { it.vmType.getPureTypeToConvertFrom(ToVMContext.ArgumentPassing).isResult() } }
 

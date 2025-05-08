@@ -31,6 +31,7 @@ import smt.*
 import solver.SolverChoice
 import solver.SolverChoice.Companion.AllCommonAvailableSolversWithClOptions
 import solver.SolverConfig
+import spec.CVLKeywords
 import spec.EVMConfig
 import spec.VMConfig
 import utils.*
@@ -736,28 +737,96 @@ object Config {
             RuleCacheAgnosticConfig {}
     }
 
+    private val ExcludeMethodChoicesInput: ConfigType.StringCmdLine = "Method to not check".let { desc ->
+        object :
+            ConfigType.StringCmdLine(
+                null,
+                Option("excludeMethod", true, desc),
+                pythonName = "--exclude_method"
+            ),
+            RuleCacheAgnosticConfig {}
+    }
+
+    val methodChoiceFlagsUserFacingNames get() = MethodChoicesInput.userFacingName() + " and " + ExcludeMethodChoicesInput.userFacingName()
+
     // Split the [MethodChoicesInput] string on the commas that separate function signatures
     // so e.g. `"foo(int256,bool),bar(uint256,(bool,bool))"` will become `["foo(int256,bool)", "bar(uint256,(bool,bool))"]`.
     // This code assumes the string is well-formed - the Python side should catch malformed inputs.
-    val MethodChoices by lazy {
-        MethodChoicesInput.getOrNull()?.let { input ->
-            var (depth, start) = 0 to 0
+    private fun parseMethodInput(input: String): Set<String> {
+        var (depth, start) = 0 to 0
 
-            input.foldIndexed(listOf<String>()) { i, l, c ->
-                when (c) {
-                    '(' -> l.also { depth++ }
-                    ')' -> l.also { depth-- }
-                    ',' -> if (depth == 0) {
-                        l + input.substring(start, i).trim().also { start = i + 1 }
-                    } else {
-                        l
-                    }
-
-                    else -> l
+        return input.foldIndexed(listOf<String>()) { i, l, c ->
+            when (c) {
+                '(' -> l.also { depth++ }
+                ')' -> l.also { depth-- }
+                ',' -> if (depth == 0) {
+                    l + input.substring(start, i).trim().also { start = i + 1 }
+                } else {
+                    l
                 }
-            }.let { it + input.substring(start).trim() }
-        }?.toSet()
+
+                else -> l
+            }
+        }.let { it + input.substring(start).trim() }.toSet()
     }
+
+    // These are not private only because they're required for validation in [validateRuleChoices]. Please don't use them otherwise :)
+    val MethodChoices by lazy { MethodChoicesInput.getOrNull()?.let(::parseMethodInput) }
+    val ExcludeMethodChoices by lazy { ExcludeMethodChoicesInput.getOrNull()?.let(::parseMethodInput) }
+
+    // This is not private only because it's required for validation in [validateRuleChoices]. Please don't use it otherwise :)
+    fun String.splitToContractAndMethod(defaultContract: String): Pair<String, String> {
+        val (contract, method) = this.splitOnce(".")
+            ?: return defaultContract to this
+
+        @Suppress("ForbiddenMethodCall")
+        check(!method.contains(".")) { "Expected `contract.method(...)`, got $this" }
+
+        return contract to method
+    }
+
+    // This is not private only because it's required for validation in [validateRuleChoices]. Please don't use it otherwise :)
+    fun Collection<String>?.containsMethod(methodSig: String, contract: String, mainContract: String): Boolean {
+        if (this == null) {
+            return true
+        }
+
+        return this.any { m ->
+            val (c, f) = m.splitToContractAndMethod(mainContract)
+
+            f == methodSig && (c == CVLKeywords.wildCardExp.keyword || contract == CVLKeywords.wildCardExp.keyword || c == contract)
+        }
+    }
+
+    /**
+     * [this] is assumed to be a set of method signatures, with or without an explicit hostname (or `_` to represent
+     * a wildcard contract).
+     *
+     * Returns whether the provided [methodSigWithContract] is in the set after filtering it according to the [MethodChoices]
+     * and [ExcludeMethodChoices] options.
+     *
+     * [methodSigWithContract] should be the ABI representation of a method optionally prepended with a contract name (same
+     * as the elements of [this].
+     *
+     * Note: Signatures that don't have an explicit host name are assumed to belong to the [mainContract]
+     */
+    fun Collection<String>.containsMethodFilteredByConfig(methodSigWithContract: String, mainContract: String): Boolean {
+        val (contract, methodSig) = methodSigWithContract.splitToContractAndMethod(mainContract)
+        return getMethodChoices(this, mainContract).containsMethod(methodSig, contract, mainContract)
+    }
+
+    private fun getMethodChoices(allMethods: Collection<String>, defaultContract: String): Set<String>? {
+        if (MethodChoices == null && ExcludeMethodChoices == null) {
+            return null
+        }
+
+        val all = allMethods.map { it.splitToContractAndMethod(defaultContract) }
+        val base = all.filter { MethodChoices.containsMethod(it.second, it.first, defaultContract) }
+
+        return base.filterNot { ExcludeMethodChoices.orEmpty().containsMethod(it.second, it.first, defaultContract) }.map { "${it.first}.${it.second}" }.toSet()
+    }
+
+    val methodsAreFiltered get() = MethodChoices != null || ExcludeMethodChoices != null
 
     val contractChoice: ConfigType.StringSetCmdLine = "contract(s) to check in parameterized rules".let { desc ->
         object :
@@ -3413,3 +3482,10 @@ fun main() {
         writer.write(str)
     }
 }
+
+@Suppress("ForbiddenMethodCall")
+private fun String.splitOnce(delimiter: String): Pair<String, String>? =
+    this
+        .split(delimiter, limit = 2)
+        .takeIf { it.size > 1 }
+        ?.let { it[0] to it[1] }

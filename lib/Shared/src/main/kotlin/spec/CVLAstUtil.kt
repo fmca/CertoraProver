@@ -19,13 +19,13 @@ package spec
 
 import bridge.*
 import com.certora.collect.*
-import config.Config.MethodChoices
+import config.Config
+import config.Config.containsMethodFilteredByConfig
 import datastructures.stdcollections.*
 import evm.SighashInt
 import log.Logger
 import log.LoggerTypes
 import scene.MethodAttribute
-import spec.CalculateMethodParamFilters.Companion.containsMethod
 import spec.cvlast.*
 import spec.cvlast.typechecker.CVLError
 import spec.cvlast.typechecker.DuplicatePreserved
@@ -439,7 +439,8 @@ class GenerateRulesForInvariantsAndEnvFree(
             it.value.singleOrNull()
         }.filter { preserved ->
             // If the user provided a method name on the command line, we can skip generating rules for all other methods.
-            MethodChoices.containsMethod(preserved.methodSignature.computeCanonicalSignature(PrintingContext(false)), preserved.methodSignature.qualifiedMethodName.host.name, mainContract.name)
+            importedFuncs.mapNotNull { it.evmExternalMethodInfo?.toExternalABINameWithContract() }
+                .containsMethodFilteredByConfig(preserved.methodSignature.computeCanonicalSignatureWithContract(PrintingContext(false)), mainContract.name)
         }.forEach { preserved ->
             // Now we check to see if the user has provided duplicate wildcard blocks or duplicate explicitly named non-
             // wildcard blocks. We will generate a DuplicatePreserved error in these cases. However, we do not generate
@@ -661,7 +662,7 @@ class GenerateRulesForInvariantsAndEnvFree(
 
 
     private fun initstateInvariantScenario(inv: CVLInvariant): CVLSingleRule? {
-        if (MethodChoices != null) {
+        if (Config.methodsAreFiltered) {
             // The user specified specific methods to test, so skip generating the initstate rule
             return null
         }
@@ -721,7 +722,7 @@ class GenerateRulesForInvariantsAndEnvFree(
 
 
     private fun resetTransientStorageRule(inv: CVLInvariant): CVLSingleRule? {
-        if (MethodChoices != null) {
+        if (Config.methodsAreFiltered) {
             // The user specified specific methods to test, so skip generating the preserved rule
             return null
         }

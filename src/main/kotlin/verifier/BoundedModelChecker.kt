@@ -24,6 +24,7 @@ import analysis.storage.StorageAnalysisResult
 import bridge.NamedContractIdentifier
 import com.certora.collect.*
 import config.Config
+import config.Config.containsMethodFilteredByConfig
 import config.ReportTypes
 import datastructures.stdcollections.*
 import instrumentation.transformers.InitialCodeInstrumentation
@@ -36,7 +37,6 @@ import scene.*
 import solver.SolverResult
 import spec.*
 import spec.CVLCompiler.CallIdContext.Companion.toContext
-import spec.CalculateMethodParamFilters.Companion.containsMethod
 import spec.cvlast.*
 import spec.cvlast.transformer.CVLCmdTransformer
 import spec.cvlast.transformer.CVLExpTransformer
@@ -512,9 +512,8 @@ class BoundedModelChecker(
                 Config.contractChoice.get().let { it.isEmpty() || func.methodSignature.qualifiedMethodName.host.name in it }
             }
             .filter { func ->
-                Config.MethodChoices.containsMethod(
-                    func.methodSignature.computeCanonicalSignature(PrintingContext(false)),
-                    func.methodSignature.qualifiedMethodName.host.name,
+                this.cvl.importedFuncs.values.flatten().map { it.abiWithContractStr() }.containsMethodFilteredByConfig(
+                    func.methodSignature.computeCanonicalSignatureWithContract(PrintingContext(false)),
                     mainContract.name
                 )
             }

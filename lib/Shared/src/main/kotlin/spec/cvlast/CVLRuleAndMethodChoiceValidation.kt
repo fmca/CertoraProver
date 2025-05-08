@@ -18,13 +18,13 @@
 package spec.cvlast
 
 import config.Config
+import config.Config.containsMethod
+import config.Config.splitToContractAndMethod
 import datastructures.stdcollections.*
 import log.Logger
 import log.LoggerTypes
 import scene.CONSTRUCTOR
 import spec.CVLReservedVariables
-import spec.CalculateMethodParamFilters.Companion.containsMethod
-import spec.CalculateMethodParamFilters.Companion.splitToContractAndMethod
 import utils.CollectingResult.Companion.asError
 import java.util.*
 import kotlin.math.abs
@@ -32,13 +32,15 @@ import spec.cvlast.typechecker.CVLError
 import spec.cvlast.typechecker.NoSuchMethodChoice
 import utils.*
 import utils.CollectingResult.Companion.flattenToVoid
+import utils.CollectingResult.Companion.map
 import utils.CollectingResult.Companion.ok
 
 private val logger = Logger(LoggerTypes.SPEC)
 
 @Suppress("ForbiddenMethodCall")
 fun validateMethodChoices(knownFunctions: List<ContractFunction>, mainContract: String): VoidResult<CVLError> {
-    val choices = Config.MethodChoices ?: return ok
+    val choices = Config.MethodChoices
+    val excludeChoices = Config.ExcludeMethodChoices
 
     val relevantFunctions = knownFunctions
         .filter { it.methodSignature.functionName !in listOf(CONSTRUCTOR, CVLReservedVariables.certorafallback_0.name) }
@@ -49,20 +51,28 @@ fun validateMethodChoices(knownFunctions: List<ContractFunction>, mainContract: 
         .filter { !it.isLibrary }
         .mapToSet { it.toExternalABINameWithContract() }
 
-    return choices.map { methodChoice ->
-        val (contract, method) = methodChoice.splitToContractAndMethod(mainContract)
-        val found = relevantFunctions.containsMethod(method, contract, mainContract)
-
-        if (found) {
-            ok
-        } else {
-            val suggestions = getClosestStrings(
-                "$contract.$method",
-                relevantFunctions
-            )
-            NoSuchMethodChoice(methodChoice, suggestions).asError()
+    fun validateSet(s: Set<String>?): VoidResult<CVLError> {
+        if (s == null) {
+            return ok
         }
-    }.flattenToVoid()
+
+        return s.map { methodChoice ->
+            val (contract, method) = methodChoice.splitToContractAndMethod(mainContract)
+            val found = relevantFunctions.containsMethod(method, contract, mainContract)
+
+            if (found) {
+                ok
+            } else {
+                val suggestions = getClosestStrings(
+                    methodChoice,
+                    relevantFunctions
+                )
+                NoSuchMethodChoice(methodChoice, suggestions).asError()
+            }
+        }.flattenToVoid()
+    }
+
+    return validateSet(choices).map(validateSet(excludeChoices))
 }
 
 /**

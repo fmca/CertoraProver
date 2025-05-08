@@ -15,12 +15,22 @@
         "type": "vc.data.TACCmd.Simple.AssertCmd",
         "o": {
             "type": "vc.data.TACSymbol.Var.Full",
-            "namePrefix": "CANON106!!99",
+            "namePrefix": "CANON106!!100",
             "tag": {
                 "type": "tac.Tag.Bool"
             },
             "callIndex": 0,
             "meta": [
+                {
+                    "key": {
+                        "name": "cvl.type",
+                        "type": "spec.cvlast.CVLType$PureCVLType",
+                        "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                    }
+                },
                 {
                     "key": {
                         "name": "cvl",
@@ -48,7 +58,7 @@
                     "type": "java.lang.Integer",
                     "erasureStrategy": "Canonical"
                 },
-                "value": 6
+                "value": 21
             },
             {
                 "key": {
