@@ -20,14 +20,10 @@ package sbf
 import com.certora.collect.*
 import config.ConfigScope
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.analysis.NPAnalysis
 import sbf.cfg.*
 import sbf.disassembler.Label
 import sbf.disassembler.newGlobalVariableMap
-import sbf.domains.MemorySummaries
-import sbf.domains.VariableFactory
-import sbf.domains.NPDomain
 import sbf.testing.SbfTestDSL
 import log.*
 import org.junit.jupiter.api.Assertions
@@ -35,6 +31,11 @@ import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import org.junit.jupiter.api.*
+import sbf.analysis.AnalysisRegisterTypes
+import sbf.domains.*
+
+private val sbfTypesFac = ConstantSbfTypeFactory()
+private val top = NPDomain.mkTrue<ScalarDomain<Constant, Constant>, Constant, Constant>()
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -98,11 +99,11 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
@@ -138,12 +139,12 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
 
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
@@ -175,11 +176,11 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
@@ -202,11 +203,11 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
@@ -229,11 +230,11 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
@@ -256,11 +257,11 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
@@ -283,11 +284,11 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val vFac = VariableFactory()
-        val absVal = NPDomain.mkTrue()
+        val absVal = top
         val b = cfg.getBlock(Label.Address(0))
         check(b!=null)
         val newAbsVal = absVal.analyze(b, vFac, regTypes, false)
@@ -330,7 +331,7 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val np = NPAnalysis(cfg, globals, memSummaries)
+        val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
         check(absValAt1 != null){"No preconditions for label 1"}
         val absValAt2 = np.getPreconditionsAtEntry(Label.Address(2))
@@ -367,7 +368,7 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val np = NPAnalysis(cfg, globals, memSummaries)
+        val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
         check(absValAt1 != null){"No preconditions for label 1"}
         sbfLogger.warn {"$cfg"}
@@ -408,7 +409,7 @@ class NPDomainTest {
         sbfLogger.warn { "$cfg" }
 
         ConfigScope(SolanaConfig.SlicerBackPropagateThroughAsserts, true).use {
-            val np = NPAnalysis(cfg, globals, memSummaries)
+            val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
             val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
             check(absValAt1 != null) { "No preconditions for label 1" }
             sbfLogger.warn { "Preconditions at entry of 1=$absValAt1\n" }
@@ -454,7 +455,7 @@ class NPDomainTest {
         sbfLogger.warn { "$cfg" }
 
         ConfigScope(SolanaConfig.SlicerBackPropagateThroughAsserts, false).use {
-            val np = NPAnalysis(cfg, globals, memSummaries)
+            val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
             val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
             check(absValAt1 != null) { "No preconditions for label 1" }
             sbfLogger.warn { "Preconditions at entry of 1=$absValAt1\n" }

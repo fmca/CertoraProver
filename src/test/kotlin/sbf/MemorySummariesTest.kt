@@ -30,6 +30,8 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import org.junit.jupiter.api.*
 
+private val sbfTypesFac = ConstantSbfTypeFactory()
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @Order(1)
@@ -72,12 +74,12 @@ class MemorySummariesTest {
 
 
     // Return node pointed by *([baseR] + [offset])
-    private fun getNode(g: PTAGraph, baseR: Value.Reg, offset: Short, width: Short): PTANode {
+    private fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> getNode(g: PTAGraph<TNum, TOffset>, baseR: Value.Reg, offset: Short, width: Short): PTANode {
         val lhs = Value.Reg(SbfRegister.R7)
         check(baseR != lhs)
         val inst = SbfInstruction.Mem(Deref(width, baseR, offset, null), lhs, true, null)
         val locInst = LocatedSbfInstruction(Label.fresh(), 0, inst)
-        g.doLoad(locInst, lhs, baseR, offset, width, SbfType.Top, newGlobalVariableMap())
+        g.doLoad(locInst, lhs, baseR, offset, width, SbfType.top(), newGlobalVariableMap())
         val sc = g.getRegCell(lhs)
         check(sc != null)
         return sc.getNode()
@@ -96,7 +98,7 @@ class MemorySummariesTest {
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         // Create abstract state
-        val absVal = MemoryDomain(PTANodeAllocator(),true)
+        val absVal = MemoryDomain(PTANodeAllocator(), sbfTypesFac, true)
         val stackC = absVal.getRegCell(r10, newGlobalVariableMap())
         check(stackC != null) { "memory domain cannot find the stack node" }
         stackC.getNode().setWrite()

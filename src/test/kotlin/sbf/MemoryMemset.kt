@@ -28,6 +28,8 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import org.junit.jupiter.api.*
 
+private val sbfTypesFac = ConstantSbfTypeFactory()
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @Order(1)
@@ -70,22 +72,22 @@ class MemoryMemsetTest {
 
 
     // Return node pointed by *([baseR] + [offset])
-    private fun getNode(
-        g: PTAGraph,
+    private fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>  getNode(
+        g: PTAGraph<TNum, TOffset>,
         base: Value.Reg, offset: Short, width: Short
     ): PTANode? {
         val lhs = Value.Reg(SbfRegister.R7)
         check(base != lhs)
         val inst = SbfInstruction.Mem(Deref(width, base, offset, null), lhs, true, null)
         val locInst = LocatedSbfInstruction(Label.fresh(), 0, inst)
-        g.doLoad(locInst, lhs, base, offset, width, SbfType.Top, newGlobalVariableMap())
+        g.doLoad(locInst, lhs, base, offset, width, SbfType.top(), newGlobalVariableMap())
         val sc = g.getRegCell(lhs)
         return sc?.getNode()
     }
 
     // Return true if  *([baseR] + [offset]) points to [node]
-    private fun checkPointsToNode(
-        g: PTAGraph,
+    private fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>  checkPointsToNode(
+        g: PTAGraph<TNum, TOffset>,
         base: Value.Reg, offset: Short,
         node: PTANode
     ) = getNode(g, base, offset, 8)?.id == node.getNode().id
@@ -100,7 +102,7 @@ class MemoryMemsetTest {
         val r3 = Value.Reg(SbfRegister.R3_ARG)
 
         // Create abstract state
-        val absVal = MemoryDomain(PTANodeAllocator(), true)
+        val absVal = MemoryDomain(PTANodeAllocator(), sbfTypesFac, true)
         val stackC = absVal.getRegCell(r10, newGlobalVariableMap())
         check(stackC != null) { "memory domain cannot find the stack node" }
         stackC.getNode().setWrite()
@@ -116,9 +118,9 @@ class MemoryMemsetTest {
         stackC.getNode().mkLink(4056, 8, n3.createCell(0))
         g.setRegCell(r1, stackC.getNode().createSymCell(PTASymOffset(4040)))
 
-        val scalars = ScalarDomain()
-        scalars.setRegister(r2, ScalarValue.from(0UL))
-        scalars.setRegister(r3, ScalarValue.from(24UL))
+        val scalars = ScalarDomain(sbfTypesFac,)
+        scalars.setRegister(r2, ScalarValue(sbfTypesFac.toNum(0UL)))
+        scalars.setRegister(r3, ScalarValue(sbfTypesFac.toNum(24UL)))
         val locInst = LocatedSbfInstruction(Label.Address(0), 0, SolanaFunction.toCallInst(SolanaFunction.SOL_MEMSET))
         sbfLogger.warn { "Before memset(r1,r2,24)\n$g" }
         g.doMemset(locInst, scalars, newGlobalVariableMap())
@@ -138,7 +140,7 @@ class MemoryMemsetTest {
         val r2 = Value.Reg(SbfRegister.R2_ARG)
 
         // Create abstract state
-        val absVal = MemoryDomain(PTANodeAllocator(), true)
+        val absVal = MemoryDomain(PTANodeAllocator(), sbfTypesFac,true)
         val stackC = absVal.getRegCell(r10, newGlobalVariableMap())
         check(stackC != null) { "memory domain cannot find the stack node" }
         stackC.getNode().setWrite()
@@ -154,8 +156,8 @@ class MemoryMemsetTest {
         stackC.getNode().mkLink(4056, 8, n3.createCell(0))
         g.setRegCell(r1, stackC.getNode().createSymCell(PTASymOffset(4040)))
 
-        val scalars = ScalarDomain()
-        scalars.setRegister(r2, ScalarValue.from(0UL))
+        val scalars = ScalarDomain(sbfTypesFac)
+        scalars.setRegister(r2, ScalarValue(sbfTypesFac.toNum(0UL)))
         val locInst = LocatedSbfInstruction(Label.Address(0), 0, SolanaFunction.toCallInst(SolanaFunction.SOL_MEMSET))
         sbfLogger.warn { "Before memset(r1,r2,24)\n$g" }
         g.doMemset(locInst, scalars, newGlobalVariableMap())
@@ -174,7 +176,7 @@ class MemoryMemsetTest {
         val r3 = Value.Reg(SbfRegister.R3_ARG)
 
         // Create abstract state
-        val absVal = MemoryDomain(PTANodeAllocator(), true)
+        val absVal = MemoryDomain(PTANodeAllocator(), sbfTypesFac, true)
         val g = absVal.getPTAGraph()
         val heapNode  = g.mkNode()
         heapNode.setWrite()
@@ -189,9 +191,9 @@ class MemoryMemsetTest {
         heapNode.mkLink(16, 8, n3.createCell(0))
         g.setRegCell(r1, heapNode.createSymCell(PTASymOffset(0)))
 
-        val scalars = ScalarDomain()
-        scalars.setRegister(r2, ScalarValue.from(0UL))
-        scalars.setRegister(r3, ScalarValue.from(24UL))
+        val scalars = ScalarDomain(sbfTypesFac)
+        scalars.setRegister(r2, ScalarValue(sbfTypesFac.toNum(0UL)))
+        scalars.setRegister(r3, ScalarValue(sbfTypesFac.toNum(24UL)))
         val locInst = LocatedSbfInstruction(Label.Address(0), 0, SolanaFunction.toCallInst(SolanaFunction.SOL_MEMSET))
         sbfLogger.warn { "Before memset(r1,r2,24)\n$g" }
         g.doMemset(locInst, scalars, newGlobalVariableMap())

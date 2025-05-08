@@ -20,9 +20,6 @@ package sbf.domains
 import sbf.cfg.*
 import sbf.disassembler.*
 
-typealias ConstantNum = Constant
-typealias ConstantOffset = Constant
-
 /**
  * An "abstract" version of [SbfRegisterType], that extends it with top/bot elements and
  * lattice operations such as join and inclusion
@@ -43,30 +40,41 @@ typealias ConstantOffset = Constant
  *  - Heap: pointer to the heap (i.e, an integer between [0x300000000, 0x3000077f8])
  *  - Global: pointer to a global variable
  **/
-sealed class SbfType {
+sealed class SbfType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
     // To represent type errors
-    object Bottom : SbfType() {
+    object Bottom : SbfType<Nothing, Nothing>() {
         override fun toString(): String {
             return "bottom"
         }
     }
 
     // Any type
-    object Top : SbfType() {
+    object Top : SbfType<Nothing, Nothing>() {
         override fun toString(): String {
             return "top"
         }
     }
 
+    companion object {
+        @Suppress("UNCHECKED_CAST")
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> top(): SbfType<TNum, TOffset> = Top as SbfType<TNum, TOffset>
+        @Suppress("UNCHECKED_CAST")
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> bottom(): SbfType<TNum, TOffset> = Bottom as SbfType<TNum, TOffset>
+    }
+
+    fun isTop() = this === Top
+    fun isBottom() = this === Bottom
+
+
     // Numerical type
-    data class NumType(val value: ConstantNum): SbfType() {
+    data class NumType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(val value: TNum): SbfType<TNum, TOffset>() {
 
         /**
          *  Cast a number to a pointer only if the number is a valid heap address or the address of a global variable.
          *  We don't try to cast a number to a pointer if the number can be a valid address in the stack or input regions.
          *  In that case, we will return null.
          **/
-        fun castToPtr(globalsMap: GlobalVariableMap): PointerType? {
+        fun castToPtr(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>, globalsMap: GlobalVariableMap): PointerType<TNum, TOffset>? {
             fun findLowerBound(key: Long): Pair<Long, SbfGlobalVariable>? {
                 // globalsMap is sorted
                 var lb: Pair<Long, SbfGlobalVariable> ? = null
@@ -84,8 +92,7 @@ sealed class SbfType {
             if (n != null) {
                 if (n in SBF_HEAP_START until SBF_HEAP_END) {
                     val offset = n - SBF_HEAP_START
-                    check(offset >= 0) {"Offsets of pointers to the Heap region heap cannot be negative"}
-                    return PointerType.Heap(ConstantOffset(offset))
+                    return sbfTypeFac.toHeapPtr(offset)
                 } else {
                     // We check if n can be a valid address assigned to a global variable.
                     val lb = findLowerBound(n)
@@ -94,14 +101,12 @@ sealed class SbfType {
                         if (globalVar.size == 0L) {
                             // The global might have been inferred by GlobalInferenceAnalysis.
                             // We assume that offset is the start of the global
-                            val offset = ConstantOffset(n)
-                            return PointerType.Global(offset, globalVar)
+                            return sbfTypeFac.toGlobalPtr(n, globalVar)
                         }
                         else if (n >= globalVar.address && (n < (globalVar.address + globalVar.size))) {
                             // Note that in case of an array, `offset` might not be the start address of the global.
                             // That is, it's not always true that offset == globalVar.address
-                            val offset = ConstantOffset(n)
-                            return PointerType.Global(offset, globalVar)
+                            return sbfTypeFac.toGlobalPtr(n, globalVar)
                         }
                     }
                 }
@@ -122,37 +127,40 @@ sealed class SbfType {
     }
 
     // Pointer type
-    sealed class PointerType: SbfType() {
-        abstract val offset : ConstantOffset
-        abstract fun withOffset(newOffset: ConstantOffset): PointerType
+    sealed class PointerType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>: SbfType<TNum, TOffset>() {
+        abstract val offset : TOffset
+        abstract fun withOffset(newOffset: TOffset): PointerType<TNum, TOffset>
+        abstract fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>): PointerType<TNum, TOffset>
 
-        fun samePointerType(other: PointerType) = this::class == other::class
+        fun samePointerType(other: PointerType<TNum, TOffset>) = this::class == other::class
 
-        data class Stack(override val offset: ConstantOffset): PointerType() {
+        data class Stack<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(override val offset: TOffset): PointerType<TNum, TOffset>() {
             override fun toString(): String {
                 return "sp($offset)"
             }
-            override fun withOffset(newOffset: ConstantOffset) = Stack(newOffset)
+            override fun withOffset(newOffset: TOffset) = Stack<TNum, TOffset>(newOffset)
+            override fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = sbfTypeFac.anyStackPtr()
         }
 
-        data class Input(override val offset: ConstantOffset): PointerType() {
+        data class Input<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(override val offset: TOffset): PointerType<TNum, TOffset>() {
             override fun toString(): String {
                 return "input($offset)"
             }
-            override fun withOffset(newOffset: ConstantOffset) = Input(newOffset)
+            override fun withOffset(newOffset: TOffset) = Input<TNum, TOffset>(newOffset)
+            override fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = sbfTypeFac.anyInputPtr()
         }
 
-        data class Heap(override val offset: ConstantOffset): PointerType() {
+        data class Heap<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(override val offset: TOffset): PointerType<TNum, TOffset>() {
             override fun toString(): String {
                 return "heap($offset)"
             }
-            override fun withOffset(newOffset: ConstantOffset) = Heap(newOffset)
+            override fun withOffset(newOffset: TOffset) = Heap<TNum, TOffset>(newOffset)
+            override fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = sbfTypeFac.anyHeapPtr()
         }
 
         // global.address is the start address of the global variable.
         // offset is actually an absolute address between [global.address, global.address+size)
-        data class Global(override val offset: ConstantOffset,
-                          val global: SbfGlobalVariable?): PointerType() {
+        data class Global<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(override val offset: TOffset, val global: SbfGlobalVariable?): PointerType<TNum, TOffset>() {
             override fun toString(): String {
                 return if (global != null) {
                     if (global is SbfConstantStringGlobalVariable) {
@@ -164,17 +172,18 @@ sealed class SbfType {
                     "global($offset)"
                 }
             }
-            override fun withOffset(newOffset: ConstantOffset) = Global(newOffset, global)
+            override fun withOffset(newOffset: TOffset) = Global<TNum, TOffset>(newOffset, global)
+            override fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = sbfTypeFac.anyGlobalPtr(global)
         }
     }
 
-    fun join(other: SbfType): SbfType {
+    fun join(other: SbfType<TNum, TOffset>): SbfType<TNum, TOffset> {
         if (this is Bottom) {
             return other
         } else if (other is Bottom) {
             return this
         } else if (this is Top || other is Top) {
-            return Top
+            return top()
         }
 
         return if (this is NumType && other is NumType) {
@@ -193,17 +202,17 @@ sealed class SbfType {
                     null
                 })
         } else {
-            Top
+            top()
         }
     }
 
-    fun widen(other: SbfType): SbfType {
+    fun widen(other: SbfType<TNum, TOffset>): SbfType<TNum, TOffset> {
         if (this is Bottom) {
             return other
         } else if (other is Bottom) {
             return this
         } else if (this is Top || other is Top) {
-            return Top
+            return top()
         }
 
         return if (this is NumType && other is NumType) {
@@ -222,11 +231,11 @@ sealed class SbfType {
                     null
                 })
         } else {
-            Top
+            top()
         }
     }
 
-    fun lessOrEqual(other: SbfType): Boolean {
+    fun lessOrEqual(other: SbfType<TNum, TOffset>): Boolean {
         if (other is Top || this is Bottom) {
             return true
         } else if (this is Top || other is Bottom) {
@@ -251,44 +260,33 @@ sealed class SbfType {
     fun concretize(): SbfRegisterType? {
         return when (this) {
             is Top, is Bottom -> null
-            is NumType -> SbfRegisterType.NumType(this.value)
+            is NumType -> this.value.get().let { SbfRegisterType.NumType(Constant(it)) }
             is PointerType -> {
                 when (this) {
-                    is PointerType.Stack -> SbfRegisterType.PointerType.Stack(this.offset)
-                    is PointerType.Input -> SbfRegisterType.PointerType.Input(this.offset)
-                    is PointerType.Heap -> SbfRegisterType.PointerType.Heap(this.offset)
-                    is PointerType.Global -> SbfRegisterType.PointerType.Global(this.offset, this.global)
+                    is PointerType.Stack -> this.offset.get().let { SbfRegisterType.PointerType.Stack(Constant(it)) }
+                    is PointerType.Input -> this.offset.get().let { SbfRegisterType.PointerType.Input(Constant(it)) }
+                    is PointerType.Heap -> this.offset.get().let { SbfRegisterType.PointerType.Heap(Constant(it)) }
+                    is PointerType.Global -> this.offset.get().let { SbfRegisterType.PointerType.Global(Constant(it), this.global) }
                 }
             }
         }
     }
 }
 
+
 /**
  * This class wraps [SbfType] inside [StackEnvironmentValue] which is an interface.
  * It represents the value stored in a register or stack offset.
  **/
-class ScalarValue(private val type: SbfType): StackEnvironmentValue<ScalarValue> {
-    companion object {
-        fun mkTop() = ScalarValue(SbfType.Top)
-        fun mkBottom() = ScalarValue(SbfType.Bottom)
-        fun from(value: ULong): ScalarValue {
-            // REVISIT: immediate values are represented as ULong
-            // The analysis uses signed integer semantics, so we need to convert the value to Long.
-            // Therefore, overflow will happen if value represents a negative number.
-            return ScalarValue(SbfType.NumType(Constant(value.toLong())))
-        }
-        fun from(value: Long) = ScalarValue(SbfType.NumType(Constant(value)))
-
-        fun anyNum() = ScalarValue(SbfType.NumType(Constant.makeTop()))
-    }
+class ScalarValue<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(private val type: SbfType<TNum, TOffset>)
+    : StackEnvironmentValue<ScalarValue<TNum, TOffset>> {
 
     fun get() = type
-    override fun isBottom() = type is SbfType.Bottom
-    override fun isTop() = type is SbfType.Top
-    override fun mkTop() = ScalarValue(SbfType.Top)
-    override fun join(other: ScalarValue) = ScalarValue(type.join(other.type))
-    override fun widen(other: ScalarValue)= ScalarValue(type.widen(other.type))
-    override fun lessOrEqual(other: ScalarValue) = type.lessOrEqual(other.type)
+    override fun isBottom() = type.isBottom()
+    override fun isTop() = type.isTop()
+    override fun mkTop() = ScalarValue(SbfType.top<TNum, TOffset>())
+    override fun join(other: ScalarValue<TNum, TOffset>) = ScalarValue(type.join(other.type))
+    override fun widen(other: ScalarValue<TNum, TOffset>)= ScalarValue(type.widen(other.type))
+    override fun lessOrEqual(other: ScalarValue<TNum, TOffset>) = type.lessOrEqual(other.type)
     override fun toString() = type.toString()
 }

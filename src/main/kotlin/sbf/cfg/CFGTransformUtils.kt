@@ -17,17 +17,23 @@
 
 package sbf.cfg
 
-import sbf.analysis.ScalarAnalysisRegisterTypes
+import sbf.analysis.AnalysisRegisterTypes
 import sbf.disassembler.SbfRegister
-import sbf.domains.SbfType
+import sbf.domains.*
 
 /**
  *  Normalize the memory access at [base]+[offset] at [locatedInst] as an offset with respect to r10.
  *  Otherwise, it returns null.
  **/
-fun normalizeStackAccess(locatedInst: LocatedSbfInstruction,
-                         base: Value.Reg, offset: Long,
-                         regTypes: ScalarAnalysisRegisterTypes): Long? {
+fun <D, TNum, TOffset>
+    normalizeStackAccess(
+    locatedInst: LocatedSbfInstruction,
+    base: Value.Reg, offset: Long,
+    regTypes: AnalysisRegisterTypes<D, TNum, TOffset>
+): Long? where
+    TNum: INumValue<TNum>,
+    TOffset: IOffset<TOffset>,
+    D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val regType = regTypes.typeAtInstruction(locatedInst, base.r)
     return if (regType is SbfType.PointerType.Stack) {
         val regOffset = regType.offset.get() ?: return null

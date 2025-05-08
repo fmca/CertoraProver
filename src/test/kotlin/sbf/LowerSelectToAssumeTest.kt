@@ -28,6 +28,8 @@ import sbf.testing.SbfTestDSL
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
+private val sbfTypesFac = ConstantSbfTypeFactory()
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @Order(1)
@@ -92,7 +94,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         lowerSelectToAssume(cfg, npAnalysis)
         sbfLogger.warn { "After $cfg" }
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 0U)
@@ -113,7 +115,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         lowerSelectToAssume(cfg, npAnalysis)
         sbfLogger.warn { "After $cfg" }
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 1U)
@@ -138,7 +140,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         lowerSelectToAssume(cfg, npAnalysis)
         sbfLogger.warn { "After $cfg" }
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 0U)
@@ -159,7 +161,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         lowerSelectToAssume(cfg, npAnalysis)
         sbfLogger.warn { "After $cfg" }
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 1U)

@@ -21,6 +21,8 @@ package sbf.tac
 import tac.MetaKey
 import com.certora.collect.*
 import datastructures.stdcollections.*
+import sbf.domains.INumValue
+import sbf.domains.IOffset
 import sbf.domains.SbfType
 import utils.AmbiSerializable
 import utils.HasKSerializable
@@ -64,7 +66,7 @@ sealed class SbfArgSort: HasKSerializable, AmbiSerializable {
     }
 
     companion object {
-        fun fromSbfType(t: SbfType): SbfArgSort {
+        fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> fromSbfType(t: SbfType<TNum, TOffset>): SbfArgSort {
             return when (t) {
                 is SbfType.NumType -> SCALAR
                 is SbfType.PointerType -> POINTER

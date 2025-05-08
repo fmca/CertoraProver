@@ -23,13 +23,15 @@ import vc.data.*
 import java.math.BigInteger
 import datastructures.stdcollections.*
 import sbf.cfg.SbfInstruction
+import sbf.domains.INumValue
+import sbf.domains.IOffset
 
 fun assign(lhs: TACSymbol.Var, rhs: TACExpr): TACCmd.Simple.AssigningCmd {
     return TACCmd.Simple.AssigningCmd.AssignExpCmd(lhs,rhs)
 }
 
-context(SbfCFGToTAC)
-fun unreachable(inst: SbfInstruction): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> unreachable(inst: SbfInstruction): List<TACCmd.Simple> {
     return listOf(
         Debug.unreachable(inst),
         TACCmd.Simple.AssumeCmd(exprBuilder.mkBoolConst(false), "unreachable")
@@ -47,8 +49,8 @@ fun havocScalars(scalars: List<TACSymbol.Var>): List<TACCmd.Simple> {
  * Return a TAC expression that evaluates to 0 if [l1] is equal to [l2],
  * otherwise it evaluates to 1.
  **/
-context(SbfCFGToTAC)
-fun allEqual(l1: List<TACSymbol.Var>, l2: List<TACSymbol.Var>, cmds: MutableList<TACCmd.Simple>): TACExpr {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> allEqual(l1: List<TACSymbol.Var>, l2: List<TACSymbol.Var>, cmds: MutableList<TACCmd.Simple>): TACExpr {
     check(l1.size == l2.size) {"Precondition of emitTACVarsEq does not hold: $l1 and $l2 have different sizes."}
     val boolVars = ArrayList<TACSymbol.Var>(l1.size)
     for ((x,y) in l1.zip(l2)) {
@@ -94,29 +96,33 @@ fun narrowFromMathInt(from: TACExpr.Sym, to: TACSymbol.Var, toTag: Tag.Bits = Ta
 }
 
 /** res = high << 64 + low **/
-context(SbfCFGToTAC)
-fun mergeU128(low: TACExpr.Sym, high: TACExpr.Sym, cmds: MutableList<TACCmd.Simple>): TACSymbol.Var {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> mergeU128(
+    low: TACExpr.Sym, high: TACExpr.Sym, cmds: MutableList<TACCmd.Simple>): TACSymbol.Var {
     val res = mkFreshIntVar(bitwidth = 256)
     cmds.add(mergeU128(res, low, high))
     return res
 }
 /** res = high << 64 + low **/
-context(SbfCFGToTAC)
-fun mergeU128(res: TACSymbol.Var, low: TACExpr.Sym, high: TACExpr.Sym): TACCmd.Simple.AssigningCmd {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> mergeU128(
+    res: TACSymbol.Var, low: TACExpr.Sym, high: TACExpr.Sym): TACCmd.Simple.AssigningCmd {
     val c64E = exprBuilder.SIXTY_FOUR.asSym()
     return assign(res, TACExpr.Vec.Add(listOf(TACExpr.BinOp.ShiftLeft(high, c64E), exprBuilder.mask64(low))))
 }
 
 /** res = high << 64 + low **/
-context(SbfCFGToTAC)
-fun mergeU128Raw(res: TACSymbol.Var, low: TACExpr.Sym, high: TACExpr.Sym): TACCmd.Simple.AssigningCmd {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> mergeU128Raw(
+    res: TACSymbol.Var, low: TACExpr.Sym, high: TACExpr.Sym): TACCmd.Simple.AssigningCmd {
     val c64E = exprBuilder.SIXTY_FOUR.asSym()
     return assign(res, TACExpr.Vec.Add(listOf(TACExpr.BinOp.ShiftLeft(high, c64E), low)))
 }
 
 /** res = (w4 << 192) + (w3 << 128) + (w2 << 64) + w1 */
-context(SbfCFGToTAC)
-fun mergeU256Raw(res: TACSymbol.Var, w1: TACExpr.Sym, w2: TACExpr.Sym, w3:TACExpr.Sym, w4: TACExpr.Sym): TACCmd.Simple.AssigningCmd {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> mergeU256Raw(
+    res: TACSymbol.Var, w1: TACExpr.Sym, w2: TACExpr.Sym, w3:TACExpr.Sym, w4: TACExpr.Sym): TACCmd.Simple.AssigningCmd {
     check(res.tag is Tag.Bit256) {"mergeU256 expects $res to be Tag.Bit256"}
 
     val c64  = exprBuilder.SIXTY_FOUR.asSym()
@@ -136,8 +142,9 @@ fun mergeU256Raw(res: TACSymbol.Var, w1: TACExpr.Sym, w2: TACExpr.Sym, w3:TACExp
  *  low = e & MASK64
  *  high = e >> 64
  */
-context(SbfCFGToTAC)
-fun splitU128(e: TACSymbol.Var, low: TACSymbol.Var, high: TACSymbol.Var): List<TACCmd.Simple> {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> splitU128(
+    e: TACSymbol.Var, low: TACSymbol.Var, high: TACSymbol.Var): List<TACCmd.Simple> {
     val c64E = exprBuilder.SIXTY_FOUR.asSym()
     val twoPowerOf128 = BigInteger.TWO.pow(128).asTACExpr()
     val x = mkFreshIntVar()
@@ -148,8 +155,8 @@ fun splitU128(e: TACSymbol.Var, low: TACSymbol.Var, high: TACSymbol.Var): List<T
 }
 
 /** Get the symbolic TAC variables corresponding to the low and high bits of the returned u128 value **/
-context(SbfCFGToTAC)
-fun getLowAndHighFromU128(locInst: LocatedSbfInstruction): Pair<TACVariable, TACVariable>? {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> getLowAndHighFromU128(locInst: LocatedSbfInstruction): Pair<TACVariable, TACVariable>? {
     val summaryArgs = mem.getTACMemoryFromSummary(locInst) ?: return null
     if (summaryArgs.size != 2) {
         return null
@@ -171,10 +178,11 @@ data class U128Operands(val resLow: TACSymbol.Var,
                         val yHigh: TACExpr.Sym
 )
 
-context(SbfCFGToTAC)
-fun applyU128Operation(args: U128Operands,
-                       cmds: MutableList<TACCmd.Simple>,
-                       op: (res: TACSymbol.Var, x: TACSymbol.Var, y: TACSymbol.Var) -> Unit) {
+context(SbfCFGToTAC<TNum, TOffset>)
+fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> applyU128Operation(
+        args: U128Operands,
+        cmds: MutableList<TACCmd.Simple>,
+        op: (res: TACSymbol.Var, x: TACSymbol.Var, y: TACSymbol.Var) -> Unit) {
     val res = mkFreshIntVar()
     val x = mergeU128(args.xLow, args.xHigh, cmds)
     val y = mergeU128(args.yLow, args.yHigh, cmds)

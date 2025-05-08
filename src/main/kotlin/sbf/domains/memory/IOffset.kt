@@ -17,15 +17,8 @@
 
 package sbf.domains
 
-import sbf.cfg.CondOp
-
-/**
- *  An interface to represent an approximation of a numerical value (aka basis)
- *  Possible implementations are constants, intervals, congruences, etc.
- **/
-
-interface NumValue<V> {
-    // Return null if the numerical value cannot be expressed as a signed long
+interface IOffset<V> {
+    // Return null if the offset cannot be expressed as a signed long
     fun get(): Long?
 
     /* Numerical operations */
@@ -35,17 +28,7 @@ interface NumValue<V> {
     fun sub(n: Long): V
     fun mul(other: V): V
     fun mul(n: Long): V
-    fun and(other: V): V
-    fun or(other: V): V
-    fun xor(other: V): V
-    fun udiv(other: V): V
-    fun sdiv(other: V): V
-    fun urem(other: V): V
-    fun srem(other: V): V
-    fun arsh(other: V): V
-    fun rsh(other: V): V
-    fun lsh(other: V): V
-    fun assume(op: CondOp, other: V): TriBoolean
+
     /* lattice operations */
     fun isTop(): Boolean
     fun isBottom(): Boolean
@@ -53,5 +36,6 @@ interface NumValue<V> {
     fun widen(other: V): V
     fun meet(other: V): V
     fun lessOrEqual(other: V): Boolean
+
     override fun toString(): String
 }

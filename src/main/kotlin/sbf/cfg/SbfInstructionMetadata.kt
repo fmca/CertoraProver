@@ -19,7 +19,6 @@ package sbf.cfg
 
 import utils.*
 import datastructures.stdcollections.*
-import sbf.domains.SbfType
 
 class MetaData private constructor(private val meta: Map<MetaKey<*>, Any>) {
     constructor(): this(mutableMapOf())
@@ -56,7 +55,7 @@ object SbfMeta {
     // keep track of some equalities
     val EQUALITY_REG_AND_STACK = MetaKey<Pair<Value.Reg, StackContentMeta>>("equality_reg_and_stack")
     // type of a register (used by the pointer analysis)
-    val REG_TYPE =  MetaKey<Pair<Value.Reg, SbfType>>("reg_type")
+    val REG_TYPE =  MetaKey<Pair<Value.Reg, SbfRegisterType>>("reg_type")
     // Address of the instruction
     val SBF_ADDRESS = MetaKey<ULong>("sbf_bytecode_address")
     // The value is true if the loaded register affects the control flow of the program
@@ -124,7 +123,7 @@ fun toString(metaData: MetaData): String {
             }
             SbfMeta.REG_TYPE -> {
                 metaData.getVal(k)?.let {
-                    val (reg, type) = it.uncheckedAs<Pair<Value.Reg, SbfType>>()
+                    val (reg, type) = it.uncheckedAs<Pair<Value.Reg, SbfRegisterType>>()
                     strB.append(" /* type($reg)=$type */")
                 }
             }

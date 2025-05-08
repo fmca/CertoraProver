@@ -21,9 +21,7 @@ import datastructures.stdcollections.*
 import sbf.callgraph.*
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.MemoryDomain
-import sbf.domains.MemorySummaries
-import sbf.domains.PTANodeAllocator
+import sbf.domains.*
 import sbf.sbfLogger
 import sbf.fixpoint.*
 import sbf.support.printToFile
@@ -34,23 +32,25 @@ import sbf.support.printToFile
  *  The analysis is flow-sensitive but it is INTRA-PROCEDURAL.
  *  Therefore, call functions should be INLINED to get reasonable results.
 **/
-class WholeProgramMemoryAnalysis(val program: SbfCallGraph,
-                                 val memSummaries: MemorySummaries) {
-    private val results : MutableMap<String, MemoryAnalysis> = mutableMapOf()
+class WholeProgramMemoryAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
+        val program: SbfCallGraph,
+        val memSummaries: MemorySummaries,
+        val sbfTypesFac: ISbfTypeFactory<TNum, TOffset>) {
+    private val results : MutableMap<String, MemoryAnalysis<TNum, TOffset>> = mutableMapOf()
 
     fun inferAll() {
         val cfg = program.getCallGraphRootSingleOrFail()
         sbfLogger.info {"  Started memory analysis of ${cfg.getName()}... "}
-        val analysis = MemoryAnalysis(cfg, program.getGlobals(), memSummaries)
+        val analysis = MemoryAnalysis(cfg, program.getGlobals(), memSummaries, sbfTypesFac)
         sbfLogger.info {"  Finished memory analysis of ${cfg.getName()} ... "}
         results[cfg.getName()] = analysis
     }
 
-    fun getResults(): Map<String, MemoryAnalysis> = results
+    fun getResults(): Map<String, MemoryAnalysis<TNum, TOffset>> = results
 
     override fun toString(): String {
         val printInvariants = true
-        class PrettyPrinter(val analysis: MemoryAnalysis, val sb: StringBuilder): DfsVisitAction {
+        class PrettyPrinter(val analysis: MemoryAnalysis<TNum, TOffset>, val sb: StringBuilder): DfsVisitAction {
             override fun applyBeforeChildren(b: SbfBasicBlock) {
                 val pre = analysis.getPre(b.getLabel())
                 sb.append("/** PRE-invariants \n")
@@ -136,15 +136,17 @@ class WholeProgramMemoryAnalysis(val program: SbfCallGraph,
  * @params globalsMap contains information about global variables
  * @params memSummaries: user-provided summaries
  **/
-class MemoryAnalysis(val cfg: SbfCFG,
-                     val globalsMap: GlobalVariableMap,
-                     val memSummaries: MemorySummaries,
-                     private val isEntryPoint: Boolean = true): IAnalysis<MemoryDomain> {
+open class MemoryAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>
+    (open val cfg: SbfCFG,
+     open val globalsMap: GlobalVariableMap,
+     open val memSummaries: MemorySummaries,
+     open val sbfTypesFac: ISbfTypeFactory<TNum, TOffset>,
+     private val isEntryPoint: Boolean = true): IAnalysis<MemoryDomain<TNum, TOffset>> {
 
     // Invariants that hold at the beginning of each basic block
-    private val preMap: MutableMap<Label, MemoryDomain> = mutableMapOf()
+    private val preMap: MutableMap<Label, MemoryDomain<TNum, TOffset>> = mutableMapOf()
     // Invariants that hold at the end of each basic block
-    private val postMap: MutableMap<Label, MemoryDomain> = mutableMapOf()
+    private val postMap: MutableMap<Label, MemoryDomain<TNum, TOffset>> = mutableMapOf()
 
     init {
         run()
@@ -156,12 +158,12 @@ class MemoryAnalysis(val cfg: SbfCFG,
     private fun run() {
         val nodeAllocator = PTANodeAllocator()
         val entry = cfg.getEntry()
-        val bot = MemoryDomain.makeBottom(nodeAllocator)
-        val top = MemoryDomain.makeTop(nodeAllocator)
+        val bot = MemoryDomain.makeBottom(nodeAllocator, sbfTypesFac)
+        val top = MemoryDomain.makeTop(nodeAllocator, sbfTypesFac)
         val opts = WtoBasedFixpointOptions(2U,1U)
         val fixpo = WtoBasedFixpointSolver(bot, top, opts, globalsMap, memSummaries)
         if (isEntryPoint) {
-            preMap[entry.getLabel()] = MemoryDomain.initPreconditions(nodeAllocator)
+            preMap[entry.getLabel()] = MemoryDomain.initPreconditions(nodeAllocator, sbfTypesFac)
         }
         val liveMapAtExit = LivenessAnalysis(cfg).getLiveRegistersAtExit()
         fixpo.solve(cfg, preMap, postMap, liveMapAtExit)
@@ -190,4 +192,3 @@ class MemoryAnalysis(val cfg: SbfCFG,
     override fun getMemorySummaries() = memSummaries
     override fun getGlobalVariableMap() = globalsMap
 }
-

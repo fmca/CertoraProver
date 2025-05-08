@@ -22,8 +22,8 @@ import sbf.cfg.*
 import sbf.disassembler.SbfRegister
 import sbf.sbfLogger
 import sbf.SolanaConfig
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import datastructures.stdcollections.*
+import sbf.analysis.AnalysisRegisterTypes
 import java.math.BigInteger
 
 class NPDomainError(msg: String): RuntimeException("NPDomain error:$msg")
@@ -79,13 +79,23 @@ data class ScratchRegisterVariable(val callId: ULong, val reg: Value.Reg, privat
  *  - "false" is represented as any set of constraints that contains a contradiction
  *  - If csts is false then the whole abstract state is normalized to bottom.
  */
-data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
+data class NPDomain<D, TNum, TOffset>(private val csts: SetDomain<SbfLinearConstraint>)
+    where TNum: INumValue<TNum>,
+          TOffset: IOffset<TOffset>,
+          D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
 
     override fun toString() = csts.toString()
 
     companion object {
-        fun mkTrue() = NPDomain(SetIntersectionDomain())
-        fun mkBottom() = NPDomain(SetIntersectionDomain.mkBottom())
+        fun <D, TNum, TOffset> mkTrue() where TNum: INumValue<TNum>,
+                                              TOffset: IOffset<TOffset>,
+                                              D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> =
+            NPDomain<D, TNum, TOffset>(SetIntersectionDomain())
+
+        fun <D, TNum, TOffset>  mkBottom() where TNum: INumValue<TNum>,
+                                                 TOffset: IOffset<TOffset>,
+                                                 D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> =
+            NPDomain<D, TNum, TOffset>(SetIntersectionDomain.mkBottom())
 
         fun getLinCons(cond: Condition, vFac: VariableFactory): SbfLinearConstraint {
             val left = cond.left
@@ -176,7 +186,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
         return outCsts
     }
 
-    fun normalize(): NPDomain {
+    fun normalize(): NPDomain<D, TNum, TOffset> {
         return if (isFalse(csts)) {
             mkBottom()
         } else {
@@ -189,35 +199,35 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
         }
     }
 
-    fun lessOrEqual(other: NPDomain) = csts.lessOrEqual(other.csts)
+    fun lessOrEqual(other: NPDomain<D, TNum, TOffset>) = csts.lessOrEqual(other.csts)
 
-    fun join(other: NPDomain) = NPDomain(csts.join(other.csts))
+    fun join(other: NPDomain<D, TNum, TOffset>) = NPDomain<D, TNum, TOffset>(csts.join(other.csts))
 
-    private fun havoc(v: ExpressionVar): NPDomain {
+    private fun havoc(v: ExpressionVar): NPDomain<D, TNum, TOffset> {
         return NPDomain(csts.removeAll {
             it.contains(v)
         })
     }
 
-    private fun substitute(oldV: ExpressionVar, newV: ExpressionVar): NPDomain {
+    private fun substitute(oldV: ExpressionVar, newV: ExpressionVar): NPDomain<D, TNum, TOffset> {
         return substitute(oldV, LinearExpression(newV))
     }
 
-    private fun substitute(oldV: ExpressionVar, newE: LinearExpression): NPDomain {
+    private fun substitute(oldV: ExpressionVar, newE: LinearExpression): NPDomain<D, TNum, TOffset> {
         var outCsts = SetIntersectionDomain<SbfLinearConstraint>()
         for (c in csts.iterator()) {
             val outCst = c.substitute(oldV, newE)
             outCsts = outCsts.add(outCst) as SetIntersectionDomain<SbfLinearConstraint>
         }
-        return NPDomain(outCsts).normalize()
+        return NPDomain<D, TNum, TOffset>(outCsts).normalize()
     }
 
     private fun eval(v: ExpressionVar, n: ExpressionNum) =
-        NPDomain(eval(csts as SetIntersectionDomain<SbfLinearConstraint>, v, n)).normalize()
+        NPDomain<D, TNum, TOffset>(eval(csts as SetIntersectionDomain<SbfLinearConstraint>, v, n)).normalize()
 
     private fun assign(lhsE: ExpressionVar, rhs: Value,
-                       locInst: LocatedSbfInstruction, registerTypes: ScalarAnalysisRegisterTypes,
-                       vFac: VariableFactory): NPDomain {
+                       locInst: LocatedSbfInstruction, registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>,
+                       vFac: VariableFactory): NPDomain<D, TNum, TOffset> {
         // We use information from the forward analysis.
         // The current implementation is too rigid because it assumes that the forward domain is
         // convertible to SbfType, but in the future we would like to allow arbitrary domains as
@@ -236,7 +246,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
         }
     }
 
-    private fun getNum(type: SbfType): Long? {
+    private fun getNum(type: SbfType<TNum, TOffset>): Long? {
         return if (type is SbfType.NumType) {
             type.value.get()
         } else {
@@ -248,7 +258,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
      *  The metadata associated to an assume instruction can express an equality between a register and a stack content.
      *  We process such as equalities here.
      */
-    private fun analyzeAssumeMetadata(locInst: LocatedSbfInstruction, vFac: VariableFactory): NPDomain {
+    private fun analyzeAssumeMetadata(locInst: LocatedSbfInstruction, vFac: VariableFactory): NPDomain<D, TNum, TOffset> {
         if (isBottom()) {
             return this
         }
@@ -262,7 +272,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
             val linCons = SbfLinearConstraint (CondOp.EQ,
                 LinearExpression(RegisterVariable(reg, vFac)),
                 LinearExpression(StackSlotVariable(stackContent.offset, stackContent.width, vFac)))
-            val res = NPDomain(csts.add(linCons)).normalize()
+            val res = NPDomain<D, TNum, TOffset>(csts.add(linCons)).normalize()
             res
         } else {
             this
@@ -273,7 +283,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
     fun analyzeAssume(cond:Condition,
                       inst: LocatedSbfInstruction,
                       vFac: VariableFactory,
-                      registerTypes: ScalarAnalysisRegisterTypes): NPDomain {
+                      registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>): NPDomain<D, TNum, TOffset> {
         if (isBottom()) {
             return mkBottom()
         }
@@ -296,7 +306,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
             if (linCons.isContradiction()) {
                 mkBottom()
             } else {
-                NPDomain(csts.add(linCons)).normalize()
+                NPDomain<D, TNum, TOffset>(csts.add(linCons)).normalize()
             }
         }
     }
@@ -310,7 +320,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
     private fun analyzeMemTransfer(locatedInst: LocatedSbfInstruction,
                                    @Suppress("UNUSED_PARAMETER")
                                    vFac: VariableFactory,
-                                   registerTypes: ScalarAnalysisRegisterTypes): NPDomain {
+                                   registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>): NPDomain<D, TNum, TOffset> {
         val inst = locatedInst.inst
         check(inst is SbfInstruction.Call) {"Precondition 1 of analyzeMemTransfer"}
         val solanaFunction = SolanaFunction.from(inst.name)
@@ -379,7 +389,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
         }
     }
 
-    private fun analyzeSaveScratchRegisters(curVal: NPDomain, inst: SbfInstruction.Call, vFac: VariableFactory): NPDomain {
+    private fun analyzeSaveScratchRegisters(curVal: NPDomain<D, TNum, TOffset>, inst: SbfInstruction.Call, vFac: VariableFactory): NPDomain<D, TNum, TOffset> {
         val r6 = Value.Reg(SbfRegister.R6)
         val r7 = Value.Reg(SbfRegister.R7)
         val r8 = Value.Reg(SbfRegister.R8)
@@ -404,7 +414,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
         }
     }
 
-    private fun analyzeRestoreScratchRegisters(curVal: NPDomain, inst: SbfInstruction.Call, vFac: VariableFactory): NPDomain {
+    private fun analyzeRestoreScratchRegisters(curVal: NPDomain<D, TNum, TOffset>, inst: SbfInstruction.Call, vFac: VariableFactory): NPDomain<D, TNum, TOffset> {
         val r6 = Value.Reg(SbfRegister.R6)
         val r7 = Value.Reg(SbfRegister.R7)
         val r8 = Value.Reg(SbfRegister.R8)
@@ -430,7 +440,7 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
     }
 
     private fun analyze(locatedInst: LocatedSbfInstruction, vFac: VariableFactory,
-                        registerTypes: ScalarAnalysisRegisterTypes): NPDomain {
+                        registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>): NPDomain<D, TNum, TOffset> {
         val curVal = this
         when (val inst = locatedInst.inst) {
             is SbfInstruction.Assume -> {
@@ -616,18 +626,18 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
     // the first (in reversed order) assertion is found.
     fun analyze(b: SbfBasicBlock,
                 vFac: VariableFactory,
-                registerTypes: ScalarAnalysisRegisterTypes,
+                registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>,
                 propagateOnlyFromAsserts: Boolean = true) =
         analyze(b, vFac, registerTypes, propagateOnlyFromAsserts, computeInstMap = false).first
 
     fun analyze(b: SbfBasicBlock,
                 vFac: VariableFactory,
-                registerTypes: ScalarAnalysisRegisterTypes,
+                registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>,
                 propagateOnlyFromAsserts: Boolean,
                 computeInstMap: Boolean)
-    : Pair<NPDomain, Map<LocatedSbfInstruction, NPDomain>> {
+    : Pair<NPDomain<D, TNum, TOffset>, Map<LocatedSbfInstruction, NPDomain<D, TNum, TOffset>>> {
 
-        val outInst = mutableMapOf<LocatedSbfInstruction, NPDomain>()
+        val outInst = mutableMapOf<LocatedSbfInstruction, NPDomain<D, TNum, TOffset>>()
         var curVal = this
         if (curVal.isBottom()) {
             return Pair(curVal, outInst)
@@ -684,9 +694,9 @@ data class NPDomain(private val csts: SetDomain<SbfLinearConstraint>) {
     private fun summarizeCall(locInst: LocatedSbfInstruction,
                               vFac: VariableFactory,
                               memSummaries: MemorySummaries,
-                              registerTypes: ScalarAnalysisRegisterTypes): NPDomain {
+                              registerTypes: AnalysisRegisterTypes<D, TNum, TOffset>): NPDomain<D, TNum, TOffset> {
 
-        class NPDomainSummaryVisitor(var absVal: NPDomain): SummaryVisitor {
+        class NPDomainSummaryVisitor(var absVal: NPDomain<D, TNum, TOffset>): SummaryVisitor {
             override fun noSummaryFound(locInst: LocatedSbfInstruction) {
                 // Note that havocking r0 is not, in general, sound but without a summary
                 // we cannot do more.

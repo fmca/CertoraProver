@@ -19,8 +19,10 @@ package sbf.analysis
 
 import sbf.cfg.LocatedSbfInstruction
 import sbf.disassembler.SbfRegister
+import sbf.domains.INumValue
+import sbf.domains.IOffset
 import sbf.domains.SbfType
 
-interface IRegisterTypes {
-    fun typeAtInstruction(i: LocatedSbfInstruction, r: SbfRegister): SbfType
+interface IRegisterTypes<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
+    fun typeAtInstruction(i: LocatedSbfInstruction, r: SbfRegister): SbfType<TNum, TOffset>
 }

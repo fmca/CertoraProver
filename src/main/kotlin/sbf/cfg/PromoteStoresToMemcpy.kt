@@ -20,7 +20,6 @@ package sbf.cfg
 import sbf.domains.FiniteInterval
 import sbf.SolanaConfig
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.callgraph.CVTFunction
 import sbf.callgraph.SolanaFunction
 import sbf.disassembler.*
@@ -28,8 +27,15 @@ import sbf.domains.*
 import sbf.sbfLogger
 import datastructures.stdcollections.*
 import org.jetbrains.annotations.TestOnly
+import sbf.analysis.AnalysisRegisterTypes
 import sbf.callgraph.CVTCore
 import kotlin.math.absoluteValue
+
+/**
+ * Instantiation of the scalar analysis.
+ * The factory can be changed without affecting the rest of the prover.
+ **/
+private val sbfTypesFac = ConstantSbfTypeFactory()
 
 /**
  *  Promote sequence of loads and stores into memcpy instructions.
@@ -38,13 +44,13 @@ import kotlin.math.absoluteValue
 fun promoteStoresToMemcpy(cfg: MutableSbfCFG,
                           globals: GlobalVariableMap,
                           memSummaries: MemorySummaries) {
-    val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+    val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
     promoteStoresToMemcpy(cfg, scalarAnalysis)
 }
 
 @TestOnly
-fun promoteStoresToMemcpy(cfg: MutableSbfCFG, scalarAnalysis: ScalarAnalysis) {
-    val scalarsAtInst = ScalarAnalysisRegisterTypes(scalarAnalysis)
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> promoteStoresToMemcpy(cfg: MutableSbfCFG, scalarAnalysis: ScalarAnalysis<TNum, TOffset>) {
+    val scalarsAtInst = AnalysisRegisterTypes(scalarAnalysis)
     var numOfInsertedMemcpy = 0
     var callId = getMaxCallId(cfg)
     callId++
@@ -151,9 +157,13 @@ private fun replaceStoresWithMemcpy(bb: MutableSbfBasicBlock, memcpyInfos: List<
  *    we replace them with a memcpy instruction. When replacing more than one pair of load-stores some extra conditions must also hold.
  *    This is checked by canBePromoted.
  */
-private fun findStoresToBePromoted(bb: SbfBasicBlock,
-                                   scalarsAtInst: ScalarAnalysisRegisterTypes,
-                                   callId: ULong): Pair<List<MemcpyRanges>, ULong> {
+private fun <D, TNum, TOffset> findStoresToBePromoted(
+    bb: SbfBasicBlock,
+    scalarsAtInst: AnalysisRegisterTypes<D, TNum, TOffset>,
+    callId: ULong): Pair<List<MemcpyRanges>, ULong>
+where TNum: INumValue<TNum>,
+      TOffset: IOffset<TOffset>,
+      D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     var nextCallId = callId
     // used to find the definition of a value to be stored
     val defLoads = mutableMapOf<SbfRegister, LocatedSbfInstruction>()
@@ -228,11 +238,14 @@ private fun getPosOfFirstLoad(x: MemcpyRanges): Int {
  * Return true if [loadLocInst] is the loaded offset stored in [storeLocInst] and some conditions hold
  * (see isSafeToCommuteStore and addStoreOfLoad)
  **/
-private fun processStoreOfLoad(
+private fun <D, TNum, TOffset> processStoreOfLoad(
     bb: SbfBasicBlock,
     storeLocInst: LocatedSbfInstruction, loadLocInst: LocatedSbfInstruction,
-    regTypes: ScalarAnalysisRegisterTypes, memcpy: MemcpyRanges
-): Boolean {
+    regTypes: AnalysisRegisterTypes<D, TNum, TOffset>, memcpy: MemcpyRanges
+): Boolean
+where TNum: INumValue<TNum>,
+      TOffset: IOffset<TOffset>,
+      D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
 
     val storeInst = storeLocInst.inst
     check(storeInst is SbfInstruction.Mem) {"processStoreOfLoad $storeLocInst"}
@@ -264,7 +277,12 @@ private fun processStoreOfLoad(
 }
 
 /** if [locatedInst] accesses the stack then the returned value is always normalized wrt r10 **/
-private fun normalizeLoadOrStore(locatedInst: LocatedSbfInstruction, regTypes: ScalarAnalysisRegisterTypes): MemAccess {
+private fun <D, TNum, TOffset> normalizeLoadOrStore(
+    locatedInst: LocatedSbfInstruction,
+    regTypes: AnalysisRegisterTypes<D, TNum, TOffset>): MemAccess
+where TNum: INumValue<TNum>,
+      TOffset: IOffset<TOffset>,
+      D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val inst = locatedInst.inst
     check(inst is SbfInstruction.Mem){"normalizeMemInst expects a memory instruction instead of $inst"}
     val reg = inst.access.baseReg
@@ -284,7 +302,13 @@ private fun normalizeLoadOrStore(locatedInst: LocatedSbfInstruction, regTypes: S
     }
 }
 
-private fun normalizeMemcpyOp(locatedInst: LocatedSbfInstruction, op: SbfRegister, regTypes: ScalarAnalysisRegisterTypes): MemAccess? {
+private fun <D, TNum, TOffset> normalizeMemcpyOp(
+    locatedInst: LocatedSbfInstruction,
+    op: SbfRegister,
+    regTypes: AnalysisRegisterTypes<D, TNum, TOffset>): MemAccess?
+    where TNum: INumValue<TNum>,
+          TOffset: IOffset<TOffset>,
+          D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val inst = locatedInst.inst
     check(inst is SbfInstruction.Call && SolanaFunction.from(inst.name) == SolanaFunction.SOL_MEMCPY)
     {"normalizeMemcpy expects a memcpy instruction instead of $inst"}
@@ -326,10 +350,14 @@ private fun normalizeMemcpyOp(locatedInst: LocatedSbfInstruction, op: SbfRegiste
  *  However, if the stored memory address is overwritten between the load and store then we are not okay and
  *  the sequence of loads and stores shouldn't be lifted to a memcpy (see test20 in PromoteStoresToMemcpyTest.kt).
  **/
-private fun isSafeToCommuteStore(bb: SbfBasicBlock,
-                                @Suppress("UNUSED_PARAMETER") load: MemAccess, store: MemAccess,
-                                loadLocInst: LocatedSbfInstruction, storeLocInst: LocatedSbfInstruction,
-                                regTypes: ScalarAnalysisRegisterTypes): Boolean {
+private fun <D, TNum, TOffset>  isSafeToCommuteStore(
+        bb: SbfBasicBlock,
+        @Suppress("UNUSED_PARAMETER") load: MemAccess, store: MemAccess,
+        loadLocInst: LocatedSbfInstruction, storeLocInst: LocatedSbfInstruction,
+        regTypes: AnalysisRegisterTypes<D, TNum, TOffset>): Boolean
+        where TNum: INumValue<TNum>,
+              TOffset: IOffset<TOffset>,
+              D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     check(loadLocInst.label == bb.getLabel())
     {"can only promote pairs of load-store within the same block $loadLocInst"}
     check(storeLocInst.label == bb.getLabel())

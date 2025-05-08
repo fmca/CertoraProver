@@ -26,8 +26,11 @@ import sbf.domains.MemorySummaries
 import sbf.testing.SbfTestDSL
 import log.*
 import org.junit.jupiter.api.*
+import sbf.domains.ConstantSbfTypeFactory
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+
+private val sbfTypesFac = ConstantSbfTypeFactory()
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -160,10 +163,10 @@ class RemoveCFGDiamondsTest {
         ConfigScope(SolanaConfig.EnableRemovalOfCFGDiamonds, true).use {removeCFGDiamonds(cfg)}
         sbfLogger.warn {"After removing diamonds: $cfg"}
 
-        val np1 = NPAnalysis(cfg, newGlobalVariableMap(), MemorySummaries())
+        val np1 = NPAnalysis(cfg, newGlobalVariableMap(), MemorySummaries(), sbfTypesFac)
         lowerSelectToAssume(cfg, np1)
         sbfLogger.warn {"After lowering select instructions into assumes: $cfg"}
-        val np2 = NPAnalysis(cfg, newGlobalVariableMap(), MemorySummaries())
+        val np2 = NPAnalysis(cfg, newGlobalVariableMap(), MemorySummaries(), sbfTypesFac)
         val preconditions = np2.getPreconditionsAtEntry(Label.Address(0))
         check(preconditions != null)
         Assertions.assertEquals(false, preconditions.isBottom())

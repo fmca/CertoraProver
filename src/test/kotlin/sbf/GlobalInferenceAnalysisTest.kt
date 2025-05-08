@@ -20,13 +20,11 @@ package sbf
 import com.certora.collect.*
 import config.ConfigScope
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.analysis.runGlobalInferenceAnalysis
 import sbf.callgraph.CVTFunction
 import sbf.callgraph.MutableSbfCallGraph
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.MemorySummaries
 import sbf.testing.SbfTestDSL
 import log.*
 import org.junit.jupiter.api.Assertions
@@ -34,7 +32,10 @@ import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import org.junit.jupiter.api.*
-import sbf.domains.SbfType
+import sbf.analysis.AnalysisRegisterTypes
+import sbf.domains.*
+
+private val sbfTypesFac = ConstantSbfTypeFactory()
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -91,15 +92,19 @@ class GlobalInferenceAnalysisTest {
      * Run the global inference analysis and extracts the type of the dereferenced pointer at
      * [pos]-th instruction in block [label]
      **/
-    private fun getTypeFromMemInst(prog: MutableSbfCallGraph, memSummaries: MemorySummaries, label: Label, pos:Int)
-        : Pair<SbfInstruction.Mem, SbfType> {
+    private fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> getTypeFromMemInst(
+            prog: MutableSbfCallGraph,
+            memSummaries: MemorySummaries,
+            sbfTypesFac: ISbfTypeFactory<TNum, TOffset>,
+            label: Label,
+            pos:Int)
+        : Pair<SbfInstruction.Mem, SbfType<TNum, TOffset>> {
         ConfigScope(SolanaConfig.AggressiveGlobalDetection, true).use {
             val newProg = runGlobalInferenceAnalysis(prog, memSummaries, MockForGlobalsSymbolTable)
             val newCfg = newProg.getCallGraphRootSingleOrFail()
             sbfLogger.warn {"After GIA: $newCfg"}
-            val scalarAnalysis =
-                ScalarAnalysis(newCfg, newProg.getGlobals(), memSummaries)
-            val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+            val scalarAnalysis = ScalarAnalysis(newCfg, newProg.getGlobals(), memSummaries, sbfTypesFac)
+            val regTypes = AnalysisRegisterTypes(scalarAnalysis)
             // Search for the first memory instruction and check that the dereferenced pointer is a global variable
             val bb = newProg.getCallGraphRootSingleOrFail().getBlock(label)
             check(bb != null) { "Cannot find block $label" }
@@ -329,7 +334,7 @@ class GlobalInferenceAnalysisTest {
         CVTFunction.addSummaries(memSummaries)
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("entrypoint"), globals)
         sbfLogger.warn {"Before\n$cfg"}
-        val (inst, type) = getTypeFromMemInst(prog, memSummaries, Label.Address(0), 4)
+        val (inst, type) = getTypeFromMemInst(prog, memSummaries, sbfTypesFac, Label.Address(0), 4)
         sbfLogger.warn{"Found $inst. The type of the de-referenced pointer is $type"}
         val isGlobal = type is SbfType.PointerType.Global
         Assertions.assertEquals(true, isGlobal)
@@ -389,7 +394,7 @@ class GlobalInferenceAnalysisTest {
         val memSummaries = MemorySummaries()
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("test6"), globals)
         sbfLogger.warn {"$cfg"}
-        val (inst, type) = getTypeFromMemInst(prog, memSummaries, Label.Address(11), 2)
+        val (inst, type) = getTypeFromMemInst(prog, memSummaries, sbfTypesFac, Label.Address(11), 2)
         sbfLogger.warn{"Found $inst. The type of the de-referenced pointer is $type"}
         val isGlobal = type is SbfType.PointerType.Global
         Assertions.assertEquals(true, isGlobal)

@@ -20,7 +20,6 @@ package sbf
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.analysis.WholeProgramMemoryAnalysis
 import sbf.callgraph.MutableSbfCallGraph
 import sbf.cfg.*
@@ -34,6 +33,9 @@ import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import org.junit.jupiter.api.*
+import sbf.analysis.AnalysisRegisterTypes
+
+private val sbfTypesFac = ConstantSbfTypeFactory()
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -106,8 +108,8 @@ class MemoryStackEscapeTest {
         sbfLogger.warn {"$cfg"}
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getEntry()
         val sb = StringBuffer()
@@ -125,7 +127,7 @@ class MemoryStackEscapeTest {
         sbfLogger.warn {sb.toString()}
 
         val prog = MutableSbfCallGraph(mutableListOf(cfg), setOf("entrypoint"), globals)
-        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries)
+        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries, sbfTypesFac)
         var exception = false
         try {
             memAnalysis.inferAll()
@@ -176,8 +178,8 @@ class MemoryStackEscapeTest {
         sbfLogger.warn {"$cfg"}
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getEntry()
         val sb = StringBuffer()
@@ -195,7 +197,7 @@ class MemoryStackEscapeTest {
         sbfLogger.warn {sb.toString()}
 
         val prog = MutableSbfCallGraph(mutableListOf(cfg), setOf("entrypoint"), globals)
-        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries)
+        val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries, sbfTypesFac)
         var exception = false
         try {
             memAnalysis.inferAll()

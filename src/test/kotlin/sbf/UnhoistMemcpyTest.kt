@@ -23,14 +23,14 @@ import sbf.analysis.ScalarAnalysis
 import sbf.callgraph.SolanaFunction
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.MemorySummaries
-import sbf.domains.ScalarDomain
 import sbf.testing.SbfTestDSL
 import log.*
 import org.junit.jupiter.api.*
-import sbf.domains.SbfType
+import sbf.domains.*
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+
+private val sbfTypesFac = ConstantSbfTypeFactory()
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -89,7 +89,7 @@ class UnhoistMemcpyTest {
     fun test01_false() {
         // without hoisting memcpy we cannot prove that the *r1 contains a number
 
-        val absValAtExit = test01(false)
+        val absValAtExit = test01(sbfTypesFac, false)
         sbfLogger.info{"Abstract value at exit=$absValAtExit"}
         val r0 = Value.Reg(SbfRegister.R0_RETURN_VALUE)
         Assertions.assertEquals(false, absValAtExit.getValue(r0).get() is SbfType.NumType)
@@ -99,14 +99,15 @@ class UnhoistMemcpyTest {
     fun test01_true() {
         // with hoisting memcpy we should prove that the *r1 contains a number
 
-        val absValAtExit = test01(true)
+        val absValAtExit = test01(sbfTypesFac, true)
         sbfLogger.info{"Abstract value at exit=$absValAtExit"}
         val r0 = Value.Reg(SbfRegister.R0_RETURN_VALUE)
         Assertions.assertEquals(true, absValAtExit.getValue(r0).get() is SbfType.NumType)
     }
 
 
-    private fun test01(hoistMemcpy: Boolean): ScalarDomain {
+    private fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>
+        test01(sbfTypesFac: ISbfTypeFactory<TNum, TOffset>, hoistMemcpy: Boolean): ScalarDomain<TNum, TOffset> {
         /**
          * b0:
          *   if (...) b1 else b5
@@ -221,7 +222,7 @@ class UnhoistMemcpyTest {
         }
 
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries )
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         val absValAtEntry = scalarAnalysis.getPost(cfg.getEntry().getLabel())
         val absValAtExit = scalarAnalysis.getPost(cfg.getExit().getLabel())
         sbfLogger.info {"Abstract value at the end of the entry block: $absValAtEntry"}
@@ -509,7 +510,7 @@ class UnhoistMemcpyTest {
         cfg.verify(true)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         sbfLogger.warn {"Before transformation\n$cfg"}
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)

@@ -20,18 +20,19 @@ package sbf.analysis
 import datastructures.stdcollections.*
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.MemorySummaries
-import sbf.domains.ScalarDomain
+import sbf.domains.*
 import sbf.fixpoint.WtoBasedFixpointOptions
 import sbf.fixpoint.WtoBasedFixpointSolver
 
-class ScalarAnalysis(val cfg: SbfCFG,
-                     val globalsMap: GlobalVariableMap,
-                     val memSummaries: MemorySummaries,
-                     private val isEntryPoint:Boolean = true): IAnalysis<ScalarDomain> {
+open class ScalarAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>
+    (val cfg: SbfCFG,
+     val globalsMap: GlobalVariableMap,
+     val memSummaries: MemorySummaries,
+     val sbfTypeFac : ISbfTypeFactory<TNum, TOffset>,
+     private val isEntryPoint:Boolean = true): IAnalysis<ScalarDomain<TNum, TOffset>> {
 
-        private val preMap = mutableMapOf<Label, ScalarDomain>()
-        private val postMap =  mutableMapOf<Label, ScalarDomain>()
+        private val preMap = mutableMapOf<Label, ScalarDomain<TNum, TOffset>>()
+        private val postMap =  mutableMapOf<Label, ScalarDomain<TNum, TOffset>>()
 
         init {
             run()
@@ -45,15 +46,14 @@ class ScalarAnalysis(val cfg: SbfCFG,
 
         private fun run() {
             val entry = cfg.getEntry()
-            val bot = ScalarDomain.makeBottom()
-            val top = ScalarDomain.makeTop()
+            val bot = ScalarDomain.makeBottom(sbfTypeFac)
+            val top = ScalarDomain.makeTop(sbfTypeFac)
             val solverOpts = WtoBasedFixpointOptions(2U,1U)
             val fixpo = WtoBasedFixpointSolver(bot, top, solverOpts, globalsMap, memSummaries)
             if (isEntryPoint) {
-                preMap[entry.getLabel()] = ScalarDomain(initPreconditions = true)
+                preMap[entry.getLabel()] = ScalarDomain(sbfTypeFac, initPreconditions = true)
             }
             fixpo.solve(cfg, preMap, postMap, null)
         }
 }
 
-typealias ScalarAnalysisRegisterTypes = AnalysisRegisterTypes<ScalarDomain>

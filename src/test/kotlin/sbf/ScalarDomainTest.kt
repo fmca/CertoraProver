@@ -19,15 +19,18 @@ package sbf
 
 import com.certora.collect.*
 import sbf.analysis.ScalarAnalysis
-import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.domains.*
 import sbf.testing.SbfTestDSL
 import log.*
 import org.junit.jupiter.api.*
+import sbf.analysis.AnalysisRegisterTypes
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+
+private val sbfTypesFac = ConstantSbfTypeFactory()
+private val env = StackEnvironment<ScalarValue<Constant, Constant>>()
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -72,7 +75,6 @@ class ScalarDomainTest {
     @Test
     fun test01() {
         sbfLogger.info { "====== TEST 1: StackEnvironment.overlap  =======" }
-        val env = StackEnvironment<ScalarValue>()
         // check [20,28) is included [4,28)
         Assertions.assertEquals(true, env.overlap(ByteRange(20, 8), 4, 24, true))
         // check [24,32) is included in [4,28)
@@ -123,8 +125,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
@@ -136,7 +138,7 @@ class ScalarDomainTest {
             // We prove the assert by checking that the value of r4 is zero
             if (locInst.inst.isAssertOrSatisfy()) {
                 val type = regTypes.typeAtInstruction(locInst, SbfRegister.R4_ARG)
-                Assertions.assertEquals(type, SbfType.NumType(ConstantNum(0L)))
+                Assertions.assertEquals(type, sbfTypesFac.toNum(0))
             }
         }
     }
@@ -158,8 +160,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
@@ -185,14 +187,14 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
         val firstInst = b0.getLocatedInstructions().first()
         val firstType = regTypes.typeAtInstruction(firstInst, SbfRegister.R4_ARG)
-        Assertions.assertEquals(true, firstType is SbfType.Top)
+        Assertions.assertEquals(true, firstType.isTop())
         val secondInst = b0.getLocatedInstructions().drop(1).first()
         val secondType = regTypes.typeAtInstruction(secondInst, SbfRegister.R4_ARG)
         Assertions.assertEquals(true, secondType is SbfType.NumType && secondType.value.get() == 5L)
@@ -219,8 +221,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals:GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
@@ -253,8 +255,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals: GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
@@ -281,8 +283,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals: GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
@@ -321,8 +323,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getEntry()
         val sb = StringBuffer()
@@ -368,8 +370,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)
@@ -404,8 +406,8 @@ class ScalarDomainTest {
         sbfLogger.warn {"$cfg"}
         val globals: GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
-        val regTypes = ScalarAnalysisRegisterTypes(scalarAnalysis)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val regTypes = AnalysisRegisterTypes(scalarAnalysis)
 
         val b0 = cfg.getBlock(Label.Address(0))
         check (b0 != null)

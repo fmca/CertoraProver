@@ -27,6 +27,7 @@ import sbf.tac.sbfCFGsToTAC
 import kotlinx.coroutines.runBlocking
 import report.DummyLiveStatsReporter
 import sbf.disassembler.*
+import sbf.domains.ConstantSbfTypeFactory
 import scene.SceneFactory
 import scene.source.DegenerateContractSource
 import vc.data.CoreTACProgram
@@ -69,9 +70,10 @@ fun toTAC(cfg: SbfCFG,
     val prog = MutableSbfCallGraph(mutableListOf(cfg), setOf(cfg.getName()), globals)
     val memSummaries = MemorySummaries.readSpecFile(summaryFileContents,"unknown")
     CVTFunction.addSummaries(memSummaries)
-    val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries)
+    val sbfTypesFac = ConstantSbfTypeFactory()
+    val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries, sbfTypesFac)
     memAnalysis.inferAll()
-    return sbfCFGsToTAC(prog, memSummaries, globalsSymbolTable, memAnalysis.getResults())
+    return sbfCFGsToTAC(prog, memSummaries, globalsSymbolTable, memAnalysis.getResults(), sbfTypesFac)
 }
 
 fun verify(program: CoreTACProgram): Boolean {

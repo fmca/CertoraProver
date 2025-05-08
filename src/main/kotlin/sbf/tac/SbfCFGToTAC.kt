@@ -50,16 +50,13 @@ import sbf.analysis.*
 import sbf.callgraph.*
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.MemSummaryArgumentType
-import sbf.domains.MemorySummaries
 import sbf.inliner.SBF_CALL_MAX_DEPTH
 import sbf.support.SolanaInternalError
 import tac.*
 import vc.data.*
 import com.certora.collect.*
 import datastructures.stdcollections.*
-import sbf.domains.Constant
-import sbf.domains.SbfType
+import sbf.domains.*
 import java.math.BigInteger
 
 // TAC annotations for TAC debugging
@@ -72,10 +69,12 @@ const val RESERVED_NUM_OF_ASSERTS = 100_000
 class TACTranslationError(msg: String): SolanaInternalError("TAC translation error: $msg")
 
 /** If globalAnalysisResults == null then no memory splitting will be done **/
-fun sbfCFGsToTAC(program: SbfCallGraph,
-                 memSummaries: MemorySummaries,
-                 globalsSymTable: IGlobalsSymbolTable,
-                 globalAnalysisResults: Map<String, MemoryAnalysis>?): CoreTACProgram {
+fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> sbfCFGsToTAC(
+    program: SbfCallGraph,
+    memSummaries: MemorySummaries,
+    globalsSymTable: IGlobalsSymbolTable,
+    globalAnalysisResults: Map<String, MemoryAnalysis<TNum, TOffset>>?,
+    sbfTypesFac: ISbfTypeFactory<TNum, TOffset>): CoreTACProgram {
     val cfg = program.getCallGraphRootSingleOrFail()
     if (cfg.getBlocks().isEmpty()) {
         throw SolanaInternalError("The translation from SBF to TAC failed because the SBF CFG is empty")
@@ -87,17 +86,19 @@ fun sbfCFGsToTAC(program: SbfCallGraph,
         globalAnalysisResults[cfg.getName()]
             ?: throw TACTranslationError("Not analysis results found for ${cfg.getName()}")
     }
-    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, globalsSymTable, analysis)
+    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, globalsSymTable, analysis, sbfTypesFac)
     return marshaller.encode()
 }
 
 /** Translate an SBF CFG to a TAC program **/
 @Suppress("ForbiddenComment")
-internal class SbfCFGToTAC(private val cfg: SbfCFG,
-                           globals: GlobalVariableMap,
-                           private val memSummaries: MemorySummaries,
-                           private val globalsSymTable: IGlobalsSymbolTable,
-                           private val memoryAnalysis: MemoryAnalysis?) {
+internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
+           private val cfg: SbfCFG,
+           globals: GlobalVariableMap,
+           private val memSummaries: MemorySummaries,
+           private val globalsSymTable: IGlobalsSymbolTable,
+           private val memoryAnalysis: MemoryAnalysis<TNum, TOffset>?,
+           private val sbfTypesFac: ISbfTypeFactory<TNum, TOffset>) {
     private val blockMap: MutableMap<Label, NBId> = mutableMapOf()
     private val blockGraph = MutableBlockGraph()
     private val code: MutableMap<NBId, List<TACCmd.Simple>> = mutableMapOf()
@@ -127,13 +128,13 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
     // Unsupported calls. We just keep track of them to reduce the number of user warnings
     private val unsupportedCalls: MutableSet<String> = mutableSetOf()
     private val functionArgInference = FunctionArgumentInference(cfg)
-    val regTypes: IRegisterTypes
+    val regTypes: IRegisterTypes<TNum, TOffset>
 
     init {
         // It's much cheaper to analyze the whole cfg from scratch with ScalarAnalysis and rebuild invariants at the
         // instruction level than rebuilding invariants at the instruction level with [memoryAnalysis] (because of
         // the pointer domain).
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries)
+        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         regTypes = AnalysisRegisterTypes(scalarAnalysis)
         val regVars: ArrayList<TACSymbol.Var> = ArrayList(NUM_OF_SBF_REGISTERS)
         for (i in 0 until NUM_OF_SBF_REGISTERS) {
@@ -270,7 +271,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
      *        ----------------------------------------------------------------
      *       0x100000000    0x200000000          0x30000000     0x40000000        ?
      **/
-    fun addMemoryLayoutAssumptions(ptr: TACSymbol.Var, region: SbfType?): List<TACCmd.Simple> {
+    fun addMemoryLayoutAssumptions(ptr: TACSymbol.Var, region: SbfType<TNum, TOffset>?): List<TACCmd.Simple> {
 
         if (!SolanaConfig.AddMemLayoutAssumptions.get()) {
             return listOf()
@@ -430,7 +431,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
                     }
                 }
                 is Value.Imm -> {
-                    Constant(right.v.toLong())
+                    sbfTypesFac.toNum(right.v.toLong()).value
                 }
             }
             if (rightVal != null) {
@@ -973,10 +974,10 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
         }
     }
 
-    private fun registerTypeFromUses(uses: Collection<LocatedSbfInstruction>, r: SbfRegister): SbfType {
+    private fun registerTypeFromUses(uses: Collection<LocatedSbfInstruction>, r: SbfRegister): SbfType<TNum, TOffset> {
         return uses.map {
             regTypes.typeAtInstruction(it, r)
-        }.fold(SbfType.Bottom as SbfType) { t1, t2 ->
+        }.fold(SbfType.bottom()) { t1, t2 ->
             t1.join(t2)
         }
     }
@@ -1360,7 +1361,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
 
             if (CompilerRtFunction.from(inst.name) != null) {
                 val summarizeCompilerRt = if (SolanaConfig.UseTACMathInt.get()) {
-                    SummarizeCompilerRtWithMathInt()
+                    SummarizeCompilerRtWithMathInt<TNum, TOffset>()
                 } else {
                     SummarizeCompilerRt()
                 }
@@ -1567,7 +1568,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             sb.append("TAC encoding of the following external calls might be unsound because " +
                       "only the output has been havoced\n")
             for (fname in unsupportedCalls) {
-                if (!sbf.domains.hasSummary(fname, memSummaries)) {
+                if (!hasSummary(fname, memSummaries)) {
                     sb.append("\t$fname\n")
                 }
             }

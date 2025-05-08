@@ -154,7 +154,7 @@ private fun dbgMemTransfer(msg: () -> Any) { if (debugPTAMemTransfer) { sbfLogge
  * offsets can overlap. With concrete offsets check for overlapping is trivial.
  **/
 typealias PTAOffset = Long
-typealias PTASymOffset = ConstantOffset /** Long extended with top **/
+typealias PTASymOffset = Constant /** Long extended with top **/
 
 /**
  * A concrete cell: this is just a wrapper to a pair of node and offset.
@@ -1482,7 +1482,7 @@ class GlobalAllocation(private val allocator: PTANodeAllocator) {
      * Each global variable is modeled by a **different** node.
      * Therefore, we assume that there is no aliasing between global variables.
      **/
-    fun alloc(gv: SbfGlobalVariable, offset: ConstantOffset): PTASymCell {
+    fun alloc(gv: SbfGlobalVariable, offset: Constant): PTASymCell {
         val c = allocator.mkCell(gv)
         c.getNode().isMayGlobal = true
         val o = offset.get()
@@ -1511,7 +1511,7 @@ class HeapAllocation(private val allocator: PTANodeAllocator) {
      * This ensures sound results but better abstractions will be needed if programs
      * use heavily the heap via absolute addresses.
      */
-    fun lowLevelAlloc(offset: ConstantOffset): PTASymCell {
+    fun lowLevelAlloc(offset: Constant): PTASymCell {
         if (usedHighLevel) {
             throw PointerDomainError("Cannot use both low-level and high-level heap allocation APIs")
         }
@@ -1582,8 +1582,9 @@ private val usedMemoryBitwidths = listOf(1, 2, 4, 8)
  *  The roots of the graph are (normal and scratch) registers.
  *  That is, cells in the graphs are only accessible directly by registers or by following transitively edges.
  **/
-class PTAGraph(/** Global node allocator **/
+class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node allocator **/
                val nodeAllocator: PTANodeAllocator,
+               val sbfTypesFac: ISbfTypeFactory<TNum, TOffset>,
                init: Boolean = false,
                /**
                 *  A field in this set means that the field might point to anywhere (top).
@@ -1705,7 +1706,7 @@ class PTAGraph(/** Global node allocator **/
      * Return a copy of this but all nodes reachable from this's stack and registers are
      * shared.
      **/
-    fun copy(): PTAGraph {
+    fun copy(): PTAGraph<TNum, TOffset> {
         return copy(registers, scratchRegisters, null)
     }
 
@@ -1730,7 +1731,7 @@ class PTAGraph(/** Global node allocator **/
 
     private fun copy(sliceNormalRegisters: ArrayList<PTASymCell?>,
                      sliceScratchRegisters: ArrayList<PTASymCell?>,
-                     sliceStackFields: Set<PTAField>?): PTAGraph {
+                     sliceStackFields: Set<PTAField>?): PTAGraph<TNum, TOffset> {
 
         check(sliceNormalRegisters.size == registers.size)
         { "sliceNormalRegisters should have same size than registers" }
@@ -1738,8 +1739,8 @@ class PTAGraph(/** Global node allocator **/
         { "sliceScratchRegisters should have same size than scratchRegisters" }
 
         // We create a fresh stack node that points to the cells that the old stack pointed to
-        val newG = PTAGraph(nodeAllocator, false, untrackedStackFields,
-                            globalAlloc, heapAlloc, externAlloc, integerAlloc)
+        val newG = PTAGraph<TNum, TOffset>(nodeAllocator, sbfTypesFac,false, untrackedStackFields,
+                                           globalAlloc, heapAlloc, externAlloc, integerAlloc)
         val oldStack = getStack()
         val newStack = newG.importStack(oldStack, sliceStackFields)
         sliceNormalRegisters.forEachIndexed { i, c ->
@@ -1797,7 +1798,7 @@ class PTAGraph(/** Global node allocator **/
      * If some conditions hold, some fields of the stack node from this are split into multiple
      * subfields such that the stack node from this and other have the same fields.
     **/
-    fun pseudoCanonicalize(other: PTAGraph) {
+    fun pseudoCanonicalize(other: PTAGraph<TNum, TOffset>) {
         fun splitCond(node: PTANode, field: PTAField): Boolean {
             val succ = node.getSucc(field)
             return succ?.getNode()?.mustBeInteger() ?: false
@@ -1912,7 +1913,7 @@ class PTAGraph(/** Global node allocator **/
         return Pair(outUntrackedStackFields, outTrackedStackFields)
     }
 
-    private fun getType(scalar: ScalarValue): SbfType? {
+    private fun getType(scalar: ScalarValue<TNum, TOffset>): SbfType<TNum, TOffset>? {
         return if (scalar.isTop() || scalar.isBottom()) {
             null
         } else {
@@ -1920,7 +1921,7 @@ class PTAGraph(/** Global node allocator **/
         }
     }
 
-    private fun getNumber(scalar: SbfType): Long? {
+    private fun getNumber(scalar: SbfType<TNum, TOffset>): Long? {
         return if (scalar !is SbfType.NumType) {
             null
         } else {
@@ -1929,7 +1930,7 @@ class PTAGraph(/** Global node allocator **/
     }
 
     /** This is just a heuristic to identify dangling pointers **/
-    private fun isNullOrDanglingPtr(scalar: SbfType): Boolean {
+    private fun isNullOrDanglingPtr(scalar: SbfType<TNum, TOffset>): Boolean {
         val n = getNumber(scalar)
         return if (n != null) {
             // Rust `dangling()` function returns a small power-of-two
@@ -1954,8 +1955,8 @@ class PTAGraph(/** Global node allocator **/
                               rightStack: PTANode,
                               leftC: PTASymCell?,
                               rightC: PTASymCell?,
-                              leftScalars: ScalarDomain,
-                              rightScalars: ScalarDomain,
+                              leftScalars: ScalarDomain<TNum, TOffset>,
+                              rightScalars: ScalarDomain<TNum, TOffset>,
                               unificationList: MutableList<Pair<PTASymCell, PTASymCell>>): PTASymCell? {
 
         if (leftC != null && rightC != null) {
@@ -2064,8 +2065,8 @@ class PTAGraph(/** Global node allocator **/
                               leftRegisters: List<PTASymCell?>,
                               // null means that the register is "top"
                               rightRegisters: List<PTASymCell?>,
-                              leftScalars: ScalarDomain,
-                              rightScalars: ScalarDomain,
+                              leftScalars: ScalarDomain<TNum, TOffset>,
+                              rightScalars: ScalarDomain<TNum, TOffset>,
                               unificationList: MutableList<Pair<PTASymCell, PTASymCell>>): ArrayList<PTASymCell?> {
 
         val commonRegisters = ArrayList<PTASymCell?>(registers.size)
@@ -2120,7 +2121,7 @@ class PTAGraph(/** Global node allocator **/
     }
 
     /// Helper for join
-    private fun removeFieldFromStack(stack: PTANode, field: PTAField, g:PTAGraph,
+    private fun removeFieldFromStack(stack: PTANode, field: PTAField, g: PTAGraph<TNum, TOffset>,
                                      @Suppress("UNUSED_PARAMETER")
                                      msg: String) {
         val succC = stack.getSuccs()[field]
@@ -2140,8 +2141,8 @@ class PTAGraph(/** Global node allocator **/
      * commonalities by performing unifications (if needed), when the same stack fields or registers point to
      * different cells (in the two abstract states).
      */
-    fun join(other: PTAGraph, leftScalars: ScalarDomain, rightScalars: ScalarDomain,
-             left: Label?, right: Label?): PTAGraph {
+    fun join(other: PTAGraph<TNum, TOffset>, leftScalars: ScalarDomain<TNum, TOffset>, rightScalars: ScalarDomain<TNum, TOffset>,
+             left: Label?, right: Label?): PTAGraph<TNum, TOffset> {
         if (scratchRegisters.size != other.scratchRegisters.size) {
             val msg = if (left != null && right != null ){
                 "join between $left and $right"
@@ -2153,7 +2154,7 @@ class PTAGraph(/** Global node allocator **/
             throw PointerDomainError("$msg failed because disagreement on the number of scratch registers")
         }
 
-        val dotDebugger = BinaryOperationToDot("join")
+        val dotDebugger = BinaryOperationToDot<TNum, TOffset>("join")
         if (debugPTAJoin) {
             dotDebugger.addOperands(this, other, left, right)
         }
@@ -2294,11 +2295,10 @@ class PTAGraph(/** Global node allocator **/
         return outG
     }
 
-    fun widen(other: PTAGraph, b: Label?): PTAGraph {
-        val leftScalars = ScalarDomain() // top
-        val rightScalars = ScalarDomain() // top
-        return join(other, leftScalars, rightScalars, b, null)
-    }
+    fun widen(other: PTAGraph<TNum, TOffset>,
+              leftScalars: ScalarDomain<TNum, TOffset>, rightScalars: ScalarDomain<TNum, TOffset>,
+              left: Label?, right: Label?): PTAGraph<TNum, TOffset> =
+        join(other, leftScalars, rightScalars, left, right)
 
     /**
      * We only compare the flow-sensitive components: normal registers, stack, and
@@ -2306,7 +2306,7 @@ class PTAGraph(/** Global node allocator **/
      * - If a register is mapped to null then it means "top"
      * - If a stack field is empty then it means it has not been accessed
      **/
-    fun lessOrEqual(other: PTAGraph, left: Label?, right: Label?): Boolean {
+    fun lessOrEqual(other: PTAGraph<TNum, TOffset>, left: Label?, right: Label?): Boolean {
 
         // For registers
         fun lessOrEqual(left: ArrayList<PTASymCell?>, right: ArrayList<PTASymCell?>,
@@ -2336,7 +2336,7 @@ class PTAGraph(/** Global node allocator **/
             throw PointerDomainError("$msg failed because disagreement on the number of scratch registers")
         }
 
-        val dotDebugger = BinaryOperationToDot("leq")
+        val dotDebugger = BinaryOperationToDot<TNum, TOffset>("leq")
         if (debugPTALeq) {
             dotDebugger.addOperands(this, other, left, right)
             dotDebugger.print()
@@ -2395,7 +2395,7 @@ class PTAGraph(/** Global node allocator **/
      * - else return null.
      */
     fun getRegCell(reg: Value.Reg,
-                   type: SbfType,
+                   type: SbfType<TNum, TOffset>,
                    globalsMap: GlobalVariableMap,
                    locInst: LocatedSbfInstruction?,
                    stopIfError: Boolean = true): PTASymCell? {
@@ -2405,8 +2405,8 @@ class PTAGraph(/** Global node allocator **/
             return sc
         }
 
-        val pointerType: SbfType.PointerType? = when(type) {
-            is SbfType.NumType -> type.castToPtr(globalsMap)
+        val pointerType: SbfType.PointerType<TNum, TOffset>? = when(type) {
+            is SbfType.NumType -> type.castToPtr(sbfTypesFac, globalsMap)
             is SbfType.PointerType -> type
             else -> null
         }
@@ -2429,11 +2429,11 @@ class PTAGraph(/** Global node allocator **/
                 }
                 is SbfType.PointerType.Global -> {
                     val gv = pointerType.global ?: throw UnknownGlobalDerefError(DevErrorInfo(locInst, PtrExprErrReg(reg),""))
-                    sc = globalAlloc.alloc(gv, pointerType.offset)
+                    sc = globalAlloc.alloc(gv, pointerType.offset.get().let {Constant(it)})
                     setRegCell(reg, sc)
                 }
                 is SbfType.PointerType.Heap -> {
-                    sc = heapAlloc.lowLevelAlloc(pointerType.offset)
+                    sc = heapAlloc.lowLevelAlloc(pointerType.offset.get().let {Constant(it)})
                     setRegCell(reg, sc)
                 }
                 is SbfType.PointerType.Input -> {
@@ -2531,7 +2531,7 @@ class PTAGraph(/** Global node allocator **/
                                             dst: Value.Reg,
                                             op1: Value.Reg,
                                             op2: Value.Reg,
-                                            op2Type: SbfType.NumType) {
+                                            op2Type: SbfType.NumType<TNum, TOffset>) {
 
         val o = op2Type.value.get()
         if (o != null && o == 0L) {
@@ -2622,9 +2622,9 @@ class PTAGraph(/** Global node allocator **/
                                     op: BinOp,
                                     dst: Value.Reg,
                                     op1: Value.Reg,
-                                    op1Type: SbfType, /* from scalar analysis */
+                                    op1Type: SbfType<TNum, TOffset>, /* from scalar analysis */
                                     op2: Value.Reg,
-                                    op2Type: SbfType  /* from scalar analysis */) {
+                                    op2Type: SbfType<TNum, TOffset>  /* from scalar analysis */) {
         check(!(op1Type is SbfType.NumType && op2Type is SbfType.NumType))
         {"failed preconditions on doPointerArithmetic in pointer domain"}
 
@@ -2686,8 +2686,8 @@ class PTAGraph(/** Global node allocator **/
               op: BinOp,
               dst: Value.Reg,
               src: Value,
-              dstType: SbfType,
-              srcType: SbfType,
+              dstType: SbfType<TNum, TOffset>,
+              srcType: SbfType<TNum, TOffset>,
               @Suppress("UNUSED_PARAMETER") globalsMap: GlobalVariableMap) {
         if (op != BinOp.MOV && (dstType is SbfType.NumType && srcType is SbfType.NumType)) {
             // op is a binary operation where the two operands are not pointer.
@@ -2721,7 +2721,7 @@ class PTAGraph(/** Global node allocator **/
 
     fun doSelect(locInst: LocatedSbfInstruction,
                  @Suppress("UNUSED_PARAMETER") globals: GlobalVariableMap,
-                 scalars: ScalarDomain) {
+                 scalars: ScalarDomain<TNum, TOffset>) {
         val inst = locInst.inst
         check(inst is SbfInstruction.Select) {"doSelect expects a select instruction instead of $inst"}
 
@@ -2751,7 +2751,7 @@ class PTAGraph(/** Global node allocator **/
                baseReg: Value.Reg,
                offset: Short,
                width: Short,
-               baseRegType: SbfType,
+               baseRegType: SbfType<TNum, TOffset>,
                globalsMap: GlobalVariableMap) {
         val allocSite = locInst.inst
         check(allocSite is SbfInstruction.Mem) {"doAlloc expects a memory instruction instead of $allocSite"}
@@ -2924,8 +2924,8 @@ class PTAGraph(/** Global node allocator **/
                 offset: Short,
                 width: Short,
                 value: Value,
-                baseRegType: SbfType,
-                valueType: SbfType,
+                baseRegType: SbfType<TNum, TOffset>,
+                valueType: SbfType<TNum, TOffset>,
                 globalsMap: GlobalVariableMap) {
         val inst = locInst.inst
         check(inst is SbfInstruction.Mem) {"doStore expects a memory instruction instead of $inst"}
@@ -2973,7 +2973,7 @@ class PTAGraph(/** Global node allocator **/
                         val gv = valueType.global
                         if (gv != null) {
                             // Create a fresh cell for the global variable
-                            globalAlloc.alloc(gv, valueType.offset).concretize()
+                            globalAlloc.alloc(gv, valueType.offset.get().let {Constant(it)}).concretize()
                         } else {
                             null
                         }
@@ -3046,11 +3046,11 @@ class PTAGraph(/** Global node allocator **/
     }
 
     @TestOnly
-    fun doMemcpy(scalars: ScalarDomain, globals: GlobalVariableMap) {
+    fun doMemcpy(scalars: ScalarDomain<TNum, TOffset>, globals: GlobalVariableMap) {
         doMemcpy(locInst = null, scalars, globals)
     }
 
-    private fun doMemcpy(locInst: LocatedSbfInstruction?, scalars: ScalarDomain, globals: GlobalVariableMap) {
+    private fun doMemcpy(locInst: LocatedSbfInstruction?, scalars: ScalarDomain<TNum, TOffset>, globals: GlobalVariableMap) {
         /**
          * Copy links [srcLinks] to [dstC].node.
          * The caller ensures that [srcLinks] are actually links from [srcC].node
@@ -3374,7 +3374,7 @@ class PTAGraph(/** Global node allocator **/
      *  We model memcmp as a sequence of len / wordSize loads of wordSize each
      *  where len is the number of bytes being compared.
      **/
-    private fun doMemcmp(locInst: LocatedSbfInstruction, scalars: ScalarDomain, globals: GlobalVariableMap) {
+    private fun doMemcmp(locInst: LocatedSbfInstruction, scalars: ScalarDomain<TNum, TOffset>, globals: GlobalVariableMap) {
         fun readWords(c1: PTACell, c2: PTACell, len: Int) {
             val node1 = c1.getNode()
             val o1 = c1.getOffset()
@@ -3425,7 +3425,7 @@ class PTAGraph(/** Global node allocator **/
     }
 
     @TestOnly
-    fun doMemset(locInst: LocatedSbfInstruction, scalars: ScalarDomain, globals: GlobalVariableMap) {
+    fun doMemset(locInst: LocatedSbfInstruction, scalars: ScalarDomain<TNum, TOffset>, globals: GlobalVariableMap) {
 
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
@@ -3448,7 +3448,7 @@ class PTAGraph(/** Global node allocator **/
 
     private fun doSolMemInst(memInst: SolanaFunction,
                              globals: GlobalVariableMap,
-                             scalars: ScalarDomain,
+                             scalars: ScalarDomain<TNum, TOffset>,
                              locInst: LocatedSbfInstruction) {
         val inst = locInst.inst
         check(inst is SbfInstruction.Call) {"doSolMemInst expects a call instead of $inst"}
@@ -3585,7 +3585,7 @@ class PTAGraph(/** Global node allocator **/
     fun doCall(calleeLocInst: LocatedSbfInstruction,
                globals: GlobalVariableMap,
                memSummaries: MemorySummaries,
-               scalars: ScalarDomain) {
+               scalars: ScalarDomain<TNum, TOffset>) {
 
         val callee = calleeLocInst.inst
         check(callee is SbfInstruction.Call) {"doCall expects a call instead of $callee"}
@@ -3649,7 +3649,7 @@ class PTAGraph(/** Global node allocator **/
     // precondition: function names have been already demangled
     private fun summarizeCall(locInst: LocatedSbfInstruction,
                               globals: GlobalVariableMap,
-                              scalars: ScalarDomain,
+                              scalars: ScalarDomain<TNum, TOffset>,
                               memSummaries: MemorySummaries) {
 
         class PointerSummaryVisitor: SummaryVisitor {
@@ -3750,7 +3750,7 @@ class PTAGraph(/** Global node allocator **/
      **/
     private fun summarizeAllocSlice(locInst: LocatedSbfInstruction,
                                    globals: GlobalVariableMap,
-                                   scalars: ScalarDomain) {
+                                   scalars: ScalarDomain<TNum, TOffset>) {
 
 
         val r0 = Value.Reg(SbfRegister.R0_RETURN_VALUE)
@@ -4182,11 +4182,11 @@ class OpCounter {
     }
 }
 
-class BinaryOperationToDot(private val opName:String) {
+class BinaryOperationToDot<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(private val opName:String) {
     private var strDot:String = ""
     private var lastOpId = 0UL
 
-    fun addOperands(g1: PTAGraph, g2: PTAGraph, b1: Label?, b2: Label?) {
+    fun addOperands(g1: PTAGraph<TNum, TOffset>, g2: PTAGraph<TNum, TOffset>, b1: Label?, b2: Label?) {
         lastOpId = OpCounter.value
         val leftOp = if (b1 != null) {
             "Block $b1"
@@ -4215,7 +4215,7 @@ class BinaryOperationToDot(private val opName:String) {
     }
 
     // If the binary operation returns a graph
-    fun addResultAndPrint(g: PTAGraph, b1: Label?, b2: Label?) {
+    fun addResultAndPrint(g: PTAGraph<TNum, TOffset>, b1: Label?, b2: Label?) {
         strDot += "subgraph cluster_result {\n" +
                 "label=\"Result\";\n" +
                 g.toDot(true, "result") +

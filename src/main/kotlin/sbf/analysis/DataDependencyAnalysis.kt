@@ -30,6 +30,12 @@ import datastructures.stdcollections.*
 private class DDAError(val msg: String): SolanaInternalError(msg)
 
 /**
+ * Instantiation of the scalar analysis.
+ * The factory can be changed without affecting the rest of prover.
+ **/
+private val sbfTypesFac = ConstantSbfTypeFactory()
+
+/**
  * This analysis is useful for debugging PTA errors (exceptions).
  * Currently, we focus on a single target.
  *
@@ -50,8 +56,8 @@ class DataDependencyAnalysis(private val target: LocatedSbfInstruction,
         DataDepsState.bottom,
         Direction.BACKWARD
     ) {
-    private val fwdAnalysis = ScalarAnalysis(cfg, globalsMap, memSummaries)
-    private val registerTypes = ScalarAnalysisRegisterTypes(fwdAnalysis)
+    private val fwdAnalysis = ScalarAnalysis(cfg, globalsMap, memSummaries, sbfTypesFac)
+    private val registerTypes = AnalysisRegisterTypes(fwdAnalysis)
     private val vFac = VariableFactory()
 
     // outputs of the analysis:

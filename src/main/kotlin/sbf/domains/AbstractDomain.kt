@@ -58,7 +58,6 @@ interface AbstractDomain<T> {
     **/
     fun pseudoCanonicalize(other: T) {}
 
-    fun getValue(value: Value): ScalarValue
     fun deepCopy(): T
     override fun toString(): String
 }
@@ -84,4 +83,9 @@ class DefaultInstructionListener<T>: InstructionListener<T> {
     override fun instructionEventBefore(locInst: LocatedSbfInstruction, pre: T){}
     override fun instructionEventAfter(locInst: LocatedSbfInstruction, post: T){}
     override fun instructionEvent(locInst: LocatedSbfInstruction, pre: T, post: T){}
+}
+
+
+interface ScalarValueProvider<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
+    fun getAsScalarValue(value: Value): ScalarValue<TNum, TOffset>
 }

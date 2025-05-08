@@ -38,6 +38,7 @@ import org.jetbrains.annotations.TestOnly
 import report.CVTAlertReporter
 import report.CVTAlertSeverity
 import report.CVTAlertType
+import sbf.domains.ConstantSbfTypeFactory
 import utils.Range
 import spec.cvlast.RuleIdentifier
 import spec.rules.EcosystemAgnosticRule
@@ -61,6 +62,14 @@ data class CompiledSolanaRule(
 // Any rule name with these suffixes will be considered a vacuity/sanity rule
 const val devVacuitySuffix = "\$sanity"
 const val vacuitySuffix = "rule_not_vacuous_cvlr"
+
+/**
+ * Used by the memory analysis and the TAC encoding.
+ *
+ * This factory selects which types are used to represent numbers and pointer offsets inferred by
+ * the scalar analysis used by the memory analysis.
+ */
+private val sbfTypesFac = ConstantSbfTypeFactory()
 
 /* Entry point to the Solana SBF front-end */
 @Suppress("ForbiddenMethodCall")
@@ -173,7 +182,7 @@ private fun solanaRuleToTAC(rule: EcosystemAgnosticRule,
 
     // Optionally, we annotate CFG with types. This is useful if the CFG will be printed.
     val analyzedProg = if (SolanaConfig.PrintAnalyzedToStdOut.get() || SolanaConfig.PrintAnalyzedToDot.get()) {
-        annotateWithTypes(optProgExt, memSummaries)
+        annotateWithTypes(optProgExt, memSummaries, sbfTypesFac)
     } else {
         optProgExt
     }
@@ -191,7 +200,7 @@ private fun solanaRuleToTAC(rule: EcosystemAgnosticRule,
             sbfLogger.info { "[$target] Started whole-program memory analysis " }
 
             val start = System.currentTimeMillis()
-            val analysis = WholeProgramMemoryAnalysis(analyzedProg, memSummaries)
+            val analysis = WholeProgramMemoryAnalysis(analyzedProg, memSummaries, sbfTypesFac)
             try {
                 analysis.inferAll()
             } catch (e: PointerAnalysisError) {
@@ -229,7 +238,7 @@ private fun solanaRuleToTAC(rule: EcosystemAgnosticRule,
     // 4. Convert to TAC
     sbfLogger.info { "[$target] Started translation to CoreTACProgram" }
     val start2 = System.currentTimeMillis()
-    val coreTAC = sbfCFGsToTAC(analyzedProg, memSummaries, globalsSymbolTable, analysisResults)
+    val coreTAC = sbfCFGsToTAC(analyzedProg, memSummaries, globalsSymbolTable, analysisResults, sbfTypesFac)
     val isSatisfyRule = hasSatisfy(coreTAC)
     val end2 = System.currentTimeMillis()
     sbfLogger.info { "[$target] Finished translation to CoreTACProgram in ${(end2 - start2) / 1000}s" }
@@ -289,7 +298,7 @@ private fun attachRangeToRule(
  * If there are no [RuleLocationAnnotation] or the location does not exist in the uploaded files, returns
  * [Range.Empty].
  * If there are multiple [RuleLocationAnnotation], selects nondeterministically one to read the
- * location from. If in the rules [CVT_rule_location] is called exactly once as the first instruction, this never
+ * location from. If in the rules `CVT_rule_location` is called exactly once as the first instruction, this never
  * happens.
  */
 private fun getRuleRange(tacProgram: CoreTACProgram): Range {
