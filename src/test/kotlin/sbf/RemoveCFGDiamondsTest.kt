@@ -375,4 +375,38 @@ class RemoveCFGDiamondsTest {
     }
 
 
+    @Test
+    fun test7() {
+        val cfg = SbfTestDSL.makeCFG("min") {
+            bb(1) {
+                r0 = 5
+                r10[-200] = 10
+                r6 = r0
+                r1 = r10[-200]
+                br(CondOp.GT(r1, r6), 3, 2)
+            }
+            bb(2) {
+                r6  = r1
+                goto(4)
+            }
+            bb(3) {
+                goto(4)
+            }
+            bb(4) {
+                assert(CondOp.EQ(r6, 5))
+                exit()
+            }
+        }
+
+        sbfLogger.warn {"$cfg"}
+        removeCFGDiamonds(cfg)
+        sbfLogger.warn {"After removing diamonds: $cfg"}
+
+        val tacProg = toTAC(cfg)
+        sbfLogger.warn { dumpTAC(tacProg) }
+        Assertions.assertEquals(true, verify(tacProg))
+
+
+    }
+
 }

@@ -239,7 +239,7 @@ private fun removeDiamondOfThree(cfg: MutableSbfCFG,
         if (defLocInst != null) {
             val defInst = defLocInst.inst
             val v1 = if (defInst is SbfInstruction.Bin && defInst.op == BinOp.MOV &&
-                         !isUsed(block, reg, defLocInst.pos, block.getInstructions().size - 1)) {
+                         !isUsed(block, reg, defLocInst.pos, block.getInstructions().size)) {
                 // small optimization: we can use the rhs of the assignment if
                 //    (1) we remove the assignment (see test1) and
                 //    (2) the lhs of the assignment is not used in the rest of the block (see test4).
@@ -293,7 +293,7 @@ private fun removeDiamondOfFour(cfg: MutableSbfCFG,
             if (defLocInst != null) {
                 val defInst = defLocInst.inst
                 val v1 = if (defInst is SbfInstruction.Bin && defInst.op == BinOp.MOV &&
-                             !isUsed(block, reg, defLocInst.pos, block.getInstructions().size - 1)) {
+                             !isUsed(block, reg, defLocInst.pos, block.getInstructions().size)) {
                     // small optimization: we can use the rhs of the assignment if
                     //    (1) we remove the assignment (see test1) and
                     //    (2) the lhs of the assignment is not used in the rest of the block (see test4).
