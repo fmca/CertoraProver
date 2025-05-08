@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 private val logger = Logger(LoggerTypes.SMT_TIMEOUT)
 
+/** a serialized form of [LiveStats] */
 data class LiveCheckData(
     val nodes: List<LiveCheckInfoNode>,
     val progress: Int?,
@@ -92,7 +93,6 @@ class ConcreteLiveStatsReporter : LiveStatsReporter {
         }
     }
 
-    /** Brings the current state of the live stats into a json-ish form as a map from rule to [LiveCheckInfoNode]s. */
     override val ruleToLiveCheckData: Map<RuleIdentifier, LiveCheckData>
         get() =
             synchronized(this) {

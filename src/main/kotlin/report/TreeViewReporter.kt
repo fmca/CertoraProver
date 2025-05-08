@@ -40,6 +40,7 @@ import utils.*
 import verifier.RuleAndSplitIdentifier
 import java.io.IOException
 import java.math.BigInteger
+import java.util.concurrent.ConcurrentHashMap
 
 private val logger = Logger(LoggerTypes.TREEVIEW_REPORTER)
 
@@ -791,7 +792,14 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 return
             }
 
-        liveStatsReporter.ruleToLiveCheckData.forEachEntry { (rule, data) ->
+        for ((rule, data) in liveStatsReporter.ruleToLiveCheckData) {
+            /** n.b. this expects a stable hashcode. make sure the definition of [LiveCheckData] supports this */
+            val hash = data.hashCode()
+
+            if (hashOfLastDumpedLiveCheckData[rule] == hash) {
+                continue
+            }
+
             val key = RuleOutputArtifactsKey(rule)
             val artifacts = manager
                 .getOrRegisterRuleOutputArtifacts(key)
@@ -814,12 +822,14 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 ArtifactFileUtils
                     .getWriterForFile(path, overwrite = true)
                     .use { it.write(json) }
+                hashOfLastDumpedLiveCheckData[rule] = hash
             } catch (e: IOException) {
                 logger.error("Write of live statistics for ${key.ruleIdentifier} failed: $e")
             }
         }
     }
 
+    private val hashOfLastDumpedLiveCheckData: ConcurrentHashMap<RuleIdentifier, Int> = ConcurrentHashMap()
 
     /**
      * This class generates rule_output.json files for results of asserts in rules. The call trace in the rule report uses these files.
