@@ -397,14 +397,20 @@ class BoundedModelChecker(
                     methodSig.matchesNameAndParams(func.methodSignature)
             }
 
-            val preservedList = invariants.mapKeys { (k, _) -> k.proof.preserved }.filterKeys { preserved ->
-                preserved.any { (it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature)) }
-            }.mapKeys { (allPreserved, _) ->
-                val preserved = allPreserved.find { (it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature)) } ?: `impossible!`
-                check(preserved is CVLPreserved.ExplicitMethod)
-
+            val preservedList = invariants.mapKeys { (inv, _) -> inv.proof.preserved }.filterKeys { preserved ->
+                preserved.any { (it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature)) || it is CVLPreserved.Generic }
+            }.mapKeys { (_preserved, _) ->
+                val preserved = _preserved.find { it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature) }
+                    ?: _preserved.filterIsInstance<CVLPreserved.Generic>().single()
                 val envParamId = preserved.withParams.singleOrNull()?.id
-                val paramIds = preserved.params.map { it.id }
+                val paramIds = if (preserved is CVLPreserved.ExplicitMethod) {
+                    preserved.params.map { it.id }
+                } else {
+                    null
+                }
+                if (envParamId == null && paramIds == null) {
+                    return@mapKeys preserved
+                }
 
                 // OK, there's an env param declared via a `with` clause. Let's rename it.
                 // See the kdoc of this function for details.
@@ -415,7 +421,7 @@ class BoundedModelChecker(
                                 if (exp.id == envParamId) {
                                     exp.copy(id = envParam(n))
                                 } else {
-                                    val i = paramIds.indexOf(exp.id)
+                                    val i = paramIds?.indexOf(exp.id) ?: -1
                                     if (i != -1) {
                                         exp.copy(id = param(i))
                                     } else {
@@ -426,7 +432,11 @@ class BoundedModelChecker(
                         }
                     }
                 ) {}
-                preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
+                when (preserved) {
+                    is CVLPreserved.ExplicitMethod -> preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
+                    is CVLPreserved.Generic -> preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
+                    else -> `impossible!`
+                }
             }.toList()
 
             val cvlParams = func.methodSignature.params.mapIndexed { i, p ->
@@ -568,7 +578,7 @@ class BoundedModelChecker(
         }
 
         val functionCallsProg = funcsList.foldIndexed(
-            initializationProg andThen setupFunctionProg andThen invProgs.invN andThen invProgs.params andThen invProgs.genericPreserved
+            initializationProg andThen setupFunctionProg andThen invProgs.invN andThen invProgs.params
         ) { idx, outerAcc, contractFunctions ->
             if (contractFunctions.isEmpty()) {
                 // the constructor only case
@@ -644,8 +654,7 @@ class BoundedModelChecker(
         val params: CoreTACProgram,
         val assume: CoreTACProgram,
         val assert: CoreTACProgram,
-        val invN: CoreTACProgram,
-        val genericPreserved: CoreTACProgram
+        val invN: CoreTACProgram
     ) {
         constructor(inv: CVLInvariant, compiler: CVLCompiler) : this(
             id = inv.id,
@@ -703,15 +712,7 @@ class BoundedModelChecker(
                         )
                     ), "$INV_N assignment"
                 ).toCore(scene)
-            },
-            genericPreserved = inv.proof.preserved.filterIsInstance<CVLPreserved.Generic>().singleOrNull()?.let {
-                compiler.compileCommands((
-                    it.withParams.map { p ->
-                        CVLCmd.Simple.Declaration(inv.range, EVMBuiltinTypes.env, p.id, inv.scope)
-                    } + it.block).wrapWithMessageLabel("Generic preserved block}"),
-                    "generic invariant block of ${inv.id}"
-                ).toCore(scene).optimize(scene)
-            } ?: CoreTACProgram.empty("No preserved block")
+            }
         )
     }
 
