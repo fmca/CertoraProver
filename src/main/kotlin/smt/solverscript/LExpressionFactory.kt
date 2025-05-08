@@ -19,7 +19,8 @@ package smt.solverscript
 
 import config.Config
 import datastructures.EnumSet
-import datastructures.memoized
+import datastructures.Memoized
+import datastructures.Memoized2
 import datastructures.enumSetOf
 import datastructures.stdcollections.*
 import evm.*
@@ -1112,7 +1113,7 @@ class LExpressionFactory private constructor(
     // constants
 
     /** Create a literal with the given value and tag (cached). */
-    val litCache = memoized { value: BigInteger, tag: Tag ->
+    val litCache = Memoized2(concurrent = false) { value: BigInteger, tag: Tag ->
         LExpression.Literal(value, tag)
     }
 
@@ -1137,7 +1138,7 @@ class LExpressionFactory private constructor(
     val ONE = litInt(1)
     val TWO = litInt(2)
 
-    val TwoTo256Tagged = memoized { tag: Tag -> lit(EVM_MOD_GROUP256, tag) }
+    val TwoTo256Tagged = Memoized { tag: Tag -> lit(EVM_MOD_GROUP256, tag) }
     val TwoTo256 = TwoTo256Tagged(Tag.Int)
 
     val MAX_UINT = litInt(MAX_EVM_UINT256)

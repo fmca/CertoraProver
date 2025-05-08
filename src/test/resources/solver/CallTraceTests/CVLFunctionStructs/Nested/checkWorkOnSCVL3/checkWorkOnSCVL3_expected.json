@@ -377,51 +377,51 @@
                         "text": "workOnSComplexCVL(x='{0}', s={s1.x='{1}', s1.y='{2}', s1.z1='{3}', s1.z2='{4}', s1.b1='{5}', s1.x2='{6}', s1.b2='{7}', s2.x='{8}', s2.y='{9}', s2.z1='{10}', s2.z2='{11}', s2.b1='{12}', s2.x2='{13}', s2.b2='{14}', b3='{15}'})",
                         "arguments": [
                             {
-                                "value": "0x0",
+                                "value": "0x1",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0x1",
+                                    "1",
+                                    "0x1"
                                 ],
                                 "tooltip": "1st parameter",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xc",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xc",
+                                    "12",
+                                    "0xc"
                                 ],
                                 "tooltip": "value at s1.x",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0x4300",
                                 "values": [
-                                    "0x0",
-                                    "0x0",
-                                    "0x0"
+                                    "0x4300",
+                                    "0x4300",
+                                    "0x4300"
                                 ],
                                 "tooltip": "value at s1.y",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xb",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xb",
+                                    "11",
+                                    "0xb"
                                 ],
                                 "tooltip": "value at s1.z1",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0x9",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0x9",
+                                    "9",
+                                    "0x9"
                                 ],
                                 "tooltip": "value at s1.z2",
                                 "truncatable": true
@@ -435,11 +435,11 @@
                                 "truncatable": false
                             },
                             {
-                                "value": "0x0",
+                                "value": "0x8",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0x8",
+                                    "8",
+                                    "0x8"
                                 ],
                                 "tooltip": "value at s1.x2",
                                 "truncatable": true
@@ -453,41 +453,41 @@
                                 "truncatable": false
                             },
                             {
-                                "value": "0x0",
+                                "value": "0x6",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0x6",
+                                    "6",
+                                    "0x6"
                                 ],
                                 "tooltip": "value at s2.x",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0x8200",
                                 "values": [
-                                    "0x0",
-                                    "0x0",
-                                    "0x0"
+                                    "0x8200",
+                                    "0x8200",
+                                    "0x8200"
                                 ],
                                 "tooltip": "value at s2.y",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xd",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xd",
+                                    "13",
+                                    "0xd"
                                 ],
                                 "tooltip": "value at s2.z1",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x0",
+                                "value": "0x7",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0x7",
+                                    "7",
+                                    "0x7"
                                 ],
                                 "tooltip": "value at s2.z2",
                                 "truncatable": true
@@ -501,11 +501,11 @@
                                 "truncatable": false
                             },
                             {
-                                "value": "0x0",
+                                "value": "0xa",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0xa",
+                                    "10",
+                                    "0xa"
                                 ],
                                 "tooltip": "value at s2.x2",
                                 "truncatable": true

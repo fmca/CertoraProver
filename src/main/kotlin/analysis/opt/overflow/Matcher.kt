@@ -125,7 +125,7 @@ class Matcher<T : OverflowContext>(val code: CoreTACProgram, val context: T) {
     }
 
     /** From (pattern, isNegated) -> actual-query (not the answer to the query) */
-    private val queryCache = memoized { pattern: OverflowPattern<T>, negated: Boolean ->
+    private val queryCache = Memoized2 { pattern: OverflowPattern<T>, negated: Boolean ->
         pattern.genQuery(g, context, negated)
     }
 

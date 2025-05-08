@@ -1250,6 +1250,15 @@ object Config {
         )
     ) {}
 
+    val MaxStorageAllocationAnalysisDepth = object : ConfigType.IntCmdLine(
+        20,
+        Option(
+            "maxStorageAllocationAnalysisDepth",
+            true,
+            "Configure how many blocks are traversed by the storage allocation analysis before it gives up"
+        )
+    ) {}
+
     val OptimisticBufferContents = object : ConfigType.BooleanCmdLine(
         false,
         Option(

@@ -50,7 +50,7 @@ class ByteMapScalarizer private constructor(code: CoreTACProgram, private val go
     private val g = code.analysisCache.graph
     private val patcher = ConcurrentPatchingProgram(code)
 
-    private val scalarized = memoized { base: TACSymbol.Var, loc: BigInteger ->
+    private val scalarized = Memoized2 { base: TACSymbol.Var, loc: BigInteger ->
         // require(base in goodBases)
         // we don't check, because unfolding can create new bases.
         TACSymbol.Var("${base.namePrefix}_${loc.toString(16)}", Tag.Bit256, base.callIndex)

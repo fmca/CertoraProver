@@ -32,6 +32,7 @@ import vc.data.TACCmd
 import vc.data.TACKeyword
 import vc.data.TACSymbol
 import java.math.BigInteger
+import java.util.stream.Collectors
 
 /**
  * Find storage array allocations. Despite the name, this object will *technically* find any allocation of an array
@@ -169,7 +170,7 @@ object StorageArrayAllocationAnalysis {
                     fpWriteLoc = write
                 )
             }.stream()
-        }.toList().forkEvery { storageAllocCand: StorageAllocCand ->
+        }.collect(Collectors.toSet()).forkEvery { storageAllocCand: StorageAllocCand ->
             /**
              * For each of these, run the storage allocation decoder. The [StorageAllocationDecoder]
              * returns a non-null elem size on a match, so we filter on that.
