@@ -138,7 +138,7 @@ def check_conf_content(conf_file_attr: Dict[str, Any], context: CertoraContext) 
 
     handle_override_base_config(context)
 
-    if Attrs.is_evm_app() and 'files' not in conf_file_attr and not context.project_sanity and not context.foundry:
+    if Attrs.is_evm_app() and not context.files and not context.project_sanity and not context.foundry:
         raise Util.CertoraUserInputError("Mandatory 'files' attribute is missing from the configuration")
 
     if Attrs.is_rust_app():
