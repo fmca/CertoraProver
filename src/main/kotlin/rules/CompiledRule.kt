@@ -66,13 +66,12 @@ import utils.*
 import vc.data.*
 import vc.data.ParametricMethodInstantiatedCode.toCheckableTACs
 import vc.data.parser.serializeTAC
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import verifier.*
 import java.io.IOException
 import java.util.*
 import java.util.stream.Collectors
 import analysis.controlflow.checkIfAllPathsAreLastReverted
-import verifier.CTPOptimizationPass.Companion.runOn
 
 
 private val logger = Logger(LoggerTypes.COMMON)
@@ -561,10 +560,10 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     }
                 }
                 fun hasMoreThan1QuantVars(tac: CoreTACProgram): Boolean {
-                    val quantFinder = object : QuantDefaultTACExprTransformer() {
+                    val quantFinder = object : DefaultTACExprTransformer() {
                         var hasQuantExprWithMoreThan1Var = false
-                        override fun transformQuantifiedFormula(acc: QuantVars, exp: TACExpr.QuantifiedFormula): TACExpr {
-                            super.transform(acc, exp.body)
+                        override fun transformQuantifiedFormula(exp: TACExpr.QuantifiedFormula): TACExpr {
+                            super.transform(exp.body)
                             return exp.also {
                                 if (it.quantifiedVars.size > 1) {
                                     hasQuantExprWithMoreThan1Var = true
@@ -573,7 +572,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                         }
                     }
                     val mapper =  object : DefaultTACCmdSpecMapper() {
-                        override val exprMapper: QuantDefaultTACExprTransformer = quantFinder
+                        override val exprMapper: DefaultTACExprTransformer = quantFinder
                     }
                     return tac.analysisCache.graph.commands.any {
                         mapper.map(it.cmd)

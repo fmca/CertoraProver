@@ -31,7 +31,7 @@ internal class HeuristicalFoldingTest {
 
     @Test
     fun peepHoleIte01() {
-        val resultExp = peepHoleOptimizeExprMapper.transformOuter(txf {
+        val resultExp = peepHoleOptimizeExprMapper.transform(txf {
             Ite(
                 bool(true),
                 number(3),
@@ -46,7 +46,7 @@ internal class HeuristicalFoldingTest {
 
     @Test
     fun peepHoleIte02() {
-        val resultExp = peepHoleOptimizeExprMapper.transformOuter(txf {
+        val resultExp = peepHoleOptimizeExprMapper.transform(txf {
             Ite(
                 bool(false),
                 number(3),
@@ -61,7 +61,7 @@ internal class HeuristicalFoldingTest {
 
     @Test
     fun peepHoleArith01() {
-        val resultExp = peepHoleOptimizeExprMapper.transformOuter(txf {
+        val resultExp = peepHoleOptimizeExprMapper.transform(txf {
             Add(
                 number(3),
                 Mul(number(4), number(5))
@@ -76,7 +76,7 @@ internal class HeuristicalFoldingTest {
     @Test
     fun peepHoleArith02() {
         val x = TACSymbol.Var("x", Tag.Bit256).asSym()
-        val resultExp = peepHoleOptimizeExprMapper.transformOuter(txf {
+        val resultExp = peepHoleOptimizeExprMapper.transform(txf {
             Add(
                 number(3),
                 Mul(number(4), number(5), x)

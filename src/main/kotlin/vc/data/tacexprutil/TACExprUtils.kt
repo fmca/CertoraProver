@@ -33,14 +33,14 @@ import java.io.Serializable
 import java.math.BigInteger
 
 object TACExprUtils {
-    open class SubstitutorVar(val substitution: Map<TACExpr.Sym.Var, TACExpr>) : QuantDefaultTACExprTransformer() {
+    open class SubstitutorVar(val substitution: Map<TACExpr.Sym.Var, TACExpr>) : DefaultTACExprTransformer() {
         private val subs = substitution.mapKeys { (v, _) -> v.s }
 
-        override fun transformFreeVar(acc: QuantVars, exp: TACExpr.Sym.Var): TACExpr =
+        override fun transformVar(exp: TACExpr.Sym.Var): TACExpr =
         // TODO: this should be replaced with an equiv relation over TACExpr (i.e. we need an equivalence relation
         // implemented for TACExpr that doesn't care about irrelevant data fields such as the tag). As an approximation
             // we're checking that the s field of TACExpr.Sym.Var is equal
-            subs[exp.s] ?: super.transformFreeVar(acc, exp)
+            subs[exp.s] ?: super.transformVar(exp)
     }
 
     open class Substitutor(val substitution: Map<out TACExpr, TACExpr>) : DefaultTACExprTransformer() {

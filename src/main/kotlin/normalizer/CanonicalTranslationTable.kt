@@ -30,7 +30,7 @@ import tac.*
 import tac.BlockIdentifier.Companion.fromCanon
 import utils.*
 import vc.data.*
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import java.io.Serializable
 import kotlin.math.absoluteValue
 
@@ -56,40 +56,40 @@ private fun MetaMap.erase(): MetaMap = this.map {
  * under the assumption that any variables in [TACExpr.QuantifiedFormula.quantifiedVars] should appear in its body
  **/
 private fun quantifiedExprTransformer(mapper: DefaultTACCmdSpecMapper) =
-    object : QuantDefaultTACExprTransformer() {
-        override fun transformQuantifiedFormula(acc: QuantVars, exp: TACExpr.QuantifiedFormula) =
+    object : DefaultTACExprTransformer() {
+        override fun transformQuantifiedFormula(exp: TACExpr.QuantifiedFormula) =
             TACExpr.QuantifiedFormula(
                 isForall = exp.isForall,
                 tag = exp.tag,
                 quantifiedVars = exp.quantifiedVars.map {
                     mapper.mapVar(it)
                 },
-                body = transformArg(acc, exp.body, 0)
+                body = transform(exp.body)
             )
 
-        override fun transformSym(acc: QuantVars, exp: TACExpr.Sym): TACExpr =
+        override fun transformSym(exp: TACExpr.Sym): TACExpr =
             when (exp) {
                 is TACExpr.Sym.Var -> exp.copy(s = mapper.mapSymbol(exp.s))
                 is TACExpr.Sym.Const -> exp // nothing to canonicalize with consts, and we don't want to lose tags
             }
 
         override fun <@Treapable T : Serializable> transformAnnotationExp(
-            acc: QuantVars, o: TACExpr, k: MetaKey<T>, v: T
-        ) = TACExpr.AnnotationExp(transform(acc, o), k, mapper.mapMetaPair(k, v))
+            o: TACExpr, k: MetaKey<T>, v: T
+        ) = TACExpr.AnnotationExp(transform(o), k, mapper.mapMetaPair(k, v))
 
-        override fun transformMapDefinition(acc: QuantVars, exp: TACExpr.MapDefinition) =
+        override fun transformMapDefinition(exp: TACExpr.MapDefinition) =
             TACExpr.MapDefinition(
                 tag = exp.tag,
-                definition = transformArg(acc, exp.definition, 0),
+                definition = transform(exp.definition),
                 defParams = exp.defParams.map {
-                    this.transformSym(acc, it) as TACExpr.Sym.Var
+                    this.transformSym(it) as TACExpr.Sym.Var
                 }
             )
     }
 
 /** erase messages and non-canonical meta-data **/
 private val erasureMapper = object : DefaultTACCmdSpecMapper() {
-    override val exprMapper: QuantDefaultTACExprTransformer = quantifiedExprTransformer(this)
+    override val exprMapper: DefaultTACExprTransformer = quantifiedExprTransformer(this)
 
     override fun mapAnnotationCmd(t: TACCmd.Simple.AnnotationCmd): TACCmd.Simple =
         super.mapAnnotationCmd(t.copy(annot = t.annot.takeIf { it.k.isCanonical }

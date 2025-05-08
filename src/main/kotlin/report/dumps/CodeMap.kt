@@ -60,7 +60,7 @@ import vc.data.TACMeta.REVERT_PATH
 import vc.data.TACMeta.SCOPE_SNIPPET_END
 import vc.data.state.ConcreteTacValue
 import vc.data.state.TACValue
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import vc.gen.LeinoWP
 import verifier.TimeoutCoreAnalysis
 import verifier.Verifier
@@ -1886,10 +1886,9 @@ fun extendModel(
     }
 
     fun evalExpr(e: TACExpr, model: Map<TACSymbol.Var, TACValue>): TACValue? {
-        val symbolAssigner = object : QuantDefaultTACExprTransformer() {
-            override fun transformSym(acc: QuantVars, exp: TACExpr.Sym): TACExpr {
+        val symbolAssigner = object : DefaultTACExprTransformer() {
+            override fun transformSym(exp: TACExpr.Sym): TACExpr {
                 return when {
-                    exp.s in acc.quantifiedVars -> exp
                     exp is TACExpr.Sym.Var -> evalByModel(exp.s, model).asSym()
                     exp is TACExpr.Sym.Const -> exp
                     else -> error("this when-case should be unreachable (in CodeMap.evalExpr)")
@@ -1897,7 +1896,7 @@ fun extendModel(
             }
         }
 
-        val assignKnown = symbolAssigner.transformOuter(e)
+        val assignKnown = symbolAssigner.transform(e)
         return when (assignKnown) {
             is TACExpr.Vec -> {
                 if (assignKnown.ls.all { it is TACExpr.Sym.Const }) {

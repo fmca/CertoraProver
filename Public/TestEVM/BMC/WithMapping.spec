@@ -23,3 +23,10 @@ invariant succeedingWithMapping(env invParam, uint x) x >= 5 => c.foo <= x {
         require c.addressToValue[o] != 8;
     }
 }
+
+
+invariant succeedingWithMappingQuantified(env invParam, uint x) x >= 5 => c.foo <= x {
+    preserved setFooConditionally(address o) with (env e) {
+        require (forall address y. c.addressToValue[y] != 8);
+    }
+}

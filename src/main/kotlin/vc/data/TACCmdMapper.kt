@@ -22,7 +22,7 @@ import spec.cvlast.CVLType
 import spec.cvlast.ComparisonBasis
 import tac.*
 import utils.uncheckedAs
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
+import vc.data.tacexprutil.DefaultTACExprTransformer
 import java.io.Serializable
 import vc.data.TACCmd.Simple as TS
 import vc.data.TACCmd.Simple.AssigningCmd as TSA
@@ -592,20 +592,17 @@ abstract class AbstractDefaultTACCmdMapper : TACCmdMapper<TACCmd.Simple>() {
 }
 
 open class DefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {
-    protected open val exprMapper = object : QuantDefaultTACExprTransformer() {
-        override fun transform(acc: QuantVars, exp: TACExpr): TACExpr {
+    protected open val exprMapper = object : DefaultTACExprTransformer() {
+        override fun transform(exp: TACExpr): TACExpr {
             return when (exp) {
-                is TACExpr.Sym.Var ->
-                    if (exp.s in acc.quantifiedVars) exp
-                    else TACExpr.Sym(this@DefaultTACCmdMapper.mapSymbol(exp.s))
-                is TACExpr.Sym.Const -> TACExpr.Sym(this@DefaultTACCmdMapper.mapSymbol(exp.s))
-                else -> super.transform(acc, exp)
+                is TACExpr.Sym -> TACExpr.Sym(this@DefaultTACCmdMapper.mapSymbol(exp.s))
+                else -> super.transform(exp)
             }
         }
 
         override fun <@Treapable T : Serializable> transformAnnotationExp(
-            acc: QuantVars, o: TACExpr, k: MetaKey<T>, v: T
-        ) = TACExpr.AnnotationExp(transform(acc, o), k, mapMetaPair(k, v))
+            o: TACExpr, k: MetaKey<T>, v: T
+        ) = TACExpr.AnnotationExp(transform(o), k, mapMetaPair(k, v))
     }
 
     override fun mapMeta(t: MetaMap): MetaMap {
@@ -628,7 +625,7 @@ open class DefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {
 
     open fun mapLhs(t: TACSymbol.Var) = this.mapVar(t)
 
-    open fun mapExpr(expr: TACExpr): TACExpr = exprMapper.transformOuter(expr)
+    open fun mapExpr(expr: TACExpr): TACExpr = exprMapper.transform(expr)
 
     /* overriding the indexing methods to just drop the index */
 

@@ -148,7 +148,7 @@ object SimpleLoopSummarization {
                 it.asSym() `to?` toRet
             }
         }?.let {
-            TACExprUtils.SubstitutorVar(it.toMap()).transformOuter(c.rhs)
+            TACExprUtils.SubstitutorVar(it.toMap()).transform(c.rhs)
         }
     }
 }

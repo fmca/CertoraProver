@@ -31,7 +31,6 @@ import report.dumps.CmdPtrMapping
 import scene.PatchableProgram
 import tac.*
 import utils.*
-import vc.data.tacexprutil.QuantDefaultTACExprTransformer
 import vc.data.tacexprutil.TACExprUtils
 import vc.data.tacexprutil.tempVar
 import java.util.*
@@ -480,7 +479,7 @@ open class PatchingTACProgram<T : TACCmd> protected constructor(
                     val newAxioms = axioms.map { axiom ->
                         TACAxiom(
                             TACExprUtils.SubstitutorVar(replacedUfsAsTACExprs)
-                                .transform(QuantDefaultTACExprTransformer.QuantVars.Empty, axiom.exp)
+                                .transform(axiom.exp)
                         )
                     }
                     newFis to newAxioms
