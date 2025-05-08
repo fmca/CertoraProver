@@ -72,7 +72,6 @@ import java.io.IOException
 import java.util.*
 import java.util.stream.Collectors
 import analysis.controlflow.checkIfAllPathsAreLastReverted
-import verifier.CTPOptimizationPass.Companion.runOn
 
 
 private val logger = Logger(LoggerTypes.COMMON)
@@ -334,8 +333,8 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
         CompiledRule.optimizeNonLocal(tacToCheck)
 
     companion object {
-        fun optimize(scene: SceneIdentifiers, tacToCheck: CoreTACProgram, bmcMode: Boolean = false) = inCode(tacToCheck) {
-            with(CTPOptimizationPass) {
+        fun optimize(scene: SceneIdentifiers, tacToCheck: CoreTACProgram) = inCode(tacToCheck) {
+            val fullOptimizationPass = with(CTPOptimizationPass) {
                 listOf(
                     snippetRemoval,
                     constantPropagatorAndSimplifier(mergeBlocks = true),
@@ -350,7 +349,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     removeUnusedWrites,
                     rewriteCopyLoops,
                     removeDeadPartitions,
-                    optimizeAssignments(keepRevertManagement = true, bmcAware = bmcMode),
+                    optimizeAssignments(keepRevertManagement = true, bmcAware = true),
                     pruner(1),
                     infeasiblePaths,
                     simpleSummaries(1),
@@ -360,7 +359,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     negationNormalizer,
                     globalInliner(1),
                     constantPropagatorAndSimplifier(mergeBlocks = true),
-                    optimizeAssignments(keepRevertManagement = true, bmcAware = bmcMode),
+                    optimizeAssignments(keepRevertManagement = true, bmcAware = true),
                     overflowPatternRewriter,
                     patternRewriter(PatternRewriter::basicPatternsList),
                     globalInliner(2),
@@ -371,12 +370,15 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     pruner(2),
                     blockMerger,
                     quantifierAnnotator
-                ).runOn(tacToCheck)
+                )
             }
+            fullOptimizationPass.fold(CoreTACProgram.Linear(tacToCheck)) { acc, opt ->
+                acc.mapIfAllowed(CoreToCoreTransformer(opt.reportType) { c -> opt.optimize(c) })
+            }.ref
         }
 
         fun optimizeNonLocal(tacToCheck: CoreTACProgram) = inCode(tacToCheck) {
-            with(CTPOptimizationPass) {
+            val nonLocalOptimizationPass = with(CTPOptimizationPass) {
                 listOf(
                     optimizeAssignments(keepRevertManagement = true, bmcAware = false),
                     infeasiblePaths,
@@ -384,8 +386,12 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     globalInliner(2),
                     ternarySimplifier,
                     constantPropagatorAndSimplifier(mergeBlocks = true)
-                ).runOn(tacToCheck)
+                )
             }
+
+            nonLocalOptimizationPass.fold(CoreTACProgram.Linear(tacToCheck)) { acc, opt ->
+                acc.mapIfAllowed(CoreToCoreTransformer(opt.reportType) { c -> opt.optimize(c) })
+            }.ref
         }
 
         /**

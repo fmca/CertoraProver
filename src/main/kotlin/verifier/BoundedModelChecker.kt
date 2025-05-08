@@ -91,7 +91,7 @@ class BoundedModelChecker(
         fun CommandWithRequiredDecls<TACCmd.Simple>.toCore(id: String, scene: IScene) = this.toProg(id, ROOT_CALL_ID.toContext()).asSimple().toCore(scene)
 
         fun CoreTACProgram.optimize(scene: IScene): CoreTACProgram {
-            val optimized = CompiledRule.optimize(scene.toIdentifiers(), this.withCoiOptimizations(false), bmcMode = true)
+            val optimized = CompiledRule.optimize(scene.toIdentifiers(), this.withCoiOptimizations(false))
             return optimized
         }
 
