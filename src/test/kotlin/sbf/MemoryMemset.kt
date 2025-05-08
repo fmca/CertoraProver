@@ -80,7 +80,7 @@ class MemoryMemsetTest {
         val locInst = LocatedSbfInstruction(Label.fresh(), 0, inst)
         g.doLoad(locInst, lhs, base, offset, width, SbfType.Top, newGlobalVariableMap())
         val sc = g.getRegCell(lhs)
-        return sc?.node
+        return sc?.getNode()
     }
 
     // Return true if  *([baseR] + [offset]) points to [node]
@@ -88,7 +88,7 @@ class MemoryMemsetTest {
         g: PTAGraph,
         base: Value.Reg, offset: Short,
         node: PTANode
-    ) = getNode(g, base, offset, 8)?.id == node.id
+    ) = getNode(g, base, offset, 8)?.id == node.getNode().id
 
     @Test
     fun test01() {
@@ -103,7 +103,7 @@ class MemoryMemsetTest {
         val absVal = MemoryDomain(PTANodeAllocator(), true)
         val stackC = absVal.getRegCell(r10, newGlobalVariableMap())
         check(stackC != null) { "memory domain cannot find the stack node" }
-        stackC.node.setWrite()
+        stackC.getNode().setWrite()
         val g = absVal.getPTAGraph()
         val n1 = g.mkNode()
         n1.setWrite()
@@ -111,10 +111,10 @@ class MemoryMemsetTest {
         n2.setWrite()
         val n3 = g.mkNode()
         n3.setWrite()
-        stackC.node.mkLink(4040, 8, n1.createCell(0))
-        stackC.node.mkLink(4048, 8, n2.createCell(0))
-        stackC.node.mkLink(4056, 8, n3.createCell(0))
-        g.setRegCell(r1, stackC.node.createSymCell(PTASymOffset(4040)))
+        stackC.getNode().mkLink(4040, 8, n1.createCell(0))
+        stackC.getNode().mkLink(4048, 8, n2.createCell(0))
+        stackC.getNode().mkLink(4056, 8, n3.createCell(0))
+        g.setRegCell(r1, stackC.getNode().createSymCell(PTASymOffset(4040)))
 
         val scalars = ScalarDomain()
         scalars.setRegister(r2, ScalarValue.from(0UL))
@@ -141,7 +141,7 @@ class MemoryMemsetTest {
         val absVal = MemoryDomain(PTANodeAllocator(), true)
         val stackC = absVal.getRegCell(r10, newGlobalVariableMap())
         check(stackC != null) { "memory domain cannot find the stack node" }
-        stackC.node.setWrite()
+        stackC.getNode().setWrite()
         val g = absVal.getPTAGraph()
         val n1 = g.mkNode()
         n1.setWrite()
@@ -149,10 +149,10 @@ class MemoryMemsetTest {
         n2.setWrite()
         val n3 = g.mkNode()
         n3.setWrite()
-        stackC.node.mkLink(4040, 8, n1.createCell(0))
-        stackC.node.mkLink(4048, 8, n2.createCell(0))
-        stackC.node.mkLink(4056, 8, n3.createCell(0))
-        g.setRegCell(r1, stackC.node.createSymCell(PTASymOffset(4040)))
+        stackC.getNode().mkLink(4040, 8, n1.createCell(0))
+        stackC.getNode().mkLink(4048, 8, n2.createCell(0))
+        stackC.getNode().mkLink(4056, 8, n3.createCell(0))
+        g.setRegCell(r1, stackC.getNode().createSymCell(PTASymOffset(4040)))
 
         val scalars = ScalarDomain()
         scalars.setRegister(r2, ScalarValue.from(0UL))
