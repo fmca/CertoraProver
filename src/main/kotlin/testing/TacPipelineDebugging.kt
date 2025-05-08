@@ -104,7 +104,7 @@ class TacPipelineCIInvariants : TacPipelineDebugger {
         if (Config.TestMode.get() && !prog.isInDesctructiveMode()) {
             val graph = prog.analysisCache?.graph
             if (graph == null) {
-                logger.warn { "Could not get CommandGraph at ${loc()}" }
+                logger.debug { "Could not get CommandGraph at ${loc()}" }
                 return
             }
             logger.info { "Checking CVLLabelStack for ${prog.name} at ${loc()}..." }
