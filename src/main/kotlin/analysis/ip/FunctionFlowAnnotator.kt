@@ -179,7 +179,7 @@ object FunctionFlowAnnotator {
                 }
             }
         }.collect(Collectors.toMap({ it.first }, { it.second }))
-        val w = Worker(c.analysisCache.graph, seed)
+        val w = Worker(c.analysisCache.graph, seed, source)
         val toAnnotateAsHandled = mutableSetOf<CmdPointer>()
         val toPrefix = mutableMapOf<CmdPointer, MutableList<TACCmd.Simple>>()
         if(!w.success) {
@@ -1731,7 +1731,8 @@ object FunctionFlowAnnotator {
      * for each function return, what are the corresponding call locations (the return location is represented in the [WorkEdge.src]
      * field, and the call locations in the [WorkEdge.dest], this reversal is because this is a backwards analysis).
      */
-    private class Worker(private val g: TACCommandGraph, seed: Map<NBId, Edge>) {
+    private class Worker(private val g: TACCommandGraph, seed: Map<NBId, Edge>, source: ContractInstanceInSDC) {
+        val knownFunctionStarts = source.internalFunctionStarts.toSet()
         val visited = mutableSetOf<WorkEdge>()
         val incoming = mutableMapOf<WorkTuple, MutableCollection<WorkEdge>>()
         val summary = mutableMapOf<WorkTuple, MutableSet<WorkTuple>>()
@@ -1931,7 +1932,8 @@ object FunctionFlowAnnotator {
                                     }
                                     queueNext(nxt, composed)
                                 }
-                            } else if(classification is Edge.Immediate && prev.commands.last().maybeNarrow<TACCmd.Simple.JumpCmd>()?.cmd?.metaSrcInfo?.jumpType == JumpType.ENTER) {
+                            } else if(classification is Edge.Immediate && (prev.commands.last().maybeNarrow<TACCmd.Simple.JumpCmd>()?.cmd?.metaSrcInfo?.jumpType == JumpType.ENTER ||
+                                it.dest.node.origStartPc in knownFunctionStarts)) {
                                 if(!flowComplete(newItem, nxt)) {
                                     res.add(false)
                                 }
