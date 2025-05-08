@@ -300,6 +300,9 @@ class ContractClass(
                  */
                 FreePointerReadFixer::fixFreePointerRead
             )
+            transforms.add(
+                ReportTypes.LOG_FP_REUSE_NORMALIZATION, FreePointerAliasLogRewrites::rewrite
+            )
 
             transforms.add(ReportTypes.TRIVIAL_SHIFT_SIMPLIFY, MathPeepholeOptimizer::trivialShiftSimplifier)
 

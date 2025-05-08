@@ -1926,7 +1926,7 @@ sealed class TACCmd : Serializable, ITACCmd {
                 get() = length
         }
 
-        interface LogCmdSummary
+        sealed interface LogCmdSummary : TACSummary
 
         // Log commands.
         @HookableOpcode("LOG0", additionalInterfaces = [LogCmdSummary::class])

@@ -20,10 +20,7 @@ package optimizer
 import analysis.LTACCmd
 import analysis.LTACCmdView
 import analysis.TACCommandGraph
-import analysis.alloc.AllocationAnalysis
-import analysis.alloc.StringStorageCopyChecker
 import analysis.narrow
-import analysis.smtblaster.Z3Blaster
 import analysis.worklist.IWorklistScheduler
 import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StepResult
@@ -37,7 +34,6 @@ import utils.mapNotNull
 import utils.pointwiseBinopOrNull
 import vc.data.*
 import verifier.BlockMerger
-import java.util.concurrent.ConcurrentHashMap
 import java.util.stream.Collector
 
 /**
@@ -55,46 +51,6 @@ import java.util.stream.Collector
  * l2 = decode(i)
  * if l2 == 0 then ... else ...
  * ```
- *
- * As mentioned in [StringStorageCopyChecker], the initialization pattern for storage strings is basically impossible
- * to analyze correctly, and thus we have special handling, which crucially relies on recognizing the `l2 == 0` check
- * above (specifically, we assume that the jump target reached along the path where the length of the string, l2, is
- * zero is the initialization completion point). However, this requires determining that `l2` is actually
- * the length of the array in `ptr`; in this pseudocode, this is readily apparent as we have specifically
- * ellided all the complexity of the decode operation into a UF. However, in actuality, the allocation and the length
- * check are "far apart" in the graph, and pushing this reasoning into the initialization analysis would introduce even *more*
- * complexity into an already very complex piece of code. So instead, we recognize these "redundant" reads, and simplify
- * the following code into:
- * ```
- * l = decode(i)
- * ptr = fp;
- * fp = ptr + 32 + l;
- * l2 = l;
- * if l2 == 0 then ... else ...
- * ```
- *
- * Which the initialization analysis can reason about without really worrying about `decode` at all.
- *
- * One complication is if there are two (or more) copies of the same string back to back. Then we have:
- * ```
- * l1 = decode(i)
- * ptr1 = fp;
- * fp = ptr1 + 32 + l1;
- * l2 = decode(i)
- * if l2 == 0 then ... else ...
- * l3 = decode(i);
- * ptr2 = fp;
- * fp = ptr2 + 32 + l3;
- * l4 = decode(i);
- * if l4 == 0 then ... else ...
- * ```
- *
- * without extra care, we would replace the latter 3 `decode` operations with just `l1`. This is problematic, as the
- * special recognition of a string allocation (as discovered by [StringStorageCopyChecker.isDecodeAllocation]
- * requires finding a `fp = fp + 32 + l` *immediately* following `l = decode(_)`. Thus, we must *not* remove a decode
- * if it is immediately followed by an allocation. Further, all subsequent redundant decodes must be replaced
- * with the most recent "incarnation" to allow the initialization analysis to recognize the jump on the length of the
- * freshly allocation array.
  */
 object RedundantStorageReadOptimizer {
     sealed class StorageRead {
@@ -114,7 +70,6 @@ object RedundantStorageReadOptimizer {
          * Given a command that holds [instrumentation.StoragePackedLengthSummarizer.StorageLengthReadSummary], determine
          * whether the decoded length is used immediately to allocate a string.
          */
-        val isLengthDecodeForStringAllocation = ConcurrentHashMap<LTACCmd, Boolean>()
         val success = object : WorklistIteration<NBId, Unit, Boolean>() {
             override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph = c.analysisCache.graph)
 
@@ -142,36 +97,8 @@ object RedundantStorageReadOptimizer {
                             "Unexpected destination"
                         }
                         val lengthIndex =  getDecodedIndex(cond.s) ?: return StepResult.StopWith(false)
-                        val isDecodeForAlloc = isLengthDecodeForStringAllocation.computeIfAbsent(block.commands.last()) {
-                            StringStorageCopyChecker.isDecodeAllocation(
-                                blaster = Z3Blaster,
-                                g = graph,
-                                decodedLen = cond.s.outputVar,
-                                block = cond.s.skipTarget
-                            ) != null
-                        }
-                        if(lengthIndex != cond.s.outputVar) {
-                            val s = st.build() + (cond.s.outputVar to StorageRead.LengthDecode(lengthIndex))
-                            /**
-                             * As was discovered in https://certora.atlassian.net/browse/CERT-4615, two sequential decodes
-                             * of *exactly* the same storage string will yield two allocations, but the length read of the second
-                             * allocation will be removed as redundant, which confuses the heck out of the allocation analysis.
-                             *
-                             * This check is a clunky fix for this issue: we "forget" any previous reads of the same index
-                             * when a read is definitely used in a string allocation as determined by the
-                             * [StringStorageCopyChecker]. NB that this still allows the second, redundant
-                             * read for the allocation (the `l2 = decode(i) in the above example) to be removed,
-                             * as this is important for the initialization analysis.
-                             */
-                            if(isDecodeForAlloc) {
-                                s.retainAll { (k, v) ->
-                                    k == cond.s.outputVar ||
-                                        v !is StorageRead.LengthDecode ||
-                                        v.index != lengthIndex
-                                }
-                            } else {
-                                s
-                            }
+                        if (lengthIndex != cond.s.outputVar) {
+                            st.build() + (cond.s.outputVar to StorageRead.LengthDecode(lengthIndex))
                         } else {
                             st.build()
                         }
@@ -219,9 +146,6 @@ object RedundantStorageReadOptimizer {
                     }
                 } else if(lc.cmd is TACCmd.Simple.SummaryCmd && lc.cmd.summ is StoragePackedLengthSummarizer.StorageLengthReadSummary && it.commands.size == 1) run {
                     val ind = getDecodedIndex(lc.cmd.summ) ?: return@run
-                    if(isLengthDecodeForStringAllocation.getOrDefault(lc, false)) {
-                        return@run
-                    }
                     val existing = st.keysMatching { _, storageRead ->
                         storageRead is StorageRead.LengthDecode && storageRead.index == ind
                     }.firstOrNull() ?: return@run
@@ -288,8 +212,8 @@ object RedundantStorageReadOptimizer {
 
     private fun getDecodedIndex(s: StoragePackedLengthSummarizer.StorageLengthReadSummary) : TACSymbol? {
         return when(s.readSort) {
-            is AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.WordLoad -> s.readSort.indexSym
-            is AllocationAnalysis.Alloc.StorageUnpack.SizeReadSort.UnpackRead -> s.readSort.read.meta.find(TACMeta.SCALARIZATION_SORT)?.let {
+            is StoragePackedLengthSummarizer.SizeReadSort.WordLoad -> s.readSort.indexSym
+            is StoragePackedLengthSummarizer.SizeReadSort.UnpackRead -> s.readSort.read.meta.find(TACMeta.SCALARIZATION_SORT)?.let {
                 it as? ScalarizationSort.Split
             }?.idx?.asTACSymbol()
         }

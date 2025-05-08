@@ -52,10 +52,10 @@ private val logger = Logger(LoggerTypes.NORMALIZER)
  */
 object UnreachableUnpackingCodeFinder {
     private val secondCondition = PatternDSL.build {
-        ((Var and 0x1()).commute.locFirst `==` 0x1()).first
+        ((Var and 0x1()).commute.locFirst `==` 0x1()).commute.first
     }
     private val firstCondition = PatternDSL.build {
-        ((Var and 0x1()).commute.locFirst `==` 0x0()).first
+        ((Var and 0x1()).commute.locFirst `==` 0x0()).commute.first
     }
 
     fun removeUnreachable(prog: CoreTACProgram) : CoreTACProgram {

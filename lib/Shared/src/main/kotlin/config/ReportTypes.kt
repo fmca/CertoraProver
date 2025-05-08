@@ -260,7 +260,8 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
     ADHOC_INTERNAL_RETURN_FIXUP(LoggerTypes.SUMMARIZATION),
     POST_SUMMARIZATION_STORAGE_CLEANUP(LoggerTypes.SUMMARIZATION),
     ARRAY_LENGTH_UPDATE_INSTRUMENTATION(LoggerTypes.ALIAS_ANALYSIS),
-    OPTIMIZE_WASM_BITOPS(LoggerTypes.OPTIMIZE)
+    OPTIMIZE_WASM_BITOPS(LoggerTypes.OPTIMIZE),
+    LOG_FP_REUSE_NORMALIZATION(LoggerTypes.ALLOC)
     ;
 
     override fun isEnabled(): Boolean = this == NONE || Config.isEnabledLogger(this.loggerCategory) || Config.isEnabledReport(this)

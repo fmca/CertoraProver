@@ -17,7 +17,6 @@
 
 package analysis.pta
 
-import algorithms.SimpleDominanceAnalysis
 import algorithms.dominates
 import algorithms.strictlyDominates
 import analysis.*
@@ -266,25 +265,13 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                 continue
             }
             if(loc.sort is AllocationAnalysis.Alloc.StorageUnpack) {
-                /*
-                  The solidity scheme for unpacking strings is a nightmare. It will intentionally
-                  write past the end of the array, but due to the rounding up will only overwrite unused dummy space.
-
-                  Verifying this behavior would require a combination of Bounded Difference Matrices and Modular Equality.
-
-                  In the meantime, we simply find the successor block which is the target of a jump with edge condition
-                  string.length == 0, and assume that any path from the allocation to that node properly and safely initializes
-                  the string pointer.
-                 */
-                logger.info {
-                    "Optimistically assuming string allocations are initialized okay"
-                }
-                val closeForString = findStringClose(loc, readSites) ?: (run<Nothing?> {
-                    failures.addAll(readSites)
-                    failLocs.add(loc)
-                    null
-                } ?: continue)
-                toRet[loc] = AnalysisResult.Complete(close = closeForString.toBefore(), nested = setOf(), mutated = setOf(), markTop = setOf(), markDefiniteBounds = setOf())
+                toRet[loc] = AnalysisResult.Complete(
+                    close = CmdPointer(loc.sort.closeLoc, 0).toBefore(),
+                    nested = setOf(),
+                    mutated = setOf(),
+                    markTop = setOf(),
+                    markDefiniteBounds = setOf()
+                )
                 continue
             }
             if(loc.sort is AllocationAnalysis.Alloc.ConstantStringAlloc) {
@@ -333,16 +320,16 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                     }
 
                     // let's check that the length is in scope *somewhere* at this point
-                    val copies = graph.cache.gvn.findCopiesAt(start, dynBlock.elemSym)
+                    val copies = graph.cache.gvn.findCopiesAt(start, dynBlock.lengthSym)
                     if(copies.isEmpty()) {
                         logger.info {
                             "Could not find a copy of the array length at first read of $loc at $start, falling back on symbolic"
                         }
                         val nonTrivialDefSite =
-                            nonTrivialDefAnalysis.nontrivialDefSingleOrNull(loc.sort.elemSym.second, loc.sort.elemSym.first)
+                            nonTrivialDefAnalysis.nontrivialDefSingleOrNull(loc.sort.lengthSym.second, loc.sort.lengthSym.first)
                         if (nonTrivialDefSite == null) {
                             logger.warn {
-                                "Could not find single definition site for the length @ ${loc.sort.elemSym}. Giving up"
+                                "Could not find single definition site for the length @ ${loc.sort.lengthSym}. Giving up"
                             }
                             failures.addAll(readSites)
                             continue
@@ -353,7 +340,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             loc.sort.eSz,
                             setOf<LinearAtom>(LinearAtom(LENGTH, loc.sort.eSz)).toRight()
                         ) { x: LTACCmdView<TACCmd.Simple.AssigningCmd> ->
-                            if (x.cmd.lhs == loc.sort.elemSym.second) {
+                            if (x.cmd.lhs == loc.sort.lengthSym.second) {
                                 if (setOf(nonTrivialDefSite) == setOf(x.ptr)) {
                                     if (graph.elab(nonTrivialDefSite).cmd is TACCmd.Simple.AssigningCmd.ByteLoad) {
                                         LengthReadResult.NON_ALIASING_BYTELOAD
@@ -395,16 +382,16 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                         copies.mapTo(linAtom) {
                             LinearAtom(LVar.PVar(it), loc.sort.eSz)
                         }
-                        if (dynBlock.eSz == EVM_WORD_SIZE && dynBlock.elemSym.first.block == start.block && dynBlock.elemSym.first.pos < start.pos &&
-                            graph.elab(dynBlock.elemSym.first).maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()
+                        if (dynBlock.eSz == EVM_WORD_SIZE && dynBlock.lengthSym.first.block == start.block && dynBlock.lengthSym.first.pos < start.pos &&
+                            graph.elab(dynBlock.lengthSym.first).maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()
                                 ?.let { lc ->
                                     val rhs = lc.cmd.rhs
                                     ((rhs is TACExpr.Vec.Mul && rhs.operandsAreSyms() && rhs.ls.any {
                                         it.equivSym(dynBlock.eSz.asTACSymbol())
                                     } && rhs.ls.any {
-                                        it.equivSym(dynBlock.elemSym.second)
+                                        it.equivSym(dynBlock.lengthSym.second)
                                     }) || (dynBlock.eSz.bitCount() == 1 && rhs is TACExpr.BinOp.ShiftLeft && rhs.o1.equivSym(
-                                        dynBlock.elemSym.second
+                                        dynBlock.lengthSym.second
                                     ) && rhs.o2.equivSym(
                                         dynBlock.eSz.lowestSetBit.toBigInteger().asTACSymbol()
                                     ))) && graph.iterateBlock(lc.ptr).takeWhile {
@@ -417,7 +404,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             linAtom.add(
                                 LinearAtom(
                                     LVar.PVar(
-                                        graph.elab(dynBlock.elemSym.first).narrow<TACCmd.Simple.AssigningCmd>().cmd.lhs
+                                        graph.elab(dynBlock.lengthSym.first).narrow<TACCmd.Simple.AssigningCmd>().cmd.lhs
                                     ), BigInteger.ONE
                                 )
                             )
@@ -647,12 +634,10 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
         if(dynBlock.eSz != 32.toBigInteger()) {
             return null
         }
-        val def = nonTrivialDefAnalysis.nontrivialDefSingleOrNull(dynBlock.elemSym.second, dynBlock.elemSym.first)
-        if (def == null)  {
-            return null
-        }
+        val def = nonTrivialDefAnalysis.nontrivialDefSingleOrNull(dynBlock.lengthSym.second, dynBlock.lengthSym.first)
+            ?: return null
         // preceding read in this block
-        if (def.block != dynBlock.elemSym.first.block || def.pos >= dynBlock.elemSym.first.pos) {
+        if (def.block != dynBlock.lengthSym.first.block || def.pos >= dynBlock.lengthSym.first.pos) {
             return null
         }
         val lc = graph.elab(def)
@@ -685,76 +670,6 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
 
     private val defAnalysis by lazy {
         graph.cache.def
-    }
-
-    private fun findStringClose(loc: AllocationAnalysis.AbstractLocation, readLocs: List<CmdPointer>): CmdPointer? {
-        if(readLocs.size != 1) {
-            logger.warn { "Found multiple allocations for the string alloc at $loc, giving up" }
-            return null
-        }
-        val read = readLocs.first()
-        /*
-          We know this write exists because of how the StringStorageCopyChecker is written.
-         */
-        val lenWrite = graph.iterateBlock(read).firstMapped {
-            it.maybeNarrow<TACCmd.Simple.AssigningCmd.ByteStore>()?.takeIf {
-                it.cmd.base == TACKeyword.MEMORY.toVar()
-            }?.let {
-                it.ptr `to?` (it.cmd.value as? TACSymbol.Var)
-            }
-        } ?: return null
-        val block = read.block
-        val tacBlock = graph.elab(block)
-        val blockEnd = tacBlock.commands.last()
-        if(blockEnd.cmd !is TACCmd.Simple.JumpiCmd || blockEnd.cmd.cond !is TACSymbol.Var) {
-            logger.warn {
-                "The final command of the allocation block $blockEnd was not an expected jump condition"
-            }
-            graph.dump(block, logger)
-            return null
-        }
-        val sites = defAnalysis.defSitesOf(blockEnd.cmd.cond, blockEnd.ptr)
-        if(sites.size != 1) {
-            logger.warn {
-                "Found multiple definitions of the condition variable at $blockEnd ($sites)"
-            }
-            return null
-        }
-        if(sites.first().block != block) {
-            logger.warn {
-                "The condition variable is not defined in the allocation block, giving up ${sites.first()}"
-            }
-            return null
-        }
-        val cond = sites.first().let(graph::elab)
-        if(cond.cmd !is TACCmd.Simple.AssigningCmd.AssignExpCmd ||
-                cond.cmd.rhs !is TACExpr.BinRel.Eq ||
-                cond.cmd.rhs.o2AsTACSymbol() != TACSymbol.lift(0) ||
-                cond.cmd.rhs.o1AsTACSymbol() !is TACSymbol.Var) {
-            logger.warn {
-                "The condition variable definition does not match L == 0: $cond"
-            }
-            return null
-        }
-
-        val lenVar = cond.cmd.rhs.o1AsTACSymbol() as TACSymbol.Var
-        if(lenVar !in graph.cache.gvn.findCopiesAt(source = lenWrite, target = blockEnd.ptr)) {
-            return null
-        }
-        val postDom = SimpleDominanceAnalysis(graph.toRevBlockGraph())
-        val isZeroDst = blockEnd.cmd.dst
-        val otherDst = blockEnd.cmd.elseDst
-        if(!postDom.dominates(isZeroDst, otherDst) && graph.succ(isZeroDst).size == 1) {
-            val nextSucc = graph.succ(isZeroDst).first()
-            if(postDom.dominates(nextSucc, otherDst) && isTrivialBlock(graph.elab(isZeroDst), nextSucc)) {
-                return graph.elab(nextSucc).commands.first().ptr
-            }
-        }
-        return graph.elab(isZeroDst).commands.first().ptr
-    }
-
-    private fun isTrivialBlock(elab: TACBlock, nextSucc: NBId): Boolean {
-        return TrivialBlockClassifier.isTrivialBlockTo(elab, graph) && nextSucc == graph.succ(elab.id).singleOrNull()
     }
 
     private fun isCircularDependency(
@@ -1194,9 +1109,34 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                          * the start of the array data segment, then we'll advance WRITE "past" END_BLOCK, but will have
                          * definitely initialized the whole array. (This is the scenario that happened with https://certora.atlassian.net/browse/CERT-5158)
                          */
-                        if(sat matchesAny  { WRITE `=` END_BLOCK + k("const") {
+                        val matchWithSlippage = sat matchesAny {
+                            WRITE `=` END_BLOCK + k("const") {
                                 BigInteger.ZERO <= it && it < EVM_WORD_SIZE
-                            }} != null && (stepped.elemSize == null || stepped.seenLengthWrite == true)) {
+                            }
+                        } != null
+
+                        /**
+                         * We have then that:
+                         * WRITE + len `=` END_BLOCK + k
+                         * where `len < k`, so k - len > 0
+                         * from which we have:
+                         * WRITE - END_BLOCK = k - len > 0
+                         * aka WRITE - END_BLOCK > 0
+                         * aka the initialization is complete
+                         *
+                         * The names of "len" and the insistence of the length role is because this "pattern"
+                         * appears in when copying packed strings out of storage.
+                         */
+                        val matchWithBound = (sat matches {
+                            WRITE + v("len") {
+                                it is LVar.PVar && state.num[it.v]?.qual.orEmpty().contains(Roles.LENGTH)
+                            } `=` END_BLOCK + k("write")
+                        }).any { m ->
+                            (m.symbols["len"] as? LVar.PVar)?.let { state.num[it.v] }?.let { lVar ->
+                                lVar.x.ub < m.factors["write"]
+                            } == true
+                        }
+                        if((matchWithSlippage || matchWithBound) && (stepped.elemSize == null || stepped.seenLengthWrite == true)) {
                             logger.debug { "Have that the written bytes have reached the end of the block. completing $thisLoc" }
                             /*
                                 special check to see if we do ye olde extra write 0 trick
@@ -2080,7 +2020,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
             override fun stepAssignVar(lhs: TACSymbol.Var, s: TACSymbol.Var, toStep: NumericState, input: NumericState, whole: Any, l: LTACCmdView<TACCmd.Simple.AssigningCmd.AssignExpCmd>): NumericState {
                 if(s == TACKeyword.MEM64.toVar() && l.ptr in allocSites.abstractAllocations) {
                     val sort = allocSites.abstractAllocations[l.ptr]!!.sort
-                    if(sort is AllocationAnalysis.Alloc.PackedByteArray || sort is AllocationAnalysis.Alloc.DynamicBlock || sort is AllocationAnalysis.Alloc.StorageUnpack) {
+                    if(sort is AllocationAnalysis.WithElementSize) {
                         return this.assign(
                                 toStep, lhs, IQ(IntValue.Interval(lb = 0x80.toBigInteger()), qual = setOf(Roles.ARRAY_START)),
                                 input, whole, l.wrapped

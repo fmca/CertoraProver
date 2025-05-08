@@ -17,36 +17,58 @@
 
 package analysis.opt
 
-import algorithms.dominates
-import allocator.Allocator
 import analysis.*
 import evm.MAX_EVM_UINT256
-import tac.Tag
 import utils.*
 import vc.data.*
-import java.util.function.BiConsumer
-import java.util.function.BinaryOperator
-import java.util.function.Supplier
-import java.util.stream.Collector
-import java.util.stream.Stream
+import datastructures.stdcollections.*
 
-object FreePointerReadFixer {
+/**
+ * Tries to find cases where the value written into the free pointer is
+ * reused later, and replaces these cases with a fresh read if necessary.
+ * For example, we have seen:
+ * ```
+ * tacM0x40 = v
+ * ...
+ * mem[v] = len
+ * ```
+ * when allocating a new array after the previous allocation. Reusing the free pointer
+ * like this is *very* confusing for the alloc analysis.
+ *
+ * Thus, we rewrite the above to:
+ * ```
+ * tacM0x40 = v
+ * freshRead = tacM0x40
+ *
+ * mem[freshRead] = len
+ * ```
+ * However, if there is another alias "in scope" at the use site, we just use that:
+ * ```
+ * tacM0x40 = v
+ * // no writes to tacM0x40...
+ * w = tacMx040
+ * mem[v] = len
+ * ```
+ * will be rewritten to:
+ * ```
+ * tacM0x40 = v
+ * w = tacM0x40
+ * mem[w] = len
+ * ```
+ */
+object FreePointerReadFixer : FreePointerReadFixupMixin<FreePointerReadFixer.FPUpdate> {
+
+    private data class FPUpdate(
+        override val fpAlias: TACSymbol.Var,
+        override val rewriteUseAfter: CmdPointer
+    ) : FreePointerReadFixupMixin.ReplacementCandidate
     /*
       Find cases where the RHS written as the new value of the free pointer is reused instead
       of reading the FP fresh, replace those with a fresh read.
      */
     fun fixFreePointerRead(p: CoreTACProgram) : CoreTACProgram {
         val live = p.analysisCache.lva
-        val dom by lazy {
-            p.analysisCache.domination
-        }
-        infix fun CmdPointer.dominates(x: CmdPointer) = dom.dominates(this, x)
-
-        class Holder(
-                var newRead: MutableMap<CmdPointer, TACSymbol.Var> = mutableMapOf(),
-                var rewrites: MutableMap<CmdPointer, MutableMap<TACSymbol.Var, TACSymbol.Var>> = mutableMapOf()
-        )
-        val rewrite = p.parallelLtacStream().filter {
+        return p.parallelLtacStream().filter {
             it.cmd is TACCmd.Simple.AssigningCmd.AssignExpCmd && it.cmd.lhs == TACKeyword.MEM64.toVar() &&
                     it.cmd.rhs is TACExpr.Sym.Var
         }.map {
@@ -55,59 +77,10 @@ object FreePointerReadFixer {
             // find those writes whose RHS is still live
             it.exp.s in live.liveVariablesAfter(it.ptr)
         }.map {
-            it to p.analysisCache.use.useSitesAfter(pointer = it.ptr, v = it.exp.s)
-        }.flatMap { (exp, useSites) ->
-            val dominatedUseSites = useSites.filter {
-                exp.ptr dominates it
-            }
-            if(dominatedUseSites.isEmpty()) {
-                Stream.empty()
-            } else {
-                Stream.of(exp to dominatedUseSites)
-            }
-        }.map { (write, rewriteLocs) ->
-            val rewrite = Allocator.getFreshId(Allocator.Id.TEMP_VARIABLE)
-            val freshName = TACSymbol.Var("freshRead$rewrite", Tag.Bit256)
-            val subst = write.exp.s to freshName
-            (write.ptr to freshName) to rewriteLocs.map {
-                it to subst
-            }
-        }.collect(Collector.of(Supplier { ->
-            Holder()
-        }, BiConsumer { u: Holder, t: Pair<Pair<CmdPointer, TACSymbol.Var>, List<Pair<CmdPointer, Pair<TACSymbol.Var, TACSymbol.Var>>>> ->
-            u.newRead[t.first.first] = t.first.second
-            t.second.forEach {(where, subst) ->
-                u.rewrites.computeIfAbsent(where) { mutableMapOf() }.put(subst.first, subst.second)
-            }
-        }, BinaryOperator { h1: Holder, h2: Holder ->
-            h2.newRead.forEach { t, u ->
-                h1.newRead[t] = u
-            }
-            h2.rewrites.forEach { where, subst ->
-                h1.rewrites.computeIfAbsent(where) { mutableMapOf() }.putAll(subst)
-            }
-            h1
-        }))
-
-        return p.patching { patch ->
-            rewrite.newRead.forEach { where, newVar ->
-                patch.replace(where) { orig ->
-                    listOf(
-                            orig,
-                            TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                                    lhs = newVar,
-                                    rhs = TACKeyword.MEM64.toVar().asSym()
-                            )
-                    )
-                }
-                patch.addVarDecl(newVar)
-            }
-            rewrite.rewrites.forEach { where, subst ->
-                patch.replace(where) { c ->
-                    listOf(TACVariableSubstitutor(subst).map(c))
-                }
-            }
-        }
+            FPUpdate(
+                it.exp.s, it.ptr
+            )
+        }.doRewrite(p)
     }
 
     private val penultimateLengthWrite = PatternDSL.build {

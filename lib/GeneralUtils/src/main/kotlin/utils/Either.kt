@@ -36,36 +36,15 @@ sealed class Either<out T, out R> : Serializable {
     }
 }
 
-fun <T, R> List<Either<T, R>>.flattenLeft(): Either<List<T>, List<R>> {
-    val lResults = mutableListOf<T>()
-    val rResults = mutableListOf<R>()
-    for(p in this) {
-        when(p) {
-            is Either.Left -> lResults.add(p.d)
-            is Either.Right -> rResults.add(p.d)
+fun <T, R> List<Either<T, R>>.flattenLeft(): Either<List<T>, R> {
+    val m = mutableListOf<T>()
+    for(i in this) {
+        when(i) {
+            is Either.Left -> m.add(i.d)
+            is Either.Right -> return i
         }
     }
-    return if(rResults.isNotEmpty()) {
-        Either.Right(rResults)
-    } else {
-        Either.Left(lResults)
-    }
-}
-
-fun <T, R> List<Either<T, R>>.flattenRight(): Either<List<T>, List<R>> {
-    val lResults = mutableListOf<T>()
-    val rResults = mutableListOf<R>()
-    for(p in this) {
-        when(p) {
-            is Either.Left -> lResults.add(p.d)
-            is Either.Right -> rResults.add(p.d)
-        }
-    }
-    return if(lResults.isNotEmpty()) {
-        Either.Left(lResults)
-    } else {
-        Either.Right(rResults)
-    }
+    return m.toLeft()
 }
 
 fun <T, R, U> Either<T, R>.mapLeft(f: (T) -> U) : Either<U, R> =
