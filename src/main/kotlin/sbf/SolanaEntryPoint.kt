@@ -75,7 +75,7 @@ fun solanaSbfToTAC(elfFile: String): List<CompiledSolanaRule> {
         )
     }
 
-    val sanityRules = if (Config.DoSanityChecksForRules.get() != SanityValues.NONE) {
+    val sanityRules = if (Config.DoSanityChecksForRules.get() != SanityValues.NONE && SolanaConfig.EnableCvlrVacuity.get()) {
         /**
          * In the case we are in sanity mode, all rules are duplicated for the vacuity check.
          * The new rules are derived from the original baseRule, this relationship is maintained
