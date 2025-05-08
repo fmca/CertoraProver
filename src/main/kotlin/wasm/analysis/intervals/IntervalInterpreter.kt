@@ -17,6 +17,7 @@
 
 package wasm.analysis.intervals
 
+import analysis.CmdPointer
 import datastructures.stdcollections.*
 import analysis.LTACCmd
 import analysis.LTACCmdView
@@ -38,6 +39,8 @@ fun State.interpret(e: TACExpr): SimpleQualifiedInt? {
     }
 }
 
+class UnreachableState(val s: String, val loc: CmdPointer) : Exception(s)
+
 class IntervalValueSemantics : StatelessUIntValueSemantics<SimpleQualifiedInt, IntValue>() {
 
     override fun lift(lb: BigInteger, ub: BigInteger): IntValue = IntValue(lb, ub)
@@ -46,6 +49,19 @@ class IntervalValueSemantics : StatelessUIntValueSemantics<SimpleQualifiedInt, I
 
     override val nondet: SimpleQualifiedInt
             get() = SimpleQualifiedInt.nondet
+
+    override fun evalVar(
+        interp: SimpleQualifiedInt,
+        s: TACSymbol.Var,
+        toStep: Any,
+        input: Any,
+        whole: Any,
+        l: LTACCmdView<TACCmd.Simple.AssigningCmd.AssignExpCmd>
+    ): SimpleQualifiedInt {
+        return super.evalVar(interp, s, toStep, input, whole, l).let { av ->
+            av.copy(qual = av.qual + SimpleIntQualifier.MustEqual(s))
+        }
+    }
 
     override fun evalMod(
         v1: SimpleQualifiedInt,
@@ -137,6 +153,34 @@ class IntervalQualifierPropagationComputation: QualifierPropagationComputation<S
     override fun extractValue(op1: TACSymbol.Var, s: State, w: Any, l: LTACCmd) =
         s[op1] ?: SimpleQualifiedInt.nondet
 
+    override fun propagateTrue(
+        v: TACSymbol.Var,
+        av: SimpleQualifiedInt,
+        s: State,
+        w: Any,
+        l: LTACCmd
+    ): Map<TACSymbol.Var, List<PathInformation<SimpleIntQualifier>>>? {
+        return super.propagateTrue(v, av, s, w, l)?.merge(
+            if (av.x.ub <= BigInteger.ONE) {
+                mapOf(v to listOf(PathInformation.StrictEquality(null, BigInteger.ONE)))
+            } else {
+                mapOf(v to listOf(PathInformation.StrictInequality(null, BigInteger.ZERO)))
+            }
+        ) { _, l1, l2 -> l1.orEmpty() + l2.orEmpty() }
+    }
+
+    override fun propagateFalse(
+        v: TACSymbol.Var,
+        av: SimpleQualifiedInt,
+        s: State,
+        w: Any,
+        l: LTACCmd
+    ): Map<TACSymbol.Var, List<PathInformation<SimpleIntQualifier>>>? {
+        return super.propagateFalse(v, av, s, w, l)?.merge(
+            mapOf(v to listOf(PathInformation.StrictEquality(null, BigInteger.ZERO)))
+        ) { _, l1, l2 -> l1.orEmpty() + l2.orEmpty() }
+    }
+
     private fun conditionMayBeTrue(cond: ConditionQualifier.Condition, op1: TACSymbol, op2:TACSymbol, s:State): Boolean {
         val av1 = IntervalInterpreter.interp(op1, s)
         val av2 = IntervalInterpreter.interp(op2, s)
@@ -157,6 +201,21 @@ class IntervalQualifierPropagationComputation: QualifierPropagationComputation<S
             ConditionQualifier.Condition.SLT,
             ConditionQualifier.Condition.SLE ->
                 true
+        }
+    }
+
+    override fun strictEquality(
+        toRet: TACSymbol.Var,
+        v: MutableList<PathInformation<SimpleIntQualifier>>,
+        sym: TACSymbol.Var?,
+        num: BigInteger?,
+        s: State,
+        w: Any,
+        l: LTACCmd
+    ) {
+        super.strictEquality(toRet, v, sym, num, s, w, l)
+        if (sym != null) {
+            v.add(PathInformation.Qual(SimpleIntQualifier.MustEqual(sym)))
         }
     }
 
@@ -190,7 +249,7 @@ class IntervalQualifierPropagationComputation: QualifierPropagationComputation<S
         l: LTACCmd
     ): Boolean =
         conditionMayBeTrue(ConditionQualifier.Condition.LT, op1, op2, s)
-            && super.propagateNe(op1, op2, toRet, s, w, l)
+            && super.propagateLt(op1, op2, toRet, s, w, l)
 
     override fun propagateLe(
         op1: TACSymbol,
@@ -201,7 +260,7 @@ class IntervalQualifierPropagationComputation: QualifierPropagationComputation<S
         l: LTACCmd
     ): Boolean =
         conditionMayBeTrue(ConditionQualifier.Condition.LE, op1, op2, s)
-            && super.propagateNe(op1, op2, toRet, s, w, l)
+            && super.propagateLe(op1, op2, toRet, s, w, l)
 
 
     override fun propagateSlt(
@@ -225,7 +284,7 @@ class IntervalQualifierPropagationComputation: QualifierPropagationComputation<S
         l: LTACCmd
     ): Boolean =
         conditionMayBeTrue(ConditionQualifier.Condition.SLE, op1, op2, s)
-            && super.propagateSlt(op1, op2, toRet, s, w, l)
+            && super.propagateSle(op1, op2, toRet, s, w, l)
 
 }
 
@@ -266,6 +325,24 @@ class IntervalInterpreter(
             override fun forget(lhs: TACSymbol.Var, toStep: State, input: State, whole: State, l: LTACCmd) =
                 toStep - lhs
 
+            override fun stepCommand(l: LTACCmd, toStep: State, input: State, whole: State): State {
+                return super.stepCommand(l, toStep, input, whole).let { s ->
+                    when (val cmd = l.cmd) {
+                        is TACCmd.Simple.AssumeCmd -> {
+                            if (cmd.cond !is TACSymbol.Var) {
+                                return s
+                            }
+                            pathSemantics.propagateTrue(cmd.cond, s, whole, l) ?:
+                                throw UnreachableState("Unreachable after assuming condition at $l", l.ptr)
+                        }
+
+                        else -> {
+                            s
+                        }
+                    }
+                }
+            }
+
             override fun stepExpression(
                 lhs: TACSymbol.Var,
                 rhs: TACExpr,
@@ -288,6 +365,32 @@ class IntervalInterpreter(
             qualifierManager.assign(toStep, lhs, toWrite, where)
 
         override fun propagateSummary(summary: TACSummary, s: State, w: Any, l: LTACCmd) = s
+
+        override fun applyPath(
+            k: TACSymbol.Var,
+            curr: SimpleQualifiedInt,
+            lb: BigInteger?,
+            ub: BigInteger?,
+            quals: Iterable<SimpleIntQualifier>,
+            st: State,
+            l: LTACCmd
+        ): State {
+            val st_ = super.applyPath(k, curr, lb, ub, quals, st, l)
+            var stateIter = st_
+            for(q in curr.qual) {
+                if(q !is SimpleIntQualifier.MustEqual) {
+                    continue
+                }
+                val saturated = interp(q.other, st_)
+                val updated = saturated.withBoundAndQualifiers(
+                    lb = lb?.max(saturated.x.lb) ?: saturated.x.lb,
+                    ub = ub?.min(saturated.x.ub) ?: saturated.x.ub,
+                    quals = saturated.qual + quals
+                )
+                stateIter = assignVar(stateIter, q.other, updated, l)
+            }
+            return stateIter
+        }
     }
 
     override fun project(l: LTACCmd, w: State): State = w

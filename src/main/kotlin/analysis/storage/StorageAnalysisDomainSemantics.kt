@@ -58,6 +58,7 @@ fun SimpleQualifiedInt.concretize(): Set<BigInteger> {
 
                 is SimpleIntQualifier.Condition -> true
                 is SimpleIntQualifier.LogicalConnective -> true
+                is SimpleIntQualifier.MustEqual -> true
             }
         }
     }

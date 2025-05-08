@@ -54,7 +54,7 @@ sealed class SimpleIntQualifier : SelfQualifier<SimpleIntQualifier> {
             op1, op2, connective, false
         )
 
-        override fun flip(): SimpleIntQualifier? {
+        override fun flip(): LogicalConnective {
             return LogicalConnectiveQualifier.flip(this, ::LogicalConnective)
         }
 
@@ -88,6 +88,21 @@ sealed class SimpleIntQualifier : SelfQualifier<SimpleIntQualifier> {
         override fun flip(): SimpleIntQualifier? = null
     }
 
+    data class MustEqual(val other: TACSymbol.Var): SimpleIntQualifier() {
+        override fun flip(): SimpleIntQualifier? {
+            return null
+        }
+
+        override fun relates(v: TACSymbol.Var): Boolean {
+            return other == v
+        }
+
+        override fun saturateWith(equivClasses: VariableSaturation): List<SimpleIntQualifier> {
+            return equivClasses(other).map { MustEqual(it) }
+        }
+
+    }
+
     /** if x: ModularUpperBound(y, m, b):
      *  then (x < y if b else x <= y) AND (m divides y - x)
      */
@@ -110,7 +125,6 @@ sealed class SimpleIntQualifier : SelfQualifier<SimpleIntQualifier> {
                 ModularUpperBound(it, this.modulus, this.strong)
             }
         }
-
 
         override fun flip(): SimpleIntQualifier? = null
     }

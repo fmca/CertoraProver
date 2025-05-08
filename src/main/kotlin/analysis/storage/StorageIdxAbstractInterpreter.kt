@@ -106,6 +106,9 @@ class SimpleQualifiedIntExpressionInterpreter<T: Any>(val g: TACCommandGraph, va
 
                             is SimpleIntQualifier.ModularUpperBound ->
                                 null
+
+                            is SimpleIntQualifier.MustEqual ->
+                                null
                         }
                     }
             ).withBasicMath(
