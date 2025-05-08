@@ -444,12 +444,12 @@ class BoundedModelChecker(
                 CVLParam(ty, param(i), Range.Empty())
             }
             val paramDeclarations = withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
-                listOf(
-                    CVLCmd.Simple.Declaration(range, EVMBuiltinTypes.env, envParam(n), scope)
-                ) + cvlParams.map { p ->
-                    CVLCmd.Simple.Declaration(range, p.type, p.id, scope)
-                }
-            }.let { compiler.compileCommands(it, "param declarations") }.toCore(scene)
+                compiler.declareVariables(
+                    listOf(CVLParam(EVMBuiltinTypes.env, envParam(n), range)) + cvlParams,
+                    scope,
+                    range
+                )
+            }.toCore(scene)
 
             // Generate the "dispatch" of the preserved blocks, see the kdoc of this function for details.
             val preservedDispatch = withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
@@ -658,17 +658,7 @@ class BoundedModelChecker(
     ) {
         constructor(inv: CVLInvariant, compiler: CVLCompiler) : this(
             id = inv.id,
-            params = compiler.compileCommands(
-                inv.params.map { param ->
-                    CVLCmd.Simple.Declaration(
-                        inv.range,
-                        param.type,
-                        param.id,
-                        inv.scope
-                    )
-                }.wrapWithMessageLabel("Declare invariant parameters"),
-                "the inv params"
-            ).toCore(scene).let {
+            params = compiler.declareVariables(inv.params, inv.scope, inv.range, noCallId = true).toCore(scene).let {
                 if (!it.isEmptyCode()) {
                     it.optimize(scene)
                 } else {

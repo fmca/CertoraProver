@@ -24,3 +24,9 @@ invariant mCurrentContractNonNegative() c.m[currentContract] >= 0 {
         require a != currentContract;
     }
 }
+
+invariant mInvariantParamInPreserved(address b) c.m[b] >= 0 {
+    preserved addM1(address a) with (env e) {
+        require getM(e, b) >= 0;
+    }
+}

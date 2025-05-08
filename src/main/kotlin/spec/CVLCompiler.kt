@@ -506,6 +506,24 @@ class CVLCompiler(
         return compileConcreteApplication(concreteExp, allocatedTACSymbols, null, env)
     }
 
+    fun declareVariables(vars: List<CVLParam>, scope: CVLScope, range: Range, noCallId: Boolean = false): ParametricInstantiation<CVLTACProgram> {
+        val compiledVars = vars.map { v ->
+            compileDeclarationCmd(
+                CVLCmd.Simple.Declaration(
+                    range,
+                    v.type,
+                    v.id,
+                    scope
+                ),
+                v.id,
+                allocatedTACSymbols,
+                CompilationEnvironment(),
+                noCallId
+            )
+        }
+        return ParametricMethodInstantiatedCode.merge(compiledVars, "var decls")
+    }
+
     fun compileCommands(
         cmds: List<CVLCmd>,
         name: String
@@ -1867,6 +1885,7 @@ class CVLCompiler(
         name: String,
         allocatedTACSymbols: TACSymbolAllocation,
         compilationEnvironment: CompilationEnvironment,
+        noCallId: Boolean = false,
     ): ParametricInstantiation<CVLTACProgram> {
         if (declCmd.id.isWildcard()) {
             return getSimple(CVLTACProgram.empty("wildcard variable declaration"))
@@ -1878,7 +1897,16 @@ class CVLCompiler(
             "Storage variables must be explicitly initialized at declaration"
         }
 
-        val v = allocatedTACSymbols.extendWithCVLVariable(declCmd.id, type, CVLDefinitionSite.fromScope(declCmd.scope, declCmd.range))
+        val v = allocatedTACSymbols.extendWithCVLVariable(
+            declCmd.id,
+            type,
+            CVLDefinitionSite.fromScope(declCmd.scope, declCmd.range),
+            if (noCallId) {
+                MetaMap(TACMeta.NO_CALLINDEX)
+            } else {
+                MetaMap()
+            }
+        )
 
         check(declCmd.cvlType != EVMBuiltinTypes.method) { "all method variable declarations should have been promoted to parameters" }
 

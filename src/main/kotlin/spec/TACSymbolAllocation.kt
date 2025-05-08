@@ -21,6 +21,7 @@ import com.certora.collect.*
 import datastructures.stdcollections.*
 import spec.cvlast.*
 import tac.MetaMap
+import tac.NBId
 import tac.Tag
 import utils.*
 import vc.data.TACMeta
@@ -135,10 +136,11 @@ class TACSymbolAllocation private constructor(
             name: String,
             cvlType: CVLType.PureCVLType,
             cvlDefSite: CVLDefinitionSite?,
+            metaMap: MetaMap = MetaMap()
     ) = extend(
             name,
             getAsCVLVariable(
-                TACSymbol.Var(name, cvlType.toTag()).toUnique(),
+                TACSymbol.Var(name, cvlType.toTag(), NBId.ROOT_CALL_ID, metaMap).toUnique(),
                 cvlDefSite,
                 name,
                 cvlType,
