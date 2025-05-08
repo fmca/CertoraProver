@@ -502,7 +502,7 @@ class CVLCmdTypeChecker(
 
     private fun typeCheckAssumeCmd(cmd: CVLCmd.Simple.AssumeCmd.Assume): CollectingResult<CVLCmd.Simple.AssumeCmd.Assume, CVLError> {
         if (Config.EnforceRequireReason.get() && cmd.description == null) {
-            return CVLError.General(cmd.range, "No reason provided for assumption of ${cmd.exp}.").asError()
+            return RequireWithoutReason(cmd.range, cmd.exp).asError()
         }
         val typeCheckedExp = expTypeChecker
             .typeCheck(cmd.exp, cmd.typeEnv)

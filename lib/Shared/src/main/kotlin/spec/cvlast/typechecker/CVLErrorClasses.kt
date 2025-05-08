@@ -2835,3 +2835,15 @@ class RevertCmdOutsideOfFunction private constructor(override val location: Rang
         "Revert statement is not allowed outside a CVL function."
     )
 }
+
+@KSerializable
+@CVLErrorType(
+    category = CVLErrorCategory.TYPECHECKING,
+    description = "require statements should have a reason"
+)
+class RequireWithoutReason private constructor(override val location: Range, override val message: String) : CVLError() {
+    constructor(range: Range, exp: CVLExp) : this(
+        range,
+        "No reason provided for assumption of $exp."
+    )
+}
