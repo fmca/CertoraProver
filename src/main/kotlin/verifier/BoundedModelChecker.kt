@@ -84,8 +84,14 @@ class BoundedModelChecker(
         private fun argParam(n: Int) = "argParam$n"
         private const val SETUP_FUNC_NAME = "setup"
 
-        fun CoreTACProgram.copyFunction(): CoreTACProgram {
-            return this.createCopy(Allocator.getFreshId(Allocator.Id.CALL_ID))
+        /**
+         * @param addCallId0Sink Set this to `true` to make sure the program ends with a block with callId=0. This could
+         * help make TAC dumps look nicer.
+         */
+        fun CoreTACProgram.copyFunction(addCallId0Sink: Boolean = false): CoreTACProgram {
+            return this.createCopy(Allocator.getFreshId(Allocator.Id.CALL_ID)).letIf(addCallId0Sink) {
+                it.addSinkMainCall(listOf(TACCmd.Simple.NopCmd)).first
+            }
         }
 
         fun ParametricInstantiation<CVLTACProgram>.toCore(scene: IScene) = this.getAsSimple().transformToCore(scene)
@@ -595,8 +601,7 @@ class BoundedModelChecker(
                     ),
                     setOf(condVar, selectorVar)
                 ).toCore("condProg", scene)
-                val funcProg = compiledFuncs[contractFunction]!!.first.copyFunction()
-                    .addSinkMainCall(listOf(TACCmd.Simple.NopCmd)).first // This is so the funcProg ends with a callId=0 block - otherwise TAC dumps look weird.
+                val funcProg = compiledFuncs[contractFunction]!!.first.copyFunction(addCallId0Sink = true)
 
                 val jumpiCmd = TACCmd.Simple.JumpiCmd(
                     cond = condVar,

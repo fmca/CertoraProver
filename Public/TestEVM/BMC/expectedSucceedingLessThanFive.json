@@ -4,7 +4,7 @@
 		"succeedingLessThanFive-constructors": "SUCCESS",
 		"succeedingLessThanFive-constructors-InvParams.setBar(uint256)-InvParams.setFooConditionally((uint256))": "SUCCESS",
 		"succeedingLessThanFive-constructors-InvParams.setFoo()-InvParams.setFooConditionally((uint256))": "SUCCESS",
-		"succeedingLessThanFive-constructors-InvParams.setFooConditionally((uint256))-[ InvParams.setFoo() | InvParams.setFooConditionally((uint256)) ]": "SUCCESS",
+		"succeedingLessThanFive-constructors-InvParams.setFooConditionally((uint256))-InvParams.setFoo()": "SUCCESS",
 		"succeedingLessThanFive-constructors-[ InvParams.setFoo() | InvParams.setFooConditionally((uint256)) ]": "SUCCESS"
 	}
 }

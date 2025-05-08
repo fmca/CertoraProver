@@ -4,7 +4,7 @@
 		"succeedingWithHook-constructors": "SUCCESS",
 		"succeedingWithHook-constructors-InvParams.setBar(uint256)-InvParams.setFooConditionally((uint256))": "SUCCESS",
 		"succeedingWithHook-constructors-InvParams.setFoo()-InvParams.setFooConditionally((uint256))": "SUCCESS",
-		"succeedingWithHook-constructors-InvParams.setFooConditionally((uint256))-[ InvParams.setFoo() | InvParams.setFooConditionally((uint256)) ]": "SUCCESS",
+		"succeedingWithHook-constructors-InvParams.setFooConditionally((uint256))-InvParams.setFoo()": "SUCCESS",
 		"succeedingWithHook-constructors-[ InvParams.setFoo() | InvParams.setFooConditionally((uint256)) ]": "SUCCESS"
 	}
 }

@@ -3,7 +3,7 @@
 	"rules": {
 		"succeedingWithMapping-constructors": "SUCCESS",
 		"succeedingWithMapping-constructors-WithMapping.setFoo()-WithMapping.setFooConditionally(address)": "SUCCESS",
-		"succeedingWithMapping-constructors-WithMapping.setFooConditionally(address)-[ WithMapping.setFoo() | WithMapping.setFooConditionally(address) ]": "SUCCESS",
+		"succeedingWithMapping-constructors-WithMapping.setFooConditionally(address)-WithMapping.setFoo()": "SUCCESS",
 		"succeedingWithMapping-constructors-[ WithMapping.setFoo() | WithMapping.setFooConditionally(address) ]": "SUCCESS"
 	}
 }

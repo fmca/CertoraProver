@@ -1,17 +1,13 @@
 {
-  "assertMessages": {},
-  "rules": {
-    "noneStorageInvariant-constructors": "SUCCESS",
-    "noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.getAndAdd(uint40)-C.getAndAdd(uint40)-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS",
-    "noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)": "SUCCESS",
-    "noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.getAndAdd(uint40)-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS",
-    "noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)": "SUCCESS",
-    "noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS",
-    "noneStorageInvariant-constructors-C.getAndAdd(uint40)-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS",
-    "noneStorageInvariant-constructors-C.setBar()-C.getAndAdd(uint40)": "SUCCESS",
-    "noneStorageInvariant-constructors-C.setBar()-C.getAndAdd(uint40)-C.getAndAdd(uint40)-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS",
-    "noneStorageInvariant-constructors-C.setBar()-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)": "SUCCESS",
-    "noneStorageInvariant-constructors-C.setBar()-C.getAndAdd(uint40)-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS",
-    "noneStorageInvariant-constructors-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS"
-  }
+	"assertMessages": {},
+	"rules": {
+		"noneStorageInvariant-constructors": "SUCCESS",
+		"noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.setBar()": "SUCCESS",
+		"noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)": "SUCCESS",
+		"noneStorageInvariant-constructors-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)-C.setBar()": "SUCCESS",
+		"noneStorageInvariant-constructors-C.setBar()-C.getAndAdd(uint40)": "SUCCESS",
+		"noneStorageInvariant-constructors-C.setBar()-C.getAndAdd(uint40)-C.setBar()": "SUCCESS",
+		"noneStorageInvariant-constructors-C.setBar()-C.getAndAdd(uint40)-C.setBar()-C.getAndAdd(uint40)": "SUCCESS",
+		"noneStorageInvariant-constructors-[ C.getAndAdd(uint40) | C.setBar() ]": "SUCCESS"
+	}
 }

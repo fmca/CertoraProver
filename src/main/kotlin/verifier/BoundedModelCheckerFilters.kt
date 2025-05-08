@@ -17,8 +17,10 @@
 
 package verifier
 
+import config.Config
 import config.ReportTypes
 import datastructures.stdcollections.*
+import instrumentation.transformers.CodeRemapper
 import instrumentation.transformers.GhostSaveRestoreInstrumenter
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -179,8 +181,20 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
 /**
  * Given a function `f`, it is idempotent if the state of storage and ghosts is the same when calling `f()` or `f()->f()`.
  * This filter filters out all sequences where idempotent functions appear twice in a row.
- * Note - If there are multiple possible functions in the steps of the sequence, this will check if there are two consecutive
- * steps that have exactly one function each, and it's the same function.
+ * Note the test here is a little more general the strict idempotency - strictly speaking, idempotency means that the second
+ * call has no effect, but here what we're checking is that the first call's result is completely overwritten by the
+ * second call, making it pointless to call the function twice in a row.
+ *
+ * The test is performed by checking the following rule:
+ * ```
+ * storage storageInit = lastStorage;
+ * foo(params1);
+ * foo(params2);
+ * storage afterTwoCalls = lastStorage;
+ * lastStorage = storageInit;
+ * foo(params2); // notice here it's the same parameters as the second call on purpose)
+ * assert lastStorage == afterTwoCalls;
+ * ```
  */
 private data object IdempotencyFilter : BoundedModelCheckerFilter {
     private lateinit var idempotencyCheckProgs: Map<ContractFunction, CoreTACProgram>
@@ -188,6 +202,34 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
     private lateinit var scene: IScene
     private val idempotentFuncs = ConcurrentHashMap<ContractFunction, Deferred<Boolean>>()
     private val parentRule = IRule.createDummyRule("").copy(ruleIdentifier = RuleIdentifier.freshIdentifier("Idempotency checks"))
+
+    private class RemapperState(val idMap: MutableMap<Pair<Any, Int>, Int>)
+
+    /**
+     * This remapper will only remap the callIds of the blocks but not of variables, essentially leaving them "linked"
+     * to their values in the original code. This is used so the third time we call `foo` (from the pseudocode in the
+     * [IdempotencyFilter] documentation) it will use the same arguments as those in the second call to it.
+     */
+    private val freshCopyRemapper = CodeRemapper(
+        variableMapper = { _, v -> v },
+        idRemapper = CodeRemapper.IdRemapperGenerator.generatorFor(RemapperState::idMap),
+        callIndexStrategy = object : CodeRemapper.CallIndexStrategy<RemapperState> {
+            override fun remapCallIndex(
+                state: RemapperState,
+                callIndex: CallId,
+                computeFreshId: (CallId) -> CallId
+            ): CallId {
+                return computeFreshId(callIndex)
+            }
+
+            override fun remapVariableCallIndex(
+                state: RemapperState,
+                v: TACSymbol.Var,
+                computeFreshId: (CallId) -> CallId
+            ): TACSymbol.Var = v
+        },
+        blockRemapper = { bId, remap, _, _ -> bId.copy(calleeIdx = remap(bId.calleeIdx)) }
+    )
 
     override fun init(
         cvl: CVL,
@@ -199,6 +241,11 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
         treeViewReporter: TreeViewReporter
     ) {
+        if (Config.BoundedModelChecking.get() < 2) {
+            // There will be no sequences where this check is relevant
+            return
+        }
+
         fun ParametricInstantiation<CVLTACProgram>.toOptimizedCoreWithGhostInstrumentation(scene: IScene) =
             this.toCore(scene).let {
                 CoreToCoreTransformer(ReportTypes.GHOST_ANNOTATION) { code ->
@@ -209,12 +256,12 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
             }.optimize(scene)
 
         idempotencyCheckProgs = compiledFuncs.entries.toList().mapIndexed { i, (func, funcProg) ->
-            val copy1 = funcProg.first.copyFunction()
-            val copy2 = funcProg.first.copyFunction()
+            val copy1 = funcProg.first.copyFunction(addCallId0Sink = true)
+            val copy2 = funcProg.first
 
             val initProg = compiler.generateRuleSetupCode().transformToCore(scene).optimize(scene)
 
-            val saveStorageStateProg = compiler.compileCommands(
+            fun saveStorageStateProg(storageName: String) = compiler.compileCommands(
                 withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
                     listOf(
                         CVLCmd.Simple.Definition(
@@ -223,7 +270,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
                             listOf(
                                 CVLLhs.Id(
                                     range,
-                                    "afterFirst$i",
+                                    storageName,
                                     CVLType.PureCVLType.VMInternal.BlockchainState.asTag()
                                 )
                             ),
@@ -238,9 +285,36 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
                 "check idempotency of $func"
             ).toOptimizedCoreWithGhostInstrumentation(scene)
 
+            val saveInitialStorageState = saveStorageStateProg("storageInit$i")
+            val saveAfterTwoCallsStorageState = saveStorageStateProg("afterTwoCalls$i")
+
             val ghostUniverse = cvl.ghosts.filter { !it.persistent }.map {
                 StorageBasis.Ghost(it)
             }
+
+            val restoreStorageState = compiler.compileCommands(
+                withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
+                    listOf(
+                        CVLCmd.Simple.Definition(
+                            range,
+                            null,
+                            listOf(
+                                CVLLhs.Id(
+                                    range,
+                                    CVLKeywords.lastStorage.keyword,
+                                    CVLType.PureCVLType.VMInternal.BlockchainState.asTag()
+                                )
+                            ),
+                            CVLExp.VariableExp(
+                                "storageInit$i",
+                                CVLKeywords.lastStorage.type.asTag()
+                            ),
+                            scope
+                        )
+                    )
+                },
+                "check idempotency of $func"
+            ).toOptimizedCoreWithGhostInstrumentation(scene)
 
             val compareStorageStateProg = compiler.compileCommands(
                 withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
@@ -253,7 +327,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
                                     CVLKeywords.lastStorage.type.asTag()
                                 ),
                                 CVLExp.VariableExp(
-                                    "afterFirst$i",
+                                    "afterTwoCalls$i",
                                     CVLKeywords.lastStorage.type.asTag()
                                 ),
                                 CVLType.PureCVLType.Primitive.Bool.asTag().copy(
@@ -268,7 +342,12 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
                 "check idempotency of $func"
             ).toOptimizedCoreWithGhostInstrumentation(scene)
 
-            val prog = initProg andThen copy1 andThen saveStorageStateProg andThen copy2 andThen compareStorageStateProg
+            val state = RemapperState(mutableMapOf())
+            val copy2Again = copy2.remap(freshCopyRemapper, state).let { copy2.copy(code = it.first, blockgraph = it.second, procedures = it.third) }
+                .addSinkMainCall(listOf(TACCmd.Simple.NopCmd)).first // This is so the funcProg ends with a callId=0 block - otherwise TAC dumps look weird.
+
+            val prog = initProg andThen saveInitialStorageState andThen copy1 andThen copy2 andThen
+                (saveAfterTwoCallsStorageState andThen restoreStorageState andThen copy2Again andThen compareStorageStateProg)
 
             func to prog.copy(name = "idempotency of $func")
         }.toMap()
