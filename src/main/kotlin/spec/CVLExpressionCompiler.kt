@@ -60,7 +60,6 @@ import vc.data.ParametricMethodInstantiatedCode.mergeIf
 import vc.data.ParametricMethodInstantiatedCode.mergeProgs
 import vc.data.TACMeta.CVL_DISPLAY_NAME
 import vc.data.TACMeta.CVL_EXP
-import vc.data.TACMeta.CVL_GHOST
 import vc.data.TACMeta.CVL_TYPE
 import vc.data.TACMeta.CVL_USER_DEFINED_ASSERT
 import vc.data.TACMeta.CVL_VAR
@@ -1785,27 +1784,7 @@ class CVLExpressionCompiler(
         }
 
         // this may be called for an assignment to wildcard, in which case a tag is required to disambiguate
-        fun getOutVar(): TACSymbol.Var {
-            val metaMap = when (exp) {
-                is CVLExp.ArrayDerefExp -> if (exp.baseArray.getCVLType() is CVLType.PureCVLType.Ghost.Mapping) {
-                    cvlCompiler.ghostMeta(exp.baseArray.toString(), exp.baseArray.getOrInferPureCVLType())
-                } else {
-                    MetaMap()
-                }
-
-                is CVLExp.VariableExp -> cvlCompiler.cvl.ghosts.find { it.id == exp.id }?.let {
-                    cvlCompiler.ghostMeta(exp.id, exp.getOrInferPureCVLType())
-                } ?: MetaMap()
-
-                is CVLExp.SumExp -> cvlCompiler.ghostMeta(exp.sumGhostName, exp.getOrInferPureCVLType())
-
-                is CVLExp.ApplyExp.Ghost -> cvlCompiler.ghostMeta(exp.id, exp.getOrInferPureCVLType())
-
-                else -> MetaMap()
-            }
-
-            return allocatedTACSymbols.get(out.id, outType.toTag()).withMeta(metaMap)
-        }
+        fun getOutVar(): TACSymbol.Var = allocatedTACSymbols.get(out.id, outType.toTag())
 
         when (exp.tag.annotation) {
             ComplexMarker -> return compileComplexAccess(
@@ -2796,7 +2775,6 @@ class CVLExpressionCompiler(
         sort: GhostSort,
         persistent: Boolean
     ) : ParametricInstantiation<CVLTACProgram> {
-        check(CVL_GHOST in out.meta) { "Expected a ghost meta for ghost access compilation" }
         val compiledArgs = args.map { argExp ->
             compileExp(argExp).withMeta(CVL_TYPE, argExp.getOrInferPureCVLType())
         }

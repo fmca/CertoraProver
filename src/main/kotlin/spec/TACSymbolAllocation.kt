@@ -212,6 +212,7 @@ class TACSymbolAllocation private constructor(
         val symbol = TACSymbol
             .Var(freshParam.id, freshParam.type.toTag())
             .toUnique()
+            .withMeta(TACMeta.CVL_TYPE, param.type)
             .withMeta(metaMap)
         return freshParam to this.extend(freshParam.id, symbol, currentScope)
     }

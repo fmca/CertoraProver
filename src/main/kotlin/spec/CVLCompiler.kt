@@ -205,7 +205,7 @@ class CVLCompiler(
         }
     }
 
-    fun ghostMeta(name: String, type: CVLType.PureCVLType) =
+    private fun ghostMeta(name: String, type: CVLType.PureCVLType) =
         MetaMap(CVL_GHOST)
             .plus(CVL_VAR to true)
             .plus(CVL_DISPLAY_NAME to name)
@@ -254,8 +254,13 @@ class CVLCompiler(
             // citating from ghostToTACUF: "we assume ghost variables are allocated while ghost functions are not"
             ghosts.filter { (it !is CVLGhostDeclaration.Variable && it !is CVLGhostDeclaration.Sum) || allocatedTACSymbols.isAllocated(it.id) }
                 .map { ghost -> ghostToTACUF(ghost, allocatedTACSymbols) }.toSet(),
-            emptyTags(),
-            mapOf()
+            tagsBuilder<TACSymbol.Var>().let {
+                allocatedTACSymbols.getGlobalScope().map { (_, v) ->
+                    it[v] = v.tag
+                }
+                it.build()
+            },
+            allocatedTACSymbols.getGlobalScope()
         )
 
     var tacSymbolTable = buildTACSymbolTable(
@@ -265,7 +270,7 @@ class CVLCompiler(
             struct
         }.let(EVMBuiltinTypes::populateTACSymbolTable),
         allocatedTACSymbols
-    ).withGlobalScope(allocatedTACSymbols.getGlobalScope())
+    )
 
     fun buildUFAxioms(): UfAxioms =
         UfAxioms(

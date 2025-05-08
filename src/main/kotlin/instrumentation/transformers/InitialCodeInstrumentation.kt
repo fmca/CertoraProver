@@ -77,7 +77,7 @@ object InitialCodeInstrumentation {
 
 
     fun applySummariesAndGhostHooksAndAxiomsTransformations(
-        tac: CoreTACProgram, scene: IScene, cvl: CVL, rule: CVLSingleRule, summaryMonitor: SummaryMonitor?
+        tac: CoreTACProgram, scene: IScene, cvl: CVL, rule: CVLSingleRule?, summaryMonitor: SummaryMonitor?
     ): CoreTACProgram =
         CoreTACProgram.Linear(tac)
             .map(CoreToCoreTransformer(ReportTypes.EXTCODECOPY_HANDLE, { code -> ExtcodecopyInstructionHandler.work(code, scene) }))
@@ -200,11 +200,11 @@ object InitialCodeInstrumentation {
                 CVLToSimpleCompiler.finalizeStorageMovement(
                     code
                 )
-            }).map(CoreToCoreTransformer(ReportTypes.STRONG_INVARIANT_INLINER) { code ->
+            }).mapIf(rule != null, CoreToCoreTransformer(ReportTypes.STRONG_INVARIANT_INLINER) { code ->
                 // inlines strong invariants
                 StrongInvariantInliner(scene, CVLCompiler(
                     scene, cvl, code.name, code.symbolTable.globalScope
-                ), rule).transform(code)
+                ), rule!!).transform(code)
             }).map(CoreToCoreTransformer(ReportTypes.REVERT_PATH_GENERATOR) {
                 if (Config.CvlFunctionRevert.get()) {
                     RevertPathGenerator.transform(it)

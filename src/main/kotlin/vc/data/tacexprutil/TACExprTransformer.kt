@@ -36,7 +36,7 @@ open class DefaultTACExprTransformer : TACExprTransformer<TACExpr>() {
         quantifiedVars: List<TACSymbol.Var>,
         body: TACExpr,
         tag: Tag?
-    ): TACExpr = TACExprFactSimple.QuantifiedFormula(isForall, quantifiedVars, transform(body), tag)
+    ): TACExpr = TACExprFactSimple.QuantifiedFormula(isForall, quantifiedVars.map { transform(it.asSym()).asVar }, transform(body), tag)
 
     override fun transformVar(exp: TACExpr.Sym.Var): TACExpr = exp
 

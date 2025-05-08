@@ -278,6 +278,11 @@ class BoundedModelChecker(
     init {
         val compiler = CVLCompiler(scene, this.cvl, "bmc compiler")
 
+        fun CoreTACProgram.applySummaries() =
+            InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(
+                this, scene, cvl, null, null
+            )
+
         initializationProg = run {
             val block = withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
                 val initAxiomCmds = cvl.ghosts
@@ -336,13 +341,10 @@ class BoundedModelChecker(
 
             val prog = compiler.generateRuleSetupCode().transformToCore(scene) andThen compiler.compileCommands(block, "intialization code").toCore(scene)
 
-            InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(
-                prog.copy(name = "initialization code"),
-                scene,
-                cvl,
-                IRule.createDummyRule("initialization").copy(ruleType = SpecType.Single.BMC),
-                null
-            ).optimize(scene)
+            prog.copy(name = "initialization code").applySummaries().optimize(scene)
+        }
+        check(!initializationProg.isEmptyCode()) {
+            "Optimizations removed all initialization code!"
         }
 
         setupFunctionProg = run {
@@ -363,10 +365,7 @@ class BoundedModelChecker(
 
             callSetup?.let {
                 compiler.compileCommands(listOf(it), "$SETUP_FUNC_NAME code")
-            }?.toCore(scene)?.let { prog ->
-                InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(prog, scene, cvl, IRule.createDummyRule("$SETUP_FUNC_NAME code"), null)
-                    .optimize(scene)
-            } ?: CommandWithRequiredDecls(TACCmd.Simple.NopCmd).toCore("dummy", scene)
+            }?.toCore(scene)?.applySummaries()?.optimize(scene) ?: CommandWithRequiredDecls(TACCmd.Simple.NopCmd).toCore("dummy", scene)
         }
 
         /**
@@ -502,7 +501,7 @@ class BoundedModelChecker(
         }
 
         invProgs = invariants.mapValues { (inv, _) ->
-            InvariantPrograms(inv, compiler)
+            InvariantPrograms(inv, compiler) { this.applySummaries() }
         }
 
         compiledFuncs = this.cvl.importedFuncs.values.asSequence()
@@ -526,10 +525,7 @@ class BoundedModelChecker(
             .parallelStream()
             .map { (contractFunc, progAndCallId) ->
                 val (prog, callId) = progAndCallId
-                val rule = IRule.createDummyRule("rule for $contractFunc").copy(ruleType = SpecType.Single.BMC)
-
-                val code = InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(prog, scene, cvl, rule, null)
-                val optimized = code.optimize(scene)
+                val optimized = prog.applySummaries().optimize(scene)
 
                 ArtifactManagerFactory().dumpMandatoryCodeArtifacts(
                     optimized,
@@ -579,8 +575,9 @@ class BoundedModelChecker(
         invProgs: InvariantPrograms
     ): CoreTACProgram {
         if (funcsList.isEmpty()) {
-            // Constructor only case, we don't want to call the setup function or anything
-            return initializationProg andThen invProgs.params andThen invProgs.assert
+            // Constructor only case
+            val prog = initializationProg andThen setupFunctionProg andThen invProgs.params andThen invProgs.assert
+            return prog
         }
 
         val functionCallsProg = funcsList.foldIndexed(
@@ -661,11 +658,11 @@ class BoundedModelChecker(
         val assert: CoreTACProgram,
         val invN: CoreTACProgram
     ) {
-        constructor(inv: CVLInvariant, compiler: CVLCompiler) : this(
+        constructor(inv: CVLInvariant, compiler: CVLCompiler, summaryApplier: CoreTACProgram.() -> CoreTACProgram) : this(
             id = inv.id,
             params = compiler.declareVariables(inv.params, inv.scope, inv.range, noCallId = true).toCore(scene).let {
                 if (!it.isEmptyCode()) {
-                    it.optimize(scene)
+                    it.summaryApplier().optimize(scene)
                 } else {
                     it
                 }
@@ -678,7 +675,7 @@ class BoundedModelChecker(
                     inv.scope
                 ).wrapWithMessageLabel("Assume invariant"),
                 "the assumption of ${inv.id}"
-            ).toCore(scene).optimize(scene),
+            ).toCore(scene).summaryApplier().optimize(scene),
             assert = compiler.compileCommands(
                 CVLCmd.Simple.Assert(
                     inv.range,
@@ -687,7 +684,7 @@ class BoundedModelChecker(
                     inv.scope
                 ).wrapWithMessageLabel("assert invariant"),
                 "the assert of ${inv.id}"
-            ).toCore(scene).optimize(scene),
+            ).toCore(scene).summaryApplier().optimize(scene),
             invN = invariants[inv]!!.let { invN ->
                 compiler.compileCommands(
                     listOf(
