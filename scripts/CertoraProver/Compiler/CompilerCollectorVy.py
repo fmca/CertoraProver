@@ -557,73 +557,42 @@ class CompilerLangVy(CompilerLang, metaclass=Singleton):
             raise Exception(f"Unexpected ast_node {ast_node}, cannot evaluate constant")
 
     @staticmethod
-    def subscript_node(ast_node: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        ty = ast_node.get("ast_type")
-        # pre-vyper 0.4.0, look deeper within
-        if ty == "Index":
-            nested = ast_node.get("value")
-            if nested is None or not isinstance(nested, dict):
-                return None
-            return nested
-        else:
-            return ast_node
-
-    @staticmethod
-    def int_subscript(ast_node: Dict[str, Any], named_constants: Dict[str, int]) -> Optional[int]:
-        node = CompilerLangVy.subscript_node(ast_node)
-        if node is None:
-            return None
-
-        if "id" in node and node["id"] in named_constants:
-            return named_constants[node["id"]]
-        elif node.get("ast_type") == "Int":
-            return node.get("value")
-        else:
-            return None
-
-    @staticmethod
-    def get_tuple_elements(ast_node: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
-        node = CompilerLangVy.subscript_node(ast_node)
-        if node is None:
-            return None
-        if node.get("ast_type") != "Tuple":
-            return None
-        return node.get("elements")
-
-    @staticmethod
     def extract_type_from_subscript_node(ast_subscript_node: Dict[str, Any],
                                          named_constants: Dict[str, int]) -> VyperType:
         value_id = ast_subscript_node['value'].get('id', None)
         if value_id == 'String':
-            max_bytes = CompilerLangVy.int_subscript(ast_subscript_node['slice'], named_constants)
+            max_bytes = ast_subscript_node['slice']['value']['value']
             return CompilerLangVy.VyperTypeString(max_bytes)
         elif value_id == 'Bytes':
-            max_bytes = CompilerLangVy.int_subscript(ast_subscript_node['slice'], named_constants)
+            max_bytes = ast_subscript_node['slice']['value']['value']
             return CompilerLangVy.VyperTypeBytes(max_bytes)
         elif value_id == 'DynArray':
-            tup_elems = CompilerLangVy.get_tuple_elements(ast_subscript_node["slice"])
-            elem_type = CompilerLangVy.extract_type_from_type_annotation_node(tup_elems[0], named_constants)
-            max_elements = CompilerLangVy.extract_constant(tup_elems[1], named_constants)
+            elem_type = CompilerLangVy.extract_type_from_type_annotation_node(
+                ast_subscript_node['slice']['value']['elements'][0], named_constants)
+            max_elements = CompilerLangVy.extract_constant(ast_subscript_node['slice']['value']['elements'][1],
+                                                           named_constants)
             return CompilerLangVy.VyperTypeDynArray(elem_type, max_elements)
         elif value_id == 'HashMap':
-            elements_node = CompilerLangVy.get_tuple_elements(ast_subscript_node['slice'])
+            elements_node = ast_subscript_node['slice']['value']['elements']
             key_type = CompilerLangVy.extract_type_from_type_annotation_node(elements_node[0], named_constants)
             value_type = CompilerLangVy.extract_type_from_type_annotation_node(elements_node[1], named_constants)
             return CompilerLangVy.VyperTypeHashMap(key_type, value_type)
         else:  # StaticArray key_type[size]
             key_type = CompilerLangVy.extract_type_from_type_annotation_node(ast_subscript_node['value'],
                                                                              named_constants)
-            max_elem_value = CompilerLangVy.int_subscript(ast_subscript_node['slice'], named_constants)
-            if max_elem_value is not None:
-                return CompilerLangVy.VyperTypeStaticArray(key_type, max_elem_value)
+            max_elements_node = ast_subscript_node['slice']['value']
+            if 'id' in max_elements_node and max_elements_node['id'] in named_constants:
+                return CompilerLangVy.VyperTypeStaticArray(key_type, named_constants[max_elements_node['id']])
             else:
                 # this is very specific to curve code which has uint256[CONST/2] static array declaration.
-                max_elements_node = CompilerLangVy.subscript_node(ast_subscript_node["slice"])
                 if 'ast_type' in max_elements_node:
                     if max_elements_node['ast_type'] == 'BinOp' or max_elements_node['ast_type'] in ('Int', 'Name'):
                         # good chance this will succeed
                         static_array_len = CompilerLangVy.extract_constant(max_elements_node, named_constants)
                         return CompilerLangVy.VyperTypeStaticArray(key_type, static_array_len)
+                elif 'value' in max_elements_node:
+                    return CompilerLangVy.VyperTypeStaticArray(key_type, max_elements_node['value'])
+
                 raise Exception(
                     f"Don't know how to deal with vyper static array declaration with length {max_elements_node}")
 
