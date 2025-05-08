@@ -18,11 +18,7 @@
 package instrumentation.transformers
 
 import analysis.*
-import analysis.icfg.CVLLabelStack
-import analysis.icfg.InlinedMethodCallStack
-import analysis.icfg.Inliner
-import analysis.icfg.MetaKeyPairDetector
-import analysis.icfg.StackPushRecord
+import analysis.icfg.*
 import com.certora.collect.*
 import datastructures.*
 import datastructures.stdcollections.*
@@ -115,20 +111,18 @@ object RevertPathGenerator : CodeTransformer() {
      */
     private fun endLabelsToAdd(labelStack: CVLLabelStack, caller: StackPushRecord, cmd: CmdPointer, currentBlock: TACBlock) : List<TACCmd.Simple.AnnotationCmd> {
         val res: MutableList<TACCmd.Simple.AnnotationCmd> = mutableListOf()
-        val alreadyInCurrent: Set<Int> = currentBlock.commands.mapNotNullToSet { c -> c.maybeAnnotation(TACMeta.CVL_LABEL_END) }
+        val alreadyInCurrent: Set<TACCmd.Simple.AnnotationCmd.Annotation<*>> = currentBlock.commands.mapNotNullToSet { c -> (c.cmd as? TACCmd.Simple.AnnotationCmd)?.annot }
         for (rec in labelStack.iterateUpStackPushRecords(cmd)) {
             if (caller.ptr == rec.ptr) { return res }
-            if (rec.annot.k == TACMeta.CVL_LABEL_START || (rec.annot.k == TACMeta.SNIPPET && rec.annot.v is SnippetCmd.CVLSnippetCmd.EventID)) {
-                if (rec.id !in alreadyInCurrent) {
-                    res.add(TACCmd.Simple.AnnotationCmd(TACCmd.Simple.AnnotationCmd.Annotation(TACMeta.CVL_LABEL_END,rec.id)))
-                }
-            } else if (rec.annot.k == Inliner.CallStack.STACK_PUSH || (rec.annot.k == TACMeta.SNIPPET && rec.annot.v is SnippetCmd.CVLSnippetCmd.CVLFunctionStart)) {
+            if (rec.annot.k == Inliner.CallStack.STACK_PUSH || (rec.annot.k == TACMeta.SNIPPET && rec.annot.v is SnippetCmd.CVLSnippetCmd.CVLFunctionStart)) {
                 error("We found a call ${rec.annot} on the label stack before encountering our caller $caller.")
-            } else {
-                logger.warn() {"Found something unexpected in the CVLLabelStack: ${rec}"}
+            }
+            val endAnn = rec.matchingEndAnnotation()
+            if (endAnn.annot !in alreadyInCurrent) {
+                res.add(endAnn)
             }
         }
-        logger.warn() {"We did not find the caller $caller in the label stack at command $cmd."}
+        logger.warn { "We did not find the caller $caller in the label stack at command $cmd." }
         return res
     }
 }

@@ -519,7 +519,8 @@ object InternalSummarizer {
                                 callSiteSrc = callSite.callSiteSrc,
                                 methodSignature = callSite.methodSignature,
                                 callResolutionTableInfo = result.summarizationInfo,
-                                appliedSummary = Summarization.AppliedSummary.MethodsBlock(specCallSumm, summSignature)
+                                appliedSummary = Summarization.AppliedSummary.MethodsBlock(specCallSumm, summSignature),
+                                rets = retAnnot.rets
                             )
                         )
                     )).appendToSinks(

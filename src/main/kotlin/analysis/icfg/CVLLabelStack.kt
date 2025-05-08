@@ -33,7 +33,30 @@ data class CVLLabelStackPushRecord(val ptr: CmdPointer, val annot: TACCmd.Simple
         is SnippetCmd.CVLSnippetCmd.CVLFunctionStart -> "CVLFunctionStart of $id ${annot.v.name} at $ptr"
         is SnippetCmd.CVLSnippetCmd.EventID -> "EventID $id at $ptr"
         is CVLReportLabel -> "CVLReportLabel $id ${annot.v} at $ptr"
+        is SummaryStack.SummaryStart.Internal -> "SummaryStart Internal of ${annot.v.appliedSummary} at $ptr"
+        is SummaryStack.SummaryStart.External -> "SummaryStart External of $id ${annot.v.appliedSummary} at $ptr"
         else -> "CVLLabelStackPushRecord(ptr=$ptr, annot=$annot, id=$id)"
+    }
+    fun matchingEndAnnotation(): TACCmd.Simple.AnnotationCmd = when (annot.v) {
+        is Inliner.CallStack.PushRecord -> TACCmd.Simple.AnnotationCmd(
+            Inliner.CallStack.STACK_POP,
+            Inliner.CallStack.PopRecord(annot.v.callee, annot.v.calleeId)
+        )
+        is SnippetCmd.CVLSnippetCmd.CVLFunctionStart -> TACCmd.Simple.AnnotationCmd(
+            TACMeta.SNIPPET,
+            SnippetCmd.CVLSnippetCmd.CVLFunctionEnd(annot.v.callIndex, annot.v.name)
+        )
+        is SnippetCmd.CVLSnippetCmd.EventID,
+        is CVLReportLabel -> TACCmd.Simple.AnnotationCmd(TACMeta.CVL_LABEL_END, id)
+        is SummaryStack.SummaryStart.Internal -> TACCmd.Simple.AnnotationCmd(
+            SummaryStack.END_INTERNAL_SUMMARY,
+            SummaryStack.SummaryEnd.Internal(annot.v.rets, annot.v.methodSignature)
+        )
+        is SummaryStack.SummaryStart.External -> TACCmd.Simple.AnnotationCmd(
+            SummaryStack.END_EXTERNAL_SUMMARY,
+            SummaryStack.SummaryEnd.External(annot.v.appliedSummary, annot.v.callNode.summaryId)
+        )
+        else -> error("Cannot get matching end for $this.")
     }
 }
 
@@ -91,6 +114,32 @@ class CVLLabelStack(graph: TACCommandGraph, check: Boolean = true):
                             val curr = cmd.cmd.annot.v as Int
                             check(top.annot.v is CVLReportLabel || top.annot.v is SnippetCmd.CVLSnippetCmd.EventID && top.id == curr) {
                                 "Expected matching stack top for pop of CVL_LABEL_END $curr at ${cmd.ptr}, got ${stack.top}"
+                            }
+                        }
+                        return PopAction()
+                    }
+                    SummaryStack.START_INTERNAL_SUMMARY -> {
+                        return PushAction(CVLLabelStackPushRecord(cmd.ptr, cmd.cmd.annot, 0))
+                    }
+                    SummaryStack.END_INTERNAL_SUMMARY -> {
+                        if (check) {
+                            val top = stack.top.annot
+                            val curr = cmd.cmd.annot.v as SummaryStack.SummaryEnd.Internal
+                            check(top.v is SummaryStack.SummaryStart.Internal && top.v.methodSignature == curr.methodSignature) {
+                                "Expected matching stack top for pop of END_INTERNAL_SUMMARY $curr at ${cmd.ptr}, got ${stack.top}"
+                            }
+                        }
+                        return PopAction()
+                    }
+                    SummaryStack.START_EXTERNAL_SUMMARY -> {
+                        return PushAction(CVLLabelStackPushRecord(cmd.ptr, cmd.cmd.annot, (cmd.cmd.annot.v as SummaryStack.SummaryStart.External).callNode.summaryId))
+                    }
+                    SummaryStack.END_EXTERNAL_SUMMARY -> {
+                        if (check) {
+                            val top = stack.top
+                            val curr = cmd.cmd.annot.v as SummaryStack.SummaryEnd.External
+                            check(top.annot.v is SummaryStack.SummaryStart.External && top.id == curr.summaryId) {
+                                "Expected matching stack top for pop of END_EXTERNAL_SUMMARY $curr with id ${curr.summaryId} at ${cmd.ptr}, got ${stack.top} with id ${top.id}"
                             }
                         }
                         return PopAction()
