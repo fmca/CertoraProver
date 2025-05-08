@@ -61,7 +61,7 @@ object SbfMeta {
     // The value is true if the loaded register affects the control flow of the program
     val LOADED_AS_NUM_FOR_PTA = MetaKey<Boolean>("loaded_as_number_for_pta")
     //  Promoted overflow check condition
-    val PROMOTED_ADD_WITH_OVERFLOW_CHECK = MetaKey<Condition>("promoted_add_overflow_check")
+    val PROMOTED_OVERFLOW_CHECK = MetaKey<Condition>("promoted_overflow_check")
     // The MOV instruction sets the address of a global variable to a register
     val SET_GLOBAL = MetaKey<String>("set_global")
 
@@ -78,7 +78,7 @@ object SbfMeta {
     val LOWERED_ASSUME = MetaKey<String>("lowered_assume")
     val LOWERED_OR = MetaKey<String>("lowered_or")
     val UNREACHABLE_FROM_COI = MetaKey<String>("unreachable_from_coi")
-    val ADD_WITH_OVERFLOW = MetaKey<String>("add_overflow")
+    val SAFE_MATH = MetaKey<String>("safe_math")
 }
 
 data class MetaKey<T>(val name: String)
@@ -97,7 +97,7 @@ fun toString(metaData: MetaData): String {
             SbfMeta.UNHOISTED_STORE, SbfMeta.UNHOISTED_LOAD,
             SbfMeta.UNHOISTED_MEMCPY, SbfMeta.UNHOISTED_MEMCMP, SbfMeta.UNHOISTED_STACK_POP,
             SbfMeta.LOWERED_SELECT, SbfMeta.LOWERED_OR, SbfMeta.LOADED_AS_NUM_FOR_PTA, SbfMeta.REMOVED_MEMMOVE,
-            SbfMeta.ADD_WITH_OVERFLOW, SbfMeta.SET_GLOBAL -> {
+            SbfMeta.SAFE_MATH, SbfMeta.SET_GLOBAL -> {
                 strB.append(" /*${k.name}*/")
             }
             SbfMeta.CALL_ID, SbfMeta.INLINED_FUNCTION_NAME, SbfMeta.INLINED_FUNCTION_SIZE -> {
@@ -115,7 +115,7 @@ fun toString(metaData: MetaData): String {
             SbfMeta.KNOWN_ARITY, SbfMeta.EQUALITY_REG_AND_STACK -> {}
             SbfMeta.UNREACHABLE_FROM_COI -> {}
             SbfMeta.COMMENT -> {}
-            SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK-> {
+            SbfMeta.PROMOTED_OVERFLOW_CHECK-> {
                 metaData.getVal(k)?.let {
                     val cond: Condition = it.uncheckedAs()
                     strB.append(" /*${k.name}: $cond*/")

@@ -332,7 +332,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
             val op2 = exprBuilder.mkExprSym(inst.v)
 
             return if (SolanaConfig.UseTACMathInt.get() &&
-                (useMathInt || inst.metaData.getVal(SbfMeta.ADD_WITH_OVERFLOW) != null)) {
+                (useMathInt || inst.metaData.getVal(SbfMeta.SAFE_MATH) != null)) {
                 val x = mkFreshMathIntVar()
                 val y = mkFreshMathIntVar()
                 val z = mkFreshMathIntVar()
@@ -365,7 +365,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     private fun translateSelect(inst: SbfInstruction.Select): List<TACCmd.Simple> {
         val newCmds = mutableListOf<TACCmd.Simple>()
 
-        val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK)
+        val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK)
         val (tacOverflowCond, tacOverflowVar) = if (SolanaConfig.TACPromoteOverflow.get() && overflowCond != null) {
             // See comments from translateAssume
             newCmds.add(Debug.externalCall("overflow_check"))
@@ -498,7 +498,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
             // We know that the `if` condition is checking whether `x` overflows or not.
             // This fix ensures that after the overflow check has being done (i.e., A and B) x fits in 64 bits.
             //
-            val overflowCond = jumpInst.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK)
+            val overflowCond = jumpInst.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK)
             if (SolanaConfig.TACPromoteOverflow.get() && overflowCond != null) {
                 val x = exprBuilder.mkVar(overflowCond.left)
                 listOf(assign(x, exprBuilder.mask64(x.asSym())))
@@ -579,7 +579,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                 val falseTargetNBId = getBlockIdentifier(falseTargetBB)
 
                 val newCmds = mutableListOf<TACCmd.Simple>()
-                val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK)
+                val overflowCond = inst.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK)
                 val cmd = if (SolanaConfig.TACPromoteOverflow.get() && overflowCond != null) {
                     /**
                      * We replace the original condition with the metadata's condition.

@@ -49,7 +49,7 @@ class MarkAddWithOverflowTest {
         markAddWithOverflow(cfg)
         println("After $cfg")
         Assertions.assertEquals(true,
-            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
+            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null)
     }
 
     @Test
@@ -79,7 +79,7 @@ class MarkAddWithOverflowTest {
         markAddWithOverflow(cfg)
         println("After $cfg")
         Assertions.assertEquals(false,
-            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
+            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null)
     }
 
     @Test
@@ -108,7 +108,7 @@ class MarkAddWithOverflowTest {
         markAddWithOverflow(cfg)
         println("After $cfg")
         Assertions.assertEquals(false,
-            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
+            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null)
     }
 
     @Test
@@ -138,7 +138,7 @@ class MarkAddWithOverflowTest {
         markAddWithOverflow(cfg)
         println("After $cfg")
         Assertions.assertEquals(true,
-            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
+            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null)
     }
 
     @Test
@@ -165,7 +165,7 @@ class MarkAddWithOverflowTest {
         Assertions.assertEquals(true,
             cfg.getBlock(Label.Address(1))?.let { it ->
                 it.getInstructions().any {
-                    it.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null
+                    it.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null
                 }
             })
     }
@@ -196,7 +196,7 @@ class MarkAddWithOverflowTest {
         Assertions.assertEquals(false,
             cfg.getBlock(Label.Address(1))?.let { it ->
                 it.getInstructions().any {
-                    it.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null
+                    it.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null
                 }
             })
     }
@@ -224,8 +224,38 @@ class MarkAddWithOverflowTest {
         Assertions.assertEquals(true,
             cfg.getBlock(Label.Address(1))?.let { it ->
                 it.getInstructions().any {
-                    it.metaData.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null
+                    it.metaData.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null
                 }
             })
+    }
+
+    @Test
+    fun test08() {
+        val cfg = SbfTestDSL.makeCFG("test8") {
+            bb(0) {
+                r3 = r4
+                r5 = 0
+                BinOp.ADD(r3, r2)
+                BinOp.ADD(r3, -1)
+                br(CondOp.GT(r4, r3), 1, 2)
+            }
+            bb(1) {
+                r5 = 1
+                goto(3)
+            }
+            bb(2) {
+                goto(3)
+            }
+            bb(3) {
+                exit()
+            }
+        }
+        cfg.normalize()
+        sbfLogger.warn { "Before $cfg" }
+        cfg.verify(true)
+        markAddWithOverflow(cfg)
+        sbfLogger.warn { "After $cfg" }
+        Assertions.assertEquals(true,
+            cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_OVERFLOW_CHECK) != null)
     }
 }
