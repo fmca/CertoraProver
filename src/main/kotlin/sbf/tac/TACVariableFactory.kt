@@ -82,8 +82,8 @@ class TACVariableFactory {
 
     /** Map a cell [c] to a TAC ByteMap variable **/
     fun getByteMapVar(c: PTACell): TACByteMapVariable {
-        return byteMapCache.getOrPut(c.getNode()) {
-            val byteMapVar = TACSymbol.Var("M_${c.getNode().id}", Tag.ByteMap)
+        return byteMapCache.getOrPut(c.node) {
+            val byteMapVar = TACSymbol.Var("M_${c.node.id}", Tag.ByteMap)
             declaredVars.add(byteMapVar)
             TACByteMapVariable(byteMapVar)
         }

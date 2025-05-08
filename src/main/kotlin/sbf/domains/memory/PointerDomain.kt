@@ -17,7 +17,6 @@
 
 package sbf.domains
 
-import com.certora.collect.*
 import sbf.*
 import sbf.disassembler.*
 import sbf.callgraph.*
@@ -26,8 +25,6 @@ import sbf.support.*
 import kotlin.math.absoluteValue
 import datastructures.stdcollections.*
 import org.jetbrains.annotations.TestOnly
-import utils.*
-import kotlin.collections.removeLast
 
 /**
  * Pointer analysis based on the paper
@@ -108,35 +105,22 @@ import kotlin.collections.removeLast
  *
  **/
 
+// For debugging purposes
+private const val debugPTAJoin = false
+private const val debugPTALeq = false
+private const val debugPTASimMapperFail = false
+private const val debugPTAUnify = false
+//const val debugPTACloning = false
+private const val debugPTACollapses = false
+private const val debugPTAMemTransfer = false
 // Need more testing: disabled for now.
 private const val useSummarizeNodeWithStride = false
+// Enable pointer analysis warnings (it can be very verbose)
+private const val enablePTAWarnings = false
 
 /** For internal errors **/
 @TestOnly
 class PointerDomainError(msg: String): SolanaInternalError("PointerDomain error: $msg")
-private fun checkNotForward(operation: String, vararg nodes: PTANode) {
-    nodes.forEach {
-        if (it.isForwarding()) {
-            throw PointerDomainError("$operation does not expect a forwarding node $it")
-        }
-    }
-}
-/** For internal debugging **/
-private const val debugPTAJoin = false
-private const val debugPTALeq = false
-private const val debugPTAUnify = false
-private const val debugPTACollapses = false
-private const val debugPTAMemTransfer = false
-private const val enablePTAWarnings = false
-
-private fun warn(msg: () -> Any) { if (enablePTAWarnings) { sbfLogger.warn(msg) } }
-private fun dbgUnify(msg: () -> Any) { if (debugPTAUnify) { sbfLogger.info(msg) } }
-private fun dbgUnify2(msg: () -> Any) { if (debugPTAUnify) { sbfLogger.info(msg) } }
-private fun dbgCollapses(msg: () -> Any) { if (debugPTACollapses) { sbfLogger.info(msg) } }
-private fun dbgUnifyAndCollapses(msg: () -> Any) { if (debugPTAUnify || debugPTACollapses) { sbfLogger.info(msg) } }
-private fun dbgJoin(msg: () -> Any) { if (debugPTAJoin) { sbfLogger.info(msg) } }
-private fun dbgLeq(msg: () -> Any) { if (debugPTALeq) { sbfLogger.info(msg) } }
-private fun dbgMemTransfer(msg: () -> Any) { if (debugPTAMemTransfer) { sbfLogger.info(msg) } }
 
 /**
  * The pointer domain manipulates two kind of offsets: concrete (PTAOffset) and
@@ -156,120 +140,104 @@ private fun dbgMemTransfer(msg: () -> Any) { if (debugPTAMemTransfer) { sbfLogge
 typealias PTAOffset = Long
 typealias PTASymOffset = ConstantOffset /** Long extended with top **/
 
+private fun ptaWarning(msg: () -> Any) {
+    if (enablePTAWarnings) {
+        sbfLogger.warn(msg)
+    }
+}
+
 /**
  * A concrete cell: this is just a wrapper to a pair of node and offset.
- * Only `PTANode` should create PTACell instances.
+ * Only PTANode should create PTACell instances.
  **/
-sealed class PTACell(
-    protected open var _node: PTANode,
-    protected open var _offset: PTAOffset) {
+sealed class PTACell(open val node: PTANode, open val offset: PTAOffset) {
+    // Unify n1 at offset o1 with n2 at offset o2
+    // let's assume o1 < o2 (the other case is symmetric)
+    // The idea is to unify (n1,0) with (n2, o2-o1).
+    // Then, we unify recursively each (n1,oi) to (n2, o2-o1 +oi)
 
-    /** Follow the forward link to resolve the actual node and offset while doing path-compression **/
-    protected fun resolve(): PTACell {
-        val forwardC = _node.forward
-        if (forwardC != null) {
-            if (_node.isMayStack) {
+    // API for TAC encoding
+    @Suppress("ForbiddenComment")
+    // FIXME: we don't do path compression
+    fun resolve(): PTACell {
+        val forwardC = node.forward
+        return if (forwardC == null) {
+            this
+        } else {
+            if (node.isMayStack) {
                 throw PointerDomainError("A node that might represent the stack shouldn't not be unified")
             }
             val resolvedC = forwardC.resolve()
-            val c = resolvedC._node.createCell(resolvedC._offset + _offset)
-            _node = c._node
-            _offset = c._offset
+            resolvedC.node.createCell(resolvedC.offset + offset)
         }
-        return this
     }
-
-    fun getNode(): PTANode {
-        return resolve()._node
-    }
-
-    fun getOffset(): PTAOffset {
-        return resolve()._offset
-    }
-
-    fun isForwarding() = _node.isForwarding()
 
     /**
-     *  Unify `this` = `(n1,o1)` with [other] = `(n2,o2)`.
-     *
-     *  Unify `n1` at offset `o1` with `n2` at offset `o2`
-     *  let's assume `o1 < o2` (the other case is symmetric)
-     *  The idea is to unify `(n1,0)` with `(n2, o2-o1)`.
-     *  Then, we unify recursively each `(n1,oi)` to `(n2, o2-o1 +oi)`
+     *  Unify this with other.
+     *  @param cache is used to make sure that two nodes are not unified twice
      */
-    fun unify(other: PTACell) {
-        resolve()
-        other.resolve()
-
+    fun unify(other: PTACell,
+              cache: MutableMap<PTANode, PTANode> = mutableMapOf()) {
         if (this == other) {
-            dbgUnify {"\t\tSkipped unification of $this with itself\n"}
+            if (debugPTAUnify) {
+                sbfLogger.info {"\t\tSkipped unification of $this with itself\n"}
+            }
             return
         }
 
         val c1 = this
         val c2 = other
-        val o1 = c1._offset // no adjusted by the kind of node
-        val o2 = c2._offset // no adjusted by the kind of node
-        val n1 = c1._node
-        val n2 = c2._node
+        val o1 = c1.offset // no adjusted by the kind of node
+        val o2 = c2.offset // no adjusted by the kind of node
+        val n1 = c1.node
+        val n2 = c2.node
 
-        dbgUnify {"\tStarted unification of $c1 with $c2\n"}
-
+        if (debugPTAUnify) {
+            sbfLogger.info {"\tStarted unification of $c1 with $c2\n"}
+        }
         if (o1 > o2) {
             // unify (n2,0) and (n1,o1-o2)
-            n2.unify(n1, o1-o2)
+            n2.unify(n1, o1-o2, cache)
         } else if (o1 < o2){
             // unify (n1,0) and (n2,o2-o1)
-            n1.unify(n2, o2-o1)
+            n1.unify(n2, o2-o1, cache)
         } else {
-            if (n1.getSuccs().size > n2.getSuccs().size) {
-                n2.unify(n1, 0)
+            if (n1.numOfPredecessors() > n2.numOfPredecessors()) {
+                n2.unify(n1, 0, cache)
             } else {
-                n1.unify(n2, 0)
+                n1.unify(n2, 0, cache)
             }
         }
+        if (debugPTAUnify) {
+            sbfLogger.info { "\tFinished unification of $c1 with $c2\n"}
+        }
 
-        dbgUnify {"\tFinished unification of $c1 with $c2\n"}
     }
 
-
-    /** Only used to rename PTA nodes that represent the stack **/
     fun renameNode(oldNode: PTANode, newNode: PTANode): PTACell {
-        resolve()
-        checkNotForward("PTACell::renameNode", oldNode, newNode)
-
-        return if (_node == oldNode) {
-            newNode.createCell(_offset)
+        return if (node == oldNode) {
+            newNode.createCell(offset)
         } else {
             this
         }
     }
 
     fun lessOrEqual(other: PTACell): Boolean {
-        resolve()
-        other.resolve()
-
         return if (this == other) {
             true
         } else {
             // For ordering, all integers are indistinguishable from each other
-            _node.mustBeInteger() && other._node.mustBeInteger()
+            node.mustBeInteger() && other.node.mustBeInteger()
         }
     }
 
-    fun createSymCell(): PTASymCell  {
-        resolve()
-
-        return _node.createSymCell(PTASymOffset(_offset))
-    }
+    fun createSymCell() = node.createSymCell(PTASymOffset(offset))
 
     fun getFields(): List<PTAField> {
-        resolve()
-
         val out = mutableListOf<PTAField>()
         for (size in usedMemoryBitwidths) {
-            val field = PTAField(_offset, size.toShort())
-            val succ = _node.getSucc(field)
+            val field = PTAField(offset, size.toShort())
+            val succ = node.getSucc(field)
             if (succ != null) {
                 out.add(field)
             }
@@ -289,9 +257,7 @@ sealed class PTACell(
      * (i.e., f.offset % [wordSize] == 0)
      */
     fun isWordCompatible(length: Long, wordSize: Byte): Boolean {
-        resolve()
-
-        if (!_node.isExactNode()) {
+        if (!node.isExactNode()) {
             return false
         } else if (length <= 0 || length.mod(wordSize.toInt()) != 0) {
             return false
@@ -299,12 +265,12 @@ sealed class PTACell(
             if (SolanaConfig.OptimisticMemcmp.get()) {
                 return true
             }
-            val links = _node.getLinksInRange(_offset, length).filter {
+            val links = node.getLinksInRange(offset, length).filter {
                 if (SolanaConfig.OptimisticPTAOverlaps.get()) {
                     // due to optimisticOverlaps we can have multiple fields at the same offset
                     // with different bit widths. isWordCompatible will not return false if one
                     // of those fields is word-compatible.
-                    it.field.size == wordSize.toShort()
+                    it.first.size == wordSize.toShort()
                 } else {
                     true
                 }
@@ -313,7 +279,7 @@ sealed class PTACell(
             if (links.isEmpty()) {
                 return true
             }
-            val first = links.first().field.offset
+            val first = links.first().first.offset
             for ((field, _) in links) {
                 val offset = field.offset
                 check(offset >= first) {"$links is not sorted as expected"}
@@ -328,145 +294,85 @@ sealed class PTACell(
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other == null) {
-            return false
-        }
-        if (other !is PTACell) {
-            return false
-        }
-        resolve()
-        other.resolve()
-        return (_node == other._node && _offset == other._offset)
+    /** Unused functionality but don't remove yet **/
+    fun import(importer: PTAGraphImporter): PTACell {
+        return node.import(importer).createCell(offset)
     }
 
-    override fun hashCode(): Int {
-        // We shoudn't use PTACell as a key in hash table or similar
-        error("PTACell does not implement hashCode")
-    }
-
-    override fun toString(): String {
-        resolve()
-        return "($_node,$_offset)"
-    }
+    override fun toString(): String = "($node,$offset)"
 }
 
 /**
  *  A symbolic cell: wrapper for a node and a symbolic offset.
- *  A symbolic cell is always convertible to a concrete cell (`PTACell`) via `concretize` operation.
- *  Only `PTANode` should create `PTASymCell` instances.
+ *  A symbolic cell is always convertible to a concrete cell (PTACell) via `reify` operation.
+ *  Only PTANode should create PTASymCell instances.
  **/
-sealed class PTASymCell(
-    protected open var _node: PTANode,
-    protected open var _offset: PTASymOffset) {
+sealed class PTASymCell(open val node: PTANode, open val offset: PTASymOffset) {
 
-    // To access PTACell::resolve without making it public.
-    private class Cell(n: PTANode, o: PTAOffset): PTACell(n, o) {
-        // it will do path-compression while resolving
-        operator fun invoke(): PTACell = super.resolve()
-    }
-
-    private fun resolve() {
-        val concreteOffset = _offset.get()
-        if (concreteOffset != null) {
-            val c = Cell(_node, concreteOffset)()
-            _node = c.getNode()
-            _offset = PTASymOffset(c.getOffset())
-
-        } else {
-            _node = _node.forward?.getNode() ?: _node
-        }
-    }
-
-    fun getNode(): PTANode {
-        resolve()
-        return _node
-    }
-
-    fun getOffset(): PTASymOffset {
-        resolve()
-        return _offset
-    }
-
-    fun isConcrete() = _offset.get() != null
+    fun isReified() = offset.get() != null
 
     // Return a concrete cell where the node is summarized if the offset is top
-    fun concretize(): PTACell {
-        resolve()
-
-        val concreteOffset = _offset.get()
+    fun reify(): PTACell {
+        val concreteOffset = offset.get()
         return if (concreteOffset != null) {
-            _node.createCell(concreteOffset)
+            node.createCell(concreteOffset)
         } else {
-            dbgCollapses {
-                "LOSING FIELD-SENSITIVITY (concretize): begin summarizing node ${_node.id} "
+            if (debugPTACollapses) {
+                sbfLogger.info { "LOSING FIELD-SENSITIVITY (reification): begin summarizing node ${node.id}"}
             }
 
             // We don't need to rename stack nodes because smashing should not
             // affect a stack node. Note that we throw an exception if it does.
             val zeroOffset = PTAGraph.mkOffset(0L)
-            if (useSummarizeNodeWithStride) {
-                PTANode.summarizeWithStride(_node, 1U)
+            val smashedNode = if (useSummarizeNodeWithStride) {
+                PTANode.summarizeWithStride(node, 1U)
             } else {
-                PTANode.smash(_node)
+                PTANode.smash(node)
             }
-            val res = _node.createCell(zeroOffset)
+            val res =  smashedNode.createCell(zeroOffset)
+            node.forward = res
 
-            dbgCollapses {
-                "LOSING FIELD-SENSITIVITY (concretize): end summarizing node ${_node.id}"
+            if (debugPTACollapses) {
+                sbfLogger.info { "LOSING FIELD-SENSITIVITY (reification): end summarizing node " +
+                    "${node.id} with ${smashedNode.id}"}
             }
             res
         }
     }
 
     fun renameNode(oldNode: PTANode, newNode: PTANode): PTASymCell {
-        resolve()
-        checkNotForward("PTASymCell::renameNode", oldNode, newNode)
-
-        return if (_node == oldNode) {
-            newNode.createSymCell(_offset)
+        return if (node == oldNode) {
+            newNode.createSymCell(offset)
         } else {
             this
         }
     }
 
     fun lessOrEqual(other: PTASymCell): Boolean {
-        resolve()
-        other.resolve()
-
-        return if (_node == other._node && _offset.lessOrEqual(other._offset)) {
+        return if (node == other.node && offset.lessOrEqual(other.offset)) {
             true
         } else {
             // For ordering, all integers are indistinguishable from each other
-            _node.mustBeInteger() && other._node.mustBeInteger()
+            node.mustBeInteger() && other.node.mustBeInteger()
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other == null) {
-            return false
+    fun getPTACell(): PTACell {
+        if (!isReified()) {
+            throw PointerDomainError("The cell needs to be reified before calling getPTACell")
         }
-        if (other !is PTASymCell) {
-            return false
-        }
-        resolve()
-        other.resolve()
-        return (_node == other._node && _offset == other._offset)
+        return node.createCell(offset.get()!!)
     }
+    override fun toString(): String  = "($node,$offset)"
 
-    override fun hashCode(): Int {
-        // We shoudn't use PTASymCell as a key in hash table or similar
-        error("PTASymCell does not implement hashCode")
-    }
-
-    override fun toString(): String  {
-        resolve()
-        return "($_node,$_offset)"
+    /** Unused functionality but don't remove yet **/
+    fun import(importer: PTAGraphImporter): PTASymCell {
+        return node.import(importer).createSymCell(offset)
     }
 }
 
 /**
- * A `PTAField` represents the sequence of bytes [offset,...,offset+size-1]
+ * A PTAField represents the sequence of bytes [offset,...,offset+size-1]
  **/
 data class PTAField(val offset: PTAOffset, val size: Short): Comparable<PTAField>  {
     override fun compareTo(other: PTAField): Int {
@@ -483,6 +389,81 @@ data class PTAField(val offset: PTAOffset, val size: Short): Comparable<PTAField
     fun toInterval() =  FiniteInterval.mkInterval(offset, size.toLong())
 }
 
+/**
+ * Another wrapper so that a register can be considered as a predecessor of a PTACell
+ * in a PTAGraph. The key benefit is that the register will be updated after any redirection.
+ **/
+abstract class PTAGraphPred {
+    abstract fun samePredecessor(other: PTAGraphPred): Boolean
+
+    /**
+     *  This class represents a **mutable** reference to parent[idx].
+     *  The goal of parent[idx] is to keep track of a cell even when it's redirected to another
+     *  cell via unification.
+     **/
+    class MutablePTASymCellRef(private val parent: ArrayList<PTASymCell?>,
+                               private val idx: Int): PTAGraphPred() {
+
+        init {
+            check(idx < parent.size) {"Cannot create MutablePTASymCellRef due to out of bounds"}
+        }
+
+        // If the symbolic cell is not reified yet, we don't want to reify it.
+        // This means that there is a predecessor edge between the register and the symbolic cell
+        // at an unknown offset. For convenience, we pretend that the offset is zero.
+        private fun getConcreteOffset(c: PTASymCell): PTAOffset {
+            return if (c.isReified()) {
+                c.getPTACell().offset
+            } else {
+                0
+            }
+        }
+
+        fun set(c: PTASymCell?) {
+            if (idx >= parent.size) {
+                throw PointerDomainError("out of bounds set access to $this")
+            }
+            parent[idx] = c
+            c?.node?.addPred(getConcreteOffset(c), this)
+        }
+
+        fun update(c: PTASymCell?) {
+            val oldC = get()
+            // remove this as predecessor of oldC
+            oldC?.node?.removePred(getConcreteOffset(oldC), this)
+            set(c)
+        }
+
+        fun get(): PTASymCell? {
+            if (idx >= parent.size) {
+                throw PointerDomainError("out of bounds get access to $this")
+            }
+            return parent[idx]
+        }
+
+        override fun toString() = "MutablePTASumCellRef($${System.identityHashCode(parent)}, $idx)"
+
+        override fun samePredecessor(other: PTAGraphPred): Boolean {
+            return if (other !is MutablePTASymCellRef) {
+                false
+            } else {
+                // the use of === is intentional
+                (parent === other.parent && idx == other.idx)
+            }
+        }
+    }
+
+    data class Cell(val node: PTANode, val f: PTAField): PTAGraphPred() {
+        override fun toString() = "($node,$f)"
+        override fun samePredecessor(other: PTAGraphPred): Boolean {
+            return if (other !is Cell) {
+                false
+            } else {
+                (node == other.node && f == other.f)
+            }
+        }
+    }
+}
 enum class NodeAccess(val value: Int) {
     None(0x0),
     Read(0x1),
@@ -496,15 +477,14 @@ enum class NodeAccess(val value: Int) {
     }
 }
 
-data class PTALink(val field: PTAField, val cell: PTACell)
-
 /**
- * `PTANode` is a struct of fields that can point to other nodes' offsets (`PTACell`).
- * In this class, all the fields are tracked precisely (see below `PTASummarizedNode` when fields
+ * PTANode is a struct of fields that can point to other nodes' offsets (PTACell).
+ * In this class, all the fields are tracked precisely (see below PTASummarizedNode when fields
  * are not known statically).
- * A `PTANode` can be only allocated by a `PTANodeAllocator`.
+ * A PTANode can be only allocated by PTANodeAllocator which is global.
  **/
-open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocator) {
+open class PTANode constructor(val id: ULong,
+                               val nodeAllocator: PTANodeAllocator) {
     // whether this node is from the stack area. This is may information
     var isMayStack: Boolean = false
     // whether this node is a global variable. This is may information
@@ -520,8 +500,15 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
 
     // When the node is unified, the memory cell at which the
     // node begins in some other memory object
+    // For now, we will use it only for TAC encoding.
     var forward: PTACell? = null
 
+    /**
+     * @property preds is indexed by PTAOffset. It is used during redirection of edges as part of cell
+     * unification.
+     **/
+    private val preds: MutableMap<PTAOffset, ArrayList<PTAGraphPred>> = MutableNonInjectiveMap(
+        mutableMapOf()) { o -> offsetEquivClass(o) }
     /**
     * @property succs is indexed by PTAField so that we could have multiple edges between the same
     * two cells: one per PTAField. It is a sorted map so that we can detect overlaps efficiently.
@@ -541,79 +528,113 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
         override fun containsKey(key: K): Boolean = theMap.containsKey(mapper(key))
     }
 
-    fun getNode() = forward?.getNode() ?: this
+    private fun checkEdgeConsistency(msg: String) {
+        if (!SolanaConfig.SanityChecks.get()) {
+            return
+        }
+        fun succsToStr(node: PTANode): String {
+            val sb = StringBuilder()
+            sb.append("")
+            for ((field, succC) in node.getSuccs()) {
+                sb.append("$field:$succC|")
+            }
+            return sb.toString()
+        }
+
+        for ((offset, preds) in getPreds()) {
+            val dstC = createCell(offset)
+            for (srcC in preds) {
+                when (srcC) {
+                    is PTAGraphPred.Cell -> {
+                        if (srcC.node.getSuccs()[srcC.f] != dstC) {
+                            throw PointerDomainError("$dstC is not a successor of  $srcC. " +
+                                "The successors of $srcC are: ${succsToStr(srcC.node)}. $msg")
+                        }
+                    }
+                    is PTAGraphPred.MutablePTASymCellRef -> {
+                        if (srcC.get() == null) {
+                            throw PointerDomainError("$srcC does not point to any cell so it cannot be " +
+                                                     " a predecessor of $dstC. $msg")
+                        }
+                        if (srcC.get()!!.node != dstC.node) {
+                            throw PointerDomainError("$srcC is not a predecessor of $dstC. " +
+                                    "The successors of $srcC are: ${succsToStr(srcC.get()!!.reify().node)}. $msg")
+                        }
+                    }
+                    else -> { throw PointerDomainError("unreachable")}
+                }
+            }
+        }
+
+        for ((field, dstC) in getSuccs()) {
+            val srcC = createGraphPredCell(field)
+            val predCs = dstC.node.getPreds()[dstC.offset]
+                    ?: throw PointerDomainError("$srcC does not match with any predecessor of $dstC. $msg")
+            if (!(predCs.any {
+                        when (it) {
+                            is PTAGraphPred.Cell -> it == srcC
+                            else -> false
+                        }
+            })) {
+                throw PointerDomainError("Successor from $srcC does not match with any predecessor of $dstC. $msg")
+            }
+        }
+    }
+
+    private fun getField(src: PTAGraphPred.Cell, dst: PTACell): PTAField? {
+        val f = src.f
+        val c = src.node.getSuccs()[f]
+        if (c == dst) {
+            return f
+        }
+        return null
+    }
 
     private fun fieldEquivClass(f: PTAField) = PTAField(offsetEquivClass(f.offset), f.size)
 
     fun addOffsets(f: PTAField, o: PTAOffset) = addOffsets(f.offset, o)
 
-    open fun offsetEquivClass(o: PTAOffset): PTAOffset {
-        return if (!isForwarding()) {
-            o
-        } else {
-            getNode().offsetEquivClass(o)
-        }
-    }
+    open fun offsetEquivClass(o: PTAOffset): PTAOffset  = o
 
-    open fun addOffsets(o1: PTAOffset, o2: PTAOffset): PTAOffset {
-        return if (!isForwarding()) {
-            o1+o2
-        } else {
-            getNode().addOffsets(o1,o2)
-        }
-    }
+    open fun addOffsets(o1: PTAOffset, o2: PTAOffset): PTAOffset  = o1+o2
 
     open fun addOffsets(o1: PTAOffset, o2: PTASymOffset): PTASymOffset {
         check(!o2.isBottom()) {"offset cannot be bottom"}
-        return if (!isForwarding()) {
-            if (o2.get() == null) {
-                PTASymOffset.makeTop()
-            } else {
-                PTASymOffset(addOffsets(o1, o2.get()!!))
-            }
+        return if (o2.get() == null) {
+            PTASymOffset.makeTop()
         } else {
-            getNode().addOffsets(o1,o2)
+            PTASymOffset(addOffsets(o1, o2.get()!!))
         }
     }
 
-    open fun isExactNode(): Boolean {
-        return if (!isForwarding()) {
-            true
-        } else {
-            getNode().isExactNode()
-        }
-    }
+    open fun isExactNode() = true
 
-    /** Return true if the node must be an integer **/
-    open fun mustBeInteger(): Boolean {
-        return if (!isForwarding()) {
-            isMayInteger && !isMayExternal && !isMayGlobal && !isMayHeap && !isMayStack
-        } else {
-            getNode().mustBeInteger()
+    protected data class Cell(override val node: PTANode,
+                              override val offset: PTAOffset)
+        : PTACell(node, offset) {
+            override fun toString(): String = "($node,$offset)"
         }
-    }
-
-    /** To enforce that **only** PTANode (and its subclasses) can create instances of PTACell **/
-    protected class Cell(override var _node: PTANode,
-                         override var _offset: PTAOffset) : PTACell(_node, _offset)
 
     open fun createCell(o: PTAOffset): PTACell {
         return Cell(this, offsetEquivClass(o))
     }
 
-    /** To enforce that **only** PTANode (and its subclasses) can create instances of PTASymCell **/
-    protected class SymCell(
-        override var _node: PTANode,
-        override var _offset: PTASymOffset): PTASymCell(_node, _offset)
+    open fun createGraphPredCell(f: PTAField): PTAGraphPred.Cell {
+        return PTAGraphPred.Cell(this, fieldEquivClass(f))
+    }
+
+    protected data class SymCell(override val node: PTANode,
+                                 override val offset: PTASymOffset)
+        : PTASymCell(node, offset) {
+            override fun toString(): String = "($node,$offset)"
+        }
 
     open fun createSymCell(o: PTASymOffset): PTASymCell {
         return SymCell(this, o)
     }
 
     // We could cache results
-    private fun allAccessedFieldsDivisibleBy(stride: Int): Boolean {
-        checkNotForward("allAccessedFieldsDivisibleBy", this)
-
+    fun allAccessedFieldsDivisibleBy(stride: Int): Boolean {
         fun divisibleBy(size: Int, strideInBytes: Int): Boolean {
             return (size >= strideInBytes && (size.mod(strideInBytes) == 0))
         }
@@ -634,90 +655,140 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
         return offsetEquivClass(o1) == o2
     }
 
+    /** Return true if the node must be an integer **/
+    open fun mustBeInteger() = isMayInteger && !isMayExternal && !isMayGlobal && !isMayHeap && !isMayStack
+
     companion object {
-        /**
-         * Make a summarized node from a non-summarized one.
+        /** Make a summarized node from a non-summarized one.
          * For that, we need to unify all the node's fields
-         *  ```
+         *
          *  if n is already summarized {
          *      return
          *   }
          *  c = create a fresh cell with offset 0
          *  for each o in fields(n) {
          *     unifyCells(c, (n,o))
+         *     remove edge from (n, o)
          *  }
-         *  ```
          ***/
-        fun smash(n: PTANode) {
-            checkNotForward("smash", n)
-
+        fun smash(n: PTANode, cache: MutableMap<PTANode, PTANode> = mutableMapOf()): PTANode {
             if (n is PTASummarizedNode) {
-                return
+                return n
             }
-            /**
-             * We make a summarized node `N` by creating a fresh node `N'`
-             * and unifying all `N`'s fields with the zero-field of `N'`.
+            /** We make a summarized node N by creating a fresh node N'
+             * and unifying all N's fields with the zero-field of N'.
              * Note that since unify is called, we can recursively smash other nodes.
              **/
-            dbgUnifyAndCollapses { "\t### Making $n field insensitive\n" }
-
-            val summarizedN = n.nodeAllocator.mkSummarizedNode()
-            val summarizedC = summarizedN.createCell(PTAGraph.mkOffset(0L))
-
-            dbgUnify2 {"\tStarted redirection $n to ${summarizedC.getNode()}\n"}
-
-            n.redirectEdges(summarizedC.getNode(), summarizedC.getOffset())
-
-            dbgUnifyAndCollapses {
-                "\tFinished redirection $n to ${summarizedC.getNode()}\n" +
-                "\t### Made $n field insensitive\n"
+            if (debugPTAUnify || debugPTACollapses) {
+                sbfLogger.info { "\t### Making $n field insensitive\n" }
             }
+
+            // REVISIT: I think this comment is obsolete and the cache has indeed become unused.
+            /**
+             * Special case is when a node is reachable through different paths.
+             * We use a cache to ensure that given the same N we get the same fresh node N'.
+             * Any register or cell pointed to n will be redirected to a new summarized cell.
+             */
+            var summarizedN = cache[n]
+            if (summarizedN == null) {
+                summarizedN = n.nodeAllocator.mkSummarizedNode()
+                cache[n] = summarizedN
+            }
+
+            val summarizedC = summarizedN.createCell(PTAGraph.mkOffset(0L))
+            if (debugPTAUnify) {
+                sbfLogger.info {"\tStarted redirection $n to ${summarizedC.node}\n"}
+            }
+            n.redirectEdges(summarizedC.node, summarizedC.offset, cache)
+            if (debugPTAUnify || debugPTACollapses) {
+                sbfLogger.info {"\tFinished redirection $n to ${summarizedC.node}\n"}
+                sbfLogger.info { "\t### Made $n field insensitive\n" }
+            }
+            return summarizedN
         }
 
-        fun summarizeWithStride(n: PTANode, stride: UInt) {
-            checkNotForward("summarizeWithStride", n)
+        fun summarizeWithStride(n: PTANode, stride: UInt,
+                                cache: MutableMap<PTANode, PTANode> = mutableMapOf()): PTANode {
             if (n is PTASummarizedNode || n is PTASummarizedWithStrideNode) {
-                return
+                return n
             }
             val summarizedN = n.nodeAllocator.mkSummarizedWithStrideNode(stride)
             val summarizedC = summarizedN.createCell(PTAGraph.mkOffset(0L))
-            n.redirectEdges(summarizedC.getNode(), summarizedC.getOffset())
+            n.redirectEdges(summarizedC.node, summarizedC.offset, cache)
+            return summarizedN
         }
 
     }
 
     fun setWrite() {
-        checkNotForward("setWrite", this)
         // weak update semantics
         access = access.join(NodeAccess.Write)
     }
 
     fun setRead() {
-        checkNotForward("setRead", this)
         // weak update semantics
         access = access.join(NodeAccess.Read)
     }
 
     fun isUnaccessed(): Boolean {
-        return getNode().access == NodeAccess.None
+        return access == NodeAccess.None
     }
 
     fun isForwarding() = forward != null
 
+    fun numOfPredecessors(): Int {
+        var res = 0
+        for (p in preds) {
+            res += p.value.size
+        }
+        return res
+    }
 
-    /** Redirect all `n1`'s successors to `n2`'s successors
-     * ```
-     *  for each ((n1,i) -> succ) do
-     *     if exists (n2, o+i) -> c' // adjusted to whether n2 is exact or not
-     *        unifyCells(succ, c')
-     *     else
-     *        add edge from (n2, o+i) to succ
-     * ```
+    /** Redirect all n1's predecessors to n2
+    *   for each edge (pred -> (n1,i)) do
+    *     add edge (pred -> (n2, o+i))
     **/
-    private fun redirectSuccessors(other: PTANode, o: PTAOffset) {
-        checkNotForward("redirectSuccs", other)
-        check(id != other.id) {"Cannot redirect successors to itself"}
+    private fun redirectPredecessors(other: PTANode, o: PTAOffset) {
+        check(id != other.id) {"Cannot redirect predecessors to itself"}
+        /** Remove edge (predC, (this,i)) **/
+        val it = preds.iterator()
+        while (it.hasNext()) {
+            val (i, predCs) = it.next()
+            val curC = createCell(i)
+            val newC = other.createCell(other.addOffsets(i, o))
+            val predIt = predCs.iterator()
+            while (predIt.hasNext()) {
+                val predC = predIt.next()
+                when (predC) {
+                    is PTAGraphPred.Cell -> {
+                        val field = getField(predC, curC)
+                                ?: throw PointerDomainError("Not found an edge from $predC to $curC")
+                        /** Add edge (predC, (other,o+i)) **/
+                        predC.node.removeSucc(field, curC)
+                        predC.node.addSucc(field,  newC)
+                        newC.node.addPred(newC.offset, predC)
+                    }
+                    is PTAGraphPred.MutablePTASymCellRef -> predC.set(newC.createSymCell())
+                }
+                if (debugPTAUnify) {
+                    sbfLogger.info {"\t\tRemoved $predC as predecessor of $curC"}
+                }
+                predIt.remove()
+            }
+            it.remove()
+        }
+    }
 
+    /** Redirect all n1's successors to n2's successors
+    *  for each ((n1,i) -> succ) do
+    *     if exists (n2, o+i) -> c' // adjusted to whether n2 is exact or not
+    *        unifyCells(succ, c')
+    *     else
+    *        add edge from (n2, o+i) to succ
+    **/
+    private fun redirectSuccessors(other: PTANode, o: PTAOffset,
+                                   cache: MutableMap<PTANode, PTANode>) {
+        check(id != other.id) {"Cannot redirect successors to itself"}
         while (succs.iterator().hasNext()) {
            /** Avoid ConcurrentModificationException
             *
@@ -727,18 +798,20 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
             val it = succs.iterator()
             val (i, succC) = it.next()
             // there is a direct link from (n1,i) to succC
-
-            dbgUnify2 {"\t\tProcessing succ of ($this,$i) = $succC\n"}
-
+            if (debugPTAUnify) {
+                sbfLogger.info {"\t\tProcessing succ of ($this,$i) = $succC\n"}
+            }
             // we need to add a new link between (other,j) and succC
             val j = i.copy(offset=other.addOffsets(i.offset, o))
             // but it's important to check whether (other,j) has already a successor.
             // If yes, we need then to unify succC and (other,j)'s successor which we call c3.
             val c3 = other.getSucc(j)
+            // Remove the edge between (this,i) and succC
+            succC.node.removePred(succC.offset, createGraphPredCell(i))
             it.remove()
-
-            dbgUnify2 { "\t\tRemoved $succC as successor of ($this,${i.offset})" }
-
+            if (debugPTAUnify) {
+                sbfLogger.info { "\t\tRemoved $succC as successor of ($this,${i.offset})" }
+            }
             if (c3 != null) {
                 /** CASE A:
                  *  (this, i) --> succC   ==>   (this,i)
@@ -746,7 +819,7 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
                  *
                  * Ensure that (other,j) has always at most one successor.
                  **/
-                c3.unify(succC)
+                c3.unify(succC, cache)
             } else {
                 /** CASE B:
                  *  (this, i) --> succC   ==>   (this,i)
@@ -756,16 +829,15 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
                  * we know that other is different from this.
                  **/
                 other.addSucc(j, succC)
+                succC.node.addPred(succC.offset, other.createGraphPredCell(j))
             }
         }
     }
 
-    /** Redirect all edges from this to [other] and reset this **/
-    private fun redirectEdges(other: PTANode, o: PTAOffset) {
-        checkNotForward("redirectEdges", other)
-
-        forward = other.createCell(o)
-
+    /** Redirect all edges from this to $other and reset this **/
+    private fun redirectEdges(other: PTANode, o: PTAOffset, cache: MutableMap<PTANode, PTANode>) {
+        checkEdgeConsistency("Before redirect edges \"source\" node ($id,0)")
+        other.checkEdgeConsistency("Before redirect edges \"destination\" (${other.id}, $o)")
         if (isMayStack) {
             throw PointerDomainError("cannot redirect nodes that might represent the program stack")
         }
@@ -777,9 +849,21 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
         val n2 = other
         check(n1.id != n2.id) {"cannot redirect to itself"}
 
-        dbgUnify2 {"\tStarted redirection of successors of $n1"}
-        n1.redirectSuccessors(n2, o)
-        dbgUnify2 {"\tFinished redirection of successors of $n1"}
+        if (debugPTAUnify) {
+            sbfLogger.info {"\tStarted redirection of predecessors of $n1"}
+        }
+        n1.redirectPredecessors(n2, o)
+        if (debugPTAUnify) {
+            sbfLogger.info {"\tFinished redirection of predecessors of $n1"}
+        }
+
+        if (debugPTAUnify) {
+            sbfLogger.info {"\tStarted redirection of successors of $n1"}
+        }
+        n1.redirectSuccessors(n2, o, cache)
+        if (debugPTAUnify) {
+            sbfLogger.info {"\tFinished redirection of successors of $n1"}
+        }
 
         n2.isMayStack   = n2.isMayStack   or n1.isMayStack
         n2.isMayGlobal  = n2.isMayGlobal  or n1.isMayGlobal
@@ -789,29 +873,38 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
 
         n2.access = n2.access.join(n1.access)
 
+        if (n1.preds.isNotEmpty()) {
+            throw PointerDomainError("node ${n1.id} has a dangling predecessor")
+        }
         if (n1.succs.isNotEmpty()) {
             throw PointerDomainError("node ${n1.id} has a dangling successor")
         }
+        n1.checkEdgeConsistency("After redirect edges \"source\" node ($id,0)")
+        n2.checkEdgeConsistency("After redirect edges \"destination\" (${n2.id}, $o)")
     }
 
     /**
-     *  Unify `n1` at offset `0` with `n2` at offset [o]
-     *  Upon completion `n1` at offset `0` points to `(n2,o)`
+     *  Unify n1 at offset 0 with n2 at offset o
+     *  Upon completion n1 at offset 0 points to (n2,o)
      **/
-    fun unify(other: PTANode, o: PTAOffset) {
-        checkNotForward("PTANode::unify", this, other)
-
+    fun unify(other: PTANode, o: PTAOffset, cache: MutableMap<PTANode, PTANode>) {
         fun smashAndUnifyWith(n1: PTANode,n2: PTANode, o: PTAOffset) {
-            dbgCollapses {"LOSING FIELD SENSITIVITY: unifying Node${n1.id} with collapsed Node${n2.id}"}
-            smash(n1)
-            n1.unify(n2, o)
+            if (debugPTACollapses) {
+                sbfLogger.info {"LOSING FIELD SENSITIVITY: unifying Node${n1.id} with collapsed " +
+                                 "Node${n2.id}"}
+            }
+            val summN1 = smash(n1, cache)
+            summN1.unify(n2, o, cache)
         }
+
+        checkEdgeConsistency("Unify left node $id")
+        other.checkEdgeConsistency("Unify right node ${other.id}")
 
         val n1 = this
         val n2 = other
 
         if (n1 is PTASummarizedNode && n2 !is PTASummarizedNode){
-            n2.unify(n1, 0)
+            n2.unify(n1, 0, cache)
             return
         } else if (n1 !is PTASummarizedNode && n2 is PTASummarizedNode) {
             // fallback: go to redirect edges
@@ -821,7 +914,7 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
                 smashAndUnifyWith(n1, n2, o)
                 return
             } else {
-                n2.unify(n1, o) // flip the arguments and call again
+                n2.unify(n1, o, cache) // flip the arguments and call again
                 return
             }
         } else if (n1 !is PTASummarizedWithStrideNode && n2 is PTASummarizedWithStrideNode) {
@@ -855,7 +948,7 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
                     if (small.equalOffsets(o, 0L)) {
                         if (small !== this /*n2*/) {
                             // unify by merging into the smaller array
-                            n2.unify(n1, o) // flip the arguments and call again
+                            n2.unify(n1, o, cache) // flip the arguments and call again
                             return
                         } else {
                             // fallback to redirect edges
@@ -869,38 +962,44 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
         }
 
         if (n1 == n2) {
-            dbgUnify {"\tUnifying same node $n1 at different offsets\n"}
+            if (debugPTAUnify) {
+                sbfLogger.info {"\tUnifying same node $n1 at different offsets\n"}
+            }
             if (useSummarizeNodeWithStride && (n1.isExactNode() && o > 0)) {
-                summarizeWithStride(n1, o.toUInt())
+                val summarizedN = summarizeWithStride(n1, o.toUInt(), cache)
+                n1.forward = summarizedN.createCell(0)
             } else {
                 if (!n1.equalOffsets(o, 0L)) {
-                    dbgCollapses{
-                        "LOSING FIELD SENSITIVITY: unifying same node Node${n1.id} at different offsets"
+                    if (debugPTACollapses) {
+                        sbfLogger.info {
+                            "LOSING FIELD SENSITIVITY: unifying same node Node${n1.id} at " +
+                                    "different offsets"
+                        }
                     }
-                    smash(n1)
+                    val summarizedN = smash(n1, cache)
+                    n1.forward = summarizedN.createCell(0)
                 }
             }
         } else {
             check(!(n1 is PTASummarizedNode && n2 !is PTASummarizedNode))
             {"we should not redirect from a summarized node to a non-summarized node"}
 
-            if (n1 !is PTASummarizedNode && n2 is PTASummarizedNode) {
-                dbgCollapses {
-                    "LOSING FIELD SENSITIVITY\n\tStarting redirection from $n1 to $n2\n" +
-                    "\t### Making $n1 field insensitive\n"
+            if (debugPTACollapses) {
+                if (n1 !is PTASummarizedNode && n2 is PTASummarizedNode) {
+                    sbfLogger.info { "LOSING FIELD SENSITIVITY\n\tStarting redirection from $n1 to $n2\n" }
+                    sbfLogger.info { "\t### Making $n1 field insensitive\n" }
                 }
             }
-            n1.redirectEdges(n2, o)
+            n1.forward = n2.createCell(o)
+            n1.redirectEdges(n2, o, cache)
         }
     }
 
     /**
-     *  Add a *direct* edge from (this, [o]) to [cell]
+     *  Add a *direct* edge from (this, o) to cell
      *  Used for the transfer function of, for instance, memory stores.
      **/
     fun mkLink(o: PTAOffset, width: Short, cell: PTACell, isStrongUpdate: Boolean = false) {
-        checkNotForward("mkLink", this)
-
         if (this is PTASummarizedWithStrideNode) {
             check(width > 0) {"strides are greater than zero"}
             fun gcd(x: UInt, y:UInt):UInt {
@@ -922,65 +1021,165 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
         val field = PTAField(adjustedOffset, width)
         val succ = succs[field]
         if (succ == null) {
-            addSucc(field, cell)
+            addEdge(field, cell)
         } else {
             if (isExactNode() && isStrongUpdate /*flag set by memory domain*/) {
                 // Strong update
-                addSucc(field, cell)
+                addEdge(field, cell)
             } else {
                 // Weak update
                 succ.unify(cell)
             }
         }
+        checkEdgeConsistency("After mklink 1")
+        cell.node.checkEdgeConsistency("After mklink 2")
     }
 
-    fun getSucc(field: PTAField): PTACell? = getNode().succs[field]
+    fun getSucc(field: PTAField): PTACell? {
+       return succs[field]
+    }
 
-    /**
-     * Add one edge from (this, [field]) to [succC]
-     **/
-    fun addSucc(field: PTAField, succC: PTACell) {
-        checkNotForward("addSucc", this)
-
+    // Add one edge from (this, field) to succC
+    // Note that our PTAGraph is a bidirectional graph.
+    // addSucc only adds one direction.
+    // Thus, checkEdgeConsistency will fail if it's called after this function.
+    private fun addSucc(field: PTAField, succC: PTACell) {
         succs[field] = succC
-        dbgUnify2 { "\t\tUpdated $succC as successor of ($this, ${fieldEquivClass(field)})" }
+        if (debugPTAUnify) {
+            sbfLogger.info { "\t\tUpdated $succC as successor of ($this, ${fieldEquivClass(field)})" }
+        }
     }
 
-    /** Remove one edge from (this, [field]) to [succC] **/
-    fun removeSucc(field: PTAField, succC: PTACell) {
-        checkNotForward("removeSucc", this)
+    // Add one edge from (this, o) to predC
+    // Note that our PTAGraph is a bidirectional graph.
+    // addPred only adds one direction.
+    // As a result, checkEdgeConsistency will fail if it's called after this function.
+    fun addPred(o: PTAOffset, predC: PTAGraphPred) {
+        val predecessors = preds[o]
+        if (predecessors == null) {
+            preds[o] = arrayListOf(predC)
+        } else {
+            if (!predecessors.any {it.samePredecessor(predC)}) {
+                predecessors.add(predC)
+            }
+        }
+        if (debugPTAUnify) {
+            sbfLogger.info { "\t\tAdded $predC as predecessor of ($this,${offsetEquivClass(o)})" }
+        }
+    }
 
+    // Remove one edge from (this, field) to succC
+    // Note that our PTAGraph is a bidirectional graph.
+    // removeSucc only removes one direction.
+    // Thus, checkEdgeConsistency will fail if it's called after this function.
+    fun removeSucc(field: PTAField, succC: PTACell) {
         val oldSucc = succs[field]
         if (oldSucc != null) {
             if (oldSucc != succC) {
-                throw PointerDomainError(
-                    "The successor of ($this,${fieldEquivClass(field)}) " +
-                        "is expected to be $succC but instead, it is $oldSucc"
-                )
+                throw PointerDomainError("The successor of ($this,${fieldEquivClass(field)}) " +
+                                         "is expected to be $succC but instead, it is $oldSucc")
             }
             succs.remove(field)
-            dbgUnify2 { "\t\tRemoved $oldSucc as successor of ($this, ${fieldEquivClass(field)})" }
+            if (debugPTAUnify) {
+                sbfLogger.info { "\t\tRemoved $oldSucc as successor of ($this, ${fieldEquivClass(field)})" }
+            }
         } else {
-            dbgUnify2 { "\t\tNo successor of ($this, ${fieldEquivClass(field)}) found, so nothing to remove" }
+            if (debugPTAUnify) {
+                sbfLogger.info { "\t\tNo successor of ($this, ${fieldEquivClass(field)}) found, so nothing to remove" }
+            }
         }
     }
 
-    /**  Remove all outgoing and incoming edges from (this, [f]) **/
-    fun removeField(f: PTAField) {
-        checkNotForward("removeField", this)
+    // Remove one edge from (this, o) to predC
+    // Note that our PTAGraph is a bidirectional graph.
+    // removePred only removes one direction.
+    // Thus, checkEdgeConsistency will fail if it's called after this function.
+    fun removePred(o: PTAOffset, predC: PTAGraphPred) {
+        val preds = this.preds[o]
+        if (preds != null) {
+            preds.removeIf { it.samePredecessor(predC) }
+            if (preds.isEmpty()) {
+                this.preds.remove(o)
+            }
+        }
+        if (debugPTAUnify) {
+            sbfLogger.info { "\t\tRemoved $predC as predecessor of ($this,${offsetEquivClass(o)})" }
+       }
+    }
 
+    // Remove all outgoing and incoming edges from (this, f)
+    // Note that our PTAGraph is a bidirectional graph.
+    // removeField removed all edges in *both* directions.
+    // Thus, checkEdgeConsistency should succeed after this function is executed.
+    fun removeField(f: PTAField) {
+        checkEdgeConsistency("before removeField")
+
+        fun removeAllPreds(o: PTAOffset) {
+            val preds = this.preds[o]
+            if (preds != null) {
+                val worklist = ArrayList<PTAGraphPred>(preds.size)
+                for (p in preds) {
+                    worklist.add(p)
+                }
+                while (worklist.isNotEmpty()) {
+                    val p = worklist.removeLast()
+                    // remove one direction
+                    removePred(o, p)
+                    // remove the other direction
+                    when (p) {
+                        is PTAGraphPred.Cell -> {
+                            p.node.removeSucc(p.f, createCell(o))
+                        }
+                        is PTAGraphPred.MutablePTASymCellRef -> {
+                            p.update(createCell(o).createSymCell())
+                        }
+                    }
+                }
+            }
+        }
         val succC = this.succs[f]
         if (succC != null) {
+            // remove one direction
             removeSucc(f, succC)
+            // remove the other direction
+            succC.node.removePred(succC.offset, createGraphPredCell(f))
         }
+        removeAllPreds(f.offset)
         this.succs.remove(f)
+        checkEdgeConsistency("after removeField")
     }
 
-    fun getSuccs(): Map<PTAField, PTACell> = getNode().succs
+    // Add edge from (this, field.offset) to c
+    // if (this, field.offset) pointed to another cell c' then the link is removed.
+    // Note that our PTAGraph can be seen as a bidirectional graph.
+    // addEdge should update *both* directions.
+    fun addEdge(field: PTAField, c: PTACell) {
+        checkEdgeConsistency("before addEdge")
+        val oldSucc = succs[field]
+        // add one direction
+        succs[field] = c
+        if (debugPTAUnify) {
+            sbfLogger.info { "\t\tAdded $c as successor of ($this, ${fieldEquivClass(field)})" }
+        }
+        // add the other direction
+        oldSucc?.node?.removePred(oldSucc.offset, createGraphPredCell(field))
+        c.node.addPred(c.offset, createGraphPredCell(field))
+
+        checkEdgeConsistency("after addEdge ($this,$field) -> $c")
+    }
+
+    // Remove edge from (this, field.offset) to c in *both* directions
+    fun removeEdge(field: PTAField,  c: PTACell) {
+        checkEdgeConsistency("before addEdge")
+        removeSucc(field, c)
+        c.node.removePred(c.offset, createGraphPredCell(field))
+        checkEdgeConsistency("after addEdge")
+    }
+
+    fun getSuccs(): Map<PTAField, PTACell> = succs
+    fun getPreds(): Map<PTAOffset, List<PTAGraphPred>>  = preds
 
     fun copyFlags(other: PTANode) {
-        checkNotForward("copyFlags", other)
-
         other.isMayStack = isMayStack
         other.isMayGlobal = isMayGlobal
         other.isMayHeap = isMayHeap
@@ -989,66 +1188,72 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
         other.access =  access
     }
 
-    /**
-     * Copy [sliceFields] from this to [other].
-     * If sliceFields is null then all fields from this are copied.
-     **/
-    fun copyLinksTo(other: PTANode, sliceFields: Set<PTAField>?, renameFn: (c: PTACell) -> PTACell) {
-        checkNotForward("copyLinksTo", this, other)
-
+    // If sliceFields is null then all fields are copied.
+    fun copyAllLinks(other: PTANode, sliceFields: Set<PTAField>?, renameFn: (c: PTACell) -> PTACell) {
         // This function should be only used during initialization of a PTANode
-        check(other.succs.isEmpty()) {"copyLinksTo expects empty successors in $other"}
+        check(other.succs.isEmpty()) {"copyAllLinks expects empty successors in $other"}
         for ((field, succC ) in succs) {
             if (sliceFields == null || sliceFields.contains(field)) {
                 val renamedSuccC = renameFn(succC)
                 other.succs[field] = renamedSuccC
+                renamedSuccC.node.addPred(renamedSuccC.offset, other.createGraphPredCell(field))
             }
         }
+        other.checkEdgeConsistency("After copyAllLinks")
     }
 
-    /**
-     * Update this with [links].
-     */
-    fun updateLinks(links: List<PTALink>,
-                    adjustedOffset: PTAOffset,
-                    notify: (PTAField) -> Unit = {}) {
-        checkNotForward("updateLinks", this)
-
+    fun copyLinks(links: List<Pair<PTAField,PTACell>>,
+                  adjustedOffset: PTAOffset,
+                  notify: (PTAField) -> Unit = {}) {
         for ((field, succC) in links) {
             val adjustedField = field.copy(offset = field.offset + adjustedOffset)
             notify(adjustedField)
             succs[adjustedField] = succC
+            succC.node.addPred(succC.offset, createGraphPredCell(adjustedField))
         }
+        checkEdgeConsistency("After copyLinks")
     }
 
-    /**
-     *  Remove [links] from this
-     */
-    fun removeLinks(links: List<PTALink>,
+    fun removeLinks(links: List<Pair<PTAField, PTACell>>,
                     notify: (PTAField) -> Unit = {}) {
-        checkNotForward("removeLinks", this)
-
         for ((field,  succC) in links) {
             notify(field)
             removeSucc(field, succC)
+            succC.node.removePred(succC.offset, createGraphPredCell(field))
         }
+        checkEdgeConsistency("After removeLinks")
     }
 
-    /** Check for **partial** overlaps between this and [other] **/
-    fun findOverlaps(other: PTANode): List<Pair<PTAField, PTAField>> {
-        checkNotForward("findOverlaps", this, other)
+    /** Return the range of accessed bytes at field f **/
+    fun getAccessedBytes(f: PTAField): FiniteInterval {
+        val lb = f.offset
+        val ub = f.size.toLong()
+        return FiniteInterval.mkInterval(lb, ub)
+    }
+
+    // Kotlin iterators are a pain. I cannot access to the current element without calling next()
+    // I cannot either call toList() because I want efficient access to previous and next
+    // Allocating a new ArrayList is a bad idea, but I don't know a better solution.
+    private fun toFieldList(m : Map<PTAField, PTACell>): ArrayList<PTAField> {
+        val out = ArrayList<PTAField>(m.size)
+        m.forEachEntry {out.add(it.key)}
+        return out
+    }
+
+    /// Check for **partial** overlaps between this and other.
+    fun findOverlaps(other: PTANode): ArrayList<Pair<PTAField, PTAField>> {
         check(isExactNode()) {"failed precondition of findOverlaps"}
         check(other.isExactNode()) {"failed precondition of findOverlaps"}
 
-        val out = mutableListOf<Pair<PTAField,PTAField>>()
+        val out = ArrayList<Pair<PTAField,PTAField>>()
         /// pre-condition: getSuccs() returns the successors in a sorted manner
-        val a1 = ArrayList(getSuccs().keys.toList())
-        val a2 = ArrayList(other.getSuccs().keys.toList())
+        val a1 = toFieldList(getSuccs())
+        val a2 = toFieldList(other.getSuccs())
         var i = 0
         var j = 0
         while (i < a1.size && j < a2.size) {
-            val i1 = a1[i].toInterval()
-            val i2 = a2[j].toInterval()
+            val i1 = getAccessedBytes(a1[i])
+            val i2 = other.getAccessedBytes(a2[j])
             if (i1.lessThan(i2)) {
                 i++
             } else if (i2.lessThan(i1)) {
@@ -1066,22 +1271,22 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
     }
 
     /**
-     * Return all links from this node in the range [start, start+size-1]
+     * Return all pairs (field, succCell) from this node in the range [start, start+size-1]
      * If isStrict is false then pairs whose fields overlap with lower or upper bound of the above range are also included.
-     * If onlyPartial is true then we don't include a link if its field occupies the whole range.
+     * If onlyPartial is true then we don't include a pair (field, succCell) if the field occupies the whole range.
      *
      * TOIMPROVE: use something similar to C++ lower_bound to avoid a full pass over all successors.
      */
-    fun getLinksInRange(start: PTAOffset, size: Long, isStrict: Boolean = true, onlyPartial: Boolean = false): List<PTALink>   {
-        checkNotForward("getLinksInRange", this)
+    fun getLinksInRange(start: PTAOffset, size: Long, isStrict: Boolean = true, onlyPartial: Boolean = false)
+        : ArrayList<Pair<PTAField, PTACell>>   {
         check(isExactNode()) {"failed precondition of getLinksInRange"}
         // pre-condition: getSuccs() returns the successors in a sorted manner
         // post-condition: result is sorted in the same way that getSuccs()
 
         val fullRange = FiniteInterval.mkInterval(start, size)
-        val links = ArrayList<PTALink>(getSuccs().size)
+        val links = ArrayList<Pair<PTAField, PTACell>>(getSuccs().size)
         for ((field, succC) in getSuccs()) {
-            val fieldRange = field.toInterval()
+            val fieldRange = getAccessedBytes(field)
             if (fieldRange.lessThan(fullRange)) {
                 continue
             }
@@ -1093,11 +1298,11 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
             }
             if (isStrict) {
                 if (fullRange.l <= fieldRange.l && fieldRange.u <= fullRange.u) {
-                    links.add(PTALink(field, succC))
+                    links.add(Pair(field, succC))
                 }
             } else {
                 if (fieldRange.overlap(fullRange)) {
-                    links.add(PTALink(field, succC))
+                    links.add(Pair(field, succC))
                 }
             }
         }
@@ -1106,12 +1311,12 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
 
     /**
      * @param other
-     * @return a list of pairs where the first element is a field `this_field` from `this` and the second is a cover from [other].
-     * A cover for `this_field` is a list of pairs `(f, size)` where each pair should be interpreted as the interval `[f, f+size]`
+     * @return a list of pairs where the first element is a field this_field from this and the second is a cover from [other].
+     * A cover for this_field is a list of pairs (f, size) where each pair should be interpreted as the interval [f, f+size]
      * such that (1) each pair is disjoint from each other and (2) the list of pairs fully cover the interval represented by
      * this_field.
     */
-    private fun findCovers(other: PTANode): List<Pair<PTAField, List<Pair<PTAField,ULong>>>> {
+    private fun findCovers(other: PTANode): ArrayList<Pair<PTAField, ArrayList<Pair<PTAField,ULong>>>> {
         fun isCover(l: List<Pair<PTAField, ULong>>, start: Long, end: Long): Boolean {
             if (l.isEmpty()) {
                 return false
@@ -1131,18 +1336,17 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
             return true
         }
 
-        checkNotForward("findCovers", this, other)
         check(isExactNode()) {"failed precondition of findOverlaps"}
         check(other.isExactNode()) {"failed precondition of findOverlaps"}
-        val out = mutableListOf<Pair<PTAField, MutableList<Pair<PTAField, ULong>>>>()
+        val out = ArrayList<Pair<PTAField,ArrayList<Pair<PTAField, ULong>>>>()
         /// pre-condition: getSuccs() returns the successors in a sorted manner
-        val a1 = ArrayList(getSuccs().keys.toList())
-        val a2 = ArrayList(other.getSuccs().keys.toList())
+        val a1 = toFieldList(getSuccs())
+        val a2 = toFieldList(other.getSuccs())
         var i = 0
         var j = 0
         while (i < a1.size && j < a2.size) {
-            val i1 = a1[i].toInterval()
-            var i2 = a2[j].toInterval()
+            val i1 = getAccessedBytes(a1[i])
+            var i2 = other.getAccessedBytes(a2[j])
             if (i1.lessThan(i2)) {
                 i++
             } else if (i2.lessThan(i1)) {
@@ -1153,12 +1357,12 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
             } else {
                 // We follow here a generate-and-test approach just for simplicity and also in case
                 // we don't need covers but just partitions.
-                val partition = mutableListOf<Pair<PTAField,ULong>>()
+                val partition = ArrayList<Pair<PTAField,ULong>>()
                 while (i1.includes(i2) && j < a2.size) {
                     partition.add(Pair(a2[j], i2.size()))
                     j++
                     if (j < a2.size) {
-                        i2 = a2[j].toInterval()
+                        i2 = other.getAccessedBytes(a2[j])
                     }
                 }
                 // i1 is actually a closed-half interval, so we add 1 to the i1.u
@@ -1184,23 +1388,79 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
     fun splitFields(other: PTANode,
                     splitPred: (PTANode, PTAField) -> Boolean,
                     copyLinksFn: (PTAField) -> Unit) {
-        checkNotForward("splitFields", this, other)
         for ((field, subFields) in findCovers(other)) {
             check(subFields.isNotEmpty()) {"splitStack expects a non-empty list"}
             if (splitPred(this, field)) {
-                // Step 1: get Succ
+                // Step 1: get Succ and Preds
                 val leftSucc = getSucc(field)
                 check(leftSucc != null)
+                val leftPreds = preds[field.offset]
                 // Step 2: remove field
                 removeField(field)
                 // Step 3,4
-                val newSubfields = mutableListOf<PTALink>()
+                val newSubfields = ArrayList<Pair<PTAField, PTACell>>()
                 for ((subField, _) in subFields) {
-                    newSubfields.add(PTALink(subField, leftSucc))
+                    newSubfields.add(Pair(subField, leftSucc))
                 }
-                updateLinks(newSubfields, 0, copyLinksFn)
+                copyLinks(newSubfields, 0, copyLinksFn)
+                // Step 5
+                if (leftPreds != null) {
+                    val newC = createCell(subFields.first().first.offset)
+                    while (leftPreds.isNotEmpty()) {
+                        when (val pred = leftPreds.removeLast()) {
+                            is PTAGraphPred.Cell -> {
+                                val predNode = pred.node
+                                predNode.addEdge(pred.f, newC)
+                            }
+                            is PTAGraphPred.MutablePTASymCellRef -> {
+                                pred.update(newC.createSymCell())
+                            }
+                        }
+                    }
+                }
             }
         }
+        checkEdgeConsistency("After splitFields")
+    }
+
+
+    /** JN: don't remove the code for now. It might be useful in the future **/
+
+    /*private fun mayReachableFrom(pred: (PTANode) -> Boolean): Boolean {
+        val cache = mutableSetOf<PTANode>()
+        return mayReachableFrom(pred, cache)
+    }
+    private fun mayReachableFrom(pred: (PTANode) -> Boolean, cache: MutableSet<PTANode>): Boolean {
+        if (pred(this)) {
+            return true
+        }
+        if (cache.contains(this)) {
+            return false
+        }
+        cache.add(this)
+        for (predCells in getPreds().values) {
+            return predCells.any {
+                when (it) {
+                    is PTAGraphPred.Cell -> {
+                        it.node.mayReachableFrom(pred, cache)
+                    }
+                    else -> {
+                        false
+                    }
+                }
+
+            }
+        }
+        return false
+    }*/
+
+
+    /** Unused functionality but don't remove yet **/
+    fun import(importer: PTAGraphImporter): PTANode {
+        checkEdgeConsistency("Before cloning $id")
+        val res = importer.import(this)
+        checkEdgeConsistency("After cloning ${res.id}")
+        return res
     }
 
     override fun equals(other: Any?): Boolean {
@@ -1211,17 +1471,14 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
             return false
         }
         // Node id's are global so this comparison makes sense
-        return getNode().id == other.getNode().id
+        return id == other.id
     }
 
     override fun hashCode(): Int {
-        return getNode().id.toInt()
+        return id.toInt()
     }
 
     override fun toString(): String {
-        // We don't enforce this to be resolved.
-        // If we would want to then do not call checkNotForward because it will call again toString()
-
         val sb = StringBuilder()
         sb.append("Node${id}[")
         var addSep = false
@@ -1277,7 +1534,7 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
             NodeAccess.None  -> sb.append("U")
         }
         sb.append(">]")
-        sb.append("(fwd=${forward?.getNode()?.id})")
+        sb.append("(fwd=${forward?.node?.id})")
         return sb.toString()
     }
 }
@@ -1287,49 +1544,33 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
  *  be tracked precisely (loss of field-sensitivity). Thus, it has nothing to do with whether
  *  the node represents multiple memory objects.
  *
- *  `PTASummarizedNode` represents a summarized node with no information about its accessed
+ *  PTASummarizedNode represents a summarized node with no information about its accessed
  *  fields (i.e., field-insensitive)
  **/
 class PTASummarizedNode(id: ULong, nodeAllocator: PTANodeAllocator): PTANode(id, nodeAllocator) {
     override fun isExactNode() = false
 
-    override fun offsetEquivClass(o: PTAOffset) =
-        if (!isForwarding()) {
-            PTAGraph.mkOffset(0L)
-        } else {
-            getNode().offsetEquivClass(o)
-        }
+    override fun offsetEquivClass(o: PTAOffset) = PTAGraph.mkOffset(0L)
 
-    override fun mustBeInteger() =
-        if (!isForwarding()) {
-            false
-        } else {
-            getNode().mustBeInteger()
-        }
+    override fun mustBeInteger() = false
 
-    override fun addOffsets(o1: PTAOffset, o2: PTAOffset) =
-        if (!isForwarding()) {
-            PTAGraph.mkOffset(0L)
-        } else {
-            getNode().addOffsets(o1, o2)
-        }
+    override fun addOffsets(o1: PTAOffset, o2: PTAOffset) = PTAGraph.mkOffset(0L)
 
     override fun addOffsets(o1: PTAOffset, o2: PTASymOffset) =
-        if (!isForwarding()) {
-            PTAGraph.mkAbstractOffset(0L)
-        } else {
-            getNode().addOffsets(o1, o2)
-        }
+        PTAGraph.mkAbstractOffset(0L)
 
     override fun createCell(o: PTAOffset) =
         Cell(this, PTAGraph.mkOffset(0)) as PTACell
+
+    override fun createGraphPredCell(f: PTAField) =
+        PTAGraphPred.Cell(this, f.copy(offset = PTAGraph.mkOffset(0)))
 
     override fun createSymCell(o: PTASymOffset) =
         SymCell(this, PTAGraph.mkAbstractOffset(0)) as PTASymCell
 }
 
 /**
- * `PTASummarizedWithStrideNode` represents a summarized node where all read or written fields
+ * PTASummarizedWithStrideNode represents a summarized node where all read or written fields
  * are divisible by stride. This abstraction doesn't keep track of mis-alignments or overlaps.
  * For instance,
  * - node with read/written fields [4,8) and [8,12),
@@ -1352,52 +1593,271 @@ class PTASummarizedWithStrideNode(private var stride: UInt, id: ULong, nodeAlloc
         this.stride = stride
     }
 
-    override fun isExactNode() =
-        if (!isForwarding()) {
-            false
-        } else {
-            getNode().isExactNode()
-        }
+    override fun isExactNode() = false
 
-    override fun mustBeInteger() =
-        if (!isForwarding()) {
-            false
-        } else {
-            getNode().mustBeInteger()
-        }
+    override fun mustBeInteger() = false
 
     override fun offsetEquivClass(o: PTAOffset): PTAOffset {
-        return  if (!isForwarding()) {
-            if (stride == 0U) {
-                PTAGraph.mkOffset(0L)
-            } else {
-                // Since stride is always positive the result of mod is also positive
-                o.mod(stride.toInt()).toLong()
-            }
-        } else {
-            getNode().offsetEquivClass(o)
-        }
-    }
-    override fun addOffsets(o1: PTAOffset, o2: PTAOffset) =
-        if (!isForwarding()) {
+        return if (stride == 0U) {
             PTAGraph.mkOffset(0L)
         } else {
-            getNode().addOffsets(o1, o2)
+            // Since stride is always positive the result of mod is also positive
+            o.mod(stride.toInt()).toLong()
         }
+    }
+    override fun addOffsets(o1: PTAOffset, o2: PTAOffset) = PTAGraph.mkOffset(0L)
 
     override fun addOffsets(o1: PTAOffset, o2: PTASymOffset) =
-        if (!isForwarding()) {
-            PTAGraph.mkAbstractOffset(0L)
-        } else {
-            getNode().addOffsets(o1, o2)
-        }
+        PTAGraph.mkAbstractOffset(0L)
 
     override fun createCell(o: PTAOffset) =
         Cell(this, PTAGraph.mkOffset(0)) as PTACell
 
+    override fun createGraphPredCell(f: PTAField) =
+        PTAGraphPred.Cell(this, f.copy(offset = PTAGraph.mkOffset(0)))
+
     override fun createSymCell(o: PTASymOffset) =
         SymCell(this, PTAGraph.mkAbstractOffset(0)) as PTASymCell
 }
+
+/**
+ * JN: this code is currently unused because we keep "mostly" one single points-to graph
+ * (nodes representing the stack are deep copied), so there is no need to copy one graph into another.
+ * I still keep it because it can be useful in the future.
+ **/
+class PTAGraphImporter(val graph: PTAGraph) {
+    private val cloningMap: MutableMap<PTANode, PTANode> = mutableMapOf()
+
+    fun import(node: PTANode): PTANode {
+        var clonedNode = cloningMap[node]
+        if (clonedNode == null) {
+            clonedNode = when (node) {
+                is PTASummarizedNode -> {
+                    graph.mkSummarizedNode()
+                }
+                is PTASummarizedWithStrideNode -> {
+                    graph.mkSummarizedWithStrideNode(node.getStride())
+                }
+                else -> {
+                    graph.mkNode()
+                }
+            }
+            node.copyFlags(clonedNode)
+            // needed here to break cycles
+            cloningMap[node] = clonedNode
+            for ((field, c) in node.getSuccs()) {
+                val clonedCell = c.import(this)
+                clonedNode.addEdge(field, clonedCell)
+            }
+        }
+        return clonedNode
+    }
+}
+
+/**
+ *  The expected use of SimulationMapper is to compare two cells (c1, c2) in **two** different graphs
+ *  and being able to tell if the subgraph rooted at c1 is over-approximated (simulated)
+ *  by the subgraph rooted at c2.
+ *
+ *  JN: right now the code is unused because we only keep one points-to graph.
+ *  I keep the code because it might be useful in the future
+**/
+@Suppress("unused")
+class SimulationMapper {
+    // This map is one-to-many
+    private val sim: MutableMap<PTANode, MutableMap<PTANode, PTAOffset>> = mutableMapOf()
+
+    // Return true if node n1 is simulated by node n2 at offset o.
+    // This means that all cells (n1,i) are also simulated by (n2,o),...,(n2,o+j)
+    private fun insert(n1: PTANode, n2: PTANode, o: PTAOffset, onlyAccessed:Boolean): Boolean {
+        if (onlyAccessed && n1.isUnaccessed()) {
+            // n1 cannot have children since it's not accessed, so we just return true
+            return true
+        }
+
+        val map = sim[n1]
+        if (map != null) {
+            val p = map[n2]
+            if (p != null) {
+                return if (n2.equalOffsets(o, p)) {
+                    true
+                } else {
+                    if (debugPTASimMapperFail) {
+                        sbfLogger.info {"EXPLAIN SIMREL FAILURE: asking if ($n1,0) is simulated by ($n2,$o) " +
+                                         "but found in the cache that ($n1,0) is simulated by ($n2,$p)"}
+                    }
+                    // break cycles
+                    sim.clear()
+                    false
+                }
+            }
+        } else {
+            sim[n1] = mutableMapOf()
+        }
+
+
+        if (n2 is PTASummarizedNode) {
+            // a field-insensitive node simulates any node
+        } else if (n1 is PTASummarizedNode) {
+            if (debugPTASimMapperFail) {
+                sbfLogger.info {"EXPLAIN SIMREL FAILURE: ${n1.id} is summarized but ${n2.id} is not"}
+            }
+            sim.clear()
+            return false
+        } else {
+            if (n1 !is PTASummarizedWithStrideNode && n2 is PTASummarizedWithStrideNode) {
+                var res = false
+                if (n2.equalOffsets(o, 0L) && n2.getStride() > 0U) {
+                    // check that n1 is an unfolding of n2
+                    // toInt() shouldn't overflow because strides cannot be large numbers
+                    res = n1.allAccessedFieldsDivisibleBy(n2.getStride().toInt())
+                }
+                if (!res) {
+                    sim.clear()
+                    return false
+                }
+            } else if (n1 is PTASummarizedWithStrideNode && n2 !is PTASummarizedWithStrideNode) {
+                sim.clear()
+                return false
+            } else if (n1 is PTASummarizedWithStrideNode && n2 is PTASummarizedWithStrideNode) {
+                // the two arrays are properly aligned and n2's stride is smaller than n1,
+                // and n1 is an unfolding of n2
+                var res = false
+                if (n2.equalOffsets(o, 0L) && n1.getStride() >0U && n2.getStride() > 0U) {
+                    val stride1 = n1.getStride()
+                    val stride2 = n2.getStride()
+                    res =  (stride1 == stride2) || (stride1 > stride2 && (stride1.mod(stride2) == 0U))
+                }
+
+                if (!res) {
+                    sim.clear()
+                    return false
+                }
+            }
+        }
+
+        // At this point, n1 (at offset 0) is simulated by n2 at offset.
+        // Thus, we add n2 into the map and check children recursively.
+        sim[n1]!![n2] = n2.offsetEquivClass(o)
+
+        // Check all n1's successors are simulated by some of the n2's successors
+        //  for each ((n1,i) -> succ1) do
+        //     let succ2 be (n2, o+i) // adjusted to whether n2 is exact or not
+        //     if succ2 exists then
+        //        return true iff succ1 is simulated by succ2 (recursive call)
+        //     else
+        //        return false
+        for ((i, succ1) in n1.getSuccs()) {
+            val n3 = succ1.node
+            val o3 = succ1.offset
+            val j = n2.addOffsets(i, o)
+            val c2 = n2.createCell(j)
+            val succ2 = c2.node.getSucc(i.copy(offset = c2.offset))
+            if (succ2 != null) {
+                val n4 = succ2.node
+                val o4 = succ2.offset
+                if (n4 is PTASummarizedNode) {
+                    if (!insert(n3, n4, PTAGraph.mkOffset(0), onlyAccessed)) {
+                        sim.clear()
+                        return false
+                    }
+                } else {
+                    if (o3 > o4) {
+                        if (debugPTASimMapperFail) {
+                            sbfLogger.info {"EXPLAIN SIMREL FAILURE: offset from  ($n3,$o3) > ($n4,$o4)"}
+                        }
+                        sim.clear()
+                        return false
+                    } else if (!insert(n3, n4, o4 - o3, onlyAccessed)) {
+                        sim.clear()
+                        return false
+                    }
+                }
+            } else {
+                if (debugPTASimMapperFail) {
+                    sbfLogger.info {"EXPLAIN SIMREL FAILURE: ${n1.id} has a successor at $i but ${n2.id} " +
+                            "does not at $j"}
+                }
+                sim.clear()
+                return false
+            }
+        }
+        return true
+    }
+
+    // Return true c1 is simulated (over-approximated) by c2.
+    fun insert(c1: PTACell?, c2: PTACell?, onlyAccessed: Boolean = false): Boolean {
+        if (c1 != null && c2 == null) {
+            return if (onlyAccessed) {
+                c1.node.isUnaccessed()
+            } else {
+                if (debugPTASimMapperFail) {
+                    sbfLogger.info {"EXPLAIN SIMREL FAILURE: right cell is null"}
+                }
+                false
+            }
+        } else if (c1 == null) {
+            return true
+        }
+
+        check(c2 != null)
+
+        val n1 = c1.node
+        val n2 = c2.node
+        val o1 = c1.offset
+        val o2 = c2.offset
+
+
+        if (c2.node is PTASummarizedNode) {
+            return insert(n1, n2, PTAGraph.mkOffset(0), onlyAccessed)
+        } else {
+            /** if o1 > o2 then c1 cannot be simulated by c2
+             *
+             *  Example: given n1 and n2 with 3 and 4 fields.
+             *        --------         ----------
+             *   n1: | x y z |    n2: | a b c d |
+             *       ---------        -----------
+             *         0 1 2            0 1 2 3
+             *
+             *  Is (n1,2) simulated by (n2, 1)  (note: offsets start at 0) ?
+             *  For that we need to check that:
+             *  1. z is simulated by b
+             *  2. y is simulated by a
+             *  3. but x cannot be simulated by any cell from n2
+             **/
+            return if (o1 > o2) {
+                if (debugPTASimMapperFail) {
+                    sbfLogger.info {"EXPLAIN SIMREL FAILURE: $c1 is not simulated by $c2 because $o1 > $o2"}
+                }
+                false
+            } else {
+                return insert(n1, n2, o2 - o1, onlyAccessed)
+            }
+        }
+    }
+
+    private fun get(n : PTANode): PTACell? {
+        val map = sim[n]
+        if (map == null || map.size != 1) {
+            // n is not simulated by exactly one node
+            if (debugPTASimMapperFail) {
+                sbfLogger.info {"EXPLAIN SIMREL FAILURE: simulation relation is not a function for ${n.id}"}
+            }
+            return null
+        }
+        check(map.size == 1)
+        check(map.iterator().hasNext())
+        val (node, offset) = map.iterator().next()
+        return node.createCell(offset)
+    }
+
+    fun get(c: PTACell): PTACell? {
+        val res = get(c.node)
+        return res?.node?.createCell(res.offset + c.offset)
+    }
+
+}
+
 
 /**
  * Allocate points-to graph nodes.
@@ -1437,9 +1897,7 @@ class PTANodeAllocator {
      *  Return a cell for [address]
      */
     fun mkCell(address: ULong): PTACell {
-        val c = addressMap.getOrPut(address) { mkNode() }.createCell(0)
-        c.getNode()
-        return c
+        return addressMap.getOrPut(address) { mkNode() }.createCell(0).resolve()
     }
 
     /**
@@ -1459,9 +1917,7 @@ class PTANodeAllocator {
                 instMap[locInst] = indexMap
                 n.createCell(0)
             } else {
-                val c =  n.createCell(0)
-                c.getNode()
-                c
+                n.createCell(0).resolve()
             }
         }
     }
@@ -1470,9 +1926,7 @@ class PTANodeAllocator {
      *  Return a cell for [global]
      */
     fun mkCell(global: SbfGlobalVariable): PTACell {
-        val c = globalsMap.getOrPut(global) { mkNode() }.createCell(0)
-        c.getNode()
-        return c
+        return globalsMap.getOrPut(global) { mkNode() }.createCell(0).resolve()
     }
 }
 
@@ -1484,12 +1938,12 @@ class GlobalAllocation(private val allocator: PTANodeAllocator) {
      **/
     fun alloc(gv: SbfGlobalVariable, offset: ConstantOffset): PTASymCell {
         val c = allocator.mkCell(gv)
-        c.getNode().isMayGlobal = true
+        c.node.isMayGlobal = true
         val o = offset.get()
         return if (o != null) {
-            c.getNode().createSymCell(PTAGraph.mkAbstractOffset(o + c.getOffset()))
+            c.node.createSymCell(PTAGraph.mkAbstractOffset(o + c.offset))
         } else {
-            c.getNode().createSymCell(PTASymOffset.makeTop())
+            c.node.createSymCell(PTASymOffset.makeTop())
         }
     }
 }
@@ -1519,13 +1973,13 @@ class HeapAllocation(private val allocator: PTANodeAllocator) {
         val o = offset.get()
         return if (o != null) {
             val c = allocator.mkCell(SBF_HEAP_START.toULong())
-            c.getNode().isMayHeap = true
-            c.getNode().createSymCell(PTAGraph.mkAbstractOffset(o + c.getOffset()))
+            c.node.isMayHeap = true
+            c.node.createSymCell(PTAGraph.mkAbstractOffset(o + c.offset))
 
         } else {
             val c = allocator.mkCell(SBF_HEAP_START.toULong())
-            c.getNode().isMayHeap = true
-            c.getNode().createSymCell(PTASymOffset.makeTop())
+            c.node.isMayHeap = true
+            c.node.createSymCell(PTASymOffset.makeTop())
         }
     }
 
@@ -1543,7 +1997,7 @@ class HeapAllocation(private val allocator: PTANodeAllocator) {
         usedHighLevel = true
 
         val c = allocator.mkCell(locInst, i)
-        c.getNode().isMayHeap = true
+        c.node.isMayHeap = true
         return c.createSymCell()
     }
 }
@@ -1556,13 +2010,13 @@ class HeapAllocation(private val allocator: PTANodeAllocator) {
 class ExternalAllocation(private val allocator: PTANodeAllocator) {
     fun alloc(locInst: LocatedSbfInstruction, i: Int = 0): PTASymCell {
         val c = allocator.mkCell(locInst, i)
-        c.getNode().isMayExternal = true
+        c.node.isMayExternal = true
         return c.createSymCell()
     }
 
     fun alloc(address: ULong): PTASymCell {
         val c = allocator.mkCell(address)
-        c.getNode().isMayExternal = true
+        c.node.isMayExternal = true
         return c.createSymCell()
     }
 }
@@ -1570,7 +2024,7 @@ class ExternalAllocation(private val allocator: PTANodeAllocator) {
 class IntegerAllocation(private val allocator: PTANodeAllocator) {
     fun alloc(locInst: LocatedSbfInstruction, i: Int = 0): PTASymCell {
         val c = allocator.mkCell(locInst, i)
-        c.getNode().isMayInteger = true
+        c.node.isMayInteger = true
         return c.createSymCell()
     }
 }
@@ -1578,7 +2032,7 @@ class IntegerAllocation(private val allocator: PTANodeAllocator) {
 private val usedMemoryBitwidths = listOf(1, 2, 4, 8)
 
 /**
- *  A points-to graph consists of cells `PTACell` (pair of node `PTANode` and offset) and edges between cells.
+ *  A points-to graph consists of cells PTACell (pair of node PTANode and offset) and edges between cells.
  *  The roots of the graph are (normal and scratch) registers.
  *  That is, cells in the graphs are only accessible directly by registers or by following transitively edges.
  **/
@@ -1589,7 +2043,7 @@ class PTAGraph(/** Global node allocator **/
                 *  A field in this set means that the field might point to anywhere (top).
                 *  This will allow us to be sound without merging stack fields too eagerly.
                 *
-                *  Invariant: if a field `f` in `untrackedStackFields` then `getStack().getSucc(f) == null`
+                *  Invariant: if a field f in untrackedStackFields then getStack().getSucc(f) == null
                 **/
                /* It needs to be "var" because SetUnionDomain is an immutable class but PTAGraph is not */
                private var untrackedStackFields: SetDomain<PTAField> = SetUnionDomain(),
@@ -1647,8 +2101,14 @@ class PTAGraph(/** Global node allocator **/
         return registers[idx]
     }
 
+    private fun setRegCell(registers: ArrayList<PTASymCell?>, idx: Int, sc: PTASymCell?) {
+        // We wrap it into a MutablePTASymCellRef so that registers[idx] is updated correctly
+        // as a predecessor of sc
+        PTAGraphPred.MutablePTASymCellRef(registers, idx).update(sc)
+    }
+
     fun setRegCell(reg: Value.Reg, sc: PTASymCell?) {
-        registers[getIndex(reg)] = sc
+        setRegCell(registers, getIndex(reg), sc)
     }
 
     private fun pushScratchReg(sc: PTASymCell?) {
@@ -1656,12 +2116,20 @@ class PTAGraph(/** Global node allocator **/
         if (sc != null) {
             val idx = scratchRegisters.size - 1
             scratchRegisters[idx] = sc
+            // We wrap it into a MutablePTASymCellRef so that scratchRegisters[idx] is
+            // updated correctly as a predecessor of sc
+            PTAGraphPred.MutablePTASymCellRef(scratchRegisters, idx).update(sc)
         }
     }
 
     private fun popScratchReg(): PTASymCell? {
         val idx = scratchRegisters.size - 1
         val sc = scratchRegisters[idx]
+        if (sc != null) {
+            // We wrap it into a MutablePTASymCellRef so that scratchRegisters[idx] is not anymore
+            // a predecessor of sc
+            PTAGraphPred.MutablePTASymCellRef(scratchRegisters, idx).update(null)
+        }
         scratchRegisters.removeLast()
         return sc
     }
@@ -1669,14 +2137,14 @@ class PTAGraph(/** Global node allocator **/
     private fun getStack(): PTANode {
         val stackC = getRegCell(Value.Reg(SbfRegister.R10_STACK_POINTER))
         check(stackC != null) {"getStack() expects to find the stack node in $this"}
-        return stackC.getNode()
+        return stackC.node
     }
 
-    private fun concretizeCell(sc: PTASymCell, devMsg: String, locInst: LocatedSbfInstruction?): PTACell {
-        if (!sc.isConcrete() && sc.getNode() == getStack()) {
+    private fun reifyCell(sc: PTASymCell, devMsg: String, locInst: LocatedSbfInstruction?): PTACell {
+        if (!sc.isReified() && sc.node == getStack()) {
             throw UnknownPointerDerefError(DevErrorInfo(locInst, null,  devMsg))
         }
-        return sc.concretize()
+        return sc.reify()
     }
 
     /**
@@ -1717,9 +2185,9 @@ class PTAGraph(/** Global node allocator **/
             else -> mkNode()
         }
         stack.copyFlags(newNode)
-        stack.copyLinksTo(newNode, sliceFields) { c ->
-            if (c.getNode() == stack) {
-                newNode.createCell(c.getOffset())
+        stack.copyAllLinks(newNode, sliceFields) { c ->
+            if (c.node == stack) {
+                newNode.createCell(c.offset)
             } else {
                 c
             }
@@ -1768,7 +2236,7 @@ class PTAGraph(/** Global node allocator **/
 
     fun mkSummarizedNode() = nodeAllocator.mkSummarizedNode()
 
-    private fun mkSummarizedWithStrideNode(stride: UInt): PTANode {
+    fun mkSummarizedWithStrideNode(stride: UInt): PTANode {
         return nodeAllocator.mkSummarizedWithStrideNode(stride)
     }
 
@@ -1794,13 +2262,71 @@ class PTAGraph(/** Global node allocator **/
 
 
     /**
+     *  Conceptually, this class simply traverses each pair of the list and unifies the first pair element
+     *  with the second.
+     *
+     *  However, when we perform a bunch of unifications {...,(ci, ci'),...,(cj, cj'),...},
+     *  the result of unifying cells (ci,ci') can change the nodes to which cj and cj' points to.
+     *  However, without special support, cj and cj' will still point to the old nodes.
+     *  This class solves the problem by creating mutable references to cells so that all unification
+     *  effects are properly propagated.
+     */
+    private class UnificationBatch(val g: PTAGraph,
+                                   l: List<Pair<PTASymCell, PTASymCell>>,
+                                   // This function is needed to call PTAGraph::reifyCell
+                                   val reificationFn: (PTASymCell, String) -> PTACell) {
+        private val batch = ArrayList<Pair<PTAGraphPred.MutablePTASymCellRef,
+                                           PTAGraphPred.MutablePTASymCellRef>>()
+        // We keep l1 and l2 because batch stores references to them
+        private val l1 = ArrayList<PTASymCell?>()
+        private val l2 = ArrayList<PTASymCell?>()
+        init {
+            l.forEachIndexed { i, (c1, c2) ->
+                l1.add(null)
+                l2.add(null)
+                val mutRef1 = PTAGraphPred.MutablePTASymCellRef(l1, i)
+                val mutRef2 = PTAGraphPred.MutablePTASymCellRef(l2, i)
+                mutRef1.set(c1)
+                mutRef2.set(c2)
+                batch.add(Pair(mutRef1, mutRef2))
+            }
+        }
+
+        private fun clear() {
+            while (batch.isNotEmpty()) {
+                val (mutRef1, mutRef2) = batch.removeLast()
+                mutRef1.update(null)
+                mutRef2.update(null)
+            }
+        }
+
+        fun run() {
+            batch.forEach { (leftRef,rightRef) ->
+                val leftSc = leftRef.get()
+                val rightSc = rightRef.get()
+                check(leftSc != null && rightSc != null) {"cells are expected to be non-null"}
+                val leftC = reificationFn(leftSc, "join")
+                val rightC = reificationFn(rightSc, "join")
+                if (debugPTAJoin) {
+                    sbfLogger.info { "BEFORE UNIFY $leftC with $rightC\nGraph=$g" }
+                }
+                leftC.unify(rightC)
+                if (debugPTAJoin) {
+                    sbfLogger.info { "AFTER UNIFY $leftC with $rightC\nGraph=$g" }
+                }
+            }
+            clear()
+        }
+    }
+
+    /**
      * If some conditions hold, some fields of the stack node from this are split into multiple
      * subfields such that the stack node from this and other have the same fields.
     **/
     fun pseudoCanonicalize(other: PTAGraph) {
         fun splitCond(node: PTANode, field: PTAField): Boolean {
             val succ = node.getSucc(field)
-            return succ?.getNode()?.mustBeInteger() ?: false
+            return succ?.node?.mustBeInteger() ?: false
         }
 
         if (SolanaConfig.EnablePTAPseudoCanonicalize.get()) {
@@ -1854,9 +2380,9 @@ class PTAGraph(/** Global node allocator **/
                            @Suppress("UNUSED_PARAMETER") leftUntrackedStackFields: SetDomain<PTAField>,
                            @Suppress("UNUSED_PARAMETER") rightUntrackedStackFields: SetDomain<PTAField>,
                            /** input/output parameters **/
-                           onlyLeft: MutableList<Pair<PTAField, PTACell>>,
-                           onlyRight: MutableList<Pair<PTAField, PTACell>>,
-                           unificationList: MutableList<Pair<PTASymCell, PTASymCell>>):
+                           onlyLeft: ArrayList<Pair<PTAField, PTACell>>,
+                           onlyRight: ArrayList<Pair<PTAField, PTACell>>,
+                           unificationList: ArrayList<Pair<PTASymCell, PTASymCell>>):
         Pair<SetDomain<PTAField>, Set<PTAField>> {
 
         if (!leftStack.isExactNode() || !rightStack.isExactNode()) {
@@ -1884,7 +2410,7 @@ class PTAGraph(/** Global node allocator **/
                     outTrackedStackFields.add(field)
                 } else {
                     /** leftSuccC and rightSuccC are different cells **/
-                    if (leftSuccC.getNode() == leftStack || rightSuccC.getNode() == rightStack) {
+                    if (leftSuccC.node == leftStack || rightSuccC.node == rightStack) {
                         /** One of the stack fields points back to its stack **/
                         outUntrackedStackFields = outUntrackedStackFields.add(field)
                     } else {
@@ -1895,7 +2421,9 @@ class PTAGraph(/** Global node allocator **/
                          **/
                         outTrackedStackFields.add(field)
                         unificationList.add(Pair(leftSuccC.createSymCell(), rightSuccC.createSymCell()))
-                        dbgJoin { "## JOIN: stack cells at field $field: $leftSuccC and $rightSuccC to the unification list" }
+                        if (debugPTAJoin) {
+                            sbfLogger.info { "## JOIN: stack cells at field $field: $leftSuccC and $rightSuccC to the unification list" }
+                        }
                     }
                 }
             }
@@ -1956,7 +2484,7 @@ class PTAGraph(/** Global node allocator **/
                               rightC: PTASymCell?,
                               leftScalars: ScalarDomain,
                               rightScalars: ScalarDomain,
-                              unificationList: MutableList<Pair<PTASymCell, PTASymCell>>): PTASymCell? {
+                              unificationList: ArrayList<Pair<PTASymCell, PTASymCell>>): PTASymCell? {
 
         if (leftC != null && rightC != null) {
             val renamedLeftC = leftC.renameNode(leftStack, rightStack)
@@ -1964,7 +2492,7 @@ class PTAGraph(/** Global node allocator **/
                 /** cells are equal modulo renaming */
                 return leftC
             } else {
-                if (leftC.getNode() == leftStack || rightC.getNode() == rightStack) {
+                if (leftC.node == leftStack || rightC.node == rightStack) {
                     /**
                      *  We avoid unifying stacks by setting the register to "top".
                      *  This is sound because if there is read/write to the register then an exception
@@ -1979,25 +2507,32 @@ class PTAGraph(/** Global node allocator **/
                         // See below comments about optimistic joins.
                         // Note that we don't try to distinguish whether the non-pointer argument is
                         // a dangling pointer or a regular number.
-                        if (leftC.getNode() == leftStack && rightC.getNode().mustBeInteger()) {
-                            warn {
+                        if (leftC.node == leftStack && rightC.node.mustBeInteger()) {
+                            ptaWarning {
                                 "The pointer domain performed optimistic join: " +
                                     "$reg looks a dangling pointer or number on one branch so we keep $reg to $leftC"
                             }
                             return leftC
-                        } else if (leftC.getNode().mustBeInteger() && rightC.getNode() == rightStack){
+                        } else if (leftC.node.mustBeInteger() && rightC.node == rightStack){
                             val outC = rightC.renameNode(rightStack, leftStack)
-                            warn {
+                            ptaWarning {
                                 "The pointer domain performed optimistic join: " +
                                     "$reg looks a dangling pointer or number on one branch so we keep $reg to $outC"
                             }
                             return outC
                         }
                     }
-                    dbgJoin { "## JOIN: set register $reg to top to avoid unifying stacks" }
+
+
+                    if (debugPTAJoin) {
+                        sbfLogger.info { "## JOIN: set register $reg to top to avoid unifying stacks" }
+                    }
+
                     return null
                 } else {
-                    dbgJoin { "## JOIN: register $reg cells $leftC and $rightC to the unification list" }
+                    if (debugPTAJoin) {
+                        sbfLogger.info { "## JOIN: register $reg cells $leftC and $rightC to the unification list" }
+                    }
                     unificationList.add(Pair(leftC, rightC))
                     return leftC
                 }
@@ -2033,19 +2568,19 @@ class PTAGraph(/** Global node allocator **/
                     val scalarType = getType(scalarVal)
                     if (scalarType != null) {
                         if (isNullOrDanglingPtr(scalarType)) {
-                            warn {
+                            ptaWarning {
                                 "The pointer domain performed optimistic join: " +
                                     "$reg looks a dangling pointer on one branch so we keep $reg to $ptrC"
                             }
                             return ptrC
                         } else if (scalarType is SbfType.NumType) {
-                            warn {
+                            ptaWarning {
                                 "The pointer domain performed optimistic join: " +
                                     "$reg is a pointer on one branch and an integer on the other so we keep $reg to $ptrC"
                             }
                             return ptrC
                         } else if (scalarType is SbfType.PointerType.Global) {
-                            warn {
+                            ptaWarning {
                                 "The pointer domain performed optimistic join: " +
                                     "$reg is a pointer on one branch and a global (perhaps string?) on the other so we keep $reg to $ptrC"
                             }
@@ -2066,7 +2601,7 @@ class PTAGraph(/** Global node allocator **/
                               rightRegisters: List<PTASymCell?>,
                               leftScalars: ScalarDomain,
                               rightScalars: ScalarDomain,
-                              unificationList: MutableList<Pair<PTASymCell, PTASymCell>>): ArrayList<PTASymCell?> {
+                              unificationList: ArrayList<Pair<PTASymCell, PTASymCell>>): ArrayList<PTASymCell?> {
 
         val commonRegisters = ArrayList<PTASymCell?>(registers.size)
         leftRegisters.forEachIndexed { i, leftC ->
@@ -2094,10 +2629,8 @@ class PTAGraph(/** Global node allocator **/
             commonScratchRegisters.add(null)
             val rightC = rightScratchRegisters[i]
             if ((leftC == null && rightC != null) || (leftC != null && rightC == null)) {
-                throw PointerDomainError(
-                    "Unexpected mismatch in scratch register $i at join point\n" +
-                    "Left=${leftScratchRegisters}\nRight=${rightScratchRegisters}"
-                )
+                throw PointerDomainError("Unexpected mismatch in scratch register $i at join point\n" +
+                    "Left=${leftScratchRegisters}\nRight=${rightScratchRegisters}")
             } else if (leftC != null) {
                 val renamedLeftC = leftC.renameNode(leftStack, rightStack)
                 if (renamedLeftC == rightC) {
@@ -2108,10 +2641,8 @@ class PTAGraph(/** Global node allocator **/
                      *  The scratch registers are expected to be equal (modulo stacks renaming) at any join point since
                      *  all incoming blocks to join points should have the same call stack
                      **/
-                    throw PointerDomainError(
-                        "Unexpected mismatch in scratch register $i at join point\n" +
-                        "Left=${leftScratchRegisters}\nRight=${rightScratchRegisters}"
-                    )
+                    throw PointerDomainError("Unexpected mismatch in scratch register $i at join point\n" +
+                        "Left=${leftScratchRegisters}\nRight=${rightScratchRegisters}")
                 }
             }
         }
@@ -2125,7 +2656,7 @@ class PTAGraph(/** Global node allocator **/
                                      msg: String) {
         val succC = stack.getSuccs()[field]
         if (succC != null) {
-            stack.removeSucc(field, succC)
+            stack.removeEdge(field, succC)
         }
         g.untrackedStackFields = g.untrackedStackFields.add(field)
     }
@@ -2162,18 +2693,17 @@ class PTAGraph(/** Global node allocator **/
         val leftG = this
         val leftStack = leftG.getStack()
         val rightStack = rightG.getStack()
-        dbgJoin {
-                "### Starting JOIN ####\n" +
-                "Left block=$left right block=$right\n" +
-                "Left=$this\nRight=$other\n"
+        if (debugPTAJoin) {
+            sbfLogger.info {"### Starting JOIN ####\n" +
+                             "Left block=$left right block=$right\n" +
+                             "Left=$this\nRight=$other\n"}
         }
 
-
         /** To perform stack additions to preserve union semantics **/
-        val onlyLeft = mutableListOf<Pair<PTAField, PTACell>>()
-        val onlyRight = mutableListOf<Pair<PTAField, PTACell>>()
+        val onlyLeft = ArrayList<Pair<PTAField, PTACell>>()
+        val onlyRight = ArrayList<Pair<PTAField, PTACell>>()
         /** To perform unifications **/
-        val unificationList = mutableListOf<Pair<PTASymCell, PTASymCell>>()
+        val unificationList = ArrayList<Pair<PTASymCell, PTASymCell>>()
 
         val (outUntrackedStackFields, outTrackedStackFields) =
             joinStacks(leftStack, rightStack,
@@ -2193,11 +2723,11 @@ class PTAGraph(/** Global node allocator **/
         val outG = leftG.copy(commonRegisters, commonScratchRegisters, outTrackedStackFields)
         val leftOutStack = outG.getStack()
         val rightOutStack = outG.importStack(rightStack, null)
-        dbgJoin {
-                "Result graph (after selective copy of left with \n" +
-                "registers=${commonRegisters}\nscratch=${commonScratchRegisters}\n" +
-                    "stack fields=${outTrackedStackFields}):\n$outG\n" +
-                "Left stack renamed to $leftOutStack and right stack renamed to $rightOutStack"
+        if (debugPTAJoin) {
+            sbfLogger.info {"Result graph (after selective copy of left with \n" +
+                             "registers=${commonRegisters}\nscratch=${commonScratchRegisters}\n" +
+                             "stack fields=${outTrackedStackFields}):\n$outG"}
+            sbfLogger.info{"Left stack renamed to $leftOutStack and right stack renamed to $rightOutStack"}
         }
 
         /**
@@ -2208,13 +2738,17 @@ class PTAGraph(/** Global node allocator **/
          **/
         for ((field, c) in onlyLeft) {
             val renamedC = c.renameNode(leftStack, leftOutStack)
-            leftOutStack.addSucc(field, renamedC)
-            dbgJoin { "JOIN added stack field ($leftOutStack,$field)" }
+            leftOutStack.addEdge(field, renamedC)
+            if (debugPTAJoin) {
+                sbfLogger.info { "JOIN added stack field ($leftOutStack,$field)" }
+            }
         }
         for ((field, c) in onlyRight) {
             val renamedC = c.renameNode(rightStack, leftOutStack)
-            leftOutStack.addSucc(field, renamedC)
-            dbgJoin { "JOIN added stack field ($leftOutStack,$field)" }
+            leftOutStack.addEdge(field, renamedC)
+            if (debugPTAJoin) {
+                sbfLogger.info { "JOIN added stack field ($leftOutStack,$field)" }
+            }
         }
 
         /**
@@ -2235,7 +2769,7 @@ class PTAGraph(/** Global node allocator **/
         val overlaps = leftStack.findOverlaps(rightStack)
         for ((fieldL, fieldR) in overlaps) {
             if (SolanaConfig.OptimisticPTAOverlaps.get()) {
-               warn { "The pointer domain performed optimistic join: " +
+               ptaWarning { "The pointer domain performed optimistic join: " +
                           "keeping stack overlaps $fieldL and $fieldR" }
             } else {
                 removeFieldFromStack(
@@ -2258,11 +2792,20 @@ class PTAGraph(/** Global node allocator **/
         }
 
         /** And finally, perform unifications **/
+        val renamedMerges = ArrayList<Pair<PTASymCell, PTASymCell>> ()
         unificationList.forEach { (leftSC, rightSC) ->
-            val renamedLeftC = concretizeCell(leftSC.renameNode(leftStack, leftOutStack), "join", null)
-            val renamedRightC = concretizeCell(rightSC.renameNode(rightStack, rightOutStack), "join", null)
-            renamedLeftC.unify(renamedRightC)
+            val renamedLeftSC = leftSC.renameNode(leftStack, leftOutStack)
+            val renamedRightSC = rightSC.renameNode(rightStack, rightOutStack)
+            if (debugPTAJoin) {
+                if (renamedLeftSC == leftSC && renamedRightSC == rightSC) {
+                    sbfLogger.info { "JOIN SCHEDULED UNIFY $leftSC with $rightSC" }
+                } else {
+                    sbfLogger.info { "JOIN SCHEDULED UNIFY $renamedLeftSC ($leftSC) with $renamedRightSC ($rightSC)" }
+                }
+            }
+            renamedMerges.add(Pair(renamedLeftSC, renamedRightSC))
         }
+        UnificationBatch(outG, renamedMerges) { sc, msg -> (::reifyCell)(sc, msg, null) }.run()
 
         if (debugPTAJoin) {
             dotDebugger.addResultAndPrint(outG, left, right)
@@ -2309,17 +2852,22 @@ class PTAGraph(/** Global node allocator **/
     fun lessOrEqual(other: PTAGraph, left: Label?, right: Label?): Boolean {
 
         // For registers
-        fun lessOrEqual(left: ArrayList<PTASymCell?>, right: ArrayList<PTASymCell?>,
+        fun lessOrEqual(left: ArrayList<PTASymCell?>, right:ArrayList<PTASymCell?>,
                         leftStack: PTANode, rightStack: PTANode): Boolean {
             left.forEachIndexed{i, leftC ->
                 val rightC = right[i]
                 if (leftC == null && rightC != null) {
-                    dbgLeq { "register $i is top on left but non-top on right operand" }
+                    if (debugPTALeq) {
+                        sbfLogger.info { "register $i is top on left but non-top on right operand" }
+                    }
                     return false
                 } else if (leftC != null && rightC != null) {
                     val renamedLeftC = leftC.renameNode(leftStack, rightStack)
                     if (!renamedLeftC.lessOrEqual(rightC)) {
-                        dbgLeq { "register $i has different cells for left and right operands: $renamedLeftC and $rightC" }
+                        if (debugPTALeq) {
+                            sbfLogger.info { "register $i has different cells for left and right operands: " +
+                                              "$renamedLeftC and $rightC" }
+                        }
                         return false
                     }
                 }
@@ -2351,7 +2899,9 @@ class PTAGraph(/** Global node allocator **/
 
         // special case if the left stack has been already summarized but the right stack hasn't.
         if (!leftStack.isExactNode() && rightStack.isExactNode()) {
-            dbgLeq {"Left stack is not summarized but right stack is" }
+            if (debugPTALeq) {
+                sbfLogger.info {"Left stack is not summarized but right stack is"}
+            }
             return false
         }
 
@@ -2360,21 +2910,27 @@ class PTAGraph(/** Global node allocator **/
                     ?: if (other.untrackedStackFields.contains(field)) {
                         continue
                     } else {
-                        dbgLeq {"Right stack does not have cell at field $field\nLeft=$this\nRight=$other" }
+                        if (debugPTALeq) {
+                            sbfLogger.info {"Right stack does not have cell at field $field\n" +
+                                "Left=$this\n" +
+                                "Right=$other"}
+                        }
                         return false
                     }
 
             val renamedLeftSuccC = leftSuccC.renameNode(leftStack, rightStack)
             if (!renamedLeftSuccC.lessOrEqual(rightSuccC)) {
-                if (rightSuccC.getNode() == rightStack && !rightStack.isExactNode()) {
+                if (rightSuccC.node == rightStack && !rightStack.isExactNode()) {
                     // rightStack is fully summarized and its successor link points to itself:
                     // this is the most general stack so anything is less or equal than that.
                     continue
                 }
 
-                dbgLeq {
+                if (debugPTALeq) {
+                    sbfLogger.info {
                         "Stack at field $field has different cells for left and right operands: " +
-                        "$renamedLeftSuccC and $rightSuccC\nLeft=$this\nRight=$other"
+                            "$renamedLeftSuccC and $rightSuccC\nLeft=$this\nRight=$other"
+                    }
                 }
                 return false
 
@@ -2422,7 +2978,7 @@ class PTAGraph(/** Global node allocator **/
                     if (!o.isTop()) {
                         val r10C = getRegCell(Value.Reg(SbfRegister.R10_STACK_POINTER))
                         if (r10C != null) {
-                            sc = r10C.getNode().createSymCell(PTASymOffset(o.get()!!))
+                            sc = r10C.node.createSymCell(PTASymOffset(o.get()!!))
                             setRegCell(reg, sc)
                         }
                     }
@@ -2504,8 +3060,8 @@ class PTAGraph(/** Global node allocator **/
                     forget(dst)
                     return
                 }
-            val n = c.getNode()
-            val o = c.getOffset()
+            val n = c.node
+            val o = c.offset
             if (op == BinOp.ADD || op == BinOp.SUB) {
                 val newOffset = updateOffset(op, n, o, op2.v.toLong())
                 setRegCell(dst, n.createSymCell(newOffset))
@@ -2567,15 +3123,15 @@ class PTAGraph(/** Global node allocator **/
                 // know that at this time `op2` is a number.
                 val c2 = getRegCell(op2)
                 if (c2 != null) {
-                    concretizeCell(c1, "$dst:= $op1 $op $op2", locInst)
-                        .unify(concretizeCell(c2, "$dst:= $op1 $op $op2", locInst))
+                    reifyCell(c1, "$dst:= $op1 $op $op2", locInst)
+                        .unify(reifyCell(c2, "$dst:= $op1 $op $op2", locInst))
                 }
                 // after unification, op1 and op2 point to the same cell.
                 if (dst != op1 && dst != op2) {
                     setRegCell(dst, getRegCell(op1))
                 }
             } else {
-                doUnknownPointerArithmetic(dst, c1.getNode())
+                doUnknownPointerArithmetic(dst, c1.node)
             }
         }
     }
@@ -2600,8 +3156,8 @@ class PTAGraph(/** Global node allocator **/
              */
              // If we know that one of the operands cannot be a pointer then we can
              // avoid the unification
-            concretizeCell(c1, "$dst:= $op1 $op $op2", locInst)
-                .unify(concretizeCell(c2, "$dst:= $op1 $op $op2", locInst))
+            reifyCell(c1, "$dst:= $op1 $op $op2", locInst)
+                .unify(reifyCell(c2, "$dst:= $op1 $op $op2", locInst))
             // after unification, op1 and op2 point to the same cell.
             if (dst != op1 && dst != op2) {
                 setRegCell(dst, getRegCell(op1))
@@ -2655,9 +3211,9 @@ class PTAGraph(/** Global node allocator **/
                 val c1 = getRegCell(op1)
                 val c2 = getRegCell(op2)
                 if (c1 != null) {
-                    doUnknownPointerArithmetic(dst, c1.getNode())
+                    doUnknownPointerArithmetic(dst, c1.node)
                 } else if (c2 != null) {
-                    doUnknownPointerArithmetic(dst, c2.getNode())
+                    doUnknownPointerArithmetic(dst, c2.node)
                 } else {
                     if (enableDefensiveChecks) {
                         throw PointerDomainError("TODO(3) cannot find a cell for $op1 and $op2 in $this")
@@ -2689,8 +3245,8 @@ class PTAGraph(/** Global node allocator **/
               dstType: SbfType,
               srcType: SbfType,
               @Suppress("UNUSED_PARAMETER") globalsMap: GlobalVariableMap) {
-        if (op != BinOp.MOV && (dstType is SbfType.NumType && srcType is SbfType.NumType)) {
-            // op is a binary operation where the two operands are not pointer.
+        if (dstType is SbfType.NumType && srcType is SbfType.NumType) {
+            // the pointer domain doesn't keep track of @dst
             forget(dst)
             return
         }
@@ -2731,17 +3287,15 @@ class PTAGraph(/** Global node allocator **/
         val trueC = if (trueVal is Value.Reg) { getRegCell(trueVal) } else { null }
         val falseC = if (falseVal is Value.Reg) { getRegCell(falseVal) } else { null }
 
-        val unificationList = mutableListOf<Pair<PTASymCell, PTASymCell>>()
+        val unificationList = ArrayList<Pair<PTASymCell, PTASymCell>>()
         // set destination (the result of joinRegister can be null)
         setRegCell(Value.Reg(dst.r),
             joinRegister(dst.r, getStack(), getStack(), trueC, falseC, scalars, scalars, unificationList))
 
         // extra unifications
-        unificationList.forEach { (leftSc, rightSc) ->
-            val leftC = concretizeCell(leftSc, "select", locInst)
-            val rightC = concretizeCell(rightSc, "select", locInst)
-            leftC.unify(rightC)
-        }
+        UnificationBatch(this, unificationList) { sc, msg ->
+            (::reifyCell)(sc, msg, locInst)
+        }.run()
     }
 
 
@@ -2758,14 +3312,14 @@ class PTAGraph(/** Global node allocator **/
         val baseC = getRegCell(baseReg, baseRegType, globalsMap, locInst)
                 ?: throw UnknownPointerDerefError(
                     DevErrorInfo(locInst, PtrExprErrReg(baseReg),"load: the base $baseReg does not point to a graph node in $this"))
-        baseC.getNode().setRead()
-        val newOffset = updateOffset(BinOp.ADD, baseC.getNode(), baseC.getOffset(), offset.toLong())
-        /** Cell concretization takes place here because we cannot delay longer symbolic offsets **/
-        val concreteC = concretizeCell(baseC.getNode().createSymCell(newOffset),
-                        "concretization of $baseReg in $dst := *($baseReg + $offset)", locInst)
-        val concreteOffset = concreteC.getOffset()
+        baseC.node.setRead()
+        val newOffset = updateOffset(BinOp.ADD, baseC.node, baseC.offset, offset.toLong())
+        /** Reification takes place here because we cannot delay longer symbolic offsets **/
+        val concreteC = reifyCell(baseC.node.createSymCell(newOffset),
+                        "reification of $baseReg in $dst := *($baseReg + $offset)", locInst)
+        val concreteOffset = concreteC.offset
         val field = PTAField(concreteOffset, width)
-        val concreteNode = concreteC.getNode()
+        val concreteNode = concreteC.node
         val isConcreteNodeStack = concreteNode == getStack()
         val succC = concreteNode.getSucc(field)
         if (succC == null) {
@@ -2782,7 +3336,7 @@ class PTAGraph(/** Global node allocator **/
                     setRegCell(dst, reconstructedSuccC)
                     // It's possible that the read field was marked as untracked by a previous store.
                     // But in this case it's okay to call reconstructIntegerCell and mark the field as trackable again.
-                    untrackedStackFields = untrackedStackFields.remove(PTAField(concreteC.getOffset(), width))
+                    untrackedStackFields = untrackedStackFields.remove(PTAField(concreteC.offset, width))
                     return
                 } else if (untrackedStackFields.contains(field)) {
 
@@ -2817,7 +3371,7 @@ class PTAGraph(/** Global node allocator **/
              * REVISIT: updateLink will kill first all the overlapping cells.
              *  Perhaps, we should throw an exception if there are overlaps.
              */
-            val allocC = concretizeCell(externAlloc.alloc(locInst), "external allocation", locInst)
+            val allocC = reifyCell(externAlloc.alloc(locInst), "external allocation", locInst)
             updateLink(locInst, concreteC, width, allocC, false)
             setRegCell(dst, allocC.createSymCell())
         } else {
@@ -2830,17 +3384,16 @@ class PTAGraph(/** Global node allocator **/
 
     /** Reconstruct a cell from the overlapping cells **/
     private fun reconstructIntegerCell(locInst: LocatedSbfInstruction, deref: PTACell, width: Short): PTASymCell? {
-        val derefNode= deref.getNode()
-        if (derefNode.getSuccs().isEmpty()) {
+        if (deref.node.getSuccs().isEmpty()) {
             return null
         }
-        val x = FiniteInterval.mkInterval(deref.getOffset(), width.toLong())
-        for ((field, succC) in derefNode.getSuccs()) {
-            val fieldRange =  field.toInterval()
+        val x = FiniteInterval.mkInterval(deref.offset, width.toLong())
+        for ((field, succC) in deref.node.getSuccs()) {
+            val fieldRange =  deref.node.getAccessedBytes(field)
             if (!fieldRange.includes(x)) {
                 continue
             }
-            return if (succC.getNode().mustBeInteger()) {
+            return if (succC.node.mustBeInteger()) {
                 integerAlloc.alloc(locInst)
             } else {
                 null
@@ -2855,7 +3408,7 @@ class PTAGraph(/** Global node allocator **/
      *  This is sufficient to check that whether a stack address escapes.
      */
     private fun checkStackDoesNotEscape(locInst: LocatedSbfInstruction?, src: PTACell, dst: PTACell) {
-        if (src.getNode() != getStack() && dst.getNode() == getStack()) {
+        if (src.node != getStack() && dst.node == getStack()) {
             throw PointerStackEscapingError(DevErrorInfo(locInst, null,"stack is escaping: $dst is being stored into $src"))
         }
     }
@@ -2864,35 +3417,34 @@ class PTAGraph(/** Global node allocator **/
      *  Return all the partial overlap links with [c.offset, c.offset + width]
      *  Precondition: c.node is the stack
      */
-    private fun getOverlapLinks(c: PTACell, width: Short): List<PTALink> {
-        check(c.getNode() == getStack()) {"getOverlapLinks expects only a stack node"}
-        return c.getNode().getLinksInRange(c.getOffset(), width.toLong(), isStrict = false, onlyPartial = true)
+    private fun getOverlapLinks(c: PTACell, width: Short): List<Pair<PTAField, PTACell>> {
+        check(c.node == getStack()) {"getOverlapLinks expects only a stack node"}
+        return c.node.getLinksInRange(c.offset, width.toLong(), isStrict = false, onlyPartial = true)
     }
 
     /** This function is public because it is used by TAC encoding **/
     fun getOverlapFields(c: PTACell, width: Short): List<Pair<PTANode, PTAField>>? {
-        val node = c.getNode()
-        return if (node != getStack()) {
-            if (node.isExactNode()) {
-                node.getLinksInRange(c.getOffset(), width.toLong(), isStrict = false, onlyPartial = true).
-                map { Pair(node, it.field)}
+        return if (c.node != getStack()) {
+            if (c.node.isExactNode()) {
+                c.node.getLinksInRange(c.offset, width.toLong(), isStrict = false, onlyPartial = true).
+                map {Pair(c.node, it.first)}
             } else {
                 // If the node is summarized then we cannot tell any precise information about overlaps.
                 null
             }
         } else {
-            getOverlapLinks(c, width).map { Pair(node, it.field) }
+            getOverlapLinks(c, width).map { Pair(c.node, it.first) }
         }
     }
 
     private fun updateLink(locInst: LocatedSbfInstruction, src: PTACell, width: Short, dst: PTACell, isStore: Boolean) {
         checkStackDoesNotEscape(locInst, src, dst)
-        val srcNode = src.getNode()
+
         val isStrongUpdate =
-            if (srcNode == getStack()) {
+            if (src.node == getStack()) {
                 /// Remove any overlapping field.
                 val links = getOverlapLinks(src, width)
-                srcNode.removeLinks(links) { f ->
+                src.node.removeLinks(links) { f ->
                     //sbfLogger.info {"Removed link at $f after updating link at ${src.offset} width=$width"}
                     untrackedStackFields = untrackedStackFields.add(f)
                 }
@@ -2901,7 +3453,7 @@ class PTAGraph(/** Global node allocator **/
                 // We need to make innacessible any possible **overlapping** field even if it hasn't been accessed yet.
                 if (isStore) {
                     for (size in usedMemoryBitwidths) {
-                        untrackedStackFields = untrackedStackFields.add(PTAField(src.getOffset(), size.toShort()))
+                        untrackedStackFields = untrackedStackFields.add(PTAField(src.offset, size.toShort()))
                     }
                 }
                 true
@@ -2909,16 +3461,16 @@ class PTAGraph(/** Global node allocator **/
                 false
             }
 
-        srcNode.mkLink(src.getOffset(), width, dst, isStrongUpdate)
+        src.node.mkLink(src.offset, width, dst, isStrongUpdate)
 
-        if (srcNode == getStack()) {
+        if (src.node == getStack()) {
             // If this field was untracked then from now on, it will be tracked because
             // it has been overwritten.
-            untrackedStackFields = untrackedStackFields.remove(PTAField(src.getOffset(), width))
+            untrackedStackFields = untrackedStackFields.remove(PTAField(src.offset, width))
         }
     }
 
-    /** Transfer function for *([baseReg] + [offset]) = [value] **/
+    /** Transfer function for *(baseReg + offset) = value **/
     fun doStore(locInst: LocatedSbfInstruction,
                 baseReg: Value.Reg,
                 offset: Short,
@@ -2932,14 +3484,14 @@ class PTAGraph(/** Global node allocator **/
         val baseC = getRegCell(baseReg, baseRegType, globalsMap, locInst)
                 ?: throw UnknownPointerDerefError(
                     DevErrorInfo(locInst, PtrExprErrReg(baseReg), "store: the base $baseReg does not point to a graph node in $this"))
-        baseC.getNode().setWrite()
-        val newOffset = updateOffset(BinOp.ADD, baseC.getNode(), baseC.getOffset(), offset.toLong())
-        /** Cell concretization takes place here because we cannot delay anymore a symbolic offset **/
-        val concreteC = concretizeCell(baseC.getNode().createSymCell(newOffset),
-                              "concretization of $baseReg in *($baseReg + $offset) := $value", locInst)
+        baseC.node.setWrite()
+        val newOffset = updateOffset(BinOp.ADD, baseC.node, baseC.offset, offset.toLong())
+        /** Reification takes place here because we cannot delay anymore a symbolic offset **/
+        val concreteC = reifyCell(baseC.node.createSymCell(newOffset),
+                              "reification of $baseReg in *($baseReg + $offset) := $value", locInst)
         /** whether the store is on the stack or not **/
         val isStack = baseRegType is SbfType.PointerType.Stack
-        check(!isStack || concreteC.getNode() == getStack()) {"Scalar and pointer domain disagree on the stack"}
+        check(!isStack || concreteC.node == getStack()) {"Scalar and pointer domain disagree on the stack"}
         if (value is Value.Imm) {
             /**
              * Create a cell (with integer node) for the immediate value and add an edge in the points-to graph
@@ -2947,7 +3499,7 @@ class PTAGraph(/** Global node allocator **/
              * Note that we always add the edge even if the source is not the stack because the cell can be
              * copied (via memcpy) later to the stack.
              **/
-            val valueC = integerAlloc.alloc(locInst).concretize() // this concretize() is non-op
+            val valueC = integerAlloc.alloc(locInst).reify() // this reify() is non-op
             updateLink(locInst, concreteC, width, valueC, true)
         } else {
             val valueReg = value as Value.Reg
@@ -2955,9 +3507,9 @@ class PTAGraph(/** Global node allocator **/
             if (valueSC != null) {
                 /**
                  * Create an edge in the points-to graph between two existing cells
-                 * We also need to concretize valueCell.
+                 * We also need to reify valueCell.
                  **/
-                val valueC = concretizeCell(valueSC, "concretization of $value in *($baseReg + $offset) := $value", locInst)
+                val valueC = reifyCell(valueSC, "reification of $value in *($baseReg + $offset) := $value", locInst)
                 updateLink(locInst, concreteC, width, valueC, true)
             } else {
 
@@ -2967,13 +3519,13 @@ class PTAGraph(/** Global node allocator **/
                 val valueC = when(valueType) {
                     is SbfType.NumType -> {
                         // Create a fresh cell for the integer value
-                        integerAlloc.alloc(locInst).concretize() // this concretize() is non-op
+                        integerAlloc.alloc(locInst).reify() // this reify() is non-op
                     }
                     is SbfType.PointerType.Global -> {
                         val gv = valueType.global
                         if (gv != null) {
                             // Create a fresh cell for the global variable
-                            globalAlloc.alloc(gv, valueType.offset).concretize()
+                            globalAlloc.alloc(gv, valueType.offset).reify()
                         } else {
                             null
                         }
@@ -2985,7 +3537,7 @@ class PTAGraph(/** Global node allocator **/
 
                 if (valueC == null) {
                     if (isStack) {
-                        untrackedStackFields = untrackedStackFields.add(PTAField(concreteC.getOffset(), width))
+                        untrackedStackFields = untrackedStackFields.add(PTAField(concreteC.offset, width))
                     } else {
                         throw UnknownPointerStoreError(DevErrorInfo(locInst, PtrExprErrReg(valueReg), ""))
                     }
@@ -2999,17 +3551,16 @@ class PTAGraph(/** Global node allocator **/
         }
     }
 
-    private fun getOverwrittenLinksByLongCopy(c: PTACell, len: Long): List<PTALink> {
-        check(c.getNode().isExactNode()) {"getOverlapLinksForLongCopy expects a exact PTA node"}
-        return c.getNode().getLinksInRange(c.getOffset(), len, isStrict = false)
+    private fun getOverwrittenLinksByLongCopy(c: PTACell, len: Long): List<Pair<PTAField, PTACell>> {
+        check(c.node.isExactNode()) {"getOverlapLinksForLongCopy expects a exact PTA node"}
+        return c.node.getLinksInRange(c.offset, len, isStrict = false)
     }
 
     /** This function is public because it is used by TAC encoding **/
     fun getOverwrittenFieldsByLongCopy(c: PTACell, len: Long): List<Pair<PTANode, PTAField>>? {
-        val node = c.getNode()
-        return if (node.isExactNode()) {
+        return if (c.node.isExactNode()) {
             getOverwrittenLinksByLongCopy(c, len). map {
-                Pair(node, it.field)
+                Pair(c.node, it.first)
             }
         } else {
             // If the node is summarized then we cannot tell any precise information about overlaps.
@@ -3019,24 +3570,26 @@ class PTAGraph(/** Global node allocator **/
 
     /**
      * Remove any overwritten field on the destination (included partial overlaps)
-     * Used by `doMemcpy` and `doMemset`.
+     * Used by doMemcpy and doMemset.
      */
     private fun removeLinks(dstC: PTACell, len: Long) {
-        val dstNode = dstC.getNode()
-        val dstOffset = dstC.getOffset()
         // We make accessible again all fields on the destination
-        val range = FiniteInterval.mkInterval(dstOffset, len)
+        val range = FiniteInterval.mkInterval(dstC.offset, len)
         untrackedStackFields = untrackedStackFields.removeAll {
-            dbgMemTransfer { "\tRemoved link $it" }
+            if (debugPTAMemTransfer) {
+                sbfLogger.info { "\tRemoved link $it" }
+            }
             range.includes(it.toInterval())
         }
 
         val dstLinks = getOverwrittenLinksByLongCopy(dstC, len)
-        dstNode.removeLinks(dstLinks) { f ->
-            if (dstNode == getStack()) {
-                if (f.offset < dstOffset || dstOffset + len <= f.offset) {
+        dstC.node.removeLinks(dstLinks) { f ->
+            if (dstC.node == getStack()) {
+                if (f.offset < dstC.offset || dstC.offset + len <= f.offset) {
                     // Make inaccessible any overlapping field
-                    dbgMemTransfer { "\tAdded link at $f" }
+                    if (debugPTAMemTransfer) {
+                        sbfLogger.info { "\tAdded link at $f" }
+                    }
                     untrackedStackFields = untrackedStackFields.add(f)
                 }
             }
@@ -3057,16 +3610,16 @@ class PTAGraph(/** Global node allocator **/
          * [adjustedOffset] allows translating offsets from the source to the destination.
          **/
         fun copyLinks(srcC: PTACell, dstC: PTACell,
-                      srcLinks: List<PTALink>,
+                      srcLinks: List<Pair<PTAField, PTACell>>,
                       adjustedOffset: PTAOffset) {
-            val dstNode = dstC.getNode()
-            val srcNode = srcC.getNode()
-            dstNode.updateLinks(srcLinks, adjustedOffset) { f ->
+            dstC.node.copyLinks(srcLinks, adjustedOffset) { f ->
                 val srcField = f.copy(offset= f.offset - adjustedOffset)
-                check(srcNode.getSucc(srcField) != null) {"field $srcField should exist in $srcNode"}
-                checkStackDoesNotEscape(locInst, dstNode.createCell(f.offset), srcNode.getSucc(srcField)!!)
-                if (dstNode == getStack()) {
-                    dbgMemTransfer { "\tAdded link at $f" }
+                check(srcC.node.getSucc(srcField) != null) {"field $srcField should exist in ${srcC.node}"}
+                checkStackDoesNotEscape(locInst, dstC.node.createCell(f.offset), srcC.node.getSucc(srcField)!!)
+                if (dstC.node == getStack()) {
+                    if (debugPTAMemTransfer) {
+                        sbfLogger.info { "\tAdded link at $f" }
+                    }
                 }
             }
         }
@@ -3100,20 +3653,17 @@ class PTAGraph(/** Global node allocator **/
          * - from exact, non-stack to stack
          **/
         fun memcpyExactToStack(srcC: PTACell, len: Long, dstC: PTACell) {
-            val srcNode = srcC.getNode()
-            val srcOffset = srcC.getOffset()
-            val dstNode = dstC.getNode()
-            val dstOffset = dstC.getOffset()
+            check(srcC.node.isExactNode()) {"Precondition of memcpyExactToStack (1)"}
+            check(dstC.node == getStack()) {"Precondition of memcpyExactToStack (2)"}
 
-            check(srcNode.isExactNode()) {"Precondition of memcpyExactToStack (1)"}
-            check(dstNode == getStack()) {"Precondition of memcpyExactToStack (2)"}
+            val adjustedOffset = dstC.offset - srcC.offset
 
-            val adjustedOffset = dstOffset - srcOffset
-
-            dbgMemTransfer {
-                "memcpy [$dstOffset,...,${dstOffset + len - 1}] <- " +
-                    "[$srcOffset,...,${srcOffset + len - 1}]" +
-                    "(adjustedOffset=$adjustedOffset) length=$len"
+            if (debugPTAMemTransfer) {
+                sbfLogger.info {
+                    "memcpy [${dstC.offset},...,${dstC.offset + len - 1}] <- " +
+                        "[${srcC.offset},...,${srcC.offset + len - 1}]" +
+                        "(adjustedOffset=${adjustedOffset}) length=$len"
+                }
             }
 
             // Remove any overlapping field on the destination.
@@ -3121,13 +3671,13 @@ class PTAGraph(/** Global node allocator **/
             // Select the source's links to be transferred.
             // We only transfer those links from source that are strictly in the range
             // [srcC.offset, srcC.offset+length-1]. Note that transferring fewer links is sound.
-            val srcLinks = srcNode.getLinksInRange(srcOffset, len)
+            val srcLinks = srcC.node.getLinksInRange(srcC.offset, len)
             // The actual transfer of links
             copyLinks(srcC, dstC, srcLinks, adjustedOffset)
 
-            if (srcNode == getStack()) {
+            if (srcC.node == getStack()) {
                 // propagate untracked fields from source to destination
-                val srcRange = FiniteInterval.mkInterval(srcOffset, len)
+                val srcRange = FiniteInterval.mkInterval(srcC.offset, len)
                 val untrackedFields = untrackedStackFields
                 for (f in untrackedFields.iterator()) {
                     if (f.toInterval().overlap(srcRange)) {
@@ -3140,14 +3690,10 @@ class PTAGraph(/** Global node allocator **/
 
         /** memcpy from summarized memory to stack **/
         fun  memcpySummToStack(srcC: PTACell, len: Long, dstC: PTACell) {
-            val srcNode = srcC.getNode()
-            val dstNode = dstC.getNode()
-            val dstOffset = dstC.getOffset()
+            check(!srcC.node.isExactNode()) { "Precondition of memcpySummToStack (1)" }
+            check(dstC.node == getStack()) { "Precondition of memcpySummToStack (2)" }
 
-            check(!srcNode.isExactNode()) { "Precondition of memcpySummToStack (1)" }
-            check(dstNode == getStack()) { "Precondition of memcpySummToStack (2)" }
-
-            if (srcNode.getSuccs().values.isEmpty()) {
+            if (srcC.node.getSuccs().values.isEmpty()) {
                 // there is nothing to transfer, but we kill conservatively at the destination
                 // This can cause later on PTA exceptions, but it's sound.
                 removeLinks(dstC, len)
@@ -3155,7 +3701,7 @@ class PTAGraph(/** Global node allocator **/
                 // -- weak update
                 // unify(dstC, length, srcC)
                 // -- strong update
-                val dstLinks = dstNode.getLinksInRange(dstOffset, len)
+                val dstLinks = dstC.node.getLinksInRange(dstC.offset, len)
                 removeLinks(dstC, len)
 
                 // LIMITATION: we only add a link in the source IF there was already a link before.
@@ -3165,25 +3711,25 @@ class PTAGraph(/** Global node allocator **/
                 // spurious counterexamples (from reading non-deterministic memory) but it should not cause soundness issues.
 
                 // src is summarized, so it can only have up to 4 successors: 0:u8, 0:u16, 0:u32, and 0:u64
-                for ((srcField, succSrcC) in srcNode.getSuccs()) {
+                for ((srcField, succSrcC) in srcC.node.getSuccs()) {
                     check(srcField.offset == 0L) {"Summarized nodes can only have links at offset 0"}
                     val dstFields = dstLinks.filter { (f, _) -> f.size == srcField.size }.map { (f, _) -> f }
                     for (dstField in dstFields) {
-                        dstNode.addSucc(dstField, succSrcC)
-                        checkStackDoesNotEscape(locInst, dstNode.createCell(dstField.offset), succSrcC)
+                        dstC.node.addEdge(dstField, succSrcC)
+                        checkStackDoesNotEscape(locInst, dstC.node.createCell(dstField.offset), succSrcC)
                     }
                 }
 
                 // Special case to the above LIMITATION:
                 // destination does not have links but memcpy copies only up to 1 word (8 bytes)
                 if (len <= 8) {
-                    for ((srcField, succSrcC) in srcNode.getSuccs()) {
+                    for ((srcField, succSrcC) in srcC.node.getSuccs()) {
                         if (srcField.size > len) {
                             continue
                         }
-                        val dstField = PTAField(dstOffset + 0, srcField.size)
-                        if (dstNode.getSucc(dstField) == null) {
-                            dstNode.addSucc(dstField, succSrcC)
+                        val dstField = PTAField(dstC.offset + 0, srcField.size)
+                        if (dstC.node.getSucc(dstField) == null) {
+                            dstC.node.addEdge(dstField, succSrcC)
                         }
                     }
                 }
@@ -3196,35 +3742,30 @@ class PTAGraph(/** Global node allocator **/
          *  unify them with [dstC].
          */
         fun memcpyStackToSumm(srcC: PTACell, len: Long, dstC: PTACell) {
-            val srcNode = srcC.getNode()
-            val srcOffset = srcC.getOffset()
-            val dstNode = dstC.getNode()
+            check(srcC.node.isExactNode()) {"Precondition of memcpyStackToSumm (1)"}
+            check(!dstC.node.isExactNode()) {"Precondition of memcpyStackToSumm (2)"}
 
-            check(srcNode.isExactNode()) {"Precondition of memcpyStackToSumm (1)"}
-            check(!dstNode.isExactNode()) {"Precondition of memcpyStackToSumm (2)"}
-
-            val stackLinks = srcNode.getLinksInRange(srcOffset, len)
+            val stackLinks = srcC.node.getLinksInRange(srcC.offset, len)
             if (stackLinks.isNotEmpty()) {
                 // Note that even if nonStackSumC is a summarized node then it will have one link per field's size.
                 // We should have at most four links, each one for *i8, *i16, *i32, and *i64.
                 // Thus, we iterate over each field's size of the summarized node.
                 // This means that we will unify two links only if they have the same size.
-
+                val nonStackFields = ArrayList<PTAField>()
                 // We copy the fields to avoid invalidating iterators
-                val nonStackFields = mutableListOf<PTAField>()
-                nonStackFields.addAll(dstNode.getSuccs().keys)
+                nonStackFields.addAll(dstC.node.getSuccs().keys)
                 for (nonStackField in nonStackFields) {
-                    check(nonStackField.offset == 0L) { "$dstNode is summarized so its offset should be 0" }
+                    check(nonStackField.offset == 0L) { "${dstC.node} is summarized so its offset should be 0" }
                     val links = stackLinks.filter { (f, _) -> f.size == nonStackField.size }.map { (f, _) -> f }
                     if (links.isEmpty()) {
                         continue
                     }
                     // First, we unify all links in the stack
-                    unifyLinks(srcNode, links)
+                    unifyLinks(srcC.node, links)
                     // Second, we unify the unified stack links with the non-stack link
-                    val unifiedStackSuccC = srcNode.getSucc(links.first())
+                    val unifiedStackSuccC = srcC.node.getSucc(links.first())
                     check(unifiedStackSuccC != null) { "unexpected null in memcpyStackToSumm (1)" }
-                    val nonStackSumSuccC = dstNode.getSucc(nonStackField)
+                    val nonStackSumSuccC = dstC.node.getSucc(nonStackField)
                     if (nonStackSumSuccC != null) {
                         // It's possible that nonStackSumSuccC is null if nonStackSumC.node's links are redirected because
                         // of a previous unification.
@@ -3242,19 +3783,14 @@ class PTAGraph(/** Global node allocator **/
          * the destination is not on the stack, but its fields are being tracked precisely.
          */
         fun memcpyStackToExact(srcC: PTACell, len: Long, dstC: PTACell) {
-            val srcNode = srcC.getNode()
-            val srcOffset = srcC.getOffset()
-            val dstNode = dstC.getNode()
-            val dstOffset = dstC.getOffset()
+            check(srcC.node == getStack()) { "Precondition of memcpyStackToExact (1)" }
+            check(dstC.node.isExactNode()) { "Precondition of memcpyStackToExact (2)" }
 
-            check(srcNode == getStack()) { "Precondition of memcpyStackToExact (1)" }
-            check(dstNode.isExactNode()) { "Precondition of memcpyStackToExact (2)" }
-
-            val srcLinks = srcNode.getLinksInRange(srcOffset, len, isStrict=true, onlyPartial = false)
-            val dstLinks = dstNode.getLinksInRange(dstOffset, len, isStrict = true, onlyPartial = false)
-            val adjustedOffset = dstOffset - srcOffset
-            val unifications = mutableListOf<Pair<PTASymCell, PTASymCell>>()
-            val additions = mutableListOf<PTALink>()
+            val srcLinks = srcC.node.getLinksInRange(srcC.offset, len, isStrict=true, onlyPartial = false)
+            val dstLinks = dstC.node.getLinksInRange(dstC.offset, len, isStrict = true, onlyPartial = false)
+            val adjustedOffset = dstC.offset - srcC.offset
+            val unifications = ArrayList<Pair<PTASymCell, PTASymCell>>()
+            val additions = ArrayList<Pair<PTAField, PTACell>>()
             // 1. If a link exists in both source and destination we unify them
             // 2. If a link doesn't exist on the source but exists on the destination we do nothing.
             //    Note that we don't remove on destination because that would be a strong update.
@@ -3263,28 +3799,24 @@ class PTAGraph(/** Global node allocator **/
                 val dstField =  srcField.copy(offset= srcField.offset + adjustedOffset)
                 val dstLink = dstLinks.find { (f, _) -> dstField == f }
                 if (dstLink != null) {
-                    val dstSuccC = dstLink.cell
-                    unifications.add(Pair(srcSuccC.getNode().createSymCell(PTASymOffset(srcSuccC.getOffset())),
-                                          dstSuccC.getNode().createSymCell(PTASymOffset(dstSuccC.getOffset())) ))
+                    val dstSuccC = dstLink.second
+                    unifications.add(Pair(srcSuccC.node.createSymCell(PTASymOffset(srcSuccC.offset)),
+                                          dstSuccC.node.createSymCell(PTASymOffset(dstSuccC.offset)) ))
                 } else {
                     // I pass srcField instead of dstField (already adjusted offset) because
                     // copyLinks will do the adjustment.
-                    additions.add(PTALink(srcField, srcSuccC))
+                    additions.add(Pair(srcField, srcSuccC))
                 }
             }
 
             copyLinks(srcC, dstC, additions, adjustedOffset)
-            unifications.forEach { (leftSc, rightSc) ->
-                val leftC = concretizeCell(leftSc, "memcpy", null)
-                val rightC = concretizeCell(rightSc, "memcpy", null)
-                leftC.unify(rightC)
-            }
+            UnificationBatch(this, unifications) { sc, msg -> (::reifyCell)(sc, msg, null) }.run()
         }
 
         /** memcpy from non-stack to non-stack **/
         fun memcpyNonStackToNonStack(srcC: PTACell, dstC: PTACell) {
-            check(srcC.getNode() != getStack()) { "Precondition of memcpyNonStackToNonStack (1)" }
-            check(dstC.getNode() != getStack()) { "Precondition of memcpyNonStackToNonStack (2)" }
+            check(srcC.node != getStack()) { "Precondition of memcpyNonStackToNonStack (1)" }
+            check(dstC.node != getStack()) { "Precondition of memcpyNonStackToNonStack (2)" }
 
             dstC.unify(srcC)
             if (!getStack().isExactNode()) {
@@ -3333,32 +3865,32 @@ class PTAGraph(/** Global node allocator **/
         val srcSc = getRegCell(r2, scalars.getValue(r2).get(), globals, locInst, stopIfError = true)
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r2),"memcpy: r2 does not point to a graph node in $this"))
 
-        srcSc.getNode().setRead()
-        dstSc.getNode().setWrite()
+        srcSc.node.setRead()
+        dstSc.node.setWrite()
 
-        if (dstSc.getNode() == getStack() && dstSc.isConcrete() && srcSc.getNode().isExactNode() && srcSc.isConcrete() && length != null) {
+        if (dstSc.node == getStack() && dstSc.isReified() && srcSc.node.isExactNode() && srcSc.isReified() && length != null) {
             // destination is stack and source is either stack or non-summarized.
-            val dstC = dstSc.concretize() // it won't change anything
-            val srcC = srcSc.concretize() // it won't change anything
+            val dstC = dstSc.reify() // it won't change anything
+            val srcC = srcSc.reify() // it won't change anything
             memcpyExactToStack(srcC, length, dstC)
-        } else if (dstSc.getNode() != getStack() && srcSc.getNode() != getStack()) {
+        } else if (dstSc.node != getStack() && srcSc.node != getStack()) {
             // If no stack is involved then we can just unify source links
             // with destination's links, even if length is not statically known.
             // This is sound but it can be imprecise.
-            val dstC = dstSc.concretize()
-            val srcC = srcSc.concretize()
+            val dstC = dstSc.reify()
+            val srcC = srcSc.reify()
             memcpyNonStackToNonStack(srcC, dstC)
-        } else if (dstSc.getNode() == getStack() && dstSc.isConcrete() && length != null) {
+        } else if (dstSc.node == getStack() && dstSc.isReified() && length != null) {
             // destination is stack and source is a summarized node
-            val srcC = srcSc.concretize() // it might collapse destination if its offset was already top
-            val dstC = dstSc.concretize() // it doesn't change anything
-            check(!srcC.getNode().isExactNode()) {"Expected summarized node $srcC for source during PTA memcpy"}
+            val srcC = srcSc.reify() // it might collapse destination if its offset was already top
+            val dstC = dstSc.reify() // it doesn't change anything
+            check(!srcC.node.isExactNode()) {"Expected summarized node $srcC for source during PTA memcpy"}
             memcpySummToStack(srcC, length, dstC)
-        }  else if (srcSc.getNode() == getStack() && srcSc.isConcrete() && length != null) {
+        }  else if (srcSc.node == getStack() && srcSc.isReified() && length != null) {
             // source is the stack and destination is a non-stack node (summarized or not)
-            val dstC = dstSc.concretize() // it might collapse destination if its offset was already top
-            val srcC = srcSc.concretize() // it doesn't change anything
-            if (dstC.getNode().isExactNode()) {
+            val dstC = dstSc.reify() // it might collapse destination if its offset was already top
+            val srcC = srcSc.reify() // it doesn't change anything
+            if (dstC.node.isExactNode()) {
                 memcpyStackToExact(srcC, length, dstC)
             } else {
                 memcpyStackToSumm(srcC, length, dstC)
@@ -3366,7 +3898,7 @@ class PTAGraph(/** Global node allocator **/
         } else {
             // Note that for non-stack memory, we cannot kill destination's fields because next time we
             // read from there we will return a fresh cell pretending that it is the first read.
-            throw PointerDomainError("cannot analyze memcpy(${dstSc.getNode()}, ${srcSc.getNode()}, $length)")
+            throw PointerDomainError("cannot analyze memcpy(${dstSc.node}, ${srcSc.node}, $length)")
         }
     }
 
@@ -3376,31 +3908,26 @@ class PTAGraph(/** Global node allocator **/
      **/
     private fun doMemcmp(locInst: LocatedSbfInstruction, scalars: ScalarDomain, globals: GlobalVariableMap) {
         fun readWords(c1: PTACell, c2: PTACell, len: Int) {
-            val node1 = c1.getNode()
-            val o1 = c1.getOffset()
-            val node2 = c2.getNode()
-            val o2 = c2.getOffset()
-
-            node1.setRead()
-            node2.setRead()
+            c1.node.setRead()
+            c2.node.setRead()
             val wordSize = SolanaConfig.WordSize.get()
             val numOfWords = len / wordSize
             for (i in 0 until numOfWords) {
                 val offset = wordSize.toLong() * i
                 val width = wordSize.toShort()
-                val f1 = PTAField(o1 + offset, width)
-                val succ1 = node1.getSucc(f1)
+                val f1 = PTAField(c1.offset + offset, width)
+                val succ1 = c1.node.getSucc(f1)
                 if (succ1 == null) {
                     // we make sure that we assign a fresh, disjoint cell to each word
-                    val allocC = concretizeCell(externAlloc.alloc(locInst, i*2), "external allocation", locInst)
-                    updateLink(locInst, node1.createCell(f1.offset), width, allocC, false)
+                    val allocC = reifyCell(externAlloc.alloc(locInst, i*2), "external allocation", locInst)
+                    updateLink(locInst, c1.node.createCell(f1.offset), width, allocC, false)
                 }
-                val f2 = PTAField(o2 + offset, width)
-                val succ2 = node2.getSucc(f2)
+                val f2 = PTAField(c2.offset + offset, width)
+                val succ2 = c2.node.getSucc(f2)
                 if (succ2 == null) {
                     // we make sure that we assign a fresh, disjoint cell to each word
-                    val allocC = concretizeCell(externAlloc.alloc(locInst, (i*2)+1), "external allocation", locInst)
-                    updateLink(locInst, node2.createCell(f2.offset), width, allocC, false)
+                    val allocC = reifyCell(externAlloc.alloc(locInst, (i*2)+1), "external allocation", locInst)
+                    updateLink(locInst, c2.node.createCell(f2.offset), width, allocC, false)
                 }
             }
         }
@@ -3415,8 +3942,8 @@ class PTAGraph(/** Global node allocator **/
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r2),"memcmp: r2 does not point to a graph node in $this"))
         val len = (scalars.getValue(r3).get() as? SbfType.NumType)?.value?.get()
         if (len != null) {
-            val c1 = concretizeCell(sc1, "concretization of r1 in memcmp", locInst)
-            val c2 = concretizeCell(sc2, "concretization of r2 in memcmp", locInst)
+            val c1 = reifyCell(sc1, "reification of r1 in memcmp", locInst)
+            val c2 = reifyCell(sc2, "reification of r2 in memcmp", locInst)
             readWords(c1, c2, safeLongToInt(len))
         }
 
@@ -3426,7 +3953,6 @@ class PTAGraph(/** Global node allocator **/
 
     @TestOnly
     fun doMemset(locInst: LocatedSbfInstruction, scalars: ScalarDomain, globals: GlobalVariableMap) {
-
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
 
@@ -3434,14 +3960,14 @@ class PTAGraph(/** Global node allocator **/
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r1),"memset: r1 does not point to a graph node in $this"))
         val len = (scalars.getValue(r3).get() as? SbfType.NumType)?.value?.get()
         if (len != null) {
-            val c1 = concretizeCell(sc1, "concretization of r1 in memset", locInst)
-            if (c1.getNode() == getStack()) {
+            val c1 = reifyCell(sc1, "reification of r1 in memset", locInst)
+            if (c1.node == getStack()) {
                 removeLinks(c1, len)
             } else {
-                warn {"The pointer domain skipped ${locInst.inst} because it is not on the stack"}
+                ptaWarning {"The pointer domain skipped ${locInst.inst} because it is not on the stack"}
             }
         } else {
-            warn {"The pointer domain skipped ${locInst.inst} because length is not statically known"}
+            ptaWarning {"The pointer domain skipped ${locInst.inst} because length is not statically known"}
         }
     }
 
@@ -3461,7 +3987,7 @@ class PTAGraph(/** Global node allocator **/
                 doMemcmp(locInst, scalars, globals)
             }
             SolanaFunction.SOL_MEMMOVE -> {
-                warn {"The pointer domain skipped $memInst because it is unsupported"}
+                ptaWarning {"The pointer domain skipped $memInst because it is unsupported"}
             }
             SolanaFunction.SOL_MEMSET -> {
                 doMemset(locInst, scalars, globals)
@@ -3470,7 +3996,7 @@ class PTAGraph(/** Global node allocator **/
         }
     }
 
-    /** Transfer function for `__CVT_save_scratch_registers` **/
+    /** Transfer function for __CVT_save_scratch_registers **/
     private fun saveScratchRegisters() {
         pushScratchReg(registers[6])
         pushScratchReg(registers[7])
@@ -3489,13 +4015,13 @@ class PTAGraph(/** Global node allocator **/
         }
         val c = getRegCell(Value.Reg(SbfRegister.R10_STACK_POINTER))
         check(c != null) {"r10 should point always to a cell"}
-        val topStack = c.getOffset().get() ?: return
+        val topStack = c.offset.get() ?: return
 
         // 1. Remove all dead links
-        val deadLinks = mutableListOf<PTALink>()
+        val deadLinks = ArrayList<Pair<PTAField, PTACell>>()
         for ((field, succC) in stack.getSuccs()) {
             if (field.offset > topStack) {
-                deadLinks.add(PTALink(field, succC))
+                deadLinks.add(Pair(field, succC))
             }
         }
         stack.removeLinks(deadLinks)
@@ -3509,7 +4035,7 @@ class PTAGraph(/** Global node allocator **/
 
 
     /**
-     *  Transfer function for `__CVT_restore_scratch_registers`
+     *  Transfer function for __CVT_restore_scratch_registers
      *  Invariant ensured by CFG construction: r10 has been decremented already.
      */
     private fun restoreScratchRegisters() {
@@ -3523,7 +4049,7 @@ class PTAGraph(/** Global node allocator **/
     }
 
     /**
-     * `dealloc(r1,r2,r3)` where
+     * dealloc(r1,r2,r3) where
      *  - r1 is a pointer that points to the memory to be deallocated
      *  - r2 is usize that contains the size
      *  - r3 is usize that contains the alignment
@@ -3550,17 +4076,17 @@ class PTAGraph(/** Global node allocator **/
 
         val r1Sc = getRegCell(Value.Reg(SbfRegister.R1_ARG))
         if (r1Sc != null) {
-            if (r1Sc.isConcrete()) {
-                val n = r1Sc.concretize().getNode()
+            if (r1Sc.isReified()) {
+                val n = r1Sc.reify().node
                 if (isSingletonHeaplet(n)) {
                     // If some register rX points to the singleton object then we set it to top
                     for (i in 0 until NUM_OF_SBF_REGISTERS) {
                         val sc = registers[i]
-                        if (sc != null && sc.isConcrete()) {
+                        if (sc != null && sc.isReified()) {
                             // Although it might look counterintuitive, if we skip the register because we don't want to
-                            // concretize its pointee that's sound. In fact, when we set the register to top is when we can
+                            // reify its pointee that's sound. In fact, when we set the register to top is when we can
                             // gain precision by avoiding extra unifications.
-                            if (sc.concretize().getNode() == n) {
+                            if (sc.reify().node == n) {
                                 setRegCell(Value.Reg(SbfRegister.getByValue(i.toByte())), null)
                             }
                         }
@@ -3568,10 +4094,10 @@ class PTAGraph(/** Global node allocator **/
 
                     // If some stack field points to the singleton object then we can set it to top
                     val stackN = getStack()
-                    val links = mutableListOf<PTALink>()
+                    val links = ArrayList<Pair<PTAField, PTACell>>()
                     for ((field, c) in stackN.getSuccs()) {
-                        if (c.getNode() == n) {
-                            links.add(PTALink(field, c))
+                        if (c.node == n) {
+                            links.add(Pair(field, c))
                         }
                     }
                     stackN.removeLinks(links) { f ->
@@ -3602,7 +4128,7 @@ class PTAGraph(/** Global node allocator **/
                 SolanaFunction.SOL_ALLOC_FREE -> throw PointerDomainError("TODO(4): support sol_alloc_free")
                 SolanaFunction.SOL_GET_CLOCK_SYSVAR -> summarizeCall(calleeLocInst, globals, scalars, memSummaries)
                 else -> {
-                    warn { "The pointer domain summarized $callee by only havocing r0" }
+                    ptaWarning { "The pointer domain summarized $callee by only havocing r0" }
                     forget(Value.Reg(SbfRegister.R0_RETURN_VALUE))
                 }
             }
@@ -3656,7 +4182,7 @@ class PTAGraph(/** Global node allocator **/
             private var curArg: Int = 1
             override fun noSummaryFound(locInst: LocatedSbfInstruction) {
                 forget(Value.Reg(SbfRegister.R0_RETURN_VALUE))
-                warn { "The pointer domain summarized ${locInst.inst} by only havocing r0" }
+                ptaWarning { "The pointer domain summarized ${locInst.inst} by only havocing r0" }
             }
 
             override fun processReturnArgument(locInst: LocatedSbfInstruction, type: MemSummaryArgumentType) {
@@ -3697,32 +4223,30 @@ class PTAGraph(/** Global node allocator **/
                         val v = scalars.getValue(valReg)
                         val sc1 = getRegCell(valReg, v.get(), globals, locInst)
                         check(sc1 != null) { "unexpected situation while summarizing $call" }
-                        val c1 = concretizeCell(sc1, "$call (1)", locInst)
-                        val c2 = c1.getNode().createCell(c1.getOffset() + offset)
-                        val n2 = c2.getNode()
-                        val o2 = c2.getOffset()
+                        val c1 = reifyCell(sc1, "$call (1)", locInst)
 
+                        val c2 = c1.node.createCell(c1.offset + offset)
                         // Remove old link
-                        val f2 = PTAField(o2, width.toShort())
+                        val f2 = PTAField(c2.offset, width.toShort())
                         // We don't call removeField because it also removes predecessors of f2 which we want to keep
-                        val succC2 = n2.getSucc(f2)
+                        val succC2 = c2.node.getSucc(f2)
                         if (succC2 != null) {
-                            n2.removeSucc(f2, succC2)
+                            c2.node.removeEdge(f2, succC2)
                         }
-                        check(n2.getSucc(f2) == null){"Field $f2 was not removed properly from $n2"}
+                        check(c2.node.getSucc(f2) == null){"Field $f2 was not removed properly from ${c2.node}"}
                         // Add new link
                         val allocatedC = when (type) {
                             MemSummaryArgumentType.PTR_HEAP -> {
-                                concretizeCell(heapAlloc.highLevelAlloc(locInst, curArg), "$call (2)", locInst)
+                                reifyCell(heapAlloc.highLevelAlloc(locInst, curArg), "$call (2)", locInst)
                             }
                             MemSummaryArgumentType.PTR_EXTERNAL -> {
-                                concretizeCell(externAlloc.alloc(locInst, curArg), "$call (3)", locInst)
+                                reifyCell(externAlloc.alloc(locInst, curArg), "$call (3)", locInst)
                             }
                             else -> {
-                                concretizeCell(integerAlloc.alloc(locInst, curArg), "$call (4)", locInst)
+                                reifyCell(integerAlloc.alloc(locInst, curArg), "$call (4)", locInst)
                             }
                         }
-                        allocatedC.getNode().setWrite()
+                        allocatedC.node.setWrite()
                         updateLink(locInst, c2, width.toShort(), allocatedC, false)
 
                     }
@@ -3767,18 +4291,15 @@ class PTAGraph(/** Global node allocator **/
                 "\t$locInst\n" +
                 "\t$this")
 
-        val baseC = concretizeCell(baseSc, "CVT_alloc_size", locInst)
-        val baseN = baseC.getNode()
-        val baseOffset = baseC.getOffset()
-
-        if (baseN == getStack()) {
+        val baseC = reifyCell(baseSc, "CVT_alloc_size", locInst)
+        if (baseC.node == getStack()) {
             throw PointerDomainError("The base pointer (r1) is a stack pointer and this is not supported.\n" +
                 "\t$locInst\n" +
                 "\tbase cell = $baseC\n" +
                 "\toffset = $offset\n" +
                 "\tPTA graph =$this")
         }
-        if (baseOffset != 0L) {
+        if (baseC.offset != 0L) {
             throw PointerDomainError("The offset of the base pointer (r1) should be zero.\n" +
                 "\t$locInst\n" +
                 "\tbase cell = $baseC\n" +
@@ -3788,15 +4309,15 @@ class PTAGraph(/** Global node allocator **/
 
         // We cannot tell for sure whether a node is allocated in a particular region because we keep track of that as may information.
         // If a node might be allocated in more than one region we allocated first in external and then heap.
-        if (baseN.isMayExternal) {
+        if (baseC.node.isMayExternal) {
             val allocC = externAlloc.alloc(locInst)
-            val returnedC = allocC.getNode().createSymCell(allocC.getOffset().add(Constant(offset)))
-            baseN.copyFlags(returnedC.getNode())
+            val returnedC = allocC.node.createSymCell(allocC.offset.add(Constant(offset)))
+            baseC.node.copyFlags(returnedC.node)
             setRegCell(r0, returnedC)
-        } else if (baseN.isMayHeap) {
+        } else if (baseC.node.isMayHeap) {
             val allocC = heapAlloc.highLevelAlloc(locInst)
-            val returnedC = allocC.getNode().createSymCell(allocC.getOffset().add(Constant(offset)))
-            baseN.copyFlags(returnedC.getNode())
+            val returnedC = allocC.node.createSymCell(allocC.offset.add(Constant(offset)))
+            baseC.node.copyFlags(returnedC.node)
             setRegCell(r0, returnedC)
         } else {
             throw PointerDomainError("The base pointer (r1) is from an unexpected region:\n" +
@@ -3808,58 +4329,6 @@ class PTAGraph(/** Global node allocator **/
     }
 
 
-    /**
-     *  Used by dot printing to know in advance which node's offsets should be printed.
-     *  From a node, by looking at its successors, we can know which are the read/written offsets of that node.
-     *  However, we cannot know if, for instance, a register points to a node's offset.
-     *
-     *  This will create, for instance, the warning `Warning: node Node13239_2370_PTA_NODE_250, port f40 unrecognized`
-     *  when the dot file is converted to svg or similar format.
-     */
-    private fun pointedByPredecessors(): Map<PTANode, Set<PTAOffset>> {
-        val references = mutableMapOf<PTANode, MutableSet<PTAOffset>>()
-
-        /** Mark that some register or other cell `c'` points to [c] **/
-        fun updateRef(c: PTACell) {
-            val node = c.getNode()
-            val offset = c.getOffset()
-            val offsets = references.getOrDefault(node, mutableSetOf(offset))
-            offsets.add(offset)
-            references[node] = offsets
-        }
-
-        fun updateRef(c: PTASymCell) {
-            if (c.isConcrete()) {
-                updateRef(c.concretize())
-            }
-        }
-
-        for (cell in registers) {
-            if (cell != null) {
-                val visited = mutableSetOf<PTANode>()
-                val worklist = mutableListOf<PTANode>()
-                val rootNode = cell.getNode()
-                worklist.add(rootNode)
-                visited.add(rootNode)
-                // record here that a register points to `cell`
-                updateRef(cell)
-                while (worklist.isNotEmpty()) {
-                    val x = worklist.last().getNode()
-                    worklist.removeLast()
-                    for (field in x.getSuccs()) {
-                        val c = field.value
-                        // record here that `x` points to `c`
-                        updateRef(c)
-                        val succ = c.getNode()
-                        if (visited.add(succ)) {
-                            worklist.add(succ)
-                        }
-                    }
-                }
-            }
-        }
-        return references
-    }
 
     private class PrettyPrinterVisitor(val sb: StringBuilder): PTAGraphVisitAction {
         var numNodes = 0
@@ -3896,7 +4365,10 @@ class PTAGraph(/** Global node allocator **/
             numNodes += 1
         }
         override fun applyAfterSuccessor(n: PTANode) {}
-        override fun skipSuccessors(n: PTANode) = false
+        override fun skipSuccessors(n: PTANode): Boolean {
+            return false
+            //  return (visited.contains(n))
+        }
     }
 
     override fun toString(): String {
@@ -3925,7 +4397,7 @@ class PTAGraph(/** Global node allocator **/
         val vis = PrettyPrinterVisitor(sb)
         for (cell in registers) {
             if (cell != null) {
-                ptaGraphVisit(cell.getNode(), vis)
+                ptaGraphVisit(cell.node, vis)
             }
         }
         sb.append("}\n)")
@@ -3945,19 +4417,19 @@ class PTAGraph(/** Global node allocator **/
             return graphName + "_REG_" + reg.toString()
         }
 
-        fun normalizeOffset(offset: PTAOffset, access: NodeAccess): String {
+        fun normalizeField(field: Long, access: NodeAccess): String {
             return if (access == NodeAccess.None) {
                 "0"
             } else {
-                if (offset >= 0) {
-                    offset.toString()
+                if (field >= 0) {
+                    field.toString()
                 } else {
-                    "minus${offset.absoluteValue}"
+                    "minus${field.absoluteValue}"
                 }
             }
         }
 
-        class DotVisitor(val sb: StringBuilder, val predRefs: Map<PTANode, Set<PTAOffset>>): PTAGraphVisitAction {
+        class DotVisitor(val sb: StringBuilder): PTAGraphVisitAction {
             val visited = mutableSetOf<PTANode>()
 
             fun skipNode(@Suppress("UNUSED_PARAMETER") n: PTANode): Boolean {
@@ -4053,35 +4525,43 @@ class PTAGraph(/** Global node allocator **/
 
                 sb.append("|{")
 
-                val offsets: MutableSet<PTAOffset> = mutableSetOf()
-                offsets.add(mkOffset(0L))
+                val fields: MutableSet<PTAOffset> = mutableSetOf()
+                fields.add(mkOffset(0L))
 
                 if (n.access != NodeAccess.None) {
                     for ((field, succC) in n.getSuccs()) {
-                        if (!skipNode(succC.getNode())) {
-                            offsets.add(field.offset)
+                        if (!skipNode(succC.node)) {
+                            fields.add(field.offset)
                         }
                     }
-
-                    // For offsets that do not have successors but are referred by registers or other nodes
-                    predRefs[n]?.apply {
-                        offsets.addAll(this)
+                    for (o in n.getPreds().keys) {
+                        fields.add(o)
+                    }
+                    for (c in registers) {
+                        if (c != null) {
+                            if (c.node == n) {
+                                val o = c.offset.get()
+                                if (o != null) {
+                                    fields.add(o)
+                                }
+                            }
+                        }
                     }
                 }
 
                 // If the node is summarized then the only field should be 0
-                check(n !is PTASummarizedNode || offsets.size == 1)
+                check(n !is PTASummarizedNode || fields.size == 1)
                 {"summarized node can only have one field"}
 
                 var i = 0
-                for (offset in offsets.toSortedSet()) {
+                for (field in fields.toSortedSet()) {
                     sb.append(if (n !is PTASummarizedNode || n.access == NodeAccess.None) {
-                        "<f${normalizeOffset(offset, n.access)}>${offset}"
+                        "<f${normalizeField(field, n.access)}>${field}"
                     } else {
-                        "<f${normalizeOffset(offset, n.access)}>oo"
+                        "<f${normalizeField(field, n.access)}>oo"
                     })
                     i++
-                    if (i < offsets.size) {
+                    if (i < fields.size) {
                         sb.append("|")
                     }
                 }
@@ -4089,17 +4569,17 @@ class PTAGraph(/** Global node allocator **/
                 sb.append("}}\"]\n")
 
                 for ((field, succC) in n.getSuccs().toSortedMap()) {
-                    val succNode = succC.getNode()
-                    val succOffset = succC.getOffset()
-                    if (succC != null && !skipNode(succNode)) {
-                        sb.append("Node${nodeToId(n)}:f${normalizeOffset(field.offset, n.access)} -> ")
-                        sb.append("Node${nodeToId(succNode)}:f${normalizeOffset(succOffset, succNode.access)} [arrowsize=0.3,label=\"$succOffset\"]\n")
+                    if (succC != null && !skipNode(succC.node)) {
+                        sb.append("Node${nodeToId(n)}:f${normalizeField(field.offset, n.access)} -> ")
+                        sb.append("Node${nodeToId(succC.node)}:f${normalizeField(succC.offset, succC.node.access)} [arrowsize=0.3,label=\"${succC.offset}\"]\n")
                     }
                 }
             }
 
             override fun applyAfterSuccessor(n: PTANode) {}
-            override fun skipSuccessors(n: PTANode) = false
+            override fun skipSuccessors(n: PTANode): Boolean {
+                return false
+            }
         }
 
         val sb = StringBuilder()
@@ -4117,10 +4597,10 @@ class PTAGraph(/** Global node allocator **/
         }
 
 
-        val vis = DotVisitor(sb, pointedByPredecessors())
+        val vis = DotVisitor(sb)
         for (cell in registers) {
             if (cell != null) {
-                ptaGraphVisit(cell.getNode(), vis)
+                ptaGraphVisit(cell.node, vis)
             }
         }
 
@@ -4130,11 +4610,11 @@ class PTAGraph(/** Global node allocator **/
             }
             sb.append("Node${regToId(i)} ")
             sb.append("[shape=plaintext,fontname=Helvetica,fontsize=10,label=\"r${i}\"]\n")
-            val o = cell.getOffset().get()
+            val o = cell.offset.get()
             if (o != null) {
-                sb.append("Node${regToId(i)} -> Node${nodeToId(cell.getNode())}:f${normalizeOffset(o, cell.getNode().access)} [arrowtail=tee,arrowsize=0.3]\n")
+                sb.append("Node${regToId(i)} -> Node${nodeToId(cell.node)}:f${normalizeField(o, cell.node.access)} [arrowtail=tee,arrowsize=0.3]\n")
             } else {
-                sb.append("Node${regToId(i)} -> Node${nodeToId(cell.getNode())}:f0 [arrowtail=tee,arrowsize=0.3,style=\"dashed\",color=\"red\",label=\"top\"]\n")
+                sb.append("Node${regToId(i)} -> Node${nodeToId(cell.node)}:f0 [arrowtail=tee,arrowsize=0.3,style=\"dashed\",color=\"red\",label=\"top\"]\n")
             }
         }
 
@@ -4153,17 +4633,17 @@ interface PTAGraphVisitAction {
 
 fun ptaGraphVisit(n: PTANode, vis:PTAGraphVisitAction) {
     val visited = mutableSetOf<PTANode>()
-    val worklist = mutableListOf<PTANode>()
+    val worklist = ArrayList<PTANode>()
     worklist.add(n)
     visited.add(n)
     while (worklist.isNotEmpty()) {
-        val x = worklist.last().getNode() // we resolve the node before being processed
+        val x = worklist.last()
         worklist.removeLast()
         vis.applyBeforeSuccessor(x)
         if (!vis.skipSuccessors(x)) {
             for (field in x.getSuccs()) {
                 val c = field.value
-                val succ = c.getNode()
+                val succ = c.node
                 if (visited.add(succ)) {
                     worklist.add(succ)
                 }

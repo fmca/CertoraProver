@@ -80,7 +80,7 @@ class MemorySummariesTest {
         g.doLoad(locInst, lhs, baseR, offset, width, SbfType.Top, newGlobalVariableMap())
         val sc = g.getRegCell(lhs)
         check(sc != null)
-        return sc.getNode()
+        return sc.node
     }
 
     @Test
@@ -99,7 +99,7 @@ class MemorySummariesTest {
         val absVal = MemoryDomain(PTANodeAllocator(),true)
         val stackC = absVal.getRegCell(r10, newGlobalVariableMap())
         check(stackC != null) { "memory domain cannot find the stack node" }
-        stackC.getNode().setWrite()
+        stackC.node.setWrite()
         val g = absVal.getPTAGraph()
         val n1 = g.mkNode()
         n1.setWrite()
@@ -107,8 +107,8 @@ class MemorySummariesTest {
         n2.setWrite()
         val n3 = g.mkNode()
         n3.setWrite()
-        stackC.getNode().mkLink(4040, 8, n1.createCell(0))
-        stackC.getNode().mkLink(4048, 8, n2.createCell(0))
+        stackC.node.mkLink(4040, 8, n1.createCell(0))
+        stackC.node.mkLink(4048, 8, n2.createCell(0))
         n1.mkLink(0, 8, n3.createCell(0))
         n2.mkLink(0, 8, n3.createCell(0))
 
@@ -135,7 +135,7 @@ class MemorySummariesTest {
         // *(r1+0) changed
         Assertions.assertEquals(true, getNode(g, r1, 0, 8).mustBeInteger())
         // This assertion is provable after commit "fix(sbf): do not remove predecessors when applying summary (pta domain)"
-        Assertions.assertEquals(true, stackC.getNode().getSucc(PTAField(4040, 8)) != null)
+        Assertions.assertEquals(true, stackC.node.getSucc(PTAField(4040, 8)) != null)
     }
 
     @Test

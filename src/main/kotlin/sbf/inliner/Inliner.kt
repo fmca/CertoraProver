@@ -331,10 +331,6 @@ private class Inliner(val entry: String,
     }
 
     private fun printExternalFunctions(extFunctions: List<String>) {
-        if (extFunctions.isEmpty()) {
-            return
-        }
-
         val sb = StringBuilder()
         sb.append("\nThe following functions are neither inlined nor summarized. They are treated as external. This is likely to affect soundness.\n\n")
         extFunctions.forEach {

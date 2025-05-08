@@ -40,19 +40,6 @@ object SolanaConfig {
         )
     ){}
 
-    // If `-ruleSanityChecks basic` then only clvr vacuity checks are enabled.
-    // If `-ruleSanityChecks advanced` then cvlr + tac vacuity checks are enabled.
-    // This option is useful when it is false so that we only run tac vacuity checks.
-    val EnableCvlrVacuity = object : ConfigType.BooleanCmdLine(
-        true,
-        Option(
-            "solanaCvlrVacuity",
-            true,
-            "Enable clvr vacuity checks. [default: true]"
-        )
-    ) {}
-
-
     // Disassembling options
     val StackFrameSize = object : ConfigType.IntCmdLine(
         4096,

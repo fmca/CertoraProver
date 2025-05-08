@@ -138,6 +138,7 @@ abstract class AbstractSolcRunner(
                     solidityTypes = setOf(),
                     immutables = listOf(), // Figuring this one out is a little too much for this runner
                     sourceBytes = null,
+                    internalFunctionStarts = listOf()
                 )
             }
         }.toLeft()

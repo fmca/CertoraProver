@@ -92,13 +92,13 @@ class MemoryDomain(private val scalars: ScalarDomain,
         val c = ptaGraph.getRegCell(r10, SbfType.Top /*shouldn't be used*/, globals, locInst = null)
         check(c != null)
         {"$msg: pointer domain should know about r10"}
-        if (c.getNode().isExactNode()) {
+        if (c.node.isExactNode()) {
             // Get value for r10 in Scalars
             val type = scalars.getValue(r10).get()
             check(type is SbfType.PointerType.Stack)
             {"$msg: scalar domain should know that r10 is a pointer to the stack"}
             val scalarOffset = type.offset
-            val pointerOffset = c.getOffset()
+            val pointerOffset = c.offset
             // Since r10 is read-only, both subdomains should agree on the same offset for r10
             check(scalarOffset.get() == pointerOffset.get())
             { "$msg: scalar and pointer domains should agree on r10 offset" }
@@ -237,9 +237,9 @@ class MemoryDomain(private val scalars: ScalarDomain,
     private fun reductionFromPtaGraphToScalars(b: SbfBasicBlock, locInst: LocatedSbfInstruction, reg: Value) {
         if (reg is Value.Reg) {
             val x = ptaGraph.getRegCell(reg)
-            if (x != null && x.isConcrete()) {
-                val c = x.concretize()
-                if (c.getNode().mustBeInteger()) {
+            if (x != null && x.isReified()) {
+                val c = x.reify()
+                if (c.node.mustBeInteger()) {
                     val change = scalars.refineValue(reg, ScalarValue.anyNum())
                     if (change) {
                         /// Changing metadata serves here as caching the reduction.
