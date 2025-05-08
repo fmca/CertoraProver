@@ -500,27 +500,27 @@ sealed class SbfInstruction: ReadRegister, WriteRegister  {
         }
 
         override val writeRegister: Set<Value.Reg>
-           get() = if (CVTFunction.from(name) == CVTFunction.Core(CVTCore.SAVE_SCRATCH_REGISTERS)) {
-                        setOf()
-                    } else if (CVTFunction.from(name) == CVTFunction.Core(CVTCore.RESTORE_SCRATCH_REGISTERS)) {
-                        SbfRegister.scratchRegisters.mapToSet { Value.Reg(it) }
-                    } else {
-                        setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE))
-                    }
+            get() {
+                val cvtFunction = CVTFunction.from(name)
+                val solFunction = SolanaFunction.from(name)
+                val rtFunction = CompilerRtFunction.from(name)
+                return cvtFunction?.function?.writeRegisters
+                    ?: (solFunction?.syscall?.writeRegisters
+                        ?: (rtFunction?.function?.writeRegisters
+                            ?: setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE))))
+            }
 
         override val readRegisters: Set<Value.Reg>
-            get() = if (isAbort()) {
-                setOf()
-            } else if (isAssertOrSatisfy()) {
-                setOf(Value.Reg(SbfRegister.R1_ARG))
-            } else if (CVTFunction.from(name) == CVTFunction.Core(CVTCore.SAVE_SCRATCH_REGISTERS)) {
-                SbfRegister.scratchRegisters.mapToSet { Value.Reg(it) }
-            } else if (CVTFunction.from(name) == CVTFunction.Core(CVTCore.RESTORE_SCRATCH_REGISTERS)) {
-                setOf()
+            get() {
+                val cvtFunction = CVTFunction.from(name)
+                val solFunction = SolanaFunction.from(name)
+                val rtFunction = CompilerRtFunction.from(name)
+                return cvtFunction?.function?.readRegisters
+                    ?: (solFunction?.syscall?.readRegisters
+                        ?: (rtFunction?.function?.readRegisters
+                            ?: SbfRegister.funArgRegisters.mapToSet { Value.Reg(it) }))
             }
-            else {
-                SbfRegister.funArgRegisters.mapToSet { Value.Reg(it )}
-            }
+
 
         override fun toString() = "call $name ${metadataToString()}"
     }

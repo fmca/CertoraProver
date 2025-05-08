@@ -25,6 +25,7 @@ import sbf.domains.MemSummaryArgument
 import sbf.domains.MemSummaryArgumentType
 import sbf.domains.MemorySummaries
 import sbf.domains.MemorySummary
+import utils.*
 
 private const val CVT_save_scratch_registers = "CVT_save_scratch_registers"
 private const val CVT_restore_scratch_registers = "CVT_restore_scratch_registers"
@@ -75,8 +76,12 @@ enum class CVTCore(val function: ExternalFunction) {
     ASSERT(ExternalFunction(CvlrFunctions.CVT_assert, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
     SATISFY(ExternalFunction(CvlrFunctions.CVT_satisfy, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
     SANITY(ExternalFunction(CvlrFunctions.CVT_sanity, setOf(), setOf(Value.Reg(SbfRegister.R1_ARG)))),
-    SAVE_SCRATCH_REGISTERS(ExternalFunction(CVT_save_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
-    RESTORE_SCRATCH_REGISTERS(ExternalFunction(CVT_restore_scratch_registers, writeRegisters = setOf(), readRegisters = setOf())),
+    SAVE_SCRATCH_REGISTERS(ExternalFunction(CVT_save_scratch_registers,
+        writeRegisters = setOf(),
+        readRegisters = SbfRegister.scratchRegisters.mapToSet { Value.Reg(it) })),
+    RESTORE_SCRATCH_REGISTERS(ExternalFunction(CVT_restore_scratch_registers,
+        writeRegisters = SbfRegister.scratchRegisters.mapToSet { Value.Reg(it) },
+        readRegisters = setOf())),
     NONDET_SOLANA_ACCOUNT_SPACE(ExternalFunction(CVT_nondet_solana_account_space,
         setOf(Value.Reg(SbfRegister.R0_RETURN_VALUE)),
         listOf(SbfRegister.R1_ARG).map{ Value.Reg(it)}.toSet())
