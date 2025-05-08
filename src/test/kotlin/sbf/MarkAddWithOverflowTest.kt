@@ -19,53 +19,10 @@ package sbf
 
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.*
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class MarkAddWithOverflowTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "debug")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
     @Test
     fun test01() {
         val cfg = SbfTestDSL.makeCFG("entrypoint") {
@@ -87,10 +44,10 @@ class MarkAddWithOverflowTest {
             }
         }
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         markAddWithOverflow(cfg)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(true,
             cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
     }
@@ -117,10 +74,10 @@ class MarkAddWithOverflowTest {
             }
         }
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         markAddWithOverflow(cfg)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(false,
             cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
     }
@@ -146,10 +103,10 @@ class MarkAddWithOverflowTest {
             }
         }
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         markAddWithOverflow(cfg)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(false,
             cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
     }
@@ -176,10 +133,10 @@ class MarkAddWithOverflowTest {
             }
         }
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         markAddWithOverflow(cfg)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(true,
             cfg.getBlock(Label.Address(0))?.getTerminator()?.metaData?.getVal(SbfMeta.PROMOTED_ADD_WITH_OVERFLOW_CHECK) != null)
     }
@@ -201,10 +158,10 @@ class MarkAddWithOverflowTest {
 
 
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         markAddWithOverflow(cfg)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(true,
             cfg.getBlock(Label.Address(1))?.let { it ->
                 it.getInstructions().any {
@@ -232,10 +189,10 @@ class MarkAddWithOverflowTest {
 
 
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         markAddWithOverflow(cfg)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(false,
             cfg.getBlock(Label.Address(1))?.let { it ->
                 it.getInstructions().any {
@@ -260,10 +217,10 @@ class MarkAddWithOverflowTest {
 
 
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         markAddWithOverflow(cfg)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(true,
             cfg.getBlock(Label.Address(1))?.let { it ->
                 it.getInstructions().any {

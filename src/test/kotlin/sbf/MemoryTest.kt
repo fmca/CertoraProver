@@ -17,7 +17,6 @@
 
 package sbf
 
-import com.certora.collect.*
 import config.ConfigScope
 import sbf.SolanaConfig.OptimisticPTAOverlaps
 import sbf.cfg.*
@@ -25,59 +24,16 @@ import sbf.disassembler.SbfRegister
 import sbf.disassembler.Label
 import sbf.disassembler.newGlobalVariableMap
 import sbf.domains.*
-import log.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import org.junit.jupiter.api.*
 
 private val sbfTypesFac = ConstantSbfTypeFactory()
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class MemoryTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
 
     @Test
     fun test01() {
-        sbfLogger.warn { "====== TEST 1 =======" }
+        println("====== TEST 1 =======")
 
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
@@ -108,8 +64,8 @@ class MemoryTest {
         ////////////////////
 
         val absVal2 = absVal1.deepCopy()
-        sbfLogger.warn { "absVal1=\n$absVal1" }
-        sbfLogger.warn { "absVal2=\n$absVal2" }
+        println("absVal1=\n$absVal1")
+        println("absVal2=\n$absVal2")
 
         val g2 = absVal2.getPTAGraph()
         val c2 = g2.getRegCell(r2)
@@ -127,7 +83,7 @@ class MemoryTest {
         }
 
         val check1 = absVal1.lessOrEqual(absVal2) && absVal2.lessOrEqual(absVal1)
-        sbfLogger.warn { "##Whether absVal1 == absVal2 --> res=$check1##" }
+        println("##Whether absVal1 == absVal2 --> res=$check1##")
 
         Assertions.assertEquals(true, check1)
 
@@ -147,20 +103,20 @@ class MemoryTest {
         }
 
         val check2 = absVal1.lessOrEqual(absVal2) && absVal2.lessOrEqual(absVal1)
-        sbfLogger.warn { "##Whether absVal1 == absVal2 --> res=$check2##" }
+        println("##Whether absVal1 == absVal2 --> res=$check2##")
         Assertions.assertEquals(true, check2)
 
         val n5 = g2.mkNode()
         n5.setWrite()
         g2.setRegCell(r3, n2.createSymCell(PTASymOffset(0)))
         val check3 = absVal1.lessOrEqual(absVal2) && absVal2.lessOrEqual(absVal1)
-        sbfLogger.warn { "##Whether absVal1 == absVal2 --> res=$check3##" }
+        println("##Whether absVal1 == absVal2 --> res=$check3##")
         Assertions.assertEquals(true, check3)
     }
 
     @Test
     fun test2() {
-        sbfLogger.info { "====== TEST 2 (JOIN)  =======" }
+        println("====== TEST 2 (JOIN)  =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
@@ -192,7 +148,7 @@ class MemoryTest {
 
         val absVal2 = absVal1.deepCopy()
         val absVal3 = absVal1.deepCopy()
-        sbfLogger.info { "\nabsVal1=\n$absVal1" + "absVal2=\n$absVal2" + "absVal3=\n$absVal3" }
+        println("\nabsVal1=\n$absVal1" + "absVal2=\n$absVal2" + "absVal3=\n$absVal3")
 
         //// AbsVal2
         val g2 = absVal2.getPTAGraph()
@@ -274,7 +230,7 @@ class MemoryTest {
 
     @Test
     fun test3() {
-        sbfLogger.info { "====== TEST 3 (JOIN) =======" }
+        println("====== TEST 3 (JOIN) =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
@@ -359,7 +315,7 @@ class MemoryTest {
     //@Test
     /** This test is expected to throw an exception **/
     fun test4() {
-        sbfLogger.info { "====== TEST 4 =======" }
+        println("====== TEST 4 =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val r1 = Value.Reg(SbfRegister.R1_ARG)
 
@@ -432,7 +388,7 @@ class MemoryTest {
 
     @Test
     fun test5() {
-        sbfLogger.info { "====== TEST 5 (JOIN) =======" }
+        println("====== TEST 5 (JOIN) =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val r1 = Value.Reg(SbfRegister.R1_ARG)
 
@@ -470,7 +426,7 @@ class MemoryTest {
 
     @Test
     fun test6() {
-        sbfLogger.info { "====== TEST 6 (JOIN) =======" }
+        println("====== TEST 6 (JOIN) =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
 
         val absVal1 = MemoryDomain(PTANodeAllocator(), sbfTypesFac, true)
@@ -494,7 +450,7 @@ class MemoryTest {
 
     @Test
     fun test7() {
-        sbfLogger.info { "====== TEST 7 (JOIN) =======" }
+        println("====== TEST 7 (JOIN) =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
 
         val nodeAllocator = PTANodeAllocator()
@@ -529,7 +485,7 @@ class MemoryTest {
 
     @Test
     fun test8() {
-        sbfLogger.info { "====== TEST 8 (JOIN) =======" }
+        println("====== TEST 8 (JOIN) =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
@@ -563,7 +519,7 @@ class MemoryTest {
 
     @Test
     fun test9() {
-        sbfLogger.warn { "====== TEST 9 (UNIFY) =======" }
+        println("====== TEST 9 (UNIFY) =======")
 
         val g = PTAGraph(PTANodeAllocator(), sbfTypesFac)
         val n1 = g.mkNode()
@@ -579,9 +535,9 @@ class MemoryTest {
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         g.setRegCell(r1, n1.createSymCell(PTASymOffset(0)))
         g.setRegCell(r2, n3.createSymCell(PTASymOffset(4)))
-        sbfLogger.warn { "\nBefore unification of $n1 and ($n3,0):\n$g" }
+        println("\nBefore unification of $n1 and ($n3,0):\n$g")
         n1.unify(n3, 0)
-        sbfLogger.warn { "\nAfter unification:\n$g" }
+        println("\nAfter unification:\n$g")
 
         val c1 = g.getRegCell(r1)
         val c2 = g.getRegCell(r2)
@@ -598,7 +554,7 @@ class MemoryTest {
 
     @Test
     fun test10() {
-        sbfLogger.info { "====== TEST 10 (JOIN) =======" }
+        println("====== TEST 10 (JOIN) =======")
         // In this example, we unify one stack with a node from the other graph which is not the stack.
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val r1 = Value.Reg(SbfRegister.R1_ARG)
@@ -695,7 +651,7 @@ class MemoryTest {
 
     @Test
     fun test13() {
-        sbfLogger.info { "====== TEST 13 (JOIN) =======" }
+        println("====== TEST 13 (JOIN) =======")
         /**
          * If OptimisticPTAJoin is disabled then join(X,Y) = top if X is a pointer but Y is a number
          */
@@ -732,7 +688,7 @@ class MemoryTest {
 
     @Test
     fun test14() {
-        sbfLogger.info { "====== TEST 14 (JOIN) =======" }
+        println("====== TEST 14 (JOIN) =======")
         /**
          *  If OptimisticPTAJoin is enabled then join(X,Y) = X if X is a pointer and Y looks a dangling pointer.
          *  Using the scalar domain can know that Y is 4 (a small power-of-two)
@@ -771,7 +727,7 @@ class MemoryTest {
 
     @Test
     fun test15() {
-        sbfLogger.info { "====== TEST 15 (JOIN) =======" }
+        println("====== TEST 15 (JOIN) =======")
         /**
          *  If OptimisticPTAJoin is enabled then join(X,Y) = X if X is a pointer and Y is a number.
          *  The scalar domain doesn't know about Y but the pointer domain knows that Y points to a must-be-integer node.
@@ -815,7 +771,7 @@ class MemoryTest {
 
     @Test
     fun test16() {
-        sbfLogger.info { "====== TEST 16 pseudo-canonicalize =======" }
+        println("====== TEST 16 pseudo-canonicalize =======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
         val nodeAllocator = PTANodeAllocator()
 
@@ -861,7 +817,7 @@ class MemoryTest {
 
     @Test
     fun test17() {
-        sbfLogger.info { "====== TEST 17 pseudo-canonicalize=======" }
+        println("====== TEST 17 pseudo-canonicalize=======")
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
 
         val nodeAllocator = PTANodeAllocator()
@@ -904,7 +860,7 @@ class MemoryTest {
 
     @Test
     fun test18() {
-        sbfLogger.info { "====== TEST 18 (SELECT) =======" }
+        println("====== TEST 18 (SELECT) =======")
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         val r10 = Value.Reg(SbfRegister.R10_STACK_POINTER)
@@ -922,11 +878,11 @@ class MemoryTest {
         stack.getNode().mkLink(4048, 8, n2.createCell(0))
         g.setRegCell(r1, n1.createSymCell(PTASymOffset(0)))
         g.setRegCell(r2, n2.createSymCell(PTASymOffset(0)))
-        sbfLogger.warn { "\nBefore select(r1, *, r1, r2):\n$g" }
+        println("\nBefore select(r1, *, r1, r2):\n$g")
         g.doSelect(LocatedSbfInstruction(Label.fresh(), 0, SbfInstruction.Select(r1, Condition(CondOp.EQ, Value.Reg(SbfRegister.R3_ARG), Value.Imm(0UL)), r1, r2)),
                                          newGlobalVariableMap(),
                                          ScalarDomain.makeTop(sbfTypesFac))
-        sbfLogger.warn { "\nAfter:\n$g" }
+        println("\nAfter:\n$g")
 
         run {
             val c1 = g.getRegCell(r1)

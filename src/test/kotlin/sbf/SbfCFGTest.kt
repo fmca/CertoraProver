@@ -23,52 +23,11 @@ import sbf.disassembler.*
 import sbf.testing.SbfTestDSL
 import log.*
 import org.junit.jupiter.api.*
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
 /**
  *  These tests don't check for anything specifically but they shoudn't at least throw errors.
  **/
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
-class SbfCFGTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
+class SbfCFGTest  {
     val inputDir = "src/test/resources/sbf"
 
     @Suppress("ForbiddenComment")
@@ -152,9 +111,9 @@ class SbfCFGTest {
         b3.add(SbfInstruction.Bin(BinOp.MOV, r2, Value.Imm(1UL), true))
         b3.add(SbfInstruction.Exit())
 
-        sbfLogger.info {"$cfg"}
+        println("$cfg")
         cfg.normalize()
-        sbfLogger.info {"After normalize: $cfg"}
+        println("After normalize: $cfg")
         cfg.verify(true)
     }
 
@@ -203,10 +162,10 @@ class SbfCFGTest {
         b3.add(SbfInstruction.Bin(BinOp.MOV, r2, Value.Imm(1UL), true))
         b3.add(SolanaFunction.toCallInst(SolanaFunction.ABORT))
 
-        sbfLogger.info {"$cfg"}
+        println("$cfg")
         //cfg.verify(true)
         cfg.normalize()
-        sbfLogger.info {"After normalize: $cfg"}
+        println("After normalize: $cfg")
         cfg.verify(true)
     }
 
@@ -254,10 +213,10 @@ class SbfCFGTest {
         b3.add(SbfInstruction.Bin(BinOp.MOV, r2, Value.Imm(1UL), true))
         b3.add(SolanaFunction.toCallInst(SolanaFunction.ABORT))
 
-        sbfLogger.info {"$cfg"}
+        println("$cfg")
         //cfg.verify(true)
         cfg.normalize()
-        sbfLogger.info {"After normalize: $cfg"}
+        println("After normalize: $cfg")
         cfg.verify(true)
     }
 
@@ -305,10 +264,10 @@ class SbfCFGTest {
         b3.add(SbfInstruction.Bin(BinOp.MOV, r2, Value.Imm(1UL), true))
         b3.add(SbfInstruction.Jump.UnconditionalJump(b3.getLabel()))
 
-        sbfLogger.info {"$cfg"}
+        println("$cfg")
         //cfg.verify(true)
         cfg.normalize()
-        sbfLogger.info {"After normalize: $cfg"}
+        println("After normalize: $cfg")
         cfg.verify(true)
         Assertions.assertEquals(true, cfg.hasExit())
         sbfLogger.info{"Exit block ${cfg.getExit()}"}
@@ -350,9 +309,9 @@ class SbfCFGTest {
         remap[oldInst3] = listOf(newInst1, newInst2)
         remap[oldInst5] = listOf(newInst3, newInst4)
         remap[oldInst6] = listOf(newInst5, oldInst6.inst)
-        sbfLogger.warn{ "BEFORE == \n$bb"}
+        println("BEFORE == \n$bb")
         bb.replaceInstructions(remap)
-        sbfLogger.warn{ "AFTER == \n$bb"}
+        println("AFTER == \n$bb")
         cfg.verify(true)
 
         Assertions.assertEquals(true, bb.getInstructions().size == 9)

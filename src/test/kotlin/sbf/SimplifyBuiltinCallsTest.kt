@@ -20,55 +20,12 @@ package sbf
 import sbf.callgraph.SolanaFunction
 import sbf.cfg.*
 import sbf.disassembler.*
-import sbf.domains.*
-import log.*
 import org.junit.jupiter.api.*
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class SimplifyBuiltinCallsTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "debug")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
     @Test
     fun test01() {
-        sbfLogger.info { "====== TEST 1 =======" }
+    println("====== TEST 1 =======")
         /**
          *   r1 := r10 - 24
          *   r2 := r10 - 104
@@ -96,14 +53,14 @@ class SimplifyBuiltinCallsTest {
         b1.add(SbfInstruction.Mem(Deref(4, r10, -4), r2, true))
         b1.add(SbfInstruction.Exit())
 
-        sbfLogger.warn { "Before transformation\n$cfg" }
+        println("Before transformation\n$cfg")
         simplifyMemoryIntrinsics(cfg)
-        sbfLogger.warn { "After transformation\n$cfg" }
+        println("After transformation\n$cfg")
     }
 
     @Test
     fun test02() {
-        sbfLogger.info { "====== TEST 2 =======" }
+        println("====== TEST 2 =======")
         /**
          *   r1 := r10 - 24
          *   r2 := r10 - 104
@@ -133,14 +90,14 @@ class SimplifyBuiltinCallsTest {
         b1.add(SbfInstruction.Mem(Deref(4, r10, -4), r2, true))
         b1.add(SbfInstruction.Exit())
 
-        sbfLogger.warn { "Before transformation\n$cfg" }
+        println("Before transformation\n$cfg")
         simplifyMemoryIntrinsics(cfg)
-        sbfLogger.warn { "After transformation\n$cfg" }
+        println("After transformation\n$cfg")
     }
 
     @Test
     fun test03() {
-        sbfLogger.info { "====== TEST 3 =======" }
+        println("====== TEST 3 =======")
         /**
          *   r1 := r10 - 24
          *   r2 := r10 - 104
@@ -187,8 +144,8 @@ class SimplifyBuiltinCallsTest {
 
         b1.add(SbfInstruction.Exit())
 
-        sbfLogger.warn { "Before transformation\n$cfg" }
+        println("Before transformation\n$cfg")
         simplifyMemoryIntrinsics(cfg)
-        sbfLogger.warn { "After transformation\n$cfg" }
+        println("After transformation\n$cfg")
     }
 }

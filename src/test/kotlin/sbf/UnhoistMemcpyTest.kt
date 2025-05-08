@@ -17,61 +17,18 @@
 
 package sbf
 
-import com.certora.collect.*
 import config.ConfigScope
 import sbf.analysis.ScalarAnalysis
 import sbf.callgraph.SolanaFunction
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
 import sbf.domains.*
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
 private val sbfTypesFac = ConstantSbfTypeFactory()
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class UnhoistMemcpyTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "debug")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
     private fun getNumOfUnhoistedMemcpy(cfg: SbfCFG): UInt {
         var counter = 0U
         for (b in cfg.getBlocks().values) {
@@ -90,7 +47,7 @@ class UnhoistMemcpyTest {
         // without hoisting memcpy we cannot prove that the *r1 contains a number
 
         val absValAtExit = test01(sbfTypesFac, false)
-        sbfLogger.info{"Abstract value at exit=$absValAtExit"}
+        println("Abstract value at exit=$absValAtExit")
         val r0 = Value.Reg(SbfRegister.R0_RETURN_VALUE)
         Assertions.assertEquals(false, absValAtExit.getValue(r0).get() is SbfType.NumType)
     }
@@ -100,7 +57,7 @@ class UnhoistMemcpyTest {
         // with hoisting memcpy we should prove that the *r1 contains a number
 
         val absValAtExit = test01(sbfTypesFac, true)
-        sbfLogger.info{"Abstract value at exit=$absValAtExit"}
+        println("Abstract value at exit=$absValAtExit")
         val r0 = Value.Reg(SbfRegister.R0_RETURN_VALUE)
         Assertions.assertEquals(true, absValAtExit.getValue(r0).get() is SbfType.NumType)
     }
@@ -208,14 +165,14 @@ class UnhoistMemcpyTest {
         b4.add(SbfInstruction.Mem(Deref(8, r1, 0), r0, true))
         b4.add(SbfInstruction.Exit())
         cfg.normalize()
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.verify(true)
 
         val globals = newGlobalVariableMap()
         if (hoistMemcpy) {
             unhoistMemFunctions(cfg)
             cfg.simplify(globals)
-            sbfLogger.warn {"After unhoisting memcpy instructions: $cfg"}
+            println("After unhoisting memcpy instructions: $cfg")
             Assertions.assertEquals(true, getNumOfUnhoistedMemcpy(cfg) == 3U)
         } else {
             Assertions.assertEquals(true, getNumOfUnhoistedMemcpy(cfg) == 0U)
@@ -225,7 +182,7 @@ class UnhoistMemcpyTest {
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
         val absValAtEntry = scalarAnalysis.getPost(cfg.getEntry().getLabel())
         val absValAtExit = scalarAnalysis.getPost(cfg.getExit().getLabel())
-        sbfLogger.info {"Abstract value at the end of the entry block: $absValAtEntry"}
+        println("Abstract value at the end of the entry block: $absValAtEntry")
         check(absValAtExit != null) {"test01 returns a null abstract value"}
         return absValAtExit
     }
@@ -323,12 +280,12 @@ class UnhoistMemcpyTest {
         b4.add(SolanaFunction.toCallInst(SolanaFunction.SOL_MEMCPY))
         b4.add(SbfInstruction.Exit())
         cfg.normalize()
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.verify(true)
         unhoistMemFunctions(cfg)
         val globals = newGlobalVariableMap()
         cfg.simplify(globals)
-        sbfLogger.warn {"After unhoisting memcpy instructions: $cfg"}
+        println("After unhoisting memcpy instructions: $cfg")
         Assertions.assertEquals(true, getNumOfUnhoistedMemcpy(cfg) == 6U)
     }
 
@@ -432,12 +389,12 @@ class UnhoistMemcpyTest {
 
         loopExitB.add(SbfInstruction.Exit())
         cfg.normalize()
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.verify(true)
         unhoistMemFunctions(cfg)
         val globals = newGlobalVariableMap()
         cfg.simplify(globals)
-        sbfLogger.warn {"After unhoisting memcpy instructions: $cfg"}
+        println("After unhoisting memcpy instructions: $cfg")
         Assertions.assertEquals(true, getNumOfUnhoistedMemcpy(cfg) == 2U)
     }
 
@@ -463,12 +420,12 @@ class UnhoistMemcpyTest {
             }
         }
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println( "Before $cfg" )
         cfg.verify(true)
         unhoistMemFunctions(cfg)
         val globals = newGlobalVariableMap()
         cfg.simplify(globals)
-        sbfLogger.warn { "After $cfg" }
+        println("After $cfg")
         Assertions.assertEquals(true, getNumOfUnhoistedMemcpy(cfg) == 2U)
     }
 
@@ -506,20 +463,20 @@ class UnhoistMemcpyTest {
         }
 
         cfg.normalize()
-        sbfLogger.warn { "Before $cfg" }
+        println("Before $cfg")
         cfg.verify(true)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
-        sbfLogger.warn {"Before transformation\n$cfg"}
+        println("Before transformation\n$cfg")
         ConfigScope(SolanaConfig.OptimisticMemcpyPromotion, true).use {
             promoteStoresToMemcpy(cfg, scalarAnalysis)
         }
         removeUselessDefinitions(cfg)
-        sbfLogger.warn {"After promoting load and stores to memcpy\n$cfg"}
+        println("After promoting load and stores to memcpy\n$cfg")
         unhoistPromotedMemcpy(cfg)
         cfg.simplify(globals)
-        sbfLogger.warn { "After unhoisting promoted memcpy\n$cfg" }
+        println( "After unhoisting promoted memcpy\n$cfg")
         Assertions.assertEquals(true,  getNumOfUnhoistedMemcpy(cfg) == 4U)
     }
 

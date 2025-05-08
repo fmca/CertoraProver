@@ -17,64 +17,22 @@
 
 package sbf
 
-import com.certora.collect.*
 import sbf.analysis.ScalarAnalysis
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.domains.*
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
 import sbf.analysis.AnalysisRegisterTypes
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
 private val sbfTypesFac = ConstantSbfTypeFactory()
 private val env = StackEnvironment<ScalarValue<Constant, Constant>>()
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class ScalarDomainTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "debug")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
 
     @Test
     fun test01() {
-        sbfLogger.info { "====== TEST 1: StackEnvironment.overlap  =======" }
+        println( "====== TEST 1: StackEnvironment.overlap  =======")
         // check [20,28) is included [4,28)
         Assertions.assertEquals(true, env.overlap(ByteRange(20, 8), 4, 24, true))
         // check [24,32) is included in [4,28)
@@ -93,7 +51,7 @@ class ScalarDomainTest {
 
     @Test
     fun test02() {
-        sbfLogger.info { "====== TEST 2: memcpy (last word)  =======" }
+        println( "====== TEST 2: memcpy (last word)  =======")
         /**
          *   r2 := r10 - 104
          *   *(r2 + 0):= 0
@@ -122,7 +80,7 @@ class ScalarDomainTest {
                 assert(CondOp.EQ(r4, 0))
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -134,7 +92,7 @@ class ScalarDomainTest {
             val types = locInst.inst.readRegisters.map {
                 Pair(it.r, regTypes.typeAtInstruction(locInst, it.r))
             }
-            sbfLogger.warn {"Before ${locInst.inst} -> $types"}
+            println("Before ${locInst.inst} -> $types")
             // We prove the assert by checking that the value of r4 is zero
             if (locInst.inst.isAssertOrSatisfy()) {
                 val type = regTypes.typeAtInstruction(locInst, SbfRegister.R4_ARG)
@@ -145,7 +103,7 @@ class ScalarDomainTest {
 
     @Test
     fun test03() {
-        sbfLogger.info { "====== TEST 3  =======" }
+        println( "====== TEST 3  =======")
         /**
          *   r1 := 5
          *   r1 := r1 + 5
@@ -157,7 +115,7 @@ class ScalarDomainTest {
                 BinOp.ADD(r1, 5)
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -172,7 +130,7 @@ class ScalarDomainTest {
 
     @Test
     fun test04() {
-        sbfLogger.info { "====== TEST 4  =======" }
+        println( "====== TEST 4  =======")
         /**
          *   assume(r1 == 5)
          *   assert(r1 == 5)
@@ -184,7 +142,7 @@ class ScalarDomainTest {
                 assert(CondOp.EQ(r4, 5))
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -202,7 +160,7 @@ class ScalarDomainTest {
 
     @Test
     fun test05() {
-        sbfLogger.info { "====== TEST 5: simple memory store and read =======" }
+        println( "====== TEST 5: simple memory store and read =======")
         /**
          *   r1 := r10 - 104
          *   *(r1+0) = 5
@@ -218,7 +176,7 @@ class ScalarDomainTest {
                 assert(CondOp.EQ(r1, 5))
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals:GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -228,19 +186,19 @@ class ScalarDomainTest {
         check (b0 != null)
         val loadInst = b0.getLocatedInstructions().drop(3).first()
         val loadBaseType = regTypes.typeAtInstruction(loadInst, SbfRegister.R1_ARG)
-        sbfLogger.warn {"$loadInst -> $loadBaseType"}
+        println("$loadInst -> $loadBaseType")
         Assertions.assertEquals(true, loadBaseType is SbfType.PointerType.Stack && loadBaseType.offset.get()  == 3992L)
 
         val assertInst = b0.getLocatedInstructions().drop(4).first()
         val assertType = regTypes.typeAtInstruction(assertInst, SbfRegister.R1_ARG)
-        sbfLogger.warn {"$assertInst -> $assertType"}
+        println("$assertInst -> $assertType")
         Assertions.assertEquals(true, assertType is SbfType.NumType && assertType.value.get()  == 5L)
 
     }
 
     @Test
     fun test06() {
-        sbfLogger.info { "====== TEST 6: implicit cast at memory store  =======" }
+        println( "====== TEST 6: implicit cast at memory store  =======")
         /**
          *   r1 == 56789
          *   *(r1+0) = 0
@@ -252,7 +210,7 @@ class ScalarDomainTest {
                 r1[0] = 0
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals: GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -262,13 +220,13 @@ class ScalarDomainTest {
         check (b0 != null)
         val secondInst = b0.getLocatedInstructions().drop(1).first()
         val secondType = regTypes.typeAtInstruction(secondInst, SbfRegister.R1_ARG)
-        sbfLogger.warn {"$secondInst -> $secondType"}
+        println("$secondInst -> $secondType")
        // Assertions.assertEquals(true, secondType is SbfType.NumType && secondType.value.get() == 5L)
     }
 
     @Test
     fun test07() {
-        sbfLogger.info { "====== TEST 7: implicit cast at memory read  =======" }
+        println( "====== TEST 7: implicit cast at memory read  =======")
         /**
          *   r1 == 56789
          *   r1 = *(r1+0)
@@ -280,7 +238,7 @@ class ScalarDomainTest {
                 r1[0] = 0
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals: GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -290,13 +248,13 @@ class ScalarDomainTest {
         check (b0 != null)
         val secondInst = b0.getLocatedInstructions().drop(1).first()
         val secondType = regTypes.typeAtInstruction(secondInst, SbfRegister.R1_ARG)
-        sbfLogger.warn {"$secondInst -> $secondType"}
+        println("$secondInst -> $secondType")
         // Assertions.assertEquals(true, secondType is SbfType.NumType && secondType.value.get() == 5L)
     }
 
     @Test
     fun test08() {
-        sbfLogger.info { "====== TEST 8 =======" }
+        println( "====== TEST 8 =======")
         /**
          *  Example where the content of a stack offset is written and then copied (via memcpy) to another part of the stack.
          */
@@ -320,7 +278,7 @@ class ScalarDomainTest {
                 exit()
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -343,13 +301,13 @@ class ScalarDomainTest {
                 Assertions.assertEquals(true, assertType is SbfType.NumType && assertType.value.get()  == 5L)
             }
         }
-        sbfLogger.warn {sb.toString()}
+        println(sb.toString())
     }
 
 
     @Test
     fun test09() {
-        sbfLogger.info { "====== TEST 9: two stores that overlap  =======" }
+        println( "====== TEST 9: two stores that overlap  =======")
         /**
          *   r1 := r10 - 104
          *   *(r1+0) = 5
@@ -367,7 +325,7 @@ class ScalarDomainTest {
                 assert(CondOp.EQ(r1, 5))
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -378,14 +336,14 @@ class ScalarDomainTest {
 
         val assertInst = b0.getLocatedInstructions().last()
         val assertType = regTypes.typeAtInstruction(assertInst, SbfRegister.R1_ARG)
-        sbfLogger.warn {"$assertInst -> $assertType"}
+        println("$assertInst -> $assertType")
         Assertions.assertEquals(false, assertType is SbfType.NumType && assertType.value.get()  == 5L)
 
     }
 
     @Test
     fun test10() {
-        sbfLogger.info { "====== TEST 10: two contiguous stores with no overlaps  =======" }
+        println( "====== TEST 10: two contiguous stores with no overlaps  =======")
         /**
          *   r1 := r10 - 104
          *   *(r1+0) = 5
@@ -403,7 +361,7 @@ class ScalarDomainTest {
                 assert(CondOp.EQ(r1, 10))
             }
         }
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val globals: GlobalVariableMap = newGlobalVariableMap(56789L to SbfGlobalVariable("myglobal", 56789, 8))
         val memSummaries = MemorySummaries()
         val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
@@ -414,7 +372,7 @@ class ScalarDomainTest {
 
         val assertInst = b0.getLocatedInstructions().last()
         val assertType = regTypes.typeAtInstruction(assertInst, SbfRegister.R1_ARG)
-        sbfLogger.warn {"$assertInst -> $assertType"}
+        println("$assertInst -> $assertType")
         Assertions.assertEquals(true, assertType is SbfType.NumType && assertType.value.get()  == 10L)
 
     }

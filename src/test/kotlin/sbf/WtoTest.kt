@@ -23,54 +23,10 @@ import sbf.fixpoint.Wto
 import sbf.fixpoint.WtoComponent
 import sbf.fixpoint.WtoCycle
 import sbf.fixpoint.WtoVertex
-import log.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import org.junit.jupiter.api.*
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class WtoTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
-
     @Test
     fun test01() {
         val l1 = Label.Address(1)
@@ -131,7 +87,7 @@ class WtoTest {
         b7.addSucc(b3)
         b7.addSucc(b8)
         val wto = Wto(cfg)
-        sbfLogger.info {"$wto"}
+        println("$wto")
         val (one, two, nest, eight) = wto.getComponents()
         Assertions.assertEquals(
             l1, one.expectLabel()

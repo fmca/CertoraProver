@@ -17,7 +17,6 @@
 
 package sbf
 
-import com.certora.collect.*
 import config.ConfigScope
 import sbf.analysis.ScalarAnalysis
 import sbf.analysis.runGlobalInferenceAnalysis
@@ -26,56 +25,14 @@ import sbf.callgraph.MutableSbfCallGraph
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import org.junit.jupiter.api.*
 import sbf.analysis.AnalysisRegisterTypes
 import sbf.domains.*
 
 private val sbfTypesFac = ConstantSbfTypeFactory()
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class GlobalInferenceAnalysisTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
 
     /** Mock for the tests **/
     object MockForGlobalsSymbolTable: IGlobalsSymbolTable {
@@ -144,11 +101,11 @@ class GlobalInferenceAnalysisTest {
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("entrypoint"), globals)
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
 
         ConfigScope(SolanaConfig.AggressiveGlobalDetection, true).use {
             val newGlobals = runGlobalInferenceAnalysis(prog, memSummaries, MockForGlobalsSymbolTable).getGlobals()
-            sbfLogger.warn {"New global map=${newGlobals}\n"}
+            println("New global map=${newGlobals}")
             Assertions.assertEquals(true,  newGlobals[976432] != null)
         }
     }
@@ -194,10 +151,10 @@ class GlobalInferenceAnalysisTest {
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("entrypoint"), globals)
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         ConfigScope(SolanaConfig.AggressiveGlobalDetection, true).use {
             val newGlobals = runGlobalInferenceAnalysis(prog, memSummaries, MockForGlobalsSymbolTable).getGlobals()
-            sbfLogger.warn { "New global map=${newGlobals}\n" }
+            println("New global map=${newGlobals}")
             Assertions.assertEquals(true, newGlobals[976432] != null)
         }
     }
@@ -229,10 +186,10 @@ class GlobalInferenceAnalysisTest {
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("entrypoint"), globals)
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         ConfigScope(SolanaConfig.AggressiveGlobalDetection, true).use {
             val newGlobals = runGlobalInferenceAnalysis(prog, memSummaries, MockForGlobalsSymbolTable).getGlobals()
-            sbfLogger.warn { "New global map=${newGlobals}\n" }
+            println("New global map=${newGlobals}")
             Assertions.assertEquals(true, newGlobals[976432] != null)
         }
     }
@@ -308,10 +265,10 @@ class GlobalInferenceAnalysisTest {
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("entrypoint"), globals)
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         ConfigScope(SolanaConfig.AggressiveGlobalDetection, true).use {
             val newGlobals = runGlobalInferenceAnalysis(prog, memSummaries, MockForGlobalsSymbolTable).getGlobals()
-            sbfLogger.warn { "New global map=${newGlobals}\n" }
+            println("New global map=${newGlobals}")
             Assertions.assertEquals(true, newGlobals[976432] != null)
         }
     }
@@ -333,9 +290,9 @@ class GlobalInferenceAnalysisTest {
         val memSummaries = MemorySummaries()
         CVTFunction.addSummaries(memSummaries)
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("entrypoint"), globals)
-        sbfLogger.warn {"Before\n$cfg"}
+        println("Before\n$cfg")
         val (inst, type) = getTypeFromMemInst(prog, memSummaries, sbfTypesFac, Label.Address(0), 4)
-        sbfLogger.warn{"Found $inst. The type of the de-referenced pointer is $type"}
+        println("Found $inst. The type of the de-referenced pointer is $type")
         val isGlobal = type is SbfType.PointerType.Global
         Assertions.assertEquals(true, isGlobal)
     }
@@ -393,9 +350,9 @@ class GlobalInferenceAnalysisTest {
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
         val prog = MutableSbfCallGraph(listOf(cfg), setOf("test6"), globals)
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         val (inst, type) = getTypeFromMemInst(prog, memSummaries, sbfTypesFac, Label.Address(11), 2)
-        sbfLogger.warn{"Found $inst. The type of the de-referenced pointer is $type"}
+        println("Found $inst. The type of the de-referenced pointer is $type")
         val isGlobal = type is SbfType.PointerType.Global
         Assertions.assertEquals(true, isGlobal)
     }

@@ -17,63 +17,20 @@
 
 package sbf
 
-import com.certora.collect.*
+
 import sbf.callgraph.MutableSbfCallGraph
-import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.domains.*
 import sbf.inliner.InlinerConfigFromFile
 import sbf.inliner.inline
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class InlinerTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "debug")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
 
     @Test
     fun test01() {
-        sbfLogger.info { "====== TEST 1 =======" }
+        println("====== TEST 1 =======")
         /**
          * We just check that this exception is not thrown
         *    "CFG is not well-formed: entrypoint missing exit block After inline+simplify"
@@ -107,9 +64,9 @@ class InlinerTest {
         val prog = MutableSbfCallGraph(mutableListOf(entrypoint, foo), setOf("entrypoint"), globals)
         val inlinerConfig = InlinerConfigFromFile(listOf(), listOf())
         val memSummaries = MemorySummaries()
-        sbfLogger.warn {"Program\n$prog\n"}
+        println("Program\n$prog\n")
         val inlinedProg = inline("entrypoint", prog, memSummaries, inlinerConfig)
-        sbfLogger.warn {"Inlined program\n$inlinedProg"}
+        println("Inlined program\n$inlinedProg")
     }
 
 }

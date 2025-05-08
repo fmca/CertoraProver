@@ -17,61 +17,18 @@
 
 package sbf
 
-import com.certora.collect.*
 import config.ConfigScope
 import sbf.analysis.NPAnalysis
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.domains.MemorySummaries
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
 import sbf.domains.ConstantSbfTypeFactory
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
 private val sbfTypesFac = ConstantSbfTypeFactory()
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class RemoveCFGDiamondsTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
-
     private fun checkSelect(inst: SbfInstruction.Select, lhs: Value.Reg, cond: Condition, trueVal: Value, falseVal: Value) =
         inst.dst == lhs && inst.cond == cond && inst.trueVal == trueVal && inst.falseVal == falseVal
 
@@ -158,14 +115,14 @@ class RemoveCFGDiamondsTest {
             }
         }
 
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.simplify(newGlobalVariableMap())
         ConfigScope(SolanaConfig.EnableRemovalOfCFGDiamonds, true).use {removeCFGDiamonds(cfg)}
-        sbfLogger.warn {"After removing diamonds: $cfg"}
+        println("After removing diamonds: $cfg")
 
         val np1 = NPAnalysis(cfg, newGlobalVariableMap(), MemorySummaries(), sbfTypesFac)
         lowerSelectToAssume(cfg, np1)
-        sbfLogger.warn {"After lowering select instructions into assumes: $cfg"}
+        println("After lowering select instructions into assumes: $cfg")
         val np2 = NPAnalysis(cfg, newGlobalVariableMap(), MemorySummaries(), sbfTypesFac)
         val preconditions = np2.getPreconditionsAtEntry(Label.Address(0))
         check(preconditions != null)
@@ -204,10 +161,10 @@ class RemoveCFGDiamondsTest {
             }
         }
 
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.simplify(newGlobalVariableMap())
         ConfigScope(SolanaConfig.EnableRemovalOfCFGDiamonds, true).use {removeCFGDiamonds(cfg) }
-        sbfLogger.warn {"After removing diamonds: $cfg"}
+        println("After removing diamonds: $cfg")
         Assertions.assertEquals(true,
             checkFirstSelect(cfg,
                 Value.Reg(SbfRegister.R4_ARG), Condition(CondOp.EQ, Value.Reg(SbfRegister.R1_ARG), Value.Reg(SbfRegister.R3_ARG)), Value.Imm(0UL), Value.Imm(1UL))
@@ -246,10 +203,10 @@ class RemoveCFGDiamondsTest {
             }
         }
 
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.simplify(newGlobalVariableMap())
         ConfigScope(SolanaConfig.EnableRemovalOfCFGDiamonds, true).use {removeCFGDiamonds(cfg)}
-        sbfLogger.warn {"After removing diamonds: $cfg"}
+        println("After removing diamonds: $cfg")
         Assertions.assertEquals(true,
             checkFirstSelect(cfg,
                 Value.Reg(SbfRegister.R4_ARG), Condition(CondOp.NE, Value.Reg(SbfRegister.R1_ARG), Value.Reg(SbfRegister.R3_ARG)), Value.Imm(0UL), Value.Imm(1UL))
@@ -288,10 +245,10 @@ class RemoveCFGDiamondsTest {
             }
         }
 
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.simplify(newGlobalVariableMap())
         ConfigScope(SolanaConfig.EnableRemovalOfCFGDiamonds, true).use {removeCFGDiamonds(cfg)}
-        sbfLogger.warn {"After removing diamonds: $cfg"}
+        println("After removing diamonds: $cfg")
         Assertions.assertEquals(true,
             checkFirstSelect(cfg,
                 Value.Reg(SbfRegister.R4_ARG), Condition(CondOp.NE, Value.Reg(SbfRegister.R1_ARG), Value.Reg(SbfRegister.R3_ARG)), Value.Reg(SbfRegister.R4_ARG), Value.Imm(1UL))
@@ -330,10 +287,10 @@ class RemoveCFGDiamondsTest {
             }
         }
 
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         cfg.simplify(newGlobalVariableMap())
         ConfigScope(SolanaConfig.EnableRemovalOfCFGDiamonds, true).use {removeCFGDiamonds(cfg)}
-        sbfLogger.warn {"After removing diamonds: $cfg"}
+        println("After removing diamonds: $cfg")
         Assertions.assertEquals(false,
             cfg.getBlocks().values.any {
                 it.getInstructions().any { it is SbfInstruction.Select }
@@ -371,9 +328,9 @@ class RemoveCFGDiamondsTest {
             }
         }
 
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         ConfigScope(SolanaConfig.EnableRemovalOfCFGDiamonds, true).use {removeCFGDiamonds(cfg)}
-        sbfLogger.warn {"After removing diamonds: $cfg"}
+        println("After removing diamonds: $cfg")
         Assertions.assertEquals(true, numOfSelect(cfg) == 3)
     }
 
@@ -401,12 +358,12 @@ class RemoveCFGDiamondsTest {
             }
         }
 
-        sbfLogger.warn {"$cfg"}
+        println("$cfg")
         removeCFGDiamonds(cfg)
-        sbfLogger.warn {"After removing diamonds: $cfg"}
+        println("After removing diamonds: $cfg")
 
         val tacProg = toTAC(cfg)
-        sbfLogger.warn { dumpTAC(tacProg) }
+        println(dumpTAC(tacProg))
         Assertions.assertEquals(true, verify(tacProg))
 
 

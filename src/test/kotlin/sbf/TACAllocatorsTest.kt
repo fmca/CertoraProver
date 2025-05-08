@@ -17,7 +17,6 @@
 
 package sbf
 
-import com.certora.collect.*
 import config.ConfigScope
 import datastructures.stdcollections.*
 import sbf.cfg.*
@@ -25,51 +24,10 @@ import sbf.disassembler.SbfRegister
 import sbf.disassembler.Label
 import sbf.tac.TACTranslationError
 import sbf.testing.SbfTestDSL
-import log.*
 import org.junit.jupiter.api.*
 import sbf.callgraph.CVTCore
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@Order(1)
 class TACAllocatorsTest {
-    private var outContent = ByteArrayOutputStream()
-    private var errContent = ByteArrayOutputStream()
-
-    private val originalOut = System.out
-    private val originalErr = System.err
-
-    // system properties have to be set before we load the logger
-    @BeforeAll
-    fun setupAll() {
-        System.setProperty(LoggerTypes.SBF.toLevelProp(), "info")
-    }
-
-    // we must reset our stream so that we could match on what we have in the current test
-    @BeforeEach
-    fun setup() {
-        outContent = ByteArrayOutputStream()
-        errContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent, true)) // for 'always' logs
-        System.setErr(PrintStream(errContent, true)) // loggers go to stderr
-    }
-
-    private fun debug() {
-        originalOut.println(outContent.toString())
-        originalErr.println(errContent.toString())
-    }
-
-    // close and reset
-    @AfterEach
-    fun teardown() {
-        debug()
-        System.setOut(originalOut)
-        System.setErr(originalErr)
-        outContent.close()
-        errContent.close()
-    }
 
     @Test
     fun test1() {
@@ -88,9 +46,9 @@ class TACAllocatorsTest {
 
         }
 
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         val tacProg = toTAC(cfg)
-        sbfLogger.warn { dumpTAC(tacProg) }
+        println(dumpTAC(tacProg))
         Assertions.assertEquals(true, verify(tacProg))
     }
 
@@ -110,12 +68,12 @@ class TACAllocatorsTest {
 
         }
 
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         val tacProg = toTAC(cfg,
             kotlin.collections.listOf("#[type((*i64)(r1+0):ptr_external(1024))]",
                                       "#[type((*i64)(r1+8):ptr_external(1024))]",
                                       "^foo$"))
-        sbfLogger.warn { dumpTAC(tacProg) }
+        println(dumpTAC(tacProg))
         Assertions.assertEquals(true, verify(tacProg))
     }
 
@@ -133,12 +91,12 @@ class TACAllocatorsTest {
             }
         }
 
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         val tacProg = toTAC(cfg,
             kotlin.collections.listOf("#[type((*i64)(r1+0):ptr_external(1024))]",
                                       "#[type((*i64)(r1+8):ptr_external(1024))]",
                                       "^foo$"))
-        sbfLogger.warn { dumpTAC(tacProg) }
+        println(dumpTAC(tacProg))
         Assertions.assertEquals(true, verify(tacProg))
     }
 
@@ -160,9 +118,9 @@ class TACAllocatorsTest {
 
         }
 
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         val tacProg = toTAC(cfg)
-        sbfLogger.warn { dumpTAC(tacProg) }
+        println(dumpTAC(tacProg))
         Assertions.assertEquals(true, verify(tacProg))
     }
 
@@ -177,12 +135,12 @@ class TACAllocatorsTest {
             }
 
         }
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         var failed = false
         try {
             toTAC(cfg)
         } catch (e: TACTranslationError) {
-            sbfLogger.warn {"$e"}
+            println("$e")
             failed = true
         }
         Assertions.assertEquals(true, failed)
@@ -201,12 +159,12 @@ class TACAllocatorsTest {
             b0.add(SbfInstruction.Call(name = CVTCore.NONDET_SOLANA_ACCOUNT_SPACE.function.name))
         }
         b0.add(SbfInstruction.Exit())
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         var failed = false
         try {
             toTAC(cfg)
         } catch (e: TACTranslationError) {
-            sbfLogger.warn {"$e"}
+            println("$e")
             failed = true
         }
         Assertions.assertEquals(true, failed)
@@ -230,9 +188,9 @@ class TACAllocatorsTest {
 
         }
 
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         val tacProg = toTAC(cfg)
-        sbfLogger.warn { dumpTAC(tacProg) }
+        println(dumpTAC(tacProg))
         Assertions.assertEquals(true, verify(tacProg))
     }
 
@@ -254,12 +212,12 @@ class TACAllocatorsTest {
 
         }
 
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         var failed = false
         try {
             toTAC(cfg)
         } catch (e: TACTranslationError) {
-            sbfLogger.warn {"$e"}
+            println("$e")
             failed = true
         }
         Assertions.assertEquals(true, failed)
@@ -283,10 +241,10 @@ class TACAllocatorsTest {
 
         }
 
-        sbfLogger.warn{"$cfg"}
+        println("$cfg")
         ConfigScope(SolanaConfig.UseTACMathInt, true).use {
             val tacProg = toTAC(cfg)
-            sbfLogger.warn { dumpTAC(tacProg) }
+            println(dumpTAC(tacProg))
             Assertions.assertEquals(true, verify(tacProg))
         }
 
