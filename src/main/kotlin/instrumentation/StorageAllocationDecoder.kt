@@ -25,6 +25,7 @@ import analysis.loop.AbstractArraySummaryExtractor
 import analysis.loop.AbstractArraySummaryExtractor.Companion.simplify
 import analysis.loop.LoopSummarization
 import analysis.smtblaster.*
+import config.Config
 import evm.EVM_WORD_SIZE_INT
 import parallel.Parallel
 import parallel.ParallelPool
@@ -182,7 +183,7 @@ class StorageAllocationDecoder private constructor(
         )
         state.script.declare(symbolicLen)
         state.script.declare(symbolicStart)
-        val res = when(val work = handleBlock(state, start.toLeft())) {
+        val res = when(val work = handleBlock(state, start.toLeft(), depth = 0)) {
             is Either.Right -> {
                 logger.info {
                     "Could not interpret alloc at $end targeting $endVar: ${work.d}"
@@ -233,7 +234,11 @@ class StorageAllocationDecoder private constructor(
     private fun handleBlock(
         state: BuilderState,
         seed: Either<CmdPointer, NBId>,
+        depth: Int,
     ) : Either<Parallel<Either<BigInteger?, INFEASIBLE>>, String> {
+        if(depth >= Config.MaxStorageAllocationAnalysisDepth.get()) {
+            return "Depth exceeded at $seed".toRight()
+        }
         val seq = seed.toValue({
             graph.iterateBlock(it, excludeStart = false)
         }, {
@@ -293,7 +298,9 @@ class StorageAllocationDecoder private constructor(
                             }
                         }
                     }
-                    is TACCommandGraph.PathCondition.Summary,
+                    is TACCommandGraph.PathCondition.Summary -> {
+                        return "Did not expect to see a block with a summary ${path.s.annotationDesc} at $seed".toRight()
+                    }
                     TACCommandGraph.PathCondition.TRUE,
                     null -> { }
                 }
@@ -352,7 +359,7 @@ class StorageAllocationDecoder private constructor(
                  * Note that if we have some fatal error in a block that is infeasible, we'll end up tanking the whole process
                  * pessimistically. This is an acceptable risk compared to making an even more gnarly return signature.
                  */
-                handleBlock(withPc, nxt.toRight()).mapLeft { p ->
+                handleBlock(withPc, nxt.toRight(), depth + 1).mapLeft { p ->
                     Scheduler.rpc {
                         solvers.blastSmt(checkPc.cmdList)
                     }.bind { infeasible ->
@@ -405,7 +412,7 @@ class StorageAllocationDecoder private constructor(
          * No? then just continue on straight line code
          */
         if(loops.isEmpty()) {
-            return handleBlock(state, soleSucc.toRight())
+            return handleBlock(state, soleSucc.toRight(), depth + 1)
         }
         /**
          * Multiple loops -> bad time, bail out
@@ -584,7 +591,7 @@ class StorageAllocationDecoder private constructor(
             return processEnd(state, currBlock)
         }
         // phew!
-        return handleBlock(state, skipTarget.toRight())
+        return handleBlock(state, skipTarget.toRight(), depth + 1)
     }
 
     /**
