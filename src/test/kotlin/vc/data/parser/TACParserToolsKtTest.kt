@@ -96,7 +96,7 @@ internal class TACParserToolsKtTest: WithTACSource {
             Simple.ReturnCmd(x1, x2),
             Simple.ReturnSymCmd(one),
             Simple.RevertCmd(zero, one, TACRevertType.THROW, x1),
-            Simple.AssumeCmd(TACSymbol.True),
+            Simple.AssumeCmd(TACSymbol.True, "assumeCmd"),
             Simple.AssumeExpCmd(x1.asSym()),
             Simple.AssumeNotCmd(TACSymbol.False),
             Simple.AssertCmd(TACSymbol.True,"assertCmd"),

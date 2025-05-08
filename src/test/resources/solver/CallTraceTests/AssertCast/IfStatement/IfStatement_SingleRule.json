@@ -919,7 +919,7 @@
                                 }
                             }
                         },
-                        "description": "ret > 0",
+                        "description": null,
                         "scope": {
                             "scopeStack": [
                                 {
@@ -1157,7 +1157,7 @@
                     }
                 }
             },
-            "description": "true",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {

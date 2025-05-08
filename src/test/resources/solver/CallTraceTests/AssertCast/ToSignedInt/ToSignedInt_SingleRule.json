@@ -262,7 +262,7 @@
                     }
                 }
             },
-            "description": "assert_int256(toCast) >= 0",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {

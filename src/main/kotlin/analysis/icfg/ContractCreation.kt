@@ -227,7 +227,7 @@ object ContractCreation {
                 ExprUnfolder.unfoldPlusOneCmd("noOverlapAssume", with(TACExprFactUntyped) {
                     LNot(Eq((it.addressSym as TACSymbol).asSym(), computedAddress.asSym()))
                 }) {
-                    TACCmd.Simple.AssumeCmd(it.s)
+                    TACCmd.Simple.AssumeCmd(it.s, "noOverlapAssume")
                 }.merge(it.addressSym as TACSymbol).merge(computedAddress)
             }.let(CommandWithRequiredDecls.Companion::mergeMany)
         }

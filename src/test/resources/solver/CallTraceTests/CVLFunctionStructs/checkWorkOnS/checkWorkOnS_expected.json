@@ -45,9 +45,9 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "true",
+                                                "value": "false",
                                                 "values": [
-                                                    "true"
+                                                    "false"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": false
@@ -86,9 +86,9 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "true",
+                                                "value": "false",
                                                 "values": [
-                                                    "true"
+                                                    "false"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": false
@@ -1036,9 +1036,9 @@
                                         "truncatable": true
                                     },
                                     {
-                                        "value": "true",
+                                        "value": "false",
                                         "values": [
-                                            "true"
+                                            "false"
                                         ],
                                         "tooltip": "storage value",
                                         "truncatable": false
@@ -1116,9 +1116,9 @@
                                         "truncatable": true
                                     },
                                     {
-                                        "value": "true",
+                                        "value": "false",
                                         "values": [
-                                            "true"
+                                            "false"
                                         ],
                                         "tooltip": "storage value",
                                         "truncatable": false
@@ -1265,9 +1265,9 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "true",
+                                                "value": "false",
                                                 "values": [
-                                                    "true"
+                                                    "false"
                                                 ],
                                                 "tooltip": "value at b1",
                                                 "truncatable": false
@@ -1283,9 +1283,9 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "true",
+                                                "value": "false",
                                                 "values": [
-                                                    "true"
+                                                    "false"
                                                 ],
                                                 "tooltip": "value at b2",
                                                 "truncatable": false
@@ -1635,9 +1635,9 @@
                                                         "truncatable": true
                                                     },
                                                     {
-                                                        "value": "true",
+                                                        "value": "false",
                                                         "values": [
-                                                            "true"
+                                                            "false"
                                                         ],
                                                         "tooltip": "storage value",
                                                         "truncatable": false

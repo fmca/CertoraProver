@@ -519,7 +519,7 @@ object TACMockLanguage {
 
         fun assume(v: BuilderVar) {
             this.pushCommand(
-                TACCmd.Simple.AssumeCmd(v.v)
+                TACCmd.Simple.AssumeCmd(v.v, "")
             )
         }
 

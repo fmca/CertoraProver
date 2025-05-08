@@ -155,12 +155,14 @@ class FoundryFuzzTestsGenerator(val withRevert: Boolean) : BuiltInRuleGenerator(
                 CVLCmd.Simple.AssumeCmd.Assume(
                     range,
                     CVLExp.RelopExp.EqExp(g_expectRevertAllowed, CVLExp.Constant.BoolLit(withRevert, emptyTag), emptyTag),
+                    null,
                     ruleScope
                 ),
                 if (withRevert) {
                     CVLCmd.Simple.AssumeCmd.Assume(
                         range,
                         CVLExp.RelopExp.EqExp(g_expectRevert, CVLExp.Constant.BoolLit(false, emptyTag), emptyTag),
+                        null,
                         ruleScope
                     )
                 } else {
@@ -172,6 +174,7 @@ class FoundryFuzzTestsGenerator(val withRevert: Boolean) : BuiltInRuleGenerator(
                         CVLExp.FieldSelectExp(CVLExp.FieldSelectExp(envParamExp, "msg", emptyTag), "value", emptyTag),
                         CVLExp.Constant.NumberLit(BigInteger.ZERO, emptyTag), emptyTag
                     ),
+                    null,
                     ruleScope
                 ),
                 CVLCmd.Simple.Apply(
