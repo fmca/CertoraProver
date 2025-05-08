@@ -63,7 +63,7 @@ class CallTraceTest {
     /** When this is true, every test that compares call trace jsons, actual vs expected, will dump the current
      * actual one to disk in the test folder. That way one can use a regular diff tool to see the changes and update
      * the expected one if needed. */
-    private val dumpActualCallTraceJsons: Boolean = true // set false on master
+    private val dumpActualCallTraceJsons: Boolean = false // set false on master
 
     /** Used when [dumpActualCallTraceJsons] is set, for dumping actual call trace jsons for offline comparison.  */
     private val jsonPP = Json { prettyPrint = true }
