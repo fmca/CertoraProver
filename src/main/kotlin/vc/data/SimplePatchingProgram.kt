@@ -84,7 +84,7 @@ class SimplePatchingProgram(
             if (explicitlyAssumeTheSelection && condValue) {
                 replacement.add(
                     TACCmd.Simple.AssumeCmd(
-                        jumpiCmd.cmd.cond
+                        jumpiCmd.cmd.cond, "selectConditionalEdges"
                     )
                 )
             } else if (explicitlyAssumeTheSelection /* in particular, !condValue */) {

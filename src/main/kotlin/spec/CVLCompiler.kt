@@ -428,7 +428,7 @@ class CVLCompiler(
          */
         val dispatching = contractToFunc.fold(
             CommandWithRequiredDecls(TACCmd.Simple.AssumeCmd(
-                false.asTACSymbol()
+                false.asTACSymbol(), "dispatching default"
             )).toProg("address function call default", env).toSimple()
         ) { acc, (contract, func) ->
             val compiledFunc = compileConcreteApplication(
@@ -567,7 +567,7 @@ class CVLCompiler(
             }
 
             is CVLCmd.Simple.AssumeCmd.Assume -> {
-                compileAssumeCmd(cmd.exp, allocatedTACSymbols, compilationEnvironment, null)
+                compileAssumeCmd(cmd.exp, cmd.descriptionOrDefault, allocatedTACSymbols, compilationEnvironment, null)
             }
 
             is CVLCmd.Simple.Assert -> {
@@ -1120,6 +1120,7 @@ class CVLCompiler(
      */
     private fun assumeExp(
         exp: CVLExp,
+        description: String,
         allocatedTACSymbols: TACSymbolAllocation,
         twoStateContext: (CVLExp) -> CVLExp = { it },
         compilerEnv: CompilationEnvironment,
@@ -1133,7 +1134,7 @@ class CVLCompiler(
         val twoStateVariablesFlattened = twoStateContext(exp)
         val expCode = CVLExpressionCompiler(this, allocatedTACSymbols, compilerEnv)
             .compileExp(assumeParam, twoStateVariablesFlattened)
-        val cmd = TACCmd.Simple.AssumeCmd(assumeVar, meta = meta)
+        val cmd = TACCmd.Simple.AssumeCmd(assumeVar, meta = meta, msg = description)
         return expCode.addSink(CommandWithRequiredDecls(cmd, assumeVar), compilerEnv)
     }
 
@@ -1412,7 +1413,7 @@ class CVLCompiler(
          */
         val assumingCmds =
             assumeExp(
-                cmd.assumingExpOrDefault, allocatedTACSymbols,
+                cmd.assumingExpOrDefault, "generated assume for havoc", allocatedTACSymbols,
                 twoStateContext = { exp -> ghostFunctionSubstitutor.expr(variableSubstitutor.expr(exp).safeForce()).safeForce() },
                 compilerEnv = env,
                 meta = MetaMap()
@@ -1575,6 +1576,7 @@ class CVLCompiler(
             CVLCmd.Simple.AssumeCmd.Assume(
                 cmd.range,
                 convertedExp,
+                null,
                 cmd.scope
             ),
             allocatedTACSymbols,
@@ -1602,6 +1604,7 @@ class CVLCompiler(
      */
     private fun compileAssumeCmd(
         exp: CVLExp,
+        description: String,
         allocatedTACSymbols: TACSymbolAllocation,
         env: CompilationEnvironment,
         generatedForSatisfy: Int?
@@ -1611,7 +1614,7 @@ class CVLCompiler(
         } else {
             MetaMap()
         }
-        return assumeExp(exp, allocatedTACSymbols, compilerEnv = env, meta = meta)
+        return assumeExp(exp, description, allocatedTACSymbols, compilerEnv = env, meta = meta)
     }
 
     /**
@@ -1646,7 +1649,7 @@ class CVLCompiler(
             listOf(
                 TACCmd.Simple.AssertCmd(
                     assertVarTAC,
-                    description = cmd.description,
+                    description = cmd.descriptionOrDefault,
                     meta = assertMeta)
             ),
             name
@@ -1672,7 +1675,7 @@ class CVLCompiler(
         env: CompilationEnvironment
     ): ParametricInstantiation<CVLTACProgram> {
         val satisfyUUID = Allocator.getFreshId(allocator.Allocator.Id.SATISFIES)
-        val requireCmd = compileAssumeCmd(cmd.exp, allocatedTACSymbols, env, satisfyUUID)
+        val requireCmd = compileAssumeCmd(cmd.exp, "assume generated for satisfy: ${cmd.descriptionOrDefault}", allocatedTACSymbols, env, satisfyUUID)
 
         val boolType = CVLType.PureCVLType.Primitive.Bool
         val falseLit = CVLExp.Constant.BoolLit(false, CVLExpTag(cmd.scope, boolType, cmd.range))
@@ -1680,7 +1683,7 @@ class CVLCompiler(
         val assertCmd = CVLCmd.Simple.Assert(
             range = cmd.range,
             exp = falseLit,
-            description = cmd.description,
+            description = cmd.descriptionOrDefault,
             scope = cmd.scope,
             invariantPostCond = false
         )
@@ -1929,7 +1932,7 @@ class CVLCompiler(
                     cb(Select(extcodesize.asSym(), addressSym.asSym()))
                 }
             ) {
-                TACCmd.Simple.AssumeCmd(it.s)
+                TACCmd.Simple.AssumeCmd(it.s, "extCodesizeCheck")
             }.merge(extcodesize, addressSym, EthereumVariables.getCodeDataSize(it.instanceId))
         }
         return (addressesWithZeroCodeSize.map {
@@ -1963,7 +1966,7 @@ class CVLCompiler(
         )
 
         //Assume tmp variable to hold
-        val assumeTmp = TACCmd.Simple.AssumeCmd(tmp)
+        val assumeTmp = TACCmd.Simple.AssumeCmd(tmp, "extcodesizeCheckZeroAddress")
 
         return CommandWithRequiredDecls<TACCmd.Spec>(listOf(assignTmp, assumeTmp), listOf(tmp, extcodesize))
     }
@@ -1993,8 +1996,8 @@ class CVLCompiler(
         decls.add(gtTmp)
         decls.add(ltTmp)
 
-        val assumeGtTmp = TACCmd.Simple.AssumeCmd(gtTmp)
-        val assumeLtTmp = TACCmd.Simple.AssumeCmd(ltTmp)
+        val assumeGtTmp = TACCmd.Simple.AssumeCmd(gtTmp, "MinContractAddrCheck")
+        val assumeLtTmp = TACCmd.Simple.AssumeCmd(ltTmp, "MaxContractAddrCheck")
         addresses.forEach { addr ->
             if (addr is TACSymbol.Var) {
                 decls.add(addr)
@@ -2041,7 +2044,7 @@ class CVLCompiler(
         val staticAddrTmp = TACKeyword.TMP(Tag.Bool, "StaticAddrAssignment")
         decls.add(staticAddrTmp)
 
-        val assumeAddrTmp = TACCmd.Simple.AssumeCmd(staticAddrTmp)
+        val assumeAddrTmp = TACCmd.Simple.AssumeCmd(staticAddrTmp, "assumeStaticAddresses")
 
         staticAddresses.forEach { (staticAddr, contractAddrSym) ->
             cmds.add(
@@ -2078,7 +2081,7 @@ class CVLCompiler(
         val distinctAddr = TACKeyword.TMP(Tag.Bool, "addrDistinction")
         decls.add(distinctAddr)
 
-        val addrDistinguishTmp = TACCmd.Simple.AssumeCmd(distinctAddr)
+        val addrDistinguishTmp = TACCmd.Simple.AssumeCmd(distinctAddr, "ensureUniqueContractAddresses")
 
         addresses.forEach { it ->
             if (it is TACSymbol.Var) {
@@ -2784,7 +2787,7 @@ class CVLCompiler(
                 wrapWithCVL(
                     CommandWithRequiredDecls<TACCmd.Spec>(
                         listOf(
-                            assignCondCmd, TACCmd.Simple.AssumeCmd(tmpVar)
+                            assignCondCmd, TACCmd.Simple.AssumeCmd(tmpVar, "linking")
                         ),
                         decls
                     ),
@@ -2830,7 +2833,7 @@ class CVLCompiler(
                         exprFact.Le(toConstrain, valueType.maxValue.toBigInteger().asTACSymbol().asSym()),
                         exprFact::LAnd
                     ),
-                    TACCmd.Simple.AssumeCmd(tmpBool)
+                    TACCmd.Simple.AssumeCmd(tmpBool, "ensureValueBitwidth")
                 ), setOf(tmpBool))
 
             }
@@ -2852,7 +2855,7 @@ class CVLCompiler(
                     exprFact.Ge(id, TACSymbol.Const(BigInteger.ZERO).asSym()),
                     exprFact::LAnd
                 ),
-                TACCmd.Simple.AssumeCmd(tmpBool)
+                TACCmd.Simple.AssumeCmd(tmpBool, "UnsignedRange")
             )
         }
 
@@ -2872,7 +2875,7 @@ class CVLCompiler(
                         ),
                         exprFact::LAnd
                     ),
-                    TACCmd.Simple.AssumeCmd(tmpBool)
+                    TACCmd.Simple.AssumeCmd(tmpBool, "SignedRange")
                 )
             } // ignore the sign bit
             is CVLType.PureCVLType.Primitive.HashBlob -> generateUnsignedRange(Config.VMConfig.registerBitwidth)
@@ -2891,7 +2894,7 @@ class CVLCompiler(
                             TACSymbol.Const(BigInteger.ZERO).asSym()
                         )
                     ),
-                    TACCmd.Simple.AssumeCmd(tmpBool)
+                    TACCmd.Simple.AssumeCmd(tmpBool, "BytesRange")
                 )
             }
 
@@ -3426,7 +3429,7 @@ class CVLCompiler(
                             cmds.add(assignTmp3ForValueOfAssumeCmd1)
                             decls.add(tmpVarAssume1value)
 
-                            val assumeCmd1 = TACCmd.Simple.AssumeCmd(tmpVarAssume1value)       // assume(tmpAssume1)
+                            val assumeCmd1 = TACCmd.Simple.AssumeCmd(tmpVarAssume1value, "linking")       // assume(tmpAssume1)
                             cmds.add(assumeCmd1)
 
                             val assume2valueCmd =
@@ -3439,7 +3442,7 @@ class CVLCompiler(
                             decls.add(contractAddressVar)
                             decls.add(link)
 
-                            val assumeCmd2 = TACCmd.Simple.AssumeCmd(tmpVarAssume2value)       // assume(tmpAssume2)
+                            val assumeCmd2 = TACCmd.Simple.AssumeCmd(tmpVarAssume2value, "linking")       // assume(tmpAssume2)
                             cmds.add(assumeCmd2)
                         }
                     }
@@ -3532,7 +3535,7 @@ private fun getArrayAssumptions(id: String, arrayType: CVLType.PureCVLType.CVLAr
                         assumeVar,
                         TACExpr.BinRel.Eq(lastWordCleaned, lastWord.asSym())
                     ),
-                    TACCmd.Simple.AssumeCmd(assumeVar)
+                    TACCmd.Simple.AssumeCmd(assumeVar, "assumeLastWordCleanedIsLastWord")
                 ),
                 assumeVar
             )
@@ -3578,7 +3581,7 @@ private fun getArrayAssumptions(id: String, arrayType: CVLType.PureCVLType.CVLAr
                 o1 = arrayLen.asSym()
             )
         ), TACCmd.Simple.AssumeCmd(
-            cond = assume
+            cond = assume, "array length non-negative"
         )), setOf(arrayVar, assume, arrayLen)
     ).merge(stringAssumptions)
 }

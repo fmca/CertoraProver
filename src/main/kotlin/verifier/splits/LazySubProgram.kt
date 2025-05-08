@@ -104,7 +104,7 @@ class LazySubProgram(
                             ptr,
                             listOf(
                                 cmd.copy(o = TACSymbol.True),
-                                TACCmd.Simple.AssumeCmd(cmd.o)
+                                TACCmd.Simple.AssumeCmd(cmd.o, "from assert: ${cmd.msg}")
                             )
                         )
                     }

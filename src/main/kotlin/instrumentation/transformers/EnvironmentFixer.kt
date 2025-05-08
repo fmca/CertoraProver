@@ -41,7 +41,7 @@ class EnvironmentFixer(private val address: BigInteger, private val isConstructo
                 ExprUnfolder.unfoldPlusOneCmd("codeSize", TACExprFactTypeCheckedOnlyPrimitives.Gt(
                     tmpSymbol.asSym(), TACExpr.zeroExpr
                 )) {
-                    TACCmd.Simple.AssumeCmd(it.s)
+                    TACCmd.Simple.AssumeCmd(it.s, "codeSize")
                 }
             ).merge(tmpSymbol, addressVar)
         } else {

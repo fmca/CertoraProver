@@ -194,7 +194,7 @@ object EncodingInterpreter : DataLayoutInterpreter {
                         elemDataSize to safeMul(elemDataSize, len, evmElemSize.asTACSymbol())
                     }
                     val lengthSanity = ExprUnfolder.unfoldPlusOneCmd("!lengthSanity", TACExpr.BinRel.Lt(len.asSym(), BigInteger.TWO.pow(Config.VMConfig.maxArraySizeFactor).asTACExpr, Tag.Bool)) {
-                        TACCmd.Simple.AssumeCmd(it.s)
+                        TACCmd.Simple.AssumeCmd(it.s, "lengthSanity")
                     }
                     val addCode = safeAdd(totalSize, elemDataSize, EVM_WORD_SIZE.asTACSymbol())
                     val allocSizeCode = mulCode.merge(addCode).merge(lengthSanity)
@@ -383,7 +383,7 @@ object EncodingInterpreter : DataLayoutInterpreter {
                                                                 Config.LoopUnrollConstant.get().asTACExpr
                                                             )
                                                         ) {
-                                                            TACCmd.Simple.AssumeCmd(it.s)
+                                                            TACCmd.Simple.AssumeCmd(it.s, "within LoopUnrollConstant")
                                                         }.toProg("check", context)
                                                     )
                                                 }

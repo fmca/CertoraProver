@@ -1464,7 +1464,7 @@ object ObjectPathMatchingTransformer {
             }
             for((where, v) in pv.sources) {
                 val ex = ExprUnfolder.unfoldPlusOneCmd("prophecyAssume", TACExpr.BinRel.Eq(v.asSym(), pv.prophecyVar.asSym())) {
-                    TACCmd.Simple.AssumeCmd(it.s)
+                    TACCmd.Simple.AssumeCmd(it.s, "prophecyAssume")
                 }
                 p.addAfter(where, ex)
             }
@@ -1495,7 +1495,7 @@ object ObjectPathMatchingTransformer {
             if(inst.prophecyKey != null) {
                 val prophecyVar = prophecyMatch[inst.prophecyKey]!!.prophecyVar
                 toInsert = toInsert.merge(ExprUnfolder.unfoldPlusOneCmd("prophecyAssume", TACExpr.BinRel.Eq(prophecyVar.asSym(), inst.output.asSym())) {
-                    TACCmd.Simple.AssumeCmd(it.s)
+                    TACCmd.Simple.AssumeCmd(it.s, "prophecyAssume")
                 })
             }
             p.insertAfter(insertionLocation.ptr, toInsert.cmds)

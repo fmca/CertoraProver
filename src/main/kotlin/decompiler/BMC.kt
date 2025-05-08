@@ -665,7 +665,7 @@ class BMCRunner(@Suppress("PrivatePropertyName") private val UNROLL_CONST : Int,
             }
         }
         return if (IsAssumeUnwindCondForLoops.get()) {
-            listOf(TACCmd.Simple.AssumeCmd(sym).mapMeta(terminusTag))
+            listOf(TACCmd.Simple.AssumeCmd(sym, "unwindCondCheck").mapMeta(terminusTag))
         } else {
             listOf(
                 SnippetCmd.LoopSnippet.AssertUnwindCond(sym ,unwindingCondMsg())

@@ -76,7 +76,7 @@ object DivisionUnderapproximation {
                         divExp.o1
                     )
                 ))
-                replacement.add(TACCmd.Simple.AssumeCmd(tmp))
+                replacement.add(TACCmd.Simple.AssumeCmd(tmp, "divNoRemainder"))
             }
             patch.replaceCommand(
                 divCmd.ptr,

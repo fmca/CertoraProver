@@ -135,7 +135,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                     }
                 ),
                 TACCmd.Simple.AssumeCmd(
-                    allUnaccessedVar
+                    allUnaccessedVar, "AllUnaccessed"
                 )
             )
         }
@@ -163,7 +163,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                         }
                     }
                 ),
-                TACCmd.Simple.AssumeCmd(unaccessedGhostCondVar)
+                TACCmd.Simple.AssumeCmd(unaccessedGhostCondVar, "UnaccessedGhostCond")
             )
 
             val nonNegativeUsumCIndexVars = generateIndexVars(usumGhost.paramTypes)
@@ -179,7 +179,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                         }
                     }
                 ),
-                TACCmd.Simple.AssumeCmd(nonNegativeUsumCondVar)
+                TACCmd.Simple.AssumeCmd(nonNegativeUsumCondVar, "NonNegativeUsumCond")
             )
 
             patching.addVarDecls(setOf(unaccessedGhostVar, unaccessedGhostCondVar, nonNegativeUsumCondVar))
@@ -246,7 +246,7 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                 lhs = currValNonNegativeCondVar,
                 rhs = TACExprFactUntyped { currVal.asSym() ge Zero }
             ),
-            TACCmd.Simple.AssumeCmd(currValNonNegativeCondVar),
+            TACCmd.Simple.AssumeCmd(currValNonNegativeCondVar, "CurrValNonNegativeCond"),
             TACCmd.Simple.AssigningCmd.AssignExpCmd(
                 lhs = condVar,
                 rhs = TACExprFactUntyped {

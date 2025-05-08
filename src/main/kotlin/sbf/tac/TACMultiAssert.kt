@@ -57,7 +57,7 @@ object TACMultiAssert {
                     p.replace(it.ptr) { cmd ->
                         val assertCmd = cmd as? TACCmd.Simple.AssertCmd
                         if (assertCmd != null) {
-                            listOf(TACCmd.Simple.AssumeCmd(assertCmd.o, assertCmd.meta))
+                            listOf(TACCmd.Simple.AssumeCmd(assertCmd.o, "replaced assert: ${assertCmd.msg}", assertCmd.meta))
                         } else {
                             listOf()
                         }

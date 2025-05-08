@@ -69,7 +69,7 @@ abstract class TACCmdMapper<T> {
 
     open fun mapAssumeNotCmd(t: TS.AssumeNotCmd) = this.mapAssumeNotCmd(t.cond, t.meta)
 
-    open fun mapAssumeCmd(t: TS.AssumeCmd) = this.mapAssumeCmd(t.cond, t.meta)
+    open fun mapAssumeCmd(t: TS.AssumeCmd) = this.mapAssumeCmd(t.cond, t.msg, t.meta)
 
     open fun mapAssumeExpCmd(t: TS.AssumeExpCmd) = this.mapAssumeExpCmd(t.cond, t.meta)
 
@@ -116,7 +116,7 @@ abstract class TACCmdMapper<T> {
     abstract fun mapNopCmd(): T
     abstract fun mapAssertCmd(o: TACSymbol, description: String, metaMap: MetaMap): T
     abstract fun mapAssumeNotCmd(cond: TACSymbol, metaMap: MetaMap): T
-    abstract fun mapAssumeCmd(cond: TACSymbol, metaMap: MetaMap): T
+    abstract fun mapAssumeCmd(cond: TACSymbol, description: String, metaMap: MetaMap): T
     abstract fun mapAssumeExpCmd(cond: TACExpr, metaMap: MetaMap): T
     abstract fun mapRevertCmd(
         o1: TACSymbol,
@@ -320,9 +320,10 @@ abstract class AbstractDefaultTACCmdMapper : TACCmdMapper<TACCmd.Simple>() {
             cond = cond.map(0)
         ).mapThisMeta(metaMap)
 
-    override fun mapAssumeCmd(cond: TACSymbol, metaMap: MetaMap): TS =
+    override fun mapAssumeCmd(cond: TACSymbol, description: String, metaMap: MetaMap): TS =
         TS.AssumeCmd(
-            cond = cond.map(0)
+            cond = cond.map(0),
+            msg = description
         ).mapThisMeta(metaMap)
 
     override fun mapAssumeExpCmd(cond: TACExpr, metaMap: MetaMap): TS =
@@ -643,9 +644,9 @@ open class DefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {
 
 }
 
-/** 
+/**
  * "index" here refers the position at which an operand occurs. E.g. consider the expression `f(x, y, z)`;
- * the index we pass when visiting `z` will be `2`, since `z` occurs at the third position and we count 
+ * the index we pass when visiting `z` will be `2`, since `z` occurs at the third position and we count
  * 0-based.
  */
 abstract class IndexingDefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {

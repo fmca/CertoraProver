@@ -76,7 +76,7 @@ fun assert(msg: String, subjectSym: TACSymbol? = null, cond: TACExprFact.() -> T
 
 fun assume(cond: TACExprFact.() -> TACExpr) =
     cond.letVar("a", Tag.Bool) {
-        TACCmd.Simple.AssumeCmd(it.s).withDecls()
+        TACCmd.Simple.AssumeCmd(it.s, "").withDecls()
     }
 
 fun label(label: String) = TACCmd.Simple.LabelCmd(label).withDecls()

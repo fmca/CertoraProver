@@ -93,7 +93,7 @@ abstract class CVLCmdFolder<T> {
     }
 
     open fun assume(acc: T, cmd: CVLCmd.Simple.AssumeCmd.Assume) : T {
-        return cvlExp(acc, cmd.exp)
+        return message(cvlExp(acc, cmd.exp), cmd.descriptionOrDefault)
     }
 
     open fun assumeInvariant(acc: T, cmd: CVLCmd.Simple.AssumeCmd.AssumeInvariant) : T {
@@ -101,11 +101,11 @@ abstract class CVLCmdFolder<T> {
     }
 
     open fun assert(acc: T, cmd: CVLCmd.Simple.Assert) : T {
-        return message(cvlExp(acc, cmd.exp), cmd.description)
+        return message(cvlExp(acc, cmd.exp), cmd.descriptionOrDefault)
     }
 
     open fun satisfy(acc: T, cmd: CVLCmd.Simple.Satisfy) : T {
-        return message(cvlExp(acc, cmd.exp), cmd.description)
+        return message(cvlExp(acc, cmd.exp), cmd.descriptionOrDefault)
     }
 
     open fun apply(acc: T, cmd : CVLCmd.Simple.Apply) : T {

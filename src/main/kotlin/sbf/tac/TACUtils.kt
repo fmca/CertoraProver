@@ -32,7 +32,7 @@ context(SbfCFGToTAC)
 fun unreachable(inst: SbfInstruction): List<TACCmd.Simple> {
     return listOf(
         Debug.unreachable(inst),
-        TACCmd.Simple.AssumeCmd(exprBuilder.mkBoolConst(false))
+        TACCmd.Simple.AssumeCmd(exprBuilder.mkBoolConst(false), "unreachable")
     )
 }
 

@@ -189,6 +189,7 @@
                     }
                 }
             },
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -1301,7 +1302,7 @@
                     }
                 }
             },
-            "description": "testContract.m[0].b3",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {

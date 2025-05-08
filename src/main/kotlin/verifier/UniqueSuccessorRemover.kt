@@ -75,7 +75,7 @@ object UniqueSuccessorRemover {
             return ac.dropLast(1)
         }
         if (l is TACCmd.Simple.JumpiCmd && l.dst == bid) {
-            return ac.dropLast(1) + listOf(TACCmd.Simple.AssumeCmd(l.cond))
+            return ac.dropLast(1) + listOf(TACCmd.Simple.AssumeCmd(l.cond, "cleanCommands"))
         }
         return ac
     }

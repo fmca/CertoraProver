@@ -278,6 +278,7 @@ sealed class GenerateRulesForAssertions : SanityRuleGenerator {
                                         val requireIfCondition = CVLCmd.Simple.AssumeCmd.Assume(
                                             range = cmd.range,
                                             exp = cmd.cond,
+                                            null,
                                             scope = cmd.scope
                                         )
                                         val commandsFromThen = curateCommandsRecursively(
@@ -320,6 +321,7 @@ sealed class GenerateRulesForAssertions : SanityRuleGenerator {
                                                                     )
                                                                 )
                                                             ),
+                                                            null,
                                                             cmd.elseCmd.scope
                                                         )
                                                     ),
@@ -342,6 +344,7 @@ sealed class GenerateRulesForAssertions : SanityRuleGenerator {
                                                 cmd.cond,
                                                 cmd.cond.tag
                                             ),
+                                            null,
                                             scope = cmd.scope
                                         )
                                         val commandsFromElse = curateCommandsRecursively(
@@ -376,6 +379,7 @@ sealed class GenerateRulesForAssertions : SanityRuleGenerator {
                                                                     )
                                                                 )
                                                             ),
+                                                            null,
                                                             cmd.elseCmd.scope
                                                         )
                                                     ),
@@ -501,6 +505,7 @@ sealed class GenerateRulesForAssertions : SanityRuleGenerator {
                         CVLCmd.Simple.AssumeCmd.Assume(
                             range = it.range,
                             exp = it.exp,
+                            null,
                             scope = it.scope
                         )
                     }
@@ -864,6 +869,7 @@ object GenerateRulesForRedundantRequiresCheck : SanityRuleGenerator {
                 true,
                 CVLExpTag(range = rule.range, scope = rule.scope, type = CVLType.PureCVLType.Primitive.Bool)
             ),
+            null,
             scope = rule.scope
         )
 

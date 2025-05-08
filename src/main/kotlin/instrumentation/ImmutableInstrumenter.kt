@@ -324,7 +324,7 @@ object ImmutableInstrumenter : ConstructorBytecodeNormalizer {
                     )
                 }).let {
                     CommandWithRequiredDecls(
-                        it.cmds + TACCmd.Simple.AssumeCmd(it.e.s),
+                        it.cmds + TACCmd.Simple.AssumeCmd(it.e.s, "inBounds"),
                         it.newVars + immutableVar
                     )
                 }
@@ -377,7 +377,7 @@ object ImmutableInstrumenter : ConstructorBytecodeNormalizer {
                             TACSymbol.immutable(extensionImmut.varname, extensionC.name).asSym()
                     }
                 ),
-                TACCmd.Simple.AssumeCmd(cond)
+                TACCmd.Simple.AssumeCmd(cond, "establishEquivalenceOfExtensionContractImmutables")
             ) to cond
         }.unzip()
         return CommandWithRequiredDecls(
