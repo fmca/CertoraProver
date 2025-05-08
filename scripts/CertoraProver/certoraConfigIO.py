@@ -75,9 +75,9 @@ def read_from_conf_file(context: CertoraContext) -> None:
 
     try:
         with conf_file_path.open() as conf_file:
-            context.conf_file_attr = json5.load(conf_file, allow_duplicate_keys=False)
+            conf_file_attr = json5.load(conf_file, allow_duplicate_keys=False)
             try:
-                check_conf_content(context)
+                check_conf_content(conf_file_attr, context)
             except Util.CertoraUserInputError as e:
                 raise Util.CertoraUserInputError(f"Error when reading {conf_file_path}: {str(e)}", e) from None
             context.conf_file = str(conf_file_path)
@@ -99,7 +99,6 @@ def handle_override_base_config(context: CertoraContext) -> None:
         with Path(context.override_base_config).open() as conf_file:
             try:
                 override_base_config_attrs = json5.load(conf_file, allow_duplicate_keys=False)
-                context.conf_file_attr = {**override_base_config_attrs, **context.conf_file_attr}
 
                 if 'override_base_config' in override_base_config_attrs:
                     raise Util.CertoraUserInputError("base config cannot include 'override_base_config'")
@@ -114,7 +113,7 @@ def handle_override_base_config(context: CertoraContext) -> None:
                     raise Util.CertoraUserInputError(f"{attr} appears in the base conf file {context.override_base_config} but is not a known attribute.")
 
 
-def check_conf_content(context: CertoraContext) -> None:
+def check_conf_content(conf_file_attr: Dict[str, Any], context: CertoraContext) -> None:
     """
     validating content read from the conf file
     Note: a command line definition trumps the definition in the file.
@@ -123,15 +122,15 @@ def check_conf_content(context: CertoraContext) -> None:
     @param context: A namespace containing options from the command line, if any
     """
 
-    for option in context.conf_file_attr:
+    for option in conf_file_attr:
         if hasattr(context, option):
             val = getattr(context, option)
             if val is None or val is False:
-                setattr(context, option, context.conf_file_attr[option])
-            elif option != Attrs.EvmProverAttributes.FILES.get_conf_key() and val != context.conf_file_attr[option]:
+                setattr(context, option, conf_file_attr[option])
+            elif option != Attrs.EvmProverAttributes.FILES.get_conf_key() and val != conf_file_attr[option]:
                 cli_val = ' '.join(val) if isinstance(val, list) else str(val)
-                conf_val = ' '.join(context.conf_file_attr[option]) \
-                    if isinstance(context.conf_file_attr[option], list) else str(context.conf_file_attr[option])
+                conf_val = ' '.join(conf_file_attr[option]) \
+                    if isinstance(conf_file_attr[option], list) else str(conf_file_attr[option])
                 run_logger.warning(f"Note: attribute {option} value in CLI ({cli_val}) overrides value stored in conf"
                                    f" file ({conf_val})")
         else:
@@ -141,10 +140,10 @@ def check_conf_content(context: CertoraContext) -> None:
 
     if Attrs.is_evm_app() and not context.files and not context.project_sanity and not context.foundry:
         raise Util.CertoraUserInputError("Mandatory 'files' attribute is missing from the configuration")
-    context.files = context.conf_file_attr.get('files')
+
     if Attrs.is_rust_app():
         has_build_script = getattr(context, 'build_script', False)
-        if not has_build_script and 'files' not in context.conf_file_attr:
+        if not has_build_script and 'files' not in conf_file_attr:
             raise Util.CertoraUserInputError("Mandatory 'build_script' or 'files' attribute is missing from the configuration")
 
-    context.files = context.conf_file_attr.get('files')
+    context.files = conf_file_attr.get('files')
