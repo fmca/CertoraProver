@@ -364,24 +364,23 @@ def validate_tool_output_path(filename: str) -> str:
     return filename
 
 
-def validate_conf_file(file_name: str) -> str:
+def validate_conf_file(file: str) -> str:
     """
     Verifies that the file name has a .conf extension
     @param file_name: the file name
     @return: the name after confirming the .conf extension
 
-    Will raise Util.CertoraUserInputError if the file name does end
+    Will raise Util.CertoraUserInputError if the file name does not end
     in .conf.
     """
-    if not file_name.endswith('.conf'):
-        raise Util.CertoraUserInputError(f"file name {file_name} does not end in .conf")
+    if not file.endswith('.conf'):
+        raise Util.CertoraUserInputError(f"file name {file} does not end in .conf")
 
-    # making sure the target file can be created and is accessible for writing
-    with open(file_name, 'w') as f:
-        f.write('try')
-    os.remove(file_name)
+    file_path = Path(file)
+    if not file_path.exists() or not file_path.is_file() or not os.access(file_path, os.R_OK):
+        raise Util.CertoraUserInputError(f"conf file {file} is not an existing readable file")
 
-    return file_name
+    return file
 
 
 def validate_exec_file(file_name: str) -> str:
@@ -735,8 +734,8 @@ def validate_compiler_map(args: Dict[str, str]) -> None:
     first = list(values)[0]
 
     if all(x == first for x in values):
-        validation_logger.warning("All source files will be compiled with the same compiler."
-                                  "solc/vyper attribute  can be used instead")
+        validation_logger.warning("All source files will be compiled with the same compiler. "
+                                  "solc/vyper attribute can be used instead")
 
 
 def validate_git_hash(git_hash: str) -> str:

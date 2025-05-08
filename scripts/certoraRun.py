@@ -188,7 +188,7 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
 
             timings["buildTime"] = round(build_end - build_start, 4)
             if context.test == str(Util.TestValue.AFTER_BUILD):
-                raise Util.TestResultsReady(True)
+                raise Util.TestResultsReady(context)
 
         if not context.build_only and exit_code == 0:
             # either we skipped building (TAC MODE) or build succeeded

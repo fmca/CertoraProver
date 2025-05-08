@@ -26,6 +26,9 @@ import datastructures.*
 import datastructures.stdcollections.*
 import instrumentation.transformers.FilteringFunctions
 import log.*
+import rules.TWOSTAGE_META_MODEL
+import rules.TWOSTAGE_META_VARORIGIN
+import tac.MetaMap
 import tac.NBId
 import tac.Tag
 import utils.runIf
@@ -85,11 +88,13 @@ class ByteMapScalarizer private constructor(code: CoreTACProgram, private val go
     private fun processCmd(lcmd: LTACCmd, queries: Queries): Queries {
         val (ptr, cmd) = lcmd
 
+        fun clean(m : MetaMap) = (m - TWOSTAGE_META_VARORIGIN) - TWOSTAGE_META_MODEL
+
         fun replace(newCmd: TACCmd.Simple) =
-            patcher.replace(ptr, newCmd.withMeta(cmd.meta))
+            patcher.replace(ptr, newCmd.withMeta(clean(cmd.meta)))
 
         fun replace(newCmds: List<TACCmd.Simple>) =
-            patcher.replace(ptr, newCmds.map { it.withMeta(cmd.meta) })
+            patcher.replace(ptr, newCmds.map { it.withMeta(clean(cmd.meta)) })
 
         fun assign(lhsV : TACSymbol.Var, lhsLoc : BigInteger, rhsV : TACSymbol.Var, rhsLoc : BigInteger) =
             runIf(lhsV != rhsV || lhsLoc != rhsLoc) {

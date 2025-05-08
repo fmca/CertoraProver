@@ -108,7 +108,7 @@ def run_solana_prover(args: List[str]) -> Optional[CertoraRunResult]:
     build_end = time.perf_counter()
     timings["buildTime"] = round(build_end - build_start, 4)
     if context.test == str(Util.TestValue.AFTER_BUILD):
-        raise Util.TestResultsReady(True)
+        raise Util.TestResultsReady(context)
 
     if not context.build_only and exit_code == 0:
 

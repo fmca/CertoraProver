@@ -34,12 +34,23 @@ scripts_dir_path = Path(__file__).parent.parent.parent / "scripts"
 scripts_dir_path = scripts_dir_path.resolve()
 sys.path.insert(0, str(scripts_dir_path))
 
-# if len(sys.argv) != 3:
-#     print(f"Usage: python {sys.argv[0]} <TestEVM path> <CITests path>")
-#     sys.exit(1)
+TestEVM_path = ''
+CITests_path = ''
 
-TestEVM_path = sys.argv[1]
-CITests_path = sys.argv[2]
+if sys.argv and len(sys.argv) == 3:
+    TestEVM_path = sys.argv[1]
+    CITests_path = sys.argv[2]
+else:
+    # Allowing getting test directories from env var instead of passing in argv for local debugging
+    test_paths = os.getenv("CERTORA_TEST_PATHS", None)
+    if test_paths:
+        TestEVM_path, CITests_path = test_paths.split(',')
+
+if not TestEVM_path or not CITests_path:
+    print(f"Usage: python {sys.argv[0]} <TestEVM path> <CITests path>")
+    sys.exit(1)
+
+
 os.environ["CERTORA_TEST_DATA_DIRECTORY"] = f"{CITests_path}/test_data"
 
 import CertoraProver.certoraContextAttributes as Attrs
@@ -148,7 +159,7 @@ class TestClient(unittest.TestCase):
         # not simple value verifications (auth_data key is not a simple copy of the input)
         if 'runName' in result:
             run_name = result['runName']
-            assert len(run_name) == 32, f"'runName' {run_name} length is not 32"
+            assert len(run_name) == 32, f"'runName' {run_name} length is not 32, got {len(run_name)}"
         else:
             assert False, "'runName' is not in auth_data"
 
@@ -238,219 +249,219 @@ class TestClient(unittest.TestCase):
 
         suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
         suite.expect_success(description='valid assert on file name',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}"])
         suite.expect_success(description='valid assert on redundant name:contract',
-                             run_flags=[f"{_p('A.sol')}:A", '--assert_contracts', 'A'])
+                             run_flags=[f"{_p('A.sol')}:A", '--verify', f"A:{_p('spec1.spec')}"])
         suite.expect_success(description='valid assert on non-redundant name:contract',
-                             run_flags=[f"{_p('A.sol')}:B", '--assert_contracts', 'B'])
+                             run_flags=[f"{_p('A.sol')}:B", '--verify', f"B:{_p('spec1.spec')}"])
         suite.expect_success(description='multiple files single assert',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A'])
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}"])
         suite.expect_success(description='multiple files multiple assert',
                              run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', 'B'])
         suite.expect_success(description='multiple files multiple assert repeated flag',
                              run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--assert_contracts', 'B'])
         suite.expect_success(description='file is repeated',
-                             run_flags=[f"{_p('A.sol')}:B", f"{_p('A.sol')}:B", '--assert_contracts', 'B'])
+                             run_flags=[f"{_p('A.sol')}:B", f"{_p('A.sol')}:B", '--verify', f"B:{_p('spec1.spec')}"])
         suite.expect_success(description='2 contracts in a single file',
-                             run_flags=[f"{_p('A.sol')}:B", _p('A.sol'), '--assert_contracts', 'B'])
+                             run_flags=[f"{_p('A.sol')}:B", _p('A.sol'), '--verify', f"B:{_p('spec1.spec')}"])
         suite.expect_success(description='--verify with spec file',
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}"])
         suite.expect_success(description='--verify with cvl file',
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('erc20.cvl')}"])
         suite.expect_success(description='--link ',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--link', 'A:a=B'])
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:a=B'])
         suite.expect_success(description='--link: self linking',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--link', 'A:a=A'])
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:a=A'])
 
         suite.expect_success(description='slot names can have alphanumeric characters and underscores',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--link', 'A:a_2=B'])
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:a_2=B'])
         suite.expect_success(description='defining the same link twice (legal)',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--link', 'A:a=B',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:a=B',
                                         'A:a=B'])
         suite.expect_success(description='slot names can have alphanumeric characters and underscores',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--link', 'A:a1=B',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:a1=B',
                                         'B:b_1=A'])
         suite.expect_success(description='a link can accept a number',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--link', 'A:12=A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:12=A'])
         suite.expect_success(description='a link can accept the number 0',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--link', 'A:0=A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:0=A'])
         suite.expect_success(description='a link can accept the number hex',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--link', 'A:0Xd3c=A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:0Xd3c=A'])
         suite.expect_success(description='--solc valid',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc', 'solc6.10'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc', 'solc6.10'])
         suite.expect_success(description='--solc_optimize valid',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_optimize'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_optimize'])
         suite.expect_success(description='--solc_optimize with runs valid',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_optimize', '300'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_optimize', '300'])
         suite.expect_success(description='--solc_map valid',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_map',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_map',
                                         f"{_p('A.sol')}=solc6.10"])
         suite.expect_success(description='--solc_map 2 entries valid',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--solc_map', f"{_p('A.sol')}=solc6.10,{_p('B.sol')}=solc4.25"])
         suite.expect_success(description='solc_map can get contracts',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--solc_map',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_map',
                                         f"A=solc6.10,{_p('B.sol')}=solc4.25"])
         suite.expect_success(description='solc_map duplicated entries (valid)',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_map',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_map',
                                         f"{_p('A.sol')}=solc6.10,{_p('A.sol')}=solc6.10"])
         suite.expect_success(description='spaces inside solc_map are trimmed',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--solc_map', f"{_p('A.sol')} =solc6.10 , {_p('A.sol')} = solc6.10"])
         suite.expect_success(description='--solc_map with equivalent paths',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_map',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_map',
                                         f"{_p('dir1/../A.sol')}=solc6.10"])
 
         suite.expect_success(description='--solc_via_ir_map valid',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--solc_via_ir_map', f"{_p('A.sol')}=true"])
         suite.expect_success(description='--solc_via_ir_map 0 valid value',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--solc_via_ir_map', f"{_p('A.sol')}=false"])
         suite.expect_success(description='--solc_via_ir_map 2 entries',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--solc_via_ir_map', f"{_p('A.sol')}=false,{_p('B.sol')}=true"])
         suite.expect_success(description='--solc_via_ir_map with duplicates',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_via_ir_map',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_via_ir_map',
                                         f"{_p('A.sol')}=true,{_p('A.sol')}=true"])
         suite.expect_success(description='--solc_via_ir_map keys are contracts or contract files',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--solc_via_ir_map',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_via_ir_map',
                                         f"A=true,{_p('B.sol')}=false"])
         suite.expect_success(description='--solc_via_ir_map keys are contracts',
-                             run_flags=[f"{_p('A.sol')}:A", f"{_p('A.sol')}:B", '--assert_contracts', 'A',
+                             run_flags=[f"{_p('A.sol')}:A", f"{_p('A.sol')}:B", '--verify', f"A:{_p('spec1.spec')}",
                                         '--solc_via_ir_map', "A=true,B=true"])
         suite.expect_success(description='--jar valid run',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--jar', _p('empty.jar')])
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--jar', _p('empty.jar')])
         suite.expect_success(description='--tool_output valid run',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--tool_output', _p('empty.json')])
         suite.expect_success(description='--tool_output files do not require a suffix of .json',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--tool_output', _p('empty')])
         suite.expect_success(description='valid tac file', run_flags=[_p('empty.tac')])
         suite.expect_success(description='valid conf file', run_flags=[_p('tac_file.conf')])
         suite.expect_success(description='valid --bytecode_jsons',
                              run_flags=['--bytecode_jsons', _p('erc20.json'), '--bytecode_spec', _p('spec1.spec')])
         suite.expect_success(description='valid --packages_path',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--packages_path', '.'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--packages_path', '.'])
         suite.expect_success(description='valid --packages',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--packages', 'a=.'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--packages', 'a=.'])
         suite.expect_success(description='valid --server',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--server', 'production'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--server', 'production'])
         suite.expect_success(description='valid --server and --prover_version',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--server', 'production',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--server', 'production',
                                         '--prover_version', 'hotfix'])
         suite.expect_success(description='valid --java_args',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--java_args', '-ea'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--java_args', '-ea'])
         suite.expect_success(description='valid --java_args multiple args',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--java_args', '"-Xmx8g -Dcvt.default.parallelism=2"'])
         suite.expect_success(description='valid --prover_args',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--prover_args', '-a 88'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--prover_args', '-a 88'])
         suite.expect_success(description='valid --address',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--address', "A:1"])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--address', "A:1"])
         suite.expect_success(description='valid --address slot 0 is legal',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--address', "A:0"])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--address', "A:0"])
         suite.expect_success(description='valid --debug_topics ',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--debug', '--debug_topics', 'rome'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--debug', '--debug_topics', 'rome'])
         suite.expect_success(description='valid --debug_topics  without --debug',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--debug_topics', 'rome'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--debug_topics', 'rome'])
         suite.expect_success(description='valid --show_debug_topics',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--debug_topics', 'rome',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--debug_topics', 'rome',
                                         '--show_debug_topics'])
         suite.expect_success(description='valid --debug_topics and --show_debug_topics',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--debug_topics', 'rome',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--debug_topics', 'rome',
                                         '--show_debug_topics'])
         suite.expect_success(description='valid --no_compare ',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--no_compare'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--no_compare'])
         suite.expect_success(description='valid --expected_file',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--expected_file', _p('empty.json')])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--expected_file', _p('empty.json')])
         suite.expect_success(description='valid --wait_for_results',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--wait_for_results'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--wait_for_results'])
         suite.expect_success(description='valid --struct_link',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--struct_link', 'A:0=A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--struct_link', 'A:0=A'])
         suite.expect_success(description='valid --struct_link accepts slot as hexadecimal numbers',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--struct_link', 'A:0=A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--struct_link', 'A:0=A'])
         suite.expect_success(description='valid --struct_link multiple entries',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--struct_link',
+                             run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--struct_link',
                                         'A:1=B', 'A:2=B', 'A:1009=A'])
         suite.expect_success(description='valid --struct_link duplicate entries',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--struct_link', 'A:0XC=A', 'A:0XC=A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--struct_link', 'A:0XC=A', 'A:0XC=A'])
         suite.expect_success(description='valid --build_only',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--build_only'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--build_only'])
         suite.expect_success(description='valid --build_only duplicate entries',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--build_only', '--build_only'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--build_only', '--build_only'])
         suite.expect_success(description='valid --compilation_steps_only',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--server', 'staging',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--server', 'staging',
                                         '--compilation_steps_only'])
         suite.expect_success(description='valid --disable_local_typechecking',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--disable_local_typechecking'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--disable_local_typechecking'])
         suite.expect_success(description='valid --queue_wait_minutes',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--queue_wait_minutes', '1'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--queue_wait_minutes', '1'])
         suite.expect_success(description='valid --queue_wait_minutes accepts the argument zero',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--queue_wait_minutes', '0'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--queue_wait_minutes', '0'])
         suite.expect_success(description='valid --max_poll_minutes',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--max_poll_minutes', '1'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--max_poll_minutes', '1'])
         suite.expect_success(description='valid --max_poll_minutes accepts the argument zero',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--max_poll_minutes', '0'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--max_poll_minutes', '0'])
         suite.expect_success(description='valid --log_query_frequency_seconds',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--log_query_frequency_seconds', '1'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--log_query_frequency_seconds', '1'])
         suite.expect_success(description='valid --log_query_frequency_seconds accepts the argument zero',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--log_query_frequency_seconds', '0'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--log_query_frequency_seconds', '0'])
         suite.expect_success(description='valid --max_attempts_to_fetch_output',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--max_attempts_to_fetch_output', '1'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--max_attempts_to_fetch_output', '1'])
         suite.expect_success(description='valid --max_attempts_to_fetch_output accepts the argument zero',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--max_attempts_to_fetch_output', '0'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--max_attempts_to_fetch_output', '0'])
         suite.expect_success(description='valid --delay_fetch_output_seconds',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--delay_fetch_output_seconds', '1'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--delay_fetch_output_seconds', '1'])
         suite.expect_success(description='valid --delay_fetch_output_seconds accepts the argument zero',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--delay_fetch_output_seconds', '0'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--delay_fetch_output_seconds', '0'])
         suite.expect_success(description='valid --msg',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--msg', '1'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--msg', '1'])
         suite.expect_success(description='valid --msg with double quotes',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--msg', '"rio de janeiro"'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--msg', '"rio de janeiro"'])
         suite.expect_success(description='valid --msg with space',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--msg', 'rio de janeiro'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--msg', 'rio de janeiro'])
         suite.expect_success(description='valid --protocol_name',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--protocol_name', 'Aave'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--protocol_name', 'protocol1'])
         suite.expect_success(description='valid --protocol_author',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--protocol_author', 'Stani'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--protocol_author', 'Joe'])
         suite.expect_success(description='valid --solc_evm_version',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_evm_version', 'Istanbul'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_evm_version', 'Istanbul'])
         suite.expect_success(description='valid --solc_via_ir',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_via_ir'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_via_ir'])
         suite.expect_success(description='valid --solc_experimental_via_ir',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--solc_experimental_via_ir'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_experimental_via_ir'])
         suite.expect_success(description='valid --process',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--process', 'verify'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--process', 'verify'])
         suite.expect_success(description='valid --rule',
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--rule', 'always_true'])
         suite.expect_success(description='valid --loop_iter',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--loop_iter', '1000'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--loop_iter', '1000'])
         suite.expect_success(description='valid --smt_timeout',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--smt_timeout', '100000'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--smt_timeout', '100000'])
         suite.expect_success(description='valid --max_graph_depth',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--max_graph_depth', '100000'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--max_graph_depth', '100000'])
         suite.expect_success(description='valid --max_graph_depth accept 0',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--max_graph_depth', '0'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--max_graph_depth', '0'])
         suite.expect_success(description='valid --global_timeout',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--global_timeout', '1800'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--global_timeout', '1800'])
         suite.expect_success(description='valid --global_timeout accept 0',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--global_timeout', '0'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--global_timeout', '0'])
         suite.expect_success(description='valid --commit_sha1',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--server', 'staging',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--server', 'staging',
                                         '--commit_sha1', '123'])
         suite.expect_success(description='valid --commit_sha1 max length',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--server', 'staging',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--server', 'staging',
                                         '--commit_sha1', '3' * 40])
         suite.expect_success(description='valid --internal_funcs',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--internal_funcs', _p('erc20.json')])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--internal_funcs', _p('erc20.json')])
         suite.expect_success(description='valid --run_source',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--run_source', 'COMMAND'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--run_source', 'COMMAND'])
         suite.expect_success(description='valid --parametric_contracts',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--parametric_contracts', 'A'])
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--parametric_contracts', 'A'])
         ctx = suite.expect_checkpoint(description='dynamic_bound sets disable_source_finders',
-                                      run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--dynamic_bound', '4'])
+                                      run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--dynamic_bound', '4'])
         if not ctx.disable_source_finders:
             self.fail("dynamic_bound should set disable_source_finders")
 
@@ -459,7 +470,7 @@ class TestClient(unittest.TestCase):
         suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
 
         suite.expect_failure(description='not valid contract name',
-                             run_flags=[f"{_p('A.sol')}:El-Paso", '--assert_contracts', 'A'],
+                             run_flags=[f"{_p('A.sol')}:El-Paso", '--verify', f"A:{_p('spec1.spec')}"],
                              expected='El-Paso should be a valid contract name')
         suite.expect_failure(description="'assert_contracts' cannot be used with a .tac file",
                              run_flags=[f"{_p('A.sol')}:tmp.tac", '--assert_contracts', 'A'],
@@ -468,7 +479,7 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--prover_args', '-spec XXX'],
                              expected='Use CLI flag ')
         suite.expect_failure(description='bad link',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--link', 'A::1=2'],
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A::1=2'],
                              expected='must be of the form contractA:slot=contractB or contractA:slot=<number>')
         suite.expect_failure(description='double address',
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--address', 'A:2', 'A:3'],
@@ -494,7 +505,7 @@ class TestClient(unittest.TestCase):
                              expected="Option 'assert_contracts' cannot be used with a .tac file")
         suite.expect_failure(description="must use either 'assert_contracts' or 'verify' or 'bytecode_jsons'",
                              run_flags=[_p('A.sol')],
-                             expected="You must use either 'assert_contracts' or 'verify' or 'bytecode_jsons' when ")
+                             expected="You must use 'verify' when running the Certora Prover")
         suite.expect_failure(description="package a was given two paths",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--packages',
                                         f"a={_p('dir1')}", '--packages', f"a={_p('.')}"],
@@ -524,29 +535,29 @@ class TestClient(unittest.TestCase):
                                         '--solc_map', f"{_p('A.sol')}=solc5.11"],
                              expected=f'No matching for {CITests_path}/test_data/B.sol')
         suite.expect_failure(description="A contract named B was declared twice",
-                             run_flags=[f"{_p('A.sol')}:B", _p('B.sol'), '--assert_contracts', 'A'],
+                             run_flags=[f"{_p('A.sol')}:B", _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}"],
                              expected='A contract named B was declared twice')
         suite.expect_failure(description="cannot use both 'compilation_steps_only' and 'build_only'",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--compilation_steps_only',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--compilation_steps_only',
                                         '--build_only'],
                              expected="cannot use both 'compilation_steps_only' and 'build_only'")
         suite.expect_failure(description='“ instead of "',
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--msg', '“msg“'],
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--msg', '“msg“'],
                              expected='Please replace “ with " quotation marks')
         suite.expect_failure(description="bytecode' together with 'bytecode_spec'",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--bytecode_jsons',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--bytecode_jsons',
                                         f"{_p('empty.json')}"],
                              expected="Must use 'bytecode' together with 'bytecode_spec'")
         suite.expect_failure(description="'bytecode_jsons' with other files",
                              run_flags=[_p('A.sol'), '--bytecode_jsons', _p('erc20.json'), '--bytecode_spec',
-                                         _p('spec1.spec'), '--assert_contracts', 'A'],
+                                         _p('spec1.spec'), '--verify', f"A:{_p('spec1.spec')}"],
                              expected="Cannot use 'bytecode_jsons' with other files")
         suite.expect_failure(description="using both branch and commit",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--commit_sha1', '123', '--server',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--commit_sha1', '123', '--server',
                                         'staging', '--prover_version', 'production'],
                              expected="Cannot run on both a specific branch production and a specific commit")
         suite.expect_failure(description="--cloud_global_timeout not allowed",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--cloud_global_timeout', "60"],
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--cloud_global_timeout', "60"],
                              expected="Cannot set the global timeout for the cloud. Use 'global_timeout' instead")
         suite.expect_failure(description="--rule with tac",
                              run_flags=[_p('empty.tac'), '--rule', 'always_true'],
@@ -555,7 +566,7 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--rule', 'always_true'],
                              expected="rules flag/attributes such as --rule, --exclude_rule or --split_rules are only ")
         suite.expect_failure(description="compilation_steps_only with build_only",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--compilation_steps_only',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--compilation_steps_only',
                                         '--build_only'],
                              expected="cannot use both 'compilation_steps_only' and 'build_only'")
         suite.expect_failure(description="illegal struct_link",
@@ -565,12 +576,12 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('empty.tac'), '--struct_link', 'empty:0=empty'],
                              expected="'struct_link' argument empty:0=empty is illegal")
         suite.expect_failure(description="illegal struct_link 3",
-                             run_flags=[f"{_p('A.sol')}:B", _p('B.sol'), '--assert_contracts', 'A',
+                             run_flags=[f"{_p('A.sol')}:B", _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}",
                                         '--struct_link', 'A:0=A', 'A:0=B'],
                              expected="A contract named B was declared twice ")
         suite.expect_failure(description="illegal struct_link 4",
                              run_flags=
-                             [f"{_p('A.sol')}:B", _p('B.sol'), '--assert_contracts', 'A', '--struct_link', 'C:0=C'],
+                             [f"{_p('A.sol')}:B", _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--struct_link', 'C:0=C'],
                              expected="A contract named B was declared twice")
         suite.expect_failure(description="unrecognized contract in 'address'",
                              run_flags=[_p('tac_file.conf'), '--address', 'tac_file:1'],
@@ -579,14 +590,14 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('empty.tac'), '--address', 'tac_file:1'],
                              expected="unrecognized contract in 'address' argument")
         suite.expect_failure(description="two different addresses",
-                             run_flags=[f"{_p('A.sol')}:A", _p('B.sol'), '--assert_contracts', 'A', '--address',
+                             run_flags=[f"{_p('A.sol')}:A", _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}", '--address',
                                         'A:2', 'A:3'],
                              expected="contract A was given two different addresses")
         suite.expect_failure(description="package a was given two paths",
-                             run_flags=[f"{_p('A.sol')}:A", '--assert_contracts', 'A', '--packages', 'a=.', 'a=..'],
+                             run_flags=[f"{_p('A.sol')}:A", '--verify', f"A:{_p('spec1.spec')}", '--packages', 'a=.', 'a=..'],
                              expected="package a was given two paths")
         suite.expect_failure(description="packages_path'spath does not exist",
-                             run_flags=[f"{_p('A.sol')}:A", '--assert_contracts', 'A', '--packages_path', 'KFC'],
+                             run_flags=[f"{_p('A.sol')}:A", '--verify', f"A:{_p('spec1.spec')}", '--packages_path', 'KFC'],
                              expected="path KFC does not exist")
         suite.expect_failure(description="use 'bytecode_jsons' with other files",
                              run_flags=[f"{_p('A.sol')}:A", '--verify', f"A:{_p('spec1.spec')}",
@@ -616,7 +627,7 @@ class TestClient(unittest.TestCase):
                                         '--bytecode_spec', _p('spec1.spec')],
                              expected="Cannot use 'bytecode_jsons' with other files")
         suite.expect_failure(description="'bytecode_jsons' with other files (sol file)",
-                             run_flags=[f"{_p('A.sol')}:A", '--assert_contracts', 'A',
+                             run_flags=[f"{_p('A.sol')}:A", '--verify', f"A:{_p('spec1.spec')}",
                                         '--bytecode_jsons', _p('erc20.json'), '--bytecode_spec', _p('spec1.spec')],
                              expected="Cannot use 'bytecode_jsons' with other files")
         suite.expect_failure(description="2 conf files",
@@ -626,25 +637,25 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('empty.tac'), _p('empty.tac')],
                              expected="No other files are allowed with a file of type .tac")
         suite.expect_failure(description="Some source files do not appear in 'solc_optimize_map'",
-                             run_flags=[f"{_p('A.sol')}", f"{_p('B.sol')}", '--assert_contracts', 'A',
+                             run_flags=[f"{_p('A.sol')}", f"{_p('B.sol')}", '--verify', f"A:{_p('spec1.spec')}",
                                          '--solc_optimize_map', 'A=1'],
                              expected=f"No matching for {CITests_path}/test_data/B.sol")
         suite.expect_failure(description=f"No matching for {CITests_path}/test_data/A.sol in solc_optimize_map",
-                             run_flags=[f"{_p('A.sol')}", '--assert_contracts', 'A', '--solc_optimize_map', 'C=1'],
+                             run_flags=[f"{_p('A.sol')}", '--verify', f"A:{_p('spec1.spec')}", '--solc_optimize_map', 'C=1'],
                              expected=f"No matching for {CITests_path}/test_data/A.sol in solc_optimize_map")
         suite.expect_failure(description="both 'solc_optimize' and 'solc_optimize_map'",
-                             run_flags=[f"{_p('A.sol')}", '--assert_contracts', 'A', '--solc_optimize_map',
+                             run_flags=[f"{_p('A.sol')}", '--verify', f"A:{_p('spec1.spec')}", '--solc_optimize_map',
                                         'A=1', '--solc_optimize'],
                              expected="You cannot use both 'solc_optimize' and 'solc_optimize_map' arguments")
         suite.expect_failure(description="illegal contract in solc_map",
-                             run_flags=[f"{_p('A.sol')}", '--assert_contracts', 'A', '--solc_map', 'C=solc6.10'],
+                             run_flags=[f"{_p('A.sol')}", '--verify', f"A:{_p('spec1.spec')}", '--solc_map', 'C=solc6.10'],
                              expected=f"No matching for {CITests_path}/test_data/A.sol in compiler_map")
         suite.expect_failure(description="'solc' and 'solc_map'",
-                             run_flags=[f"{_p('A.sol')}", '--assert_contracts', 'A', '--solc', 'solc6.10', '--solc_map',
+                             run_flags=[f"{_p('A.sol')}", '--verify', f"A:{_p('spec1.spec')}", '--solc', 'solc6.10', '--solc_map',
                                         'C=solc6.10'],
                              expected="compiler map flags cannot be set with other compiler flags")
         suite.expect_failure(description="missing sources in solc_map",
-                             run_flags=[f"{_p('A.sol')}:A", f"{_p('B.sol')}", '--assert_contracts', 'A', '--solc_map',
+                             run_flags=[f"{_p('A.sol')}:A", f"{_p('B.sol')}", '--verify', f"A:{_p('spec1.spec')}", '--solc_map',
                                         'A=solc6.10'], expected=f"No matching for {CITests_path}/test_data/B.sol")
         suite.expect_failure(description="illegal target contract in link",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A:b=BB'],
@@ -653,7 +664,7 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'AA:b=B'],
                              expected="Error in linkage: link `AA:b=B`, contract AA does not exist")
         suite.expect_failure(description="multiple slots in link",
-                             run_flags=[f"{_p('A.sol')}:A", f"{_p('B.sol')}", '--assert_contracts', 'A',
+                             run_flags=[f"{_p('A.sol')}:A", f"{_p('B.sol')}", '--verify', f"A:{_p('spec1.spec')}",
                                         '--link', 'A:0=A', 'A:0=B'],
                              expected="slot A:0 was defined multiple times")
         suite.expect_failure(description="'assert_contracts' with a conf file",
@@ -666,25 +677,25 @@ class TestClient(unittest.TestCase):
                              run_flags=[f"{_p('A.sol')}:A", '--verify', f"D:{_p('spec1.spec')}"],
                              expected="doesn't match any contract name")
         suite.expect_failure(description="contract with conf file",
-                             run_flags=[_p('tac_file.conf'), f"{_p('A.sol')}:A", '--assert_contracts', 'A'],
+                             run_flags=[_p('tac_file.conf'), f"{_p('A.sol')}:A", '--verify', f"A:{_p('spec1.spec')}"],
                              expected="No other files are allowed when using a config file")
         suite.expect_failure(description="duplicate contracts with assert",
-                             run_flags=[f"{_p('A.sol')}:B", f"{_p('B.sol')}", '--assert_contracts', 'B'],
+                             run_flags=[f"{_p('A.sol')}:B", f"{_p('B.sol')}", '--verify', f"B:{_p('spec1.spec')}"],
                              expected="A contract named B was declared twice")
         suite.expect_failure(description="illegal contract in assert",
                              run_flags=[f"{_p('A.sol')}:B", '--assert_contracts', 'A'],
                              expected="'assert' argument, A, doesn't match any contract name")
         suite.expect_failure(description="illegal parametric contracts",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--parametric_contracts', 'C'],
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--parametric_contracts', 'C'],
                              expected="Cannot find parametric contracts {'C'} in the project contract list")
         suite.expect_failure(description="json file with other files",
-                             run_flags=[_p('A.sol'), _p('empty.json'), '--assert_contracts', 'A'],
+                             run_flags=[_p('A.sol'), _p('empty.json'), '--verify', f"A:{_p('spec1.spec')}"],
                              expected="No other files are allowed with a file of type .json")
         suite.expect_failure(description="no typecheck_only",
-                             run_flags=[f"{_p('A.sol')}:A", '--assert_contracts', 'A', '--typecheck_only'],
+                             run_flags=[f"{_p('A.sol')}:A", '--verify', f"A:{_p('spec1.spec')}", '--typecheck_only'],
                              expected="unrecognized arguments: --typecheck_only")
         suite.expect_failure(description="--precise_bitwise_ops and `prover_arg`",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--prover_args',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--prover_args',
                                         '-smt_preciseBitwiseOps',
                                         '--precise_bitwise_ops'],
                              expected="Cannot use both `precise_bitwise_ops` and -smt_preciseBitwiseOps in "
@@ -1217,7 +1228,7 @@ class TestClient(unittest.TestCase):
         self.__test_main_spec([_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}"], _p('spec1.spec'))
         self.__test_main_spec(['--bytecode_jsons', _p('erc20.json'), '--bytecode_spec',
                                _p('erc20.spec')], _p('erc20.spec'))
-        self.__test_main_spec([_p('A.sol'), '--assert_contracts', "A"], None)
+        self.__test_main_spec([_p('A.sol'), '--assert_contracts', "A", '--solc', 'solc6.11'], None)
 
     def __test_main_spec(self, args: List[str], expected_main_spec: Optional[str]) -> None:
         """
@@ -1245,7 +1256,7 @@ class TestClient(unittest.TestCase):
             commands_rule.add(command[command.index('--rule') + 1])
             group_ids.add(command[command.index('--group_id') + 1])
         assert commands_rule == rules, "test_split_rules: expecting each rule in a separate run"
-        assert len(group_ids) == 1, "test_split_rules: expecting 1 value of group_id"
+        assert len(group_ids) == 1, f"test_split_rules: expecting length of group ids to be 1 got {len(group_ids)}"
         assert Vf.validate_uuid(group_ids.pop()), "test_split_rules: not a valid uuid"
         commands = suite.expect_checkpoint(description='split to 3 runs', run_flags=['--split_rules', '*true'])
         assert commands[0][commands[0].index('--rule') + 1] == 'always_true', "test_split_rules: bad rule for first run"
@@ -1358,7 +1369,89 @@ class TestClient(unittest.TestCase):
                    f"expected: dummy_rule in value, flag_type: list and 'prover/cli' in doc_link,\n" \
                    f"actual: '{rule_data}'"
 
+    def test_override_base_config(self) -> None:
+
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+
+        # creating 2 conf files: a base and a child
+        base_data = {
+            "solc": "solc5.11"
+        }
+
+        child_data = {
+            "files": ["Test/CITests/test_data/A.sol"],
+            "verify": "A:Test/CITests/test_data/spec1.spec",
+            "override_base_config": "base.conf"
+        }
+
+        with open("base.conf", "w") as f: json.dump(base_data, f, indent=4)
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+
+        # Normal case solc is defined in base
+        result = suite.expect_checkpoint(description="override base: simple", run_flags=['child.conf'])
+        assert result.solc == "solc5.11", f"test_override_base_config: expecting solc5.11, got {result.solc}"
+
+        # base conf has bad attribute
+        base_data_bad = {
+            "solc": "solc5.11",
+            "no_such_key": "base.conf"
+        }
+        with open("base.conf", "w") as f: json.dump(base_data_bad, f, indent=4)
+        suite.expect_failure(description="override base: override_base_config in base", run_flags=['child.conf'],
+                             expected="is not a known attribute")
+        with open("base.conf", "w") as f: json.dump(base_data, f, indent=4)  # restore to valid
+
+        # base conf cannot have override_base_config
+        base_data_cycle = {
+            "solc": "solc5.11",
+            "override_base_config": "base.conf"
+        }
+        with open("base.conf", "w") as f: json.dump(base_data_cycle, f, indent=4)
+        suite.expect_failure(description="override base: override_base_config in base", run_flags=['child.conf'],
+                             expected="base config cannot include 'override_base_config'")
+        with open("base.conf", "w") as f: json.dump(base_data, f, indent=4)  # restore to valid
+
+
+        # solc is defined in base and in child - value in child shadows base
+        child_data['solc'] = "solc6.12"
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+        result = suite.expect_checkpoint(description="override base: child override", run_flags=['child.conf'])
+        assert result.solc == "solc6.12", f"test_override_base_config: expecting solc6.12, got {result.solc}"
+
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.AFTER_BUILD))  # build to get source tree
+        # solc is defined also in CLI - - value in CLI shadows confs
+        result = suite.expect_checkpoint(description="override base: CLI override",
+                                         run_flags=['child.conf', '--solc', 'solc5.11'])
+        assert result.solc == "solc5.11", f"test_override_base_config: expecting solc5.11, got {result.solc}"
+        # verifing both base and child are in the source tree
+        root = Path(".certora_internal/latest/.certora_sources")
+        assert (root / "base.conf").exists(), "test_override_base_config: base conf does not exist"
+        assert (root / "child.conf").exists(), "test_override_base_config: child conf does not exist"
+
+        # making sure 'override_base_config' not in run.conf and 'solc' got the CLI value
+        with open(Util.get_last_conf_file(), "r") as f:
+            last_run_context = json.load(f)
+            assert 'override_base_config' not in last_run_context, "'override_base_config' should not be in run.conf"
+            assert last_run_context['solc'] == 'solc5.11', (f"run.conf should get the value from CLI (solc5.11)"
+                                                            f", got {last_run_context['solc']}")
+
+        # base conf does not exist
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+        child_data['override_base_config'] = "does_not_exist.conf"
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+        suite.expect_failure(description="override base: base does not exist", run_flags=['child.conf'],
+                             expected="read_from_conf_file: child.conf: not found")
+
+        # base conf is not a valid JSON
+        with open("base_bad.conf", "w") as f: f.write("Not JSON")
+        child_data['override_base_config'] = "base_bad.conf"
+        with open("child.conf", "w") as f: json.dump(child_data, f, indent=4)
+        suite.expect_failure(description="override base: base does not exist", run_flags=['child.conf'],
+                             expected="Error when reading child.conf: Cannot load base config: base_bad.conf")
+
 
 if __name__ == '__main__':
     test_argv = [f"{sys.argv[1]}, {sys.argv[2]}"]
-    unittest.main(argv=test_argv, exit=False)
+    runner = unittest.main(argv=test_argv, exit=False)
+    if not runner.result.wasSuccessful():
+        exit(1)

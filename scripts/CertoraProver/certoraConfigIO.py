@@ -55,6 +55,7 @@ def current_conf_to_file(context: CertoraContext) -> Dict[str, Any]:
     context_to_save.pop('build_dir', None)  # build dir should not be saved, each run should define its own build_dir
     context_to_save.pop('mutation_test_id', None)  # mutation_test_id should be recreated for every run
     context_to_save.pop('test_condition', None)  # test_condition is only used internally
+    context_to_save.pop('override_base_config', None)  # test_condition is only used internally
 
     out_file_path = Util.get_last_conf_file()
     run_logger.debug(f"Saving last configuration file to {out_file_path}")
@@ -72,16 +73,47 @@ def read_from_conf_file(context: CertoraContext) -> None:
     conf_file_path = Path(context.files[0])
     assert conf_file_path.suffix == ".conf", f"conf file must be of type .conf, instead got {conf_file_path}"
 
-    with conf_file_path.open() as conf_file:
-        configuration = json5.load(conf_file, allow_duplicate_keys=False)
-        try:
-            check_conf_content(configuration, context)
-        except Util.CertoraUserInputError as e:
-            raise Util.CertoraUserInputError(f"Error when reading {conf_file_path}: {str(e)}", e) from None
-        context.conf_file = str(conf_file_path)
+    try:
+        with conf_file_path.open() as conf_file:
+            conf_file_attr = json5.load(conf_file, allow_duplicate_keys=False)
+            try:
+                check_conf_content(conf_file_attr, context)
+            except Util.CertoraUserInputError as e:
+                raise Util.CertoraUserInputError(f"Error when reading {conf_file_path}: {str(e)}", e) from None
+            context.conf_file = str(conf_file_path)
+    except FileNotFoundError:
+        raise Util.CertoraUserInputError(f"read_from_conf_file: {conf_file_path}: not found") from None
+    except PermissionError:
+        raise Util.CertoraUserInputError(f"read_from_conf_file: {conf_file_path}: Permission denied") from None
+    except Util.CertoraUserInputError:
+        raise
+    except Exception as e:
+        raise Util.CertoraUserInputError(f"read_from_conf_file: {conf_file_path}: Failed\n{e}") from None
+
+def handle_override_base_config(context: CertoraContext) -> None:
+    """
+    attributes that are not set by the CLI and the conf attribute will be set from the parent conf (if exist)
+    """
+
+    if context.override_base_config:
+        with Path(context.override_base_config).open() as conf_file:
+            try:
+                override_base_config_attrs = json5.load(conf_file, allow_duplicate_keys=False)
+
+                if 'override_base_config' in override_base_config_attrs:
+                    raise Util.CertoraUserInputError("base config cannot include 'override_base_config'")
+            except Exception as e:
+                raise Util.CertoraUserInputError(f"Cannot load base config: {context.override_base_config}\n{e}")
+            for attr in override_base_config_attrs:
+                if hasattr(context, attr):
+                    value = getattr(context, attr, False)
+                    if not value:
+                        setattr(context, attr, override_base_config_attrs.get(attr))
+                else:
+                    raise Util.CertoraUserInputError(f"{attr} appears in the base conf file {context.override_base_config} but is not a known attribute.")
 
 
-def check_conf_content(conf: Dict[str, Any], context: CertoraContext) -> None:
+def check_conf_content(conf_file_attr: Dict[str, Any], context: CertoraContext) -> None:
     """
     validating content read from the conf file
     Note: a command line definition trumps the definition in the file.
@@ -89,25 +121,29 @@ def check_conf_content(conf: Dict[str, Any], context: CertoraContext) -> None:
     @param conf: A json object in the conf file format
     @param context: A namespace containing options from the command line, if any
     """
-    for option in conf:
+
+    for option in conf_file_attr:
         if hasattr(context, option):
             val = getattr(context, option)
             if val is None or val is False:
-                setattr(context, option, conf[option])
-            elif option != Attrs.EvmProverAttributes.FILES.get_conf_key() and val != conf[option]:
+                setattr(context, option, conf_file_attr[option])
+            elif option != Attrs.EvmProverAttributes.FILES.get_conf_key() and val != conf_file_attr[option]:
                 cli_val = ' '.join(val) if isinstance(val, list) else str(val)
-                conf_val = ' '.join(conf[option]) if isinstance(conf[option], list) else str(conf[option])
+                conf_val = ' '.join(conf_file_attr[option]) \
+                    if isinstance(conf_file_attr[option], list) else str(conf_file_attr[option])
                 run_logger.warning(f"Note: attribute {option} value in CLI ({cli_val}) overrides value stored in conf"
                                    f" file ({conf_val})")
         else:
             raise Util.CertoraUserInputError(f"{option} appears in the conf file but is not a known attribute. ")
 
-    if Attrs.is_evm_app() and 'files' not in conf and not context.project_sanity and not context.foundry:
+    handle_override_base_config(context)
+
+    if Attrs.is_evm_app() and 'files' not in conf_file_attr and not context.project_sanity and not context.foundry:
         raise Util.CertoraUserInputError("Mandatory 'files' attribute is missing from the configuration")
 
     if Attrs.is_rust_app():
         has_build_script = getattr(context, 'build_script', False)
-        if not has_build_script and 'files' not in conf:
+        if not has_build_script and 'files' not in conf_file_attr:
             raise Util.CertoraUserInputError("Mandatory 'build_script' or 'files' attribute is missing from the configuration")
 
-    context.files = conf.get('files')
+    context.files = conf_file_attr.get('files')

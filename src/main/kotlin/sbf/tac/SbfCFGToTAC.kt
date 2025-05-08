@@ -71,8 +71,9 @@ class TACTranslationError(msg: String): SolanaInternalError("TAC translation err
 
 /** If globalAnalysisResults == null then no memory splitting will be done **/
 fun sbfCFGsToTAC(program: SbfCallGraph,
-                  memSummaries: MemorySummaries,
-                  globalAnalysisResults: Map<String, MemoryAnalysis>?): CoreTACProgram {
+                 memSummaries: MemorySummaries,
+                 globalsSymTable: IGlobalsSymbolTable,
+                 globalAnalysisResults: Map<String, MemoryAnalysis>?): CoreTACProgram {
     val cfg = program.getCallGraphRootSingleOrFail()
     if (cfg.getBlocks().isEmpty()) {
         throw SolanaInternalError("The translation from SBF to TAC failed because the SBF CFG is empty")
@@ -84,7 +85,7 @@ fun sbfCFGsToTAC(program: SbfCallGraph,
         globalAnalysisResults[cfg.getName()]
             ?: throw TACTranslationError("Not analysis results found for ${cfg.getName()}")
     }
-    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, analysis)
+    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, globalsSymTable, analysis)
     return marshaller.encode()
 }
 
@@ -93,6 +94,7 @@ fun sbfCFGsToTAC(program: SbfCallGraph,
 internal class SbfCFGToTAC(private val cfg: SbfCFG,
                            globals: GlobalVariableMap,
                            memSummaries: MemorySummaries,
+                           private val globalsSymTable: IGlobalsSymbolTable,
                            private val memoryAnalysis: MemoryAnalysis?) {
     private val blockMap: MutableMap<Label, NBId> = mutableMapOf()
     private val blockGraph = MutableBlockGraph()
@@ -215,6 +217,25 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
         return listOf(
             assign(b, exprBuilder.mkBinRelExp(CondOp.EQ, TACExpr.Sym.Var(r10), SBF_STACK_START + SBF_STACK_FRAME_SIZE)),
             TACCmd.Simple.AssumeCmd(b))
+    }
+
+    private fun addGlobalInitializers(): List<TACCmd.Simple> {
+        val initializers = runGlobalInitializationAnalysis(cfg, regTypes, globalsSymTable)
+        val cmds = mutableListOf<TACCmd.Simple>()
+        for ( (gv, _, stride, locInst, values) in initializers) {
+            cmds.add(Debug.startFunction("init_${gv.name}"))
+            val loadOrStoreInfo = mem.getTACMemory(locInst)
+            check(loadOrStoreInfo != null) {"addGlobalInitializers cannot get PTA info from $locInst"}
+            val byteMap = loadOrStoreInfo.variable
+            check(byteMap is TACByteMapVariable) {"addGlobalInitializers expects a byte map at $locInst instead of $byteMap"}
+            val locVar = mkFreshIntVar()
+            cmds.add(assign(locVar, exprBuilder.mkConst(gv.address).asSym()))
+            val offsets = values.mapIndexed { index, _ -> (index * stride).toLong()  }
+            val storedValues = values.map { exprBuilder.mkConst(it)}
+            cmds.addAll(mapStores(byteMap, locVar, offsets, storedValues))
+            cmds.add(Debug.endFunction("init_${gv.name}"))
+        }
+        return cmds
     }
 
     private fun inRange(v: TACSymbol.Var, lb: Long, ub: Long, isUnsigned: Boolean = true) =
@@ -1494,6 +1515,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             val tacBB = getBlockIdentifier(block)
             if (entry.getLabel() == block.getLabel()) {
                 val cmds = ArrayList<TACCmd.Simple>()
+                cmds.addAll(addGlobalInitializers())
                 cmds.addAll(addInitialPreconditions())
                 cmds.addAll(translate(block))
                 code[tacBB] = cmds

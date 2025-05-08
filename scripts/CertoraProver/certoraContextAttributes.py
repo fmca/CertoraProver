@@ -197,6 +197,17 @@ class CommonAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    OVERRIDE_BASE_CONFIG = AttrUtil.AttributeDefinition(
+        attr_validation_func=Vf.validate_conf_file,
+        help_msg="Path to parent conf",
+        default_desc="",
+        argparse_args={
+            'action': AttrUtil.UniqueStore
+        },
+        affects_build_cache_key=True,
+        disables_build_cache=False
+    )
+
 
 class DeprecatedAttributes(AttrUtil.Attributes):
     AUTO_NONDET_DIFFICULT_INTERNAL_FUNCS = AttrUtil.AttributeDefinition(
@@ -992,30 +1003,6 @@ class EvmAttributes(AttrUtil.Attributes):
         config_data=AttributeJobConfigData(
             unsound=True
         )
-    )
-
-    NONDET_DIFFICULT_FUNCS = AttrUtil.AttributeDefinition(
-        arg_type=AttrUtil.AttrArgType.BOOLEAN,
-        jar_flag='-autoNondetDifficultInternalFuncs',
-        help_msg="Summarize as NONDET all value-type returning difficult internal functions which are view or pure",
-        default_desc="Tries to prove the unsimplified code",
-        argparse_args={
-            'action': AttrUtil.STORE_TRUE
-        },
-        affects_build_cache_key=False,
-        disables_build_cache=False
-    )
-
-    NONDET_MINIMAL_DIFFICULTY = AttrUtil.AttributeDefinition(
-        attr_validation_func=Vf.validate_non_negative_integer,
-        jar_flag='-autoNondetMinimalDifficulty',
-        help_msg="Set the minimal `difficulty` threshold for summarization by `nondet_difficult_funcs`",
-        default_desc="50",
-        argparse_args={
-            'action': AttrUtil.UniqueStore
-        },
-        affects_build_cache_key=False,
-        disables_build_cache=False
     )
 
     NONDET_DIFFICULT_FUNCS = AttrUtil.AttributeDefinition(

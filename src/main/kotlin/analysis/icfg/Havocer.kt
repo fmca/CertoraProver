@@ -52,7 +52,7 @@ object Havocer {
        */
         @KSerializable
         object Static : HavocType(), NotAffectingGlobalState {
-            override fun toString(): String = "only the return value"
+            override fun toString(): String = "a havoc that only havocs the return value"
             override fun hashCode() = hashObject(this)
             fun readResolve(): Any = Static
         }
@@ -60,7 +60,7 @@ object Havocer {
         @KSerializable
         data class AssertFalse(val range: Range) : HavocType(), NotAffectingGlobalState {
             override fun isRevertable() = false
-            override fun toString(): String = "A havoc that should be unreachable"
+            override fun toString(): String = "a havoc that should be unreachable"
         }
 
 
@@ -68,7 +68,7 @@ object Havocer {
         data class HavocOnly(val onlyAddressAndContractName: Map<BigInteger, String?>) : HavocType() {
             override fun isRevertable() = true
             override fun toString(): String =
-                "only the contracts ${
+                "a havoc that havocs only the contracts ${
                     onlyAddressAndContractName.keys.joinToString(separator = ", ") {
                         when (val contractName = onlyAddressAndContractName[it]) {
                             null -> it.toString(16)
@@ -82,7 +82,7 @@ object Havocer {
         data class AllExcept(val excludeAddressAndContractName: Map<BigInteger, String?>) : HavocType() {
             override fun isRevertable() = true
             override fun toString(): String =
-                "all contracts except ${
+                "a havoc that havocs all contracts except ${
                     excludeAddressAndContractName.keys.joinToString(separator = ", ") {
                         when (val contractName = excludeAddressAndContractName[it]) {
                             null -> it.toString(16)
@@ -98,7 +98,7 @@ object Havocer {
         @KSerializable
         object All : HavocType() {
             override fun isRevertable() = true
-            override fun toString(): String = "All contracts"
+            override fun toString(): String = "a havoc that havocs all contracts"
             override fun hashCode() = hashObject(this)
             fun readResolve(): Any = All
         }
