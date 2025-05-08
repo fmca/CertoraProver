@@ -1280,11 +1280,19 @@ class TestClient(unittest.TestCase):
 
         suite.expect_failure(description="Overwrite an existing target slot",
                              run_flags=['--storage_extension_harnesses', 'Test=Overwrite'],
-                             expected="Slot 0 added to Test by Overwrite already mapped by Test")
+                             expected="Slot 0 added to Test by Overwrite is already mapped by Test")
 
         suite.expect_failure(description="Overwrite an existing extension slot",
                              run_flags=['--storage_extension_harnesses', 'Test=Spec1', 'Test=Spec'],
                              expected="Slot 9619688881439974453 added to Test")
+
+        suite.expect_failure(description="Overwrite an existing target field name",
+                             run_flags=['--storage_extension_harnesses', 'Test=OverwriteVar'],
+                             expected="Var 'existing' added to Test by OverwriteVar is already declared by Test")
+
+        suite.expect_failure(description="Overwrite an existing extension field name",
+                             run_flags=['--storage_extension_harnesses', 'Test=Spec1', 'Test=Spec2'],
+                             expected="Var 'b1' added to Test")
 
     @staticmethod
     def get_card_object(parent, nested):

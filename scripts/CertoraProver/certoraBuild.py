@@ -2710,8 +2710,8 @@ class CertoraBuildGenerator:
                 return None
             cloned_field = storage_field_info.copy()
             cloned_field["slot"] = str(link_slot)
-            # Try to uniquify the name
-            cloned_field["label"] = f"certoralink_{ext_instance.name}_{var_name}"
+            # Don't bother trying to uniquify the name
+            cloned_field["label"] = var_name
             return cloned_field
 
         def handle_one_extension(storage_ext: str) -> tuple[Any, str, List[Dict[str, Any]]] :
@@ -2762,23 +2762,34 @@ class CertoraBuildGenerator:
             if target_contract.storage_layout.get("types") is None:
                 target_contract.storage_layout["types"] = {}
             target_slots = {storage["slot"] for storage in target_contract.storage_layout["storage"]}
+            target_vars = {storage["label"] for storage in target_contract.storage_layout["storage"]}
             # Keep track of slots we've added, and error if we
             # find two extensions extending the same slot
             added_slots: Dict[str, str] = {}
+            added_vars: Dict[str, str] = {}
             for ext in extensions:
                 (new_fields, new_types) = to_add[ext]
 
                 for f in new_fields:
-                    # See if any of the new fields is a slot we've already added
+                    # See if any of the new fields is a slot or variable name we've already added
                     slot = f["slot"]
+                    var = f["label"]
                     if slot in added_slots:
                         seen = added_slots[slot]
-                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} already added by {seen}")
+                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} was already added by {seen}")
+
+                    if var in added_vars:
+                        seen = added_vars[var]
+                        raise Util.CertoraUserInputError(f"Var '{var}' added to {target_contract.name} by {ext} was already added by {seen}")
 
                     if slot in target_slots:
-                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} already mapped by {target_contract.name}")
+                        raise Util.CertoraUserInputError(f"Slot {slot} added to {target_contract.name} by {ext} is already mapped by {target_contract.name}")
+
+                    if var in target_vars:
+                        raise Util.CertoraUserInputError(f"Var '{var}' added to {target_contract.name} by {ext} is already declared by {target_contract.name}")
 
                     added_slots[slot] = ext
+                    added_vars[var] = ext
 
                 target_contract.storage_layout["storage"].extend(new_fields)
 
