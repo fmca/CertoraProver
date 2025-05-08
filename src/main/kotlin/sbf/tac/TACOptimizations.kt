@@ -63,7 +63,7 @@ fun optimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProgram {
                     e.rhs is TACExpr.BinOp.BWOr ||
                     e.rhs is TACExpr.UnaryExp.LNot
             }.let {
-                PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList)
+                PatternRewriter.rewrite(it, PatternRewriter::solanaPatternsList)
             }
         })
         // constant propagation + cleanup + merging blocks
@@ -83,6 +83,7 @@ fun optimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProgram {
             }.let(BlockMerger::mergeBlocks)
         })
         .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.NEGATION_NORMALIZER) { NegationNormalizer(it).rewrite() })
+        .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) { PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList) })
         // We remove unused map writes. It might also help the map scalarizer if a dead write does not have a constant index
         .mapIf(optLevel >= 1, CoreToCoreTransformer(ReportTypes.REMOVE_UNUSED_WRITES, SimpleMemoryOptimizer::removeUnusedWrites))
         .mapIf(optLevel >= 3, CoreToCoreTransformer(ReportTypes.INTERVALS_OPTIMIZE) {
@@ -155,7 +156,7 @@ fun legacyOptimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProg
                     e.rhs is TACExpr.BinOp.BWOr ||
                     e.rhs is TACExpr.UnaryExp.LNot
             }.let {
-                PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList)
+                PatternRewriter.rewrite(it, PatternRewriter::solanaPatternsList)
             }
         })
 
@@ -166,6 +167,7 @@ fun legacyOptimize(coreTAC: CoreTACProgram, isSatisfyRule: Boolean): CoreTACProg
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE_BOOL_VARIABLES) { c -> BoolOptimizer(c).go() })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.PROPAGATOR_SIMPLIFIER) { ConstantPropagatorAndSimplifier(it).rewrite() })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.NEGATION_NORMALIZER) { NegationNormalizer(it).rewrite() })
+            .mapIfAllowed(CoreToCoreTransformer(ReportTypes.PATTERN_REWRITER) { PatternRewriter.rewrite(it, PatternRewriter::earlyPatternsList) })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.GLOBAL_INLINER1) { GlobalInliner.inlineAll(it) })
             .mapIfAllowed(CoreToCoreTransformer(ReportTypes.UNUSED_ASSIGNMENTS) {
                 optimizeAssignments(it, FilteringFunctions.default(it, keepRevertManagment = true))

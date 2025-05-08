@@ -203,37 +203,4 @@ fun PatternRewriter.earlyPatternsList() = listOf(
         handle = { Slt(sym(B), sym(A)) },
         TACExpr.UnaryExp.LNot::class.java
     ),
-
-    /**
-     * `x xor y == 0` ~~> `x == y`
-     */
-    PatternHandler(
-        name = "xor-eq-0",
-        pattern = {
-            (lSym(A) xor lSym(B)) eq zero
-        },
-        handle = {
-            sym(A) eq sym(B)
-        },
-        TACExpr.BinRel.Eq::class.java
-    ),
-
-    /**
-     * `x | y == 0` ~~> `x == 0 && y == 0`
-     */
-    PatternHandler(
-        name = "bworEq0",
-        pattern = {
-            (lSym(A) bwOr lSym(B)) eq zero
-        },
-        handle = {
-            LAnd(
-                Eq(sym(A), Zero),
-                Eq(sym(B), Zero),
-            )
-        },
-        TACExpr.BinRel.Eq::class.java
-    ),
-
-
     )
