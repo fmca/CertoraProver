@@ -47,6 +47,7 @@ import logging
 cloud_logger = logging.getLogger("cloud")
 
 MAX_FILE_SIZE = 25 * 1024 * 1024
+SOLANA_MAX_FILE_SIZE = 2 * MAX_FILE_SIZE
 NO_OUTPUT_LIMIT_MINUTES = 15
 MAX_POLLING_TIME_MINUTES = 150
 LOG_READ_FREQUENCY = 10
@@ -264,7 +265,9 @@ def compress_files(zip_file_path: Path, *resource_paths: Path, short_output: boo
                     cloud_logger.error(f"{GENERAL_ERR_PREFIX}"  f"Could not compress {path}")
                     return False
 
-    if zip_file_path.stat().st_size > MAX_FILE_SIZE:
+    # Solana binary files can become heavy, thus we need to increase size limit.
+    max_file_size = MAX_FILE_SIZE if not Attrs.is_rust_app() else SOLANA_MAX_FILE_SIZE
+    if zip_file_path.stat().st_size > max_file_size:
         cloud_logger.error(f"{GENERAL_ERR_PREFIX} Max 25MB file size exceeded.")
         return False
 
@@ -757,29 +760,10 @@ class CloudVerification:
                 result = compress_files(self.ZipFilePath, *files_list,
                                         short_output=Ctx.is_minimal_cli_output(self.context))
 
-            elif Attrs.is_solana_app():
-                # We zip the ELF files and the two configuration files
-                jar_args = Ctx.collect_jar_args(self.context)
-
+            elif Attrs.is_solana_app() or Attrs.is_soroban_app():
                 for file in self.context.files:
                     files_list.append(Path(file))
-                is_file = False
-                for arg in jar_args:
-                    if is_file:
-                        files_list.append(Path(arg))
-                        is_file = False
 
-                    if arg == '-solanaInlining':
-                        is_file = True
-                    elif arg == '-solanaSummaries':
-                        is_file = True
-                result = compress_files(self.ZipFilePath, *files_list,
-                                        short_output=Ctx.is_minimal_cli_output(self.context))
-
-            elif Attrs.is_soroban_app():
-                # We zip the wat file
-                for file in self.context.files:
-                    files_list.append(Path(file))
                 result = compress_files(self.ZipFilePath, *files_list,
                                         short_output=Ctx.is_minimal_cli_output(self.context))
             else:

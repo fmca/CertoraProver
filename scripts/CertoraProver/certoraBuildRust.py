@@ -75,6 +75,25 @@ def build_rust_app(context: CertoraContext) -> None:
         raise Util.CertoraUserInputError(f"Collecting build files failed with the exception: {e}")
 
 
+def add_solana_files_from_prover_args(context: CertoraContext) -> None:
+    if context.prover_args:
+        inlining_file = False
+        summaries_file = False
+        for prover_arg in context.prover_args:
+            for arg in prover_arg.split(' '):
+                if inlining_file:
+                    context.solana_inlining = context.solana_inlining or [Path(arg)]
+                    inlining_file = False
+                if summaries_file:
+                    context.solana_summaries = context.solana_summaries or [Path(arg)]
+                    summaries_file = False
+
+                if arg == '-solanaInlining':
+                    inlining_file = True
+                elif arg == '-solanaSummaries':
+                    summaries_file = True
+
+
 def add_solana_files_to_sources(context: CertoraContext, sources: Set[Path]) -> None:
     for attr in [Attrs.SolanaProverAttributes.SOLANA_INLINING,
                  Attrs.SolanaProverAttributes.SOLANA_SUMMARIES,
@@ -93,7 +112,7 @@ def add_solana_files_to_sources(context: CertoraContext, sources: Set[Path]) -> 
         for file_path in file_paths:
             if not file_path.exists():
                 raise Util.CertoraUserInputError(f"in {attr_name} file {file_path} does not exist")
-            sources.add(file_path.absolute())
+            sources.add(file_path.absolute().resolve())
 
 
 def collect_files_from_rust_sources(context: CertoraContext, sources: Set[Path]) -> None:
@@ -119,6 +138,8 @@ def collect_files_from_rust_sources(context: CertoraContext, sources: Set[Path])
             sources.add(Path(context.build_script).resolve())
     if getattr(context, 'conf_file', None) and Path(context.conf_file).exists():
         sources.add(Path(context.conf_file).absolute())
+
+    add_solana_files_from_prover_args(context)
     add_solana_files_to_sources(context, sources)
 
 
