@@ -626,7 +626,8 @@ def check_mode_of_operation(context: CertoraContext) -> None:
 
     if not any([context.is_assert, context.is_verify, context.is_bytecode,
                 special_file_type]) and not context.build_only:
-        raise Util.CertoraUserInputError("You must use 'verify' when running the Certora Prover")
+        raise Util.CertoraUserInputError("You must use either 'assert_contracts' or 'verify' or 'bytecode_jsons' "
+                                         "when running the Certora Prover")
 
 
 def _normalize_maps(context: CertoraContext, map_attr_name: str, map_attr: Dict) -> Dict[str, str]:

@@ -23,8 +23,6 @@ import allocator.GenerateRemapper
 import allocator.GeneratedBy
 import analysis.*
 import analysis.icfg.CallGraphBuilder
-import analysis.icfg.Havocer
-import analysis.icfg.Summarization
 import analysis.storage.DisplayPath
 import analysis.storage.StorageAnalysisResult
 import com.certora.collect.*
@@ -770,9 +768,6 @@ sealed class SnippetCmd: AmbiSerializable {
                     get() = symbols
             }
         }
-
-        @KSerializable
-        data class DispatcherSummaryDefault(val appliedSummary: Summarization.AppliedSummary, val havocType: Havocer.HavocType) : CVLSnippetCmd()
 
         @KSerializable
         sealed class CVLRet: CVLSnippetCmd() {

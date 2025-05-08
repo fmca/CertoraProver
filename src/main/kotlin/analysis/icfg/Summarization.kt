@@ -506,15 +506,15 @@ object Summarization {
         sealed interface AutoNondetSummary {
             val context: String
             val specCallSumm: SpecCallSummary.HavocSummary
+            val configFlag: ConfigType<*>
         }
 
         /**
          * A summary introduced due to a global tool configuration.
          */
         @KSerializable
-        sealed interface Config : FromUserInput, AppliedSummary {
+        sealed interface Config : FromUserInput {
 
-            val configFlag: ConfigType<*>
             @KSerializable
             object ExtLibraryNondet : Config, AutoNondetSummary {
                 override val specCallSumm: SpecCallSummary.HavocSummary.Nondet
@@ -559,8 +559,6 @@ object Summarization {
                         useFallback = false,
                         summarizationMode = SpecCallSummary.SummarizationMode.ALL
                     )
-                override val configFlag: ConfigType<*>
-                    get() = config.Config.AutoDispatcher
                 fun readResolve(): Any = AutoDispatcher
                 override fun hashCode() = utils.hashObject(this)
             }
@@ -574,26 +572,68 @@ object Summarization {
                         useFallback = false,
                         summarizationMode = SpecCallSummary.SummarizationMode.ALL
                     )
-                override val configFlag: ConfigType<*>
-                    get() = config.Config.DispatchOnCreated
                 fun readResolve(): Any = DispatchOnCreate
                 override fun hashCode() = utils.hashObject(this)
             }
 
+            /**
+             * This dispatcher will be added to resolve EVM methods that
+             * are _not_ inlined by the [Inliner] (i.e. there is more than one call target that a call resolves to,
+             * see following example).
+             * If we have in source code
+             *
+             * if(){
+             *      return a.foo();
+             * } else{
+             *      return b.foo();
+             * }
+             *
+             * the compiler translates this to (if solc_optimize is enabled)
+             *
+             * c = null
+             * if(){
+             *     c = a;
+             * } else{
+             *     c = b;
+             * }
+             * c.foo()
+             *
+             * If we have links a=ContractA and b=ContractB, the call target of c will depend on the branching.
+             * But if we know all callees are [CallGraphBuilder.CalledContract.FullyResolved] we use the regular dispatcher flow
+             * to explode this pattern back to
+             *
+             * c = null
+             * if(){
+             *     c = a;
+             * } else{
+             *     c = b;
+             * }
+             * if(c == a){
+             *     c.foo()
+             * } else if (b == c){
+             *     c.foo()
+             * }
+             */
+            @KSerializable
+            object LateInliningDispatcher : Config {
+                override val specCallSumm: SpecCallSummary.Dispatcher
+                    get() = SpecCallSummary.Dispatcher(
+                        range = Range.Empty(),
+                        optimistic = false,
+                        useFallback = false,
+                        summarizationMode = SpecCallSummary.SummarizationMode.ALL
+                    )
+                fun readResolve(): Any = LateInliningDispatcher
+                override fun hashCode() = utils.hashObject(this)
+            }
 
             @KSerializable
             object OptimisticFallback : Config {
                 override val specCallSumm: SpecCallSummary.OptimisticFallback
                     get() = SpecCallSummary.OptimisticFallback
-
                 fun readResolve(): Any = OptimisticFallback
-                override val configFlag: ConfigType<*>
-                    get() = config.Config.OptimisticFallback
-
                 override fun hashCode() = utils.hashObject(this)
             }
-
-
         }
 
         /**
@@ -602,57 +642,6 @@ object Summarization {
          */
         @KSerializable
         data class Prover(override val specCallSumm: SpecCallSummary) : AppliedSummary
-
-        /**
-         * This dispatcher will be added to resolve EVM methods that
-         * are _not_ inlined by the [Inliner] (i.e. there is more than one call target that a call resolves to,
-         * see following example).
-         * If we have in source code
-         *
-         * if(){
-         *      return a.foo();
-         * } else{
-         *      return b.foo();
-         * }
-         *
-         * the compiler translates this to (if solc_optimize is enabled)
-         *
-         * c = null
-         * if(){
-         *     c = a;
-         * } else{
-         *     c = b;
-         * }
-         * c.foo()
-         *
-         * If we have links a=ContractA and b=ContractB, the call target of c will depend on the branching.
-         * But if we know all callees are [CallGraphBuilder.CalledContract.FullyResolved] we use the regular dispatcher flow
-         * to explode this pattern back to
-         *
-         * c = null
-         * if(){
-         *     c = a;
-         * } else{
-         *     c = b;
-         * }
-         * if(c == a){
-         *     c.foo()
-         * } else if (b == c){
-         *     c.foo()
-         * }
-         */
-        @KSerializable
-        object LateInliningDispatcher : AppliedSummary {
-            override val specCallSumm: SpecCallSummary.Dispatcher
-                get() = SpecCallSummary.Dispatcher(
-                    range = Range.Empty(),
-                    optimistic = false,
-                    useFallback = false,
-                    summarizationMode = SpecCallSummary.SummarizationMode.ALL
-                )
-            fun readResolve(): Any = LateInliningDispatcher
-            override fun hashCode() = utils.hashObject(this)
-        }
     }
 
     private sealed interface SummarySpec
@@ -662,12 +651,6 @@ object Summarization {
          * Use the fallback dispatcher
          */
         data object OptimisticFallback : DispatchSummary()
-
-        /**
-         * A prover internally resolved inlining dispatcher due to call graph resolution.
-         * See also [analysis.icfg.Summarization.AppliedSummary.LateInliningDispatcher]
-         */
-        data class LateInliningDispatcher(val summ: SpecCallSummary.Dispatcher, val sigHash: BigInteger?) : DispatchSummary()
 
         /**
          * Dispatch according to [summ]
@@ -857,10 +840,10 @@ object Summarization {
                      * As soon as one of the variables cannot be resolved, there will be one execution path along
                      * which we havoc and therefore it's not necessary to add the remaining branches.
                      */
-                    dispatchQueue.add(QueuedSummary(
+                    concreteQueue.add(QueuedSummary(
                         summaryCmd = summ,
                         currAddress = currAddress,
-                        selectedSummary = DispatchSummary.LateInliningDispatcher(AppliedSummary.LateInliningDispatcher.specCallSumm, sigHash)
+                        selectedSummary = ConcreteSummary.ExplicitSummary(AppliedSummary.Config.LateInliningDispatcher, sigHash)
                     ))
                 } else {
                     havocQueue.add(QueuedSummary(
@@ -1048,18 +1031,6 @@ object Summarization {
                     appliedSummary = q.selectedSummary.summ,
                     code = code,
                     patching = patching
-                )
-            }
-            is DispatchSummary.LateInliningDispatcher -> {
-                Summarizer.inlineDispatcherSummary(
-                    scene = scene,
-                    caller = q.currAddress,
-                    patching = patching,
-                    where = q.summaryCmd,
-                    summ = q.selectedSummary.summ,
-                    appliedSummary = AppliedSummary.LateInliningDispatcher,
-                    summAppReason = SummaryApplicationReason.SpecialReason("Late inlined method calls due to an (internal) dispatcher"),
-                    getCallersAtPointer = methodCallStack
                 )
             }
             DispatchSummary.OptimisticFallback -> {

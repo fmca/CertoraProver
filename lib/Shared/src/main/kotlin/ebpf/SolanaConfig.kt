@@ -313,15 +313,6 @@ object SolanaConfig {
         )
     ) {}
 
-    val TACMaxGlobalInit = object : ConfigType.IntCmdLine(
-        64,
-        Option(
-            "solanaTACMaxGlobalInit",
-            true,
-            "The initialization of a global variable is part of the TAC encoding if the number of bytes being initialized is less or equal that this number. [default: 64]"
-        )
-    ) {}
-
     // Printing options
 
     val PrintResultsToStdOut = object : ConfigType.BooleanCmdLine(

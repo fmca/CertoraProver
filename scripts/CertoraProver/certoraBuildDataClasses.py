@@ -218,23 +218,11 @@ class ContractInSDC:
             "localAssignments": {k: v.as_dict() for k, v in self.local_assignments.items()}
         }
 
-    def find_method(self, name: str, fullArgs: List[CT.TypeInstance]) -> Optional[Func]:
-        """
-        attempts to find and return a matching method. from Solidity documentation,
-        the combination of the method name and (ordered) parameter types
-        is sufficient to disambiguate method overloading.
-        """
+    def find_method(self, name: str) -> Optional[Func]:
         for method in self.methods:
             if method.name == name:
-                if Util.eq_by(CT.TypeInstance.matches, method.fullArgs, fullArgs):
-                    return method
+                return method
         return None
-
-    def has_method_with_name(self, name: str) -> bool:
-        for method in self.methods:
-            if method.name == name:
-                return True
-        return False
 
     def __repr__(self) -> str:
         return repr(self.as_printable_dict())

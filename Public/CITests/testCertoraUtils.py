@@ -88,7 +88,7 @@ TEST_VALUES: Dict[Callable, Dict[str, Any]] = {
     },
 
     Vf.validate_conf_file: {
-        'valid': [path_test_file('tac_file.conf')],
+        'valid': [path_test_file('file.conf')],
         'invalid': [path_test_file('file.out'), path_test_file('empty.json')]
     },
 

@@ -164,9 +164,8 @@ sealed class SpecCallSummary : AmbiSerializable, MaybeRevert {
     data class DispatchList(
         override val range: Range,
         val dispatcherList: List<Pattern>,
-        val default: HavocSummary?,
+        val default: HavocSummary,
         val useFallback: Boolean,
-        val optimistic: Boolean,
     ) : ExpressibleInCVL() {
         @Serializable
         @Treapable
@@ -314,12 +313,8 @@ sealed class SpecCallSummary : AmbiSerializable, MaybeRevert {
             get() = "DISPATCH_LIST"
 
         override fun toUIString(): String =
-            "DISPATCH ${getFlags()}[ ${dispatcherList.map { it.toUIString() }.joinToString(", ")} ] ${default?.let { "default ${it.toUIString()}" }.orEmpty()}"
+            "DISPATCH [ ${dispatcherList.map { it.toUIString() }.joinToString(", ")} ] default ${default.toUIString()}"
 
-        private fun getFlags(): String = when{
-            !optimistic && !useFallback -> ""
-            else -> "(optimistic=$optimistic, useFallback=$useFallback)"
-        }
         fun getMethods(scene: IScene, sigResolution: Set<BigInteger?>, calleeResolution: BigInteger?): Set<ITACMethod> =
             dispatcherList.flatMapToSet { it.getMethods(scene, sigResolution, calleeResolution) }
     }

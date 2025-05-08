@@ -24,6 +24,9 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import log.*
+import report.CVTAlertReporter
+import report.CVTAlertSeverity
+import report.CVTAlertType
 import report.TreeViewReporter
 import rules.CompiledRule
 import rules.RuleCheckResult
@@ -48,12 +51,12 @@ private val logger = Logger(LoggerTypes.BOUNDED_MODEL_CHECKER)
 /**
  * An enum of filters on function sequences generated for [BoundedModelChecker].
  *
- * Note that the order of the list is the order in which the filters are checked in the [filter] function, so it should
+ * Note that the order of the list is the order in which the filters are checked in the [passes] function, so it should
  * be ordered by how expensive it is to check each filter.
  */
 enum class BoundedModelCheckerFilters(private val filter: BoundedModelCheckerFilter, val appliesToChildren: Boolean, val message: String) {
     COMMUTATIVITY(CommutativityFilter, true, "this squence is commutative with another one"),
-    FUNCTION_NON_MODIFYING(FunctionNonModifyingFilter, false, "a function doesn't modify the invariant's storage"),
+    LAST_FUNCTION_NON_MODIFYING(LastFunctionNonModifyingFilter, false, "the last function doesn't modify the invariant's storage"),
     IDEMPOTENCY(IdempotencyFilter, true, "this sequence contains consecutive calls to an idempotent function"),
     ;
 
@@ -63,26 +66,19 @@ enum class BoundedModelCheckerFilters(private val filter: BoundedModelCheckerFil
             scene: IScene,
             compiler: CVLCompiler,
             compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
-            funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-            funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
             invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
             treeViewReporter: TreeViewReporter
         ) {
-            entries.forEach { it.filter.init(cvl, scene, compiler, compiledFuncs, funcReads, funcWrites, invAssertProgs, treeViewReporter) }
+            entries.forEach { it.filter.init(cvl, scene, compiler, compiledFuncs, invAssertProgs, treeViewReporter) }
         }
 
         /**
          * Given a [sequence] and the assertion invariant [CoreTACProgram], returns the first [BoundedModelCheckerFilters]
          * that this [sequence] failed to pass, or `null` if the [sequence] passed all filters
          */
-        suspend fun filter(
-            sequence: List<ContractFunction>,
-            inv: CVLInvariant,
-            funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-            funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
-        ): BoundedModelCheckerFilters? {
+        suspend fun passes(sequence: List<List<ContractFunction>>, inv: CVLInvariant): BoundedModelCheckerFilters? {
             require(sequence.isNotEmpty())
-            return entries.firstOrNull { !it.filter.filter(sequence, inv, funcReads, funcWrites) }
+            return entries.firstOrNull { !it.filter.passes(sequence, inv) }
         }
     }
 }
@@ -93,18 +89,11 @@ private sealed interface BoundedModelCheckerFilter {
         scene: IScene,
         compiler: CVLCompiler,
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
         treeViewReporter: TreeViewReporter
     )
 
-    suspend fun filter(
-        sequence: List<ContractFunction>,
-        inv: CVLInvariant,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
-    ): Boolean
+    suspend fun passes(sequence: List<List<ContractFunction>>, inv: CVLInvariant): Boolean
 }
 
 /**
@@ -115,7 +104,18 @@ private sealed interface BoundedModelCheckerFilter {
  */
 private data object CommutativityFilter : BoundedModelCheckerFilter {
     /**
-     * A function pair in this set is commutative. The [filter] logic will skip sequences where the pair of functions
+     * @return `true` if the set of storage paths accessed by [f1] is disjoint from the set of storage paths accessed
+     * by [f2]
+     */
+    private fun disjointStorage(f1: Pair<CoreTACProgram, CallId>, f2: Pair<CoreTACProgram, CallId>): Boolean {
+        val stateModificationFootprint1 = BoundedModelChecker.getAllStorageAndGhostAccesses(f1.first, f1.second) ?: return false
+        val stateModificationFootprint2 = BoundedModelChecker.getAllStorageAndGhostAccesses(f2.first, f2.second) ?: return false
+
+        return !stateModificationFootprint1.overlaps(stateModificationFootprint2)
+    }
+
+    /**
+     * A function pair in this set is commutative. The [passes] logic will skip sequences where the pair of functions
      * are in the order as it appears in this set, and will pass (keep) sequences where the pair is reversed.
      */
     private lateinit var commutativeFuncs: Set<Pair<ContractFunction, ContractFunction>>
@@ -125,52 +125,42 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
         scene: IScene,
         compiler: CVLCompiler,
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
         treeViewReporter: TreeViewReporter
     ) {
         val res = mutableSetOf<Pair<ContractFunction, ContractFunction>>()
-        val ent = compiledFuncs.keys
-            .sortedBy { it.getSighash() } // So for each pair the same ordering will be chosen across runs (useful for testing)
+        val ent = compiledFuncs.entries
+            .sortedBy { it.key.getSighash() } // So for each pair the same ordering will be chosen across runs (useful for testing)
             .withIndex()
             .toList()
         for ((ind1, f1) in ent) {
             for (ind2 in ((ind1+1)..ent.lastIndex)) {
                 val f2 = ent[ind2].value
-
-                // If any of the following returns null it means we had a storage analysis failure, and therefore we can't
-                // make any assumptions about the commutativity of that function nd we just continue the loop.
-                val f1Reads = funcReads[f1] ?: continue
-                val f2Reads = funcReads[f2] ?: continue
-                val f1Writes = funcWrites[f1] ?: continue
-                val f2Writes = funcWrites[f2] ?: continue
-
-                if(
-                    f1Reads.overlaps(f2Writes) ||
-                    f1Writes.overlaps(f2Reads) ||
-                    f1Writes.overlaps(f2Writes)
-                ) {
+                if (!disjointStorage(f1.value, f2.value)) {
                     continue
                 }
-
-                val msg = "The function pair (${f1}, ${f2}) is commutative"
+                val msg = "The function pair (${f1.key}, ${f2.key}) is commutative"
                 logger.info { msg }
-                res.add(f1 to f2)
+                CVTAlertReporter.reportAlert(
+                    CVTAlertType.BMC,
+                    CVTAlertSeverity.WARNING,
+                    null,
+                    msg,
+                    "Sequences where these two function appear consecutively in this order will be skipped"
+                )
+                res.add(f1.key to f2.key)
             }
         }
         commutativeFuncs = res
         logger.info { "There are ${commutativeFuncs.size} commutative function pairs" }
     }
 
-    override suspend fun filter(
-        sequence: List<ContractFunction>,
-        inv: CVLInvariant,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
+    override suspend fun passes(
+        sequence: List<List<ContractFunction>>,
+        inv: CVLInvariant
     ): Boolean {
         return sequence.size < 2 || sequence.zipWithNext { a, b ->
-            (a to b) !in commutativeFuncs
+            a.all { aa -> b.all { bb -> (aa to bb) !in commutativeFuncs } }
         }.all { it }
     }
 
@@ -194,8 +184,6 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
         scene: IScene,
         compiler: CVLCompiler,
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
         treeViewReporter: TreeViewReporter
     ) {
@@ -289,22 +277,31 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
         if (res is RuleCheckResult.Single && res.result == SolverResult.UNSAT) {
             val msg = "The function ${func.methodSignature} is idempotent"
             logger.info { msg }
+            CVTAlertReporter.reportAlert(
+                CVTAlertType.BMC,
+                CVTAlertSeverity.WARNING,
+                null,
+                msg,
+                "Sequences where this function is called twice in a row will be skipped"
+            )
             return true
         }
 
         return false
     }
 
-    override suspend fun filter(
-        sequence: List<ContractFunction>,
-        inv: CVLInvariant,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
+    override suspend fun passes(
+        sequence: List<List<ContractFunction>>,
+        inv: CVLInvariant
     ): Boolean = coroutineScope {
-        sequence.size < 2 || sequence.zipWithNext { a, b ->
-            a != b || !idempotentFuncs.computeIfAbsent(a) {
-                async { computeIdempotency(a) }
-            }.await()
+        sequence.size < 2 || sequence.zipWithNext { _a, _b ->
+            _a.singleOrNull()?.let { a ->
+                _b.singleOrNull()?.let { b ->
+                    a != b || !idempotentFuncs.computeIfAbsent(a) {
+                        async { computeIdempotency(a) }
+                    }.await()
+                }
+            }
         }.all { it != false }
     }
 }
@@ -316,69 +313,54 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
  * Note - Currently the filter just blindly passes sequences where there are multiple possible functions in the last
  * step of the sequence.
  */
-private data object FunctionNonModifyingFilter : BoundedModelCheckerFilter {
+private data object LastFunctionNonModifyingFilter : BoundedModelCheckerFilter {
     /** Mapping of whether a given invariant assertion program and contract function have "interacting" storage or ghosts */
     private lateinit var invAndFuncInteract: Map<Pair<CVLInvariant, ContractFunction>, Boolean>
-
-    private val secondReadsFromFirst = ConcurrentHashMap<Pair<ContractFunction, ContractFunction>, Boolean>()
 
     override fun init(
         cvl: CVL,
         scene: IScene,
         compiler: CVLCompiler,
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
         treeViewReporter: TreeViewReporter
     ) {
         val invAccesses = invAssertProgs.mapValues { (_, assertProg) ->
-            val (writes, reads) = BoundedModelChecker.getAllWritesAndReads(assertProg, null)
-            writes?.plus(reads)
+            BoundedModelChecker.getAllStorageAndGhostAccesses(assertProg, null)
         }
 
         invAndFuncInteract = invAccesses.flatMap { (inv, invAccess) ->
-            compiledFuncs.map { (func, _) ->
+            compiledFuncs.map { (func, progAndCallId) ->
                 if (invAccess == null) {
                     return@map (inv to func) to true
                 }
-                val fWrites = funcWrites[func] ?: return@map (inv to func) to true
+                val funcWrites = BoundedModelChecker.getAllStorageAndGhostWrites(progAndCallId.first, progAndCallId.second)
+                    ?: return@map (inv to func) to true
 
-                val res = invAccess.overlaps(fWrites)
+                val res = invAccess.overlaps(funcWrites)
                 if (!res) {
                     val msg = "The function $func doesn't modify the storage accessed by the condition of ${inv.id}"
                     logger.info { msg }
+                    CVTAlertReporter.reportAlert(
+                        CVTAlertType.BMC,
+                        CVTAlertSeverity.WARNING,
+                        null,
+                        msg,
+                        "Sequences where this is the last function will be skipped"
+                    )
                 }
                 (inv to func) to res
             }
         }.toMap()
     }
 
-    override suspend fun filter(
-        sequence: List<ContractFunction>,
-        inv: CVLInvariant,
-        funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
+    override suspend fun passes(
+        sequence: List<List<ContractFunction>>,
+        inv: CVLInvariant
     ): Boolean {
-        for (i in sequence.indices.reversed()) {
-            val g = sequence[i]
-            if (invAndFuncInteract[inv to g]!!) {
-                continue
-            }
-            if (i == sequence.lastIndex) {
-                return false
-            }
-
-            val readFromG = sequence.subList(i + 1, sequence.size).map { func ->
-                secondReadsFromFirst.computeIfAbsent(g to func) {
-                    funcWrites[g]!!.overlaps(funcReads[func]!!)
-                }
-            }
-
-            if (readFromG.none { it }) {
-                return false
-            }
+        return sequence.last().any {
+            invAndFuncInteract[inv to it]!!
         }
-        return true
     }
+
 }

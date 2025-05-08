@@ -77,7 +77,6 @@ class GlobalInferenceAnalysisTest {
 
     /** Mock for the tests **/
     object MockForGlobalsSymbolTable: IGlobalsSymbolTable {
-        override fun isLittleEndian() = true
         override fun isGlobalVariable(address: ElfAddress) = (address == 976432L)
         override fun getAsConstantString(
             name: String,

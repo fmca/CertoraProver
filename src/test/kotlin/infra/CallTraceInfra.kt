@@ -20,7 +20,6 @@ package infra
 import analysis.LTACCmd
 import bridge.NamedContractIdentifier
 import datastructures.NonEmptyList
-import instrumentation.transformers.InitialCodeInstrumentation
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.*
@@ -160,10 +159,8 @@ object CallTraceInfra {
 
             val rule = checkableTAC.subRule
 
-            val withAppliedSummaries = InitialCodeInstrumentation.applySummariesAndGhostHooksAndAxiomsTransformations(checkableTAC.tac, scene, (pqAndS.force().second as ProverQuery.CVLQuery.Single).cvl, rule, null)
-
             val verifierResult = runBlocking {
-                Verifier.JoinedResult(TACVerifier.verify(scene.toIdentifiers(), withAppliedSummaries, DummyLiveStatsReporter, rule))
+                Verifier.JoinedResult(TACVerifier.verify(scene.toIdentifiers(), checkableTAC.tac, DummyLiveStatsReporter, rule))
             } as? Verifier.JoinedResult.Failure
                 ?: error("expecting a JoinedResult.Failure, since we're testing call traces")
 

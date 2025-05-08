@@ -22,11 +22,11 @@ import sbf.analysis.WholeProgramMemoryAnalysis
 import sbf.callgraph.CVTFunction
 import sbf.callgraph.MutableSbfCallGraph
 import sbf.cfg.SbfCFG
+import sbf.disassembler.newGlobalVariableMap
 import sbf.domains.MemorySummaries
 import sbf.tac.sbfCFGsToTAC
 import kotlinx.coroutines.runBlocking
 import report.DummyLiveStatsReporter
-import sbf.disassembler.*
 import scene.SceneFactory
 import scene.source.DegenerateContractSource
 import vc.data.CoreTACProgram
@@ -48,30 +48,19 @@ fun dumpTAC(program: CoreTACProgram): String {
     return sb.toString()
 }
 
-object EmptyGlobalsSymbolTable: IGlobalsSymbolTable {
-    override fun isLittleEndian() = true
-    override fun isGlobalVariable(address: ElfAddress) = false
-    override fun getAsConstantString(
-        name: String,
-        address: ElfAddress,
-        size: Long
-    ) = SbfConstantStringGlobalVariable("",0,0, "")
-}
-
 fun toTAC(cfg: SbfCFG,
           summaryFileContents: List<String> = listOf(
                 "#[type((*i64)(r1+0):num)]", "#[type((*i64)(r1+8):num)]", "^__multi3$",
                 "#[type((*i64)(r1+0):num)]", "#[type((*i64)(r1+8):num)]", "^__udivti3$",
-                "#[type((*i64)(r1+0):num)]", "#[type((*i64)(r1+8):num)]", "^__divti3$"),
-          globals: GlobalVariableMap = newGlobalVariableMap(),
-          globalsSymbolTable: IGlobalsSymbolTable = EmptyGlobalsSymbolTable
+                "#[type((*i64)(r1+0):num)]", "#[type((*i64)(r1+8):num)]", "^__divti3$")
 ): CoreTACProgram {
+    val globals = newGlobalVariableMap()
     val prog = MutableSbfCallGraph(mutableListOf(cfg), setOf(cfg.getName()), globals)
     val memSummaries = MemorySummaries.readSpecFile(summaryFileContents,"unknown")
     CVTFunction.addSummaries(memSummaries)
     val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries)
     memAnalysis.inferAll()
-    return sbfCFGsToTAC(prog, memSummaries, globalsSymbolTable, memAnalysis.getResults())
+    return sbfCFGsToTAC(prog, memSummaries, memAnalysis.getResults())
 }
 
 fun verify(program: CoreTACProgram): Boolean {

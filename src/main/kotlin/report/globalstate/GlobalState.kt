@@ -50,7 +50,7 @@ internal class GlobalState(
     private val seqGen = SequenceGenerator(graph, blocks, model)
     private val storageState = StorageState(seqGen, model, scene, formatter, variablesState)
     private val balancesState = BalancesState(seqGen, model, formatter)
-    private val ghostsState = GhostsState(seqGen, model, variablesState)
+    private val ghostsState = GhostsState(seqGen, formatter, model, variablesState)
 
     fun handleAssignments(stmt: TACCmd.Simple.AssigningCmd) {
         variablesState.handleAssignments(stmt)

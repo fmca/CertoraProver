@@ -214,7 +214,7 @@ abstract class Verifier : AbstractTACChecker() {
          */
         fun reportOutput(rule: IRule?) {
             val firstExampleInfo = examplesInfo?.head
-            val name = rule?.ruleIdentifier?.toString() ?: simpleSimpleSSATAC.name
+            val name = simpleSimpleSSATAC.name
             val examplesInfo = examplesInfo
 
             if (examplesInfo != null && rule != null) {

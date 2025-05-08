@@ -34,8 +34,6 @@ class DisassemblerError(msg: String): RuntimeException("Disassembler error: $msg
  * requiring an ELF file during testing.
  */
 interface IGlobalsSymbolTable {
-    /** SBF is little-endian, but we extract that info from the ELF file in case it will change in the future **/
-    fun isLittleEndian(): Boolean
     /** Return true if [address] is in the range of any ELF section known to store global variables **/
     fun isGlobalVariable(address: ElfAddress): Boolean
     /** Interpret [address,..., address+size-1] bytes in the ELF file as a constant string **/
@@ -66,8 +64,6 @@ class GlobalsSymbolTable(private val reader: ElfFile, private val parser: ElfPar
             }
         }
     }
-
-    override fun isLittleEndian() = reader.ei_data == ElfFile.DATA_LSB
 
     override fun isGlobalVariable(address: ElfAddress) =
         globalVMARanges.any { range -> range.l <= address && address < range.u }

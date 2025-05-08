@@ -231,7 +231,7 @@ def collect_run_config_from_metadata(attributes_configs: dict, metadata: dict) -
     # Adding GIT configuration from metadata
     git_section = attributes_configs.setdefault(MainSection.GIT.value.lower(), {})
     for attr in GIT_ATTRIBUTES:
-        if attr_value := metadata.get(attr):
+        if attr_value := metadata.get('attr'):
             git_section[attr] = {
                 'value': attr_value,
                 'flag_type': FlagType.MAP_FLAG.value,

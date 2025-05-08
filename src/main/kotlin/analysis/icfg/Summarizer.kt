@@ -537,7 +537,7 @@ object Summarizer {
         }
     }
 
-    fun inlineDispatcherSummary(
+    private fun inlineDispatcherSummary(
         scene: IScene,
         caller: BigInteger,
         patching: SimplePatchingProgram,
@@ -549,7 +549,7 @@ object Summarizer {
     ) {
         val callSumm = where.cmd.summ
         require(callSumm is CallSummary) { "Expected $callSumm to be a ${CallSummary::javaClass.name}" }
-        if(callSumm.callType == TACCallType.DELEGATE) {
+        if(callSumm.callType == TACCallType.DELEGATE && appliedSummary !is Summarization.AppliedSummary.Config.LateInliningDispatcher) {
             throw CertoraException(
                 CertoraErrorType.UNSUPPORTED_SUMMARIZATION,
                 msg = "Requested to summarize a delegatecall with dispatcher: this is unsupported"
@@ -622,9 +622,7 @@ object Summarizer {
             patching.addBlock(
                 where.ptr.block,
                 CommandWithRequiredDecls(
-                    noDispatchMatchHavoc.cmds +
-                        SnippetCmd.CVLSnippetCmd.DispatcherSummaryDefault(appliedSummary, defaultHavocType).toAnnotation() +
-                        TACCmd.Simple.AnnotationCmd(
+                    noDispatchMatchHavoc.cmds + TACCmd.Simple.AnnotationCmd(
                         SummaryStack.END_EXTERNAL_SUMMARY, SummaryStack.SummaryEnd.External(
                             appliedSummary,
                             callSumm.summaryId
@@ -1053,6 +1051,18 @@ object Summarizer {
                     methodCallStack
                 )
             }
+            is Summarization.AppliedSummary.Config.LateInliningDispatcher -> {
+                return inlineDispatcherSummary(
+                    scene,
+                    caller,
+                    patching,
+                    where,
+                    appliedSummary.specCallSumm,
+                    Summarization.AppliedSummary.Config.LateInliningDispatcher,
+                    SummaryApplicationReason.SpecialReason("Late inlined method calls due to an (internal) dispatcher"),
+                    methodCallStack
+                )
+            }
 
             is Summarization.AppliedSummary.Config.OptimisticFallback -> {
                 throw IllegalStateException("inlineSummaryFromConfig does not support the AppliedSummary ${appliedSummary::class}")
@@ -1115,7 +1125,7 @@ object Summarizer {
         instrumentDispatcher(
             patching,
             where,
-            optimistic = appliedSummary.specCallSumm.optimistic,
+            optimistic = false,
             caller,
             scene,
             defaultHavocType,

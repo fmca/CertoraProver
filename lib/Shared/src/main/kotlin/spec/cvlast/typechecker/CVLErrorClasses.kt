@@ -1978,23 +1978,6 @@ class DispatchListWithSpecificId private constructor(override val location: Rang
 class FullWildcardInDispatchList private constructor(override val location: Range, override val message: String): CVLError() {
     constructor(exp: MethodSig) : this(exp.id.range, "A dispatch list may not contain the '_._' pattern.")
 }
-@KSerializable
-@CVLErrorType(
-    category = CVLErrorCategory.METHODS_BLOCK,
-    description = "Using an optimistic unresolved external summary with a default case is not allowed."
-)
-@CVLErrorExample(
-   exampleCVLWithRange =
-    """
-        methods {
-            function _._ external => #DISPATCH(optimistic=true) [ C._ ] default NONDET#;
-        }
-        """,
-    exampleMessage = "Using an optimistic unresolved external summary with a default case is not allowed, remove the 'default ...' or use optimistic=false, in the method summary."
-)
-class OptimisticDispatchListHasNoDefault private constructor(override val location: Range, override val message: String): CVLError() {
-    constructor(dispatchList: CallSummary.DispatchList) : this(dispatchList.range, "Using an optimistic unresolved external summary with a default case is not allowed, remove the 'default ...' or use optimistic=false, in the method summary.")
-}
 
 @KSerializable
 @CVLErrorType(

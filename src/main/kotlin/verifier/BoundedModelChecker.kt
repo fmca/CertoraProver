@@ -31,7 +31,8 @@ import parallel.coroutines.parallelMapOrdered
 import report.*
 import rules.CompiledRule
 import rules.RuleCheckResult
-import scene.*
+import scene.IScene
+import scene.MethodAttribute
 import solver.SolverResult
 import spec.*
 import spec.CVLCompiler.CallIdContext.Companion.toContext
@@ -52,8 +53,6 @@ import utils.CollectingResult.Companion.map
 import utils.CollectingResult.Companion.safeForce
 import vc.data.*
 import vc.data.TACProgramCombiners.andThen
-import java.util.*
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.stream.Collectors
@@ -95,13 +94,6 @@ class BoundedModelChecker(
             return optimized
         }
 
-        fun IContractClass.isLibrary(): Boolean {
-            return when(this){
-                is IContractWithSource -> this.src.isLibrary
-                else -> false
-            }
-        }
-
         data class StateModificationFootprint(
             private val storage: Set<StorageAnalysisResult.StoragePaths>,
             private val hasTransient: Boolean,
@@ -116,111 +108,110 @@ class BoundedModelChecker(
                     (this.hasTransient && other.hasTransient) ||
                     this.ghosts.any { it in other.ghosts }
             }
-
-            operator fun plus(other: StateModificationFootprint?): StateModificationFootprint {
-                if (other == null) {
-                    return this
-                }
-
-                return StateModificationFootprint(
-                    storage = this.storage + other.storage,
-                    hasTransient = this.hasTransient || other.hasTransient,
-                    ghosts = this.ghosts + other.ghosts
-                )
-            }
         }
 
         /**
-         * @return The set of storage paths and ghosts that [f] writes and reads to/from, or `null` if storage analysis
-         * failed.
+         * @return The set of storage paths and ghosts that [f] writes to, or `null` if storage analysis failed. [callId]
+         * is used in order to determine which writes are actually within the function and not just in the function call
+         * instrumentation code. If `callId == null` then _all_ writes in the program will be collected.
          *
-         * [callId] is used in order to determine which writes/reads are actually within the function and not just in
-         * the function call instrumentation code. If `callId == null` then _all_ writes/reads in the program will be collected.
-         *
-         * Note that for transient storage we just check for any writes/reads, not specific paths.
+         * Note that for transient storage we just check for any writes, not specific paths.
          */
-        fun getAllWritesAndReads(f: CoreTACProgram, callId: CallId?): Pair<StateModificationFootprint?, StateModificationFootprint?> {
+        fun getAllStorageAndGhostWrites(f: CoreTACProgram, callId: CallId?): StateModificationFootprint? {
             val callStack = InlinedMethodCallStack(f.analysisCache.graph)
 
             val storageAnalysisFailure = AtomicBoolean(false)
             val writesToTransientStorage = AtomicBoolean(false)
-            val readsFromTransientStorage = AtomicBoolean(false)
-            val storageWrites = ConcurrentLinkedDeque<StorageAnalysisResult.StoragePaths>()
-            val storageReads = ConcurrentLinkedDeque<StorageAnalysisResult.StoragePaths>()
-            val ghostWrites = ConcurrentLinkedDeque<String>()
-            val ghostReads = ConcurrentLinkedDeque<String>()
-
-            f.parallelLtacStream().filter { lcmd ->
+            val writes = f.parallelLtacStream().filter { lcmd ->
                 callId == null || callId in callStack.currentCallIds(lcmd.ptr)
-            }.forEach { lcmd ->
+            }.mapNotNull { lcmd ->
                 when (val cmd = lcmd.cmd) {
                     is TACCmd.Simple.WordStore -> {
                         val base = cmd.base
                         if (TACMeta.STORAGE_KEY in base.meta) {
-                            base.meta[TACMeta.STABLE_STORAGE_FAMILY]?.let { storageWrites.add(it) } ?: run {
+                            base.meta[TACMeta.STABLE_STORAGE_FAMILY]?.toLeft() ?: run {
                                 storageAnalysisFailure.set(true)
+                                null
                             }
                         } else if (TACMeta.TRANSIENT_STORAGE_KEY in base.meta) {
                             writesToTransientStorage.set(true)
-                        }
-                    }
-
-                    is TACCmd.Simple.AssigningCmd.WordLoad -> {
-                        val base = cmd.base
-                        if (TACMeta.STORAGE_KEY in base.meta) {
-                            base.meta[TACMeta.STABLE_STORAGE_FAMILY]?.let { storageReads.add(it) } ?: run {
-                                storageAnalysisFailure.set(true)
-                            }
-                        } else if (TACMeta.TRANSIENT_STORAGE_KEY in base.meta) {
-                            readsFromTransientStorage.set(true)
+                            null
+                        } else {
+                            null
                         }
                     }
 
                     is TACCmd.Simple.AssigningCmd.AssignExpCmd -> {
                         val lhs = cmd.lhs
                         if (TACMeta.STORAGE_KEY in lhs.meta) {
-                            lhs.meta[TACMeta.STABLE_STORAGE_FAMILY]?.let { storageWrites.add(it) } ?: run {
+                            lhs.meta[TACMeta.STABLE_STORAGE_FAMILY]?.toLeft() ?: run {
                                 storageAnalysisFailure.set(true)
+                                null
                             }
                         } else if (TACMeta.TRANSIENT_STORAGE_KEY in lhs.meta) {
                             writesToTransientStorage.set(true)
+                            null
                         } else if (TACMeta.CVL_GHOST in lhs.meta) {
-                            lhs.meta[TACMeta.CVL_DISPLAY_NAME]?.let { ghostWrites.add(it) } ?: error("expected there to be a display name for the ghost. cmd is $cmd. Has only ${lhs.meta}")
-                        }
-
-                        val rhss = cmd.getFreeVarsOfRhs()
-                        rhss.forEach { rhs ->
-                            if (TACMeta.STORAGE_KEY in rhs.meta) {
-                                rhs.meta[TACMeta.STABLE_STORAGE_FAMILY]?.let { storageReads.add(it) } ?: run {
-                                    storageAnalysisFailure.set(true)
-                                }
-                            } else if (TACMeta.TRANSIENT_STORAGE_KEY in rhs.meta) {
-                                readsFromTransientStorage.set(true)
-                            } else if (TACMeta.CVL_GHOST in rhs.meta) {
-                                rhs.meta[TACMeta.CVL_DISPLAY_NAME]?.let { ghostReads.add(it) } ?: error("expected there to be a display name for the ghost. cmd is $cmd. Has only ${rhs.meta}")
-                            }
+                            lhs.meta[TACMeta.CVL_DISPLAY_NAME]?.toRight() ?: error("expected there to be a display name for the ghost. cmd is $cmd. Has only ${lhs.meta}")
+                        } else {
+                            null
                         }
                     }
 
-                    else -> Unit
+                    else -> null
                 }
-            }
+            }.collect(Collectors.toSet())
 
             if (storageAnalysisFailure.get()) {
-                return null to null
+                logger.info { "Storage analysis failure for ${f.name} prevents making assumptions on which storage has writes" }
+                return null
             }
 
-            return StateModificationFootprint(storageWrites.toSet(), writesToTransientStorage.get(), ghostWrites.toSet()) to
-                StateModificationFootprint(storageReads.toSet(), readsFromTransientStorage.get(), ghostReads.toSet())
+            val (storageWrites, ghostWrites) = writes.partitionMap { it }
+            return StateModificationFootprint(storageWrites.toSet(), writesToTransientStorage.get(), ghostWrites.toSet())
         }
 
-        private fun ContractFunction.abiWithContractStr() = this.methodSignature.qualifiedMethodName.host.name + "." + this.methodSignature.computeCanonicalSignature(PrintingContext(false))
+        /**
+         * @return The set of storage paths and ghosts that [f] accesses, or `null` if storage analysis failed. [callId]
+         * is used in order to determine which accesses are actually within the function and not just in the function call
+         * instrumentation code. If `callId == null` then _all_ accesses in the program will be collected.
+         *
+         * Note that for transient storage we just check for any access, not specific paths.
+         */
+        fun getAllStorageAndGhostAccesses(f: CoreTACProgram, callId: CallId?): StateModificationFootprint? {
+            val callStack = InlinedMethodCallStack(f.AnalysisCache().graph)
+            val storageAnalysisFailure = AtomicBoolean(false)
+            val hasTransientStorageAccess = AtomicBoolean(false)
+            val accesses = f.parallelLtacStream().filter { lcmd ->
+                callId == null || callId in callStack.currentCallIds(lcmd.ptr)
+            }.flatMap { lcmd ->
+                val cmdVars = lcmd.cmd.freeVars()
 
-        private fun Collection<ContractFunction>.dispatchStr() =
-            this.singleOrNull()?.abiWithContractStr() // avoids the prefix and postfix for the singleton case
-                ?: this.sortedBy { it.abiWithContractStr() }.joinToString(" | ", prefix = "[ ", postfix = " ]") { it.abiWithContractStr() }
+                cmdVars.mapNotNull { v ->
+                    if (TACMeta.STORAGE_KEY in v.meta) {
+                        v.meta[TACMeta.STABLE_STORAGE_FAMILY]?.let { return@mapNotNull it.toLeft() }
+                            ?: storageAnalysisFailure.set(true)
+                        return@mapNotNull null
+                    } else if (TACMeta.TRANSIENT_STORAGE_KEY in v.meta) {
+                        hasTransientStorageAccess.set(true)
+                        return@mapNotNull null
+                    } else if (TACMeta.CVL_GHOST in v.meta) {
+                        return@mapNotNull v.meta[TACMeta.CVL_DISPLAY_NAME]?.toRight() ?: error("expected there to be a display name for the ghost. var is $v. Has only ${v.meta}")
+                    } else {
+                        return@mapNotNull null
+                    }
+                }.stream()
+            }.collect(Collectors.toSet())
 
-        private fun Collection<Collection<ContractFunction>>.sequenceStr() = this.joinToString(" -> ") { it.dispatchStr() }
+            if (storageAnalysisFailure.get()) {
+                logger.info { "Storage analysis failure for ${f.name} prevents making assumptions on which storage is accessed" }
+                return null
+            }
+
+            val (storageAccess, ghostAccess) = accesses.partitionMap { it }
+
+            return StateModificationFootprint(storageAccess.toSet(), hasTransientStorageAccess.get(), ghostAccess.toSet())
+        }
     }
 
     private val cvl = cvl.copy(ghosts = cvl.ghosts + CVLGhostDeclaration.Variable(Range.Empty(), CVLType.PureCVLType.Primitive.Mathint, INV_N, true, listOf(), CVLScope.AstScope))
@@ -257,12 +248,9 @@ class BoundedModelChecker(
      * A mapping from a [ContractFunction] to the [CoreTACProgram] it compiles to along with the [CallId] of that
      * function in the program. See [compileFunction] for details of what these programs contain.
      */
-    private val compiledFuncs: SortedMap<ContractFunction, Pair<CoreTACProgram, CallId>>
+    private val compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>
 
     private val invProgs: Map<CVLInvariant, InvariantPrograms>
-
-    private val funcReads: Map<ContractFunction, StateModificationFootprint?>
-    private val funcWrites: Map<ContractFunction, StateModificationFootprint?>
 
     init {
         val compiler = CVLCompiler(scene, this.cvl, "bmc compiler")
@@ -278,37 +266,35 @@ class BoundedModelChecker(
                     .toList()
                     .wrapWithMessageLabel("Assume init_state axioms")
 
-                val invokeConstructors = scene.getNonPrecompiledContracts()
-                    .filterNot { it.isLibrary() }
-                    .flatMapIndexed { i, contract ->
-                        listOf(
-                            CVLCmd.Simple.Declaration(
-                                range,
-                                EVMBuiltinTypes.env,
-                                envParam(i) + "_constructor",
-                                scope
+                val invokeConstructors = scene.getNonPrecompiledContracts().flatMapIndexed { i, contract ->
+                    listOf(
+                        CVLCmd.Simple.Declaration(
+                            range,
+                            EVMBuiltinTypes.env,
+                            envParam(i) + "_constructor",
+                            scope
+                        ),
+                        CVLCmd.Simple.Declaration(
+                            range,
+                            CVLType.PureCVLType.VMInternal.RawArgs,
+                            argParam(i) + "_constructor",
+                            scope
+                        ),
+                        CVLCmd.Simple.contractFunction(
+                            range,
+                            scope,
+                            UniqueMethod(SolidityContract(contract.name), MethodAttribute.Unique.Constructor),
+                            listOf(
+                                CVLExp.VariableExp(envParam(i) + "_constructor", EVMBuiltinTypes.env.asTag()),
+                                CVLExp.VariableExp(argParam(i) + "_constructor", CVLType.PureCVLType.VMInternal.RawArgs.asTag())
                             ),
-                            CVLCmd.Simple.Declaration(
-                                range,
-                                CVLType.PureCVLType.VMInternal.RawArgs,
-                                argParam(i) + "_constructor",
-                                scope
-                            ),
-                            CVLCmd.Simple.contractFunction(
-                                range,
-                                scope,
-                                UniqueMethod(SolidityContract(contract.name), MethodAttribute.Unique.Constructor),
-                                listOf(
-                                    CVLExp.VariableExp(envParam(i) + "_constructor", EVMBuiltinTypes.env.asTag()),
-                                    CVLExp.VariableExp(argParam(i) + "_constructor", CVLType.PureCVLType.VMInternal.RawArgs.asTag())
-                                ),
-                                true,
-                                CVLExp.VariableExp(CVLKeywords.lastStorage.keyword, CVLKeywords.lastStorage.type.asTag()),
-                                isWhole = false,
-                                isParametric = false,
-                                methodParamFilter = null
-                            )
+                            true,
+                            CVLExp.VariableExp(CVLKeywords.lastStorage.keyword, CVLKeywords.lastStorage.type.asTag()),
+                            isWhole = false,
+                            isParametric = false,
+                            methodParamFilter = null
                         )
+                    )
                 }.wrapWithMessageLabel("invoke constructors")
 
                 listOf(
@@ -392,14 +378,20 @@ class BoundedModelChecker(
                     methodSig.matchesNameAndParams(func.methodSignature)
             }
 
-            val preservedList = invariants.mapKeys { (k, _) -> k.proof.preserved }.filterKeys { preserved ->
-                preserved.any { (it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature)) }
-            }.mapKeys { (allPreserved, _) ->
-                val preserved = allPreserved.find { (it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature)) } ?: `impossible!`
-                check(preserved is CVLPreserved.ExplicitMethod)
-
+            val preservedList = invariants.filterKeys { inv ->
+                inv.proof.preserved.any { (it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature)) || it is CVLPreserved.Generic }
+            }.mapKeys { (inv, _) ->
+                val preserved = inv.proof.preserved.find { it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature) }
+                    ?: inv.proof.preserved.filterIsInstance<CVLPreserved.Generic>().single()
                 val envParamId = preserved.withParams.singleOrNull()?.id
-                val paramIds = preserved.params.map { it.id }
+                val paramIds = if (preserved is CVLPreserved.ExplicitMethod) {
+                    preserved.params.map { it.id }
+                } else {
+                    null
+                }
+                if (envParamId == null && paramIds == null) {
+                    return@mapKeys preserved
+                }
 
                 // OK, there's an env param declared via a `with` clause. Let's rename it.
                 // See the kdoc of this function for details.
@@ -410,7 +402,7 @@ class BoundedModelChecker(
                                 if (exp.id == envParamId) {
                                     exp.copy(id = envParam(n))
                                 } else {
-                                    val i = paramIds.indexOf(exp.id)
+                                    val i = paramIds?.indexOf(exp.id) ?: -1
                                     if (i != -1) {
                                         exp.copy(id = param(i))
                                     } else {
@@ -421,7 +413,11 @@ class BoundedModelChecker(
                         }
                     }
                 ) {}
-                preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
+                when (preserved) {
+                    is CVLPreserved.ExplicitMethod -> preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
+                    is CVLPreserved.Generic -> preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
+                    else -> `impossible!`
+                }
             }.toList()
 
             val cvlParams = func.methodSignature.params.mapIndexed { i, p ->
@@ -480,14 +476,9 @@ class BoundedModelChecker(
             return prog to callId
         }
 
-        invProgs = invariants.mapValues { (inv, _) ->
-            InvariantPrograms(inv, compiler)
-        }
-
         compiledFuncs = this.cvl.importedFuncs.values.asSequence()
         .flatten()
             .filterNot { it.methodSignature is UniqueMethod }
-            .filterNot { it.annotation.library }
             .filter { func ->
                 Config.contractChoice.get().let { it.isEmpty() || func.methodSignature.qualifiedMethodName.host.name in it }
             }
@@ -515,21 +506,16 @@ class BoundedModelChecker(
                 // Note the filtering we do ignores the `isView` attribute of the functions. This is because e.g. Solidity-generated
                 // getters don't have this flag yet we want to skip them, and also it may be that a view function will modify a ghost
                 // via some hook.
-                getAllWritesAndReads(prog, callId).first?.let { !it.isEmpty() } != false
+                getAllStorageAndGhostWrites(prog, callId)?.let { !it.isEmpty() } != false
             }.collect(Collectors.toMap({ it.first }, { it.second })).also {
                 logger.info { "bmc on ${it.size} functions" }
-            }.toSortedMap(compareBy<ContractFunction> { it.abiWithContractStr() })
+            }
 
-
-        val funcWritesAndReads = compiledFuncs.mapValues { (_, progAndCallId) ->
-            getAllWritesAndReads(progAndCallId.first, progAndCallId.second)
+        invProgs = invariants.mapValues { (inv, _) ->
+            InvariantPrograms(inv, compiler)
         }
 
-        funcWrites = funcWritesAndReads.mapValues { (_, writesAndReads) -> writesAndReads.first }
-
-        funcReads = funcWritesAndReads.mapValues { (_, writesAndReads) -> writesAndReads.second }
-
-        BoundedModelCheckerFilters.init(cvl, scene, compiler, compiledFuncs, funcReads, funcWrites, invProgs.mapValues { (_, progs) -> progs.assert }, treeViewReporter)
+        BoundedModelCheckerFilters.init(cvl, scene, compiler, compiledFuncs, invProgs.mapValues { (_, progs) -> progs.assert }, treeViewReporter)
     }
 
     /**
@@ -554,7 +540,7 @@ class BoundedModelChecker(
         }
 
         val functionCallsProg = funcsList.foldIndexed(
-            initializationProg andThen setupFunctionProg andThen invProgs.invN andThen invProgs.params andThen invProgs.genericPreserved
+            initializationProg andThen setupFunctionProg andThen invProgs.invN andThen invProgs.params
         ) { idx, outerAcc, contractFunctions ->
             if (contractFunctions.isEmpty()) {
                 // the constructor only case
@@ -586,25 +572,19 @@ class BoundedModelChecker(
                     acc
                 )
             }
-            val assumeInvProg = (invProgs.params andThen invProgs.assume).copyFunction()
+            val assumeInvProg = invProgs.assume.copyFunction()
             outerAcc andThen assumeInvProg andThen newDispatch
         }
 
-        return (functionCallsProg andThen invProgs.assert).copy(
-            name = "${invProgs.id}: " + funcsList.sequenceStr()
-        )
+        return functionCallsProg andThen invProgs.assert
     }
 
     private suspend fun checkProg(prog: CoreTACProgram, rule: CVLSingleRule): RuleCheckResult.Leaf {
-        StatusReporter.registerSubrule(rule)
-        treeViewReporter.signalStart(rule)
-        reporter.signalStart(rule)
         val compiledRule = CompiledRule.create(rule, prog.withCoiOptimizations(true), treeViewReporter.liveStatsReporter)
-        return compiledRule.check(scene.toIdentifiers(), true)
+        return compiledRule
+            .check(scene.toIdentifiers(), nonLocalOptimizationsOnly = true)
             .toCheckResult(scene, compiledRule)
             .getOrElse { RuleCheckResult.Error(compiledRule.rule, it) }
-            .also { treeViewReporter.signalEnd(rule, it) }
-            .also { reporter.addResults(it) }
     }
 
     private suspend fun isVacuous(prog: CoreTACProgram, rule: CVLSingleRule): Boolean {
@@ -622,19 +602,18 @@ class BoundedModelChecker(
         treeViewReporter.registerSubruleOf(thisRule, rule)
         treeViewReporter.signalStart(thisRule)
         val res = checkProg(vacuityCheck, thisRule)
+
+        treeViewReporter.signalEnd(thisRule, res)
         return res is RuleCheckResult.Single && res.result == SolverResult.UNSAT
     }
 
     inner class InvariantPrograms private constructor(
-        val id: String,
         val params: CoreTACProgram,
         val assume: CoreTACProgram,
         val assert: CoreTACProgram,
-        val invN: CoreTACProgram,
-        val genericPreserved: CoreTACProgram
+        val invN: CoreTACProgram
     ) {
         constructor(inv: CVLInvariant, compiler: CVLCompiler) : this(
-            id = inv.id,
             params = compiler.compileCommands(
                 inv.params.map { param ->
                     CVLCmd.Simple.Declaration(
@@ -688,15 +667,7 @@ class BoundedModelChecker(
                         )
                     ), "$INV_N assignment"
                 ).toCore(scene)
-            },
-            genericPreserved = inv.proof.preserved.filterIsInstance<CVLPreserved.Generic>().singleOrNull()?.let {
-                compiler.compileCommands((
-                    it.withParams.map { p ->
-                        CVLCmd.Simple.Declaration(inv.range, EVMBuiltinTypes.env, p.id, inv.scope)
-                    } + it.block).wrapWithMessageLabel("Generic preserved block}"),
-                    "generic invariant block of ${inv.id}"
-                ).toCore(scene).optimize(scene)
-            } ?: CoreTACProgram.empty("No preserved block")
+            }
         )
     }
 
@@ -718,12 +689,6 @@ class BoundedModelChecker(
         val nViolationsFound = AtomicInteger(0)
         val nSequencesChecked = AtomicInteger(0)
         val failLimit = Config.BoundedModelCheckingFailureLimit.get()
-
-        /**
-         * Given the [parentFuncs] list, will find all functions `f` such that `parentFuncs + f` is a valid sequence
-         * (valid in the sense that it passes all filters), and will then construct and check a [CoreTACProgram] built
-         * as a sequence of all functions in [parentFuncs] and appended to it a "dispatching" of all the functions found.
-         */
         suspend fun checkRecursive(
             parentRule: CVLSingleRule,
             parentFuncs: TreapList<ContractFunction>
@@ -734,57 +699,82 @@ class BoundedModelChecker(
                 return treapListOf()
             }
 
-            val allLastFuncsToFailedFilters = funcsForThisInvariant.associateWith { func ->
-                BoundedModelCheckerFilters.filter(parentFuncs + func, inv, funcReads, funcWrites)
+            val failedFilter = if (parentFuncs.isNotEmpty()) {
+                BoundedModelCheckerFilters.passes(parentFuncs.map { listOf(it) }, inv)
+            } else {
+                null
             }
 
-            val lastFuncs = allLastFuncsToFailedFilters.filterValues { it == null }.keys.toList()
-            if (lastFuncs.isEmpty()) {
-                // nothing to run
-                return treapListOf()
-            }
-
-            val rule = parentRule.copy(
-                ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(lastFuncs.dispatchStr())
-            )
-
-            treeViewReporter.registerSubruleOf(rule, parentRule)
-
-            val prog = generateProgForSequence(
-                parentFuncs.map { listOf(it) } + listOf(lastFuncs),
-                invProgs
-            )
-
-            val res = checkProg(prog, rule)
-            val nCheckedSequences = nSequencesChecked.addAndGet(lastFuncs.size)
-            if (nCheckedSequences % 100 < (nCheckedSequences - lastFuncs.size) % 100) {
-                treeViewReporter.hotUpdate()
-                logger.info { "Ran $nCheckedSequences sequences" }
-            }
-
-            if (res is RuleCheckResult.Single && res.result == SolverResult.SAT) {
-                nViolationsFound.getAndIncrement()
-                return treapListOf(res)
-            }
-
-            if (parentFuncs.size == Config.BoundedModelChecking.get() - 1) {
-                // Recursion end condition
-                return treapListOf(res)
-            }
-
-            val childFuncs = allLastFuncsToFailedFilters.filterValues { it == null || !it.appliesToChildren }.keys
-
-            return childFuncs.parallelMapOrdered { _, func ->
-                val funcs = parentFuncs + func
-                val childProg = generateProgForSequence(funcs.map { listOf(it) }, invProgs)
-                val childRule = parentRule.copy(ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(func.abiWithContractStr()))
-                treeViewReporter.registerSubruleOf(childRule, parentRule)
-                if (isVacuous(childProg, childRule)) {
-                    treapListOf()
-                } else {
-                    checkRecursive(childRule, funcs)
+            val (parentProg, res) = if (failedFilter != null) {
+                treeViewReporter.signalSkip(parentRule)
+                CVTAlertReporter.reportAlert(
+                    CVTAlertType.BMC,
+                    CVTAlertSeverity.INFO,
+                    null,
+                    "Skipping `${parentRule.ruleIdentifier}` because ${failedFilter.message}",
+                    null
+                )
+                if (failedFilter.appliesToChildren) {
+                    // The filter that didn't pass applies to all sequences with this sequence as their header, so don't
+                    // bother starting any child rules.
+                    return treapListOf()
                 }
-            }.flatten().toTreapList() + res
+                null to null
+            } else {
+                val parentProg = generateProgForSequence(
+                    parentFuncs.map { listOf(it) },
+                    invProgs
+                ).copy(name = parentRule.ruleIdentifier.toString())
+
+                StatusReporter.register(parentRule)
+
+                treeViewReporter.signalStart(parentRule)
+                reporter.signalStart(parentRule)
+                val res = checkProg(parentProg, parentRule)
+                treeViewReporter.signalEnd(parentRule, res)
+                val nCheckedSequences = nSequencesChecked.getAndIncrement()
+                if (nCheckedSequences % 100 == 0) {
+                    treeViewReporter.hotUpdate()
+                    logger.info { "Ran $nSequencesChecked sequences" }
+                }
+
+                if (res is RuleCheckResult.Single && res.result == SolverResult.SAT) {
+                    nViolationsFound.getAndIncrement()
+                    return treapListOf(res)
+                }
+                parentProg to res
+            }
+
+            if (parentFuncs.size == Config.BoundedModelChecking.get()) {
+                // Recursion end condition. Note that in this case there's no point in running the vacuity check
+                // even if the sequence was UNSAT because there won't be any child sequences anyway.
+                return res?.let { treapListOf(it) }.orEmpty()
+            }
+
+            if (res is RuleCheckResult.Single && res.result == SolverResult.UNSAT && isVacuous(parentProg!!, parentRule)) {
+                val msg = "The sequence $parentFuncs is vacuous"
+                logger.info { msg }
+                CVTAlertReporter.reportAlert(
+                    CVTAlertType.BMC,
+                    CVTAlertSeverity.WARNING,
+                    null,
+                    msg,
+                    "All sequences with this header will be skipped"
+                )
+                return treapListOf(res)
+            }
+
+            return funcsForThisInvariant.parallelMapOrdered { _, func ->
+                val funcs = parentFuncs + func
+                val rule = IRule.createDummyRule("").copy(
+                    ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(func.toString()),
+                    ruleType = SpecType.Single.BMC,
+                    range = func.getMethodInfo().sourceSegment?.range ?: Range.Empty()
+                ).also {
+                    treeViewReporter.registerSubruleOf(it, parentRule)
+                }
+                checkRecursive(rule, funcs)
+            }.fold(res?.let { treapListOf(it as RuleCheckResult) }.orEmpty()) { acc, m -> acc + m }
         }
 
         val invRule = IRule.createDummyRule(inv.id).copy(ruleType = SpecType.Single.BMC, range = inv.range).also {
@@ -795,36 +785,22 @@ class BoundedModelChecker(
             treeViewReporter.registerSubruleOf(it, invRule)
         }
 
-        val constructorProg = generateProgForSequence(listOf(), invProgs)
-
-        val allResults = if (!isVacuous(constructorProg, constructorsRule)) {
-            val constructorRes = checkProg(constructorProg, constructorsRule)
-            nSequencesChecked.getAndIncrement()
-
-            listOf(constructorRes) + if (Config.BoundedModelChecking.get() > 0) {
-                checkRecursive(constructorsRule, treapListOf())
-            } else {
-                listOf()
-            }
-        } else {
-            logger.warn { "The invariant ${inv.id} is vacuous even when running only on the constructors!" }
-            listOf()
-        }
+        val allResults = checkRecursive(constructorsRule, treapListOf())
 
         treeViewReporter.hotUpdate()
-        logger.info { "Invariant ${inv.id}: Ran a total of $nSequencesChecked sequences" }
+        logger.info { "Ran a total of $nSequencesChecked sequences" }
 
         return allResults
     }
 
     suspend fun checkAllInvariants(): List<RuleCheckResult> {
-        StatusReporter.freeze()
         return invariants.keys
             .parallelMapOrdered { _, inv ->
                 checkInv(inv, invProgs[inv]!!)
             }
             .flatten()
             .also {
+                StatusReporter.freeze()
                 reporter.feedReporter(it, scene)
         }
     }
