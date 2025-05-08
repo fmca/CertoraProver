@@ -1451,6 +1451,16 @@ class BackendAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    ENFORCE_REQUIRE_REASON = AttrUtil.AttributeDefinition(
+        arg_type=AttrUtil.AttrArgType.BOOLEAN,
+        jar_flag='-enforceRequireReasonInCVL',
+        argparse_args={
+            'action': AttrUtil.STORE_TRUE
+        },
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
+
     # resource files are string of the form <label>:<path> the client will add the file to .certora_sources
     # and will change the path from relative/absolute path to
     PROVER_RESOURCE_FILES = AttrUtil.AttributeDefinition(

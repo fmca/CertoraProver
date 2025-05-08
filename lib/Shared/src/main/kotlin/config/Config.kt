@@ -877,6 +877,16 @@ object Config {
         )
     ) {}
 
+    val EnforceRequireReason = object : ConfigType.BooleanCmdLine(
+        false,
+        Option(
+            "enforceRequireReasonInCVL",
+            true,
+            "In this mode, require commands need to always be documented with a reason for the assumption [default: true]"
+        ),
+        pythonName = "--enforce_require_reason"
+    ) {}
+
     // this option is for the equivalence checker to disable. if we have 2 distinct contracts, the only way to ensure
     // automatically that something like balanceOf[address(this)] is the same for both, is to have address(this) be the same
     // for both contracts under check (and allow no inter-calls, as this doesn't make sense anyway for equivalence checking)
