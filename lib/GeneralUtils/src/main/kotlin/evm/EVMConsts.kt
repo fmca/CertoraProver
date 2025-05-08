@@ -70,6 +70,8 @@ const val DEFAULT_SIGHASH_SIZE_INT = 4
 val DEFAULT_SIGHASH_SIZE = DEFAULT_SIGHASH_SIZE_INT.toBigInteger()
 val ABI_SIZE_BOUND = BigInteger.TWO.pow(64)
 
+val BigInteger.inEVMRange: Boolean
+        get() = this in BigInteger.ZERO..MAX_EVM_UINT256
 
 // return 2^n - 1, where n is number of bits in the mask
 fun MASK_SIZE(n: Int) = BigInteger.TWO.pow(n).minus(BigInteger.ONE)

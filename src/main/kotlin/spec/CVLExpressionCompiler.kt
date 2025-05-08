@@ -29,6 +29,9 @@ import datastructures.stdcollections.*
 import instrumentation.transformers.FoundryCheatcodes
 import evm.*
 import log.*
+import report.CVTAlertReporter
+import report.CVTAlertSeverity
+import report.CVTAlertType
 import spec.ProgramGenMixin.Companion.andThen
 import spec.ProgramGenMixin.Companion.emptyProgram
 import spec.converters.*
@@ -2007,6 +2010,28 @@ class CVLExpressionCompiler(
                 )
             }
 
+            CVLBuiltInName.FOUNDRY_ROLL -> {
+                check(outVar == null) { "Foundry cheatcode roll doesn't return anything" }
+                check(exp.args.size == 1) { "Foundry cheatcode roll should have just one argument" }
+                val arg = exp.args.single()
+                val (argProg, argOut) = compileExp(arg)
+                val narrowed = TACSymbol.Var("prankedNewblocknum", Tag.Bit256).toUnique("!")
+                argProg.addSink(
+                    CommandWithRequiredDecls(
+                        listOf(
+                            TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                                narrowed,
+                                TACBuiltInFunction.SafeMathNarrow(Tag.Bit256).toTACFunctionSym(),
+                                listOf(argOut.asSym())
+                            ),
+                            TACCmd.Simple.AnnotationCmd(TACMeta.FOUNDRY_CHEATCODE, FoundryCheatcodes.Roll(narrowed))
+                        ),
+                        setOf(narrowed, argOut)
+                    ),
+                    compilationEnvironment
+                )
+            }
+
             CVLBuiltInName.FOUNDRY_MOCK_CALL -> {
                 check(outVar == null) { "Foundry cheatcode mockCall doesn't return anything" }
                 check(exp.args.size == 4) { "Foundry cheatcode mockCall should have exactly 4 arguments" }
@@ -2058,6 +2083,16 @@ class CVLExpressionCompiler(
                         TACCmd.Simple.AnnotationCmd(TACMeta.FOUNDRY_CHEATCODE, FoundryCheatcodes.ClearMockedCalls)
                     )
                 ).toProgWithCurrEnv("clearMockedCalls cheatcode").toSimple()
+            }
+
+            CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> {
+                CVTAlertReporter.reportAlert(
+                    CVTAlertType.FOUNDRY,
+                    CVTAlertSeverity.WARNING,
+                    jumpToDefinition = null,
+                    "Rule ${cvlCompiler.ruleName} uses `exectEmit` - this check is currently ignored by the Prover"
+                )
+                CommandWithRequiredDecls(TACCmd.Simple.NopCmd).toProgWithCurrEnv("foundry expectEmit").toSimple()
             }
 
             CVLBuiltInName.SHA256,
@@ -2252,8 +2287,10 @@ class CVLExpressionCompiler(
             CVLBuiltInName.FOUNDRY_START_PRANK,
             CVLBuiltInName.FOUNDRY_STOP_PRANK,
             CVLBuiltInName.FOUNDRY_WARP,
+            CVLBuiltInName.FOUNDRY_ROLL,
             CVLBuiltInName.FOUNDRY_MOCK_CALL,
-            CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS -> compileCVLBuiltinFoundryCheatcode(outVar, exp)
+            CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS,
+            CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> compileCVLBuiltinFoundryCheatcode(outVar, exp)
         }
     }
 

@@ -756,6 +756,15 @@ class CVLExpTypeCheckerWithContext(
                 }
                 typedExp.updateType(CVLType.PureCVLType.Void).uncheckedAs<CVLExp.ApplyExp.CVLBuiltIn>().lift()
             }
+            CVLBuiltInName.FOUNDRY_ROLL -> {
+                if (typedArgs.size != 1) {
+                    return CVLError.Exp(typedExp, "the roll cheatcode only accepts a single (uint256) argument, got `$typedArgs`").asError()
+                }
+                if (typedArgs.single().getCVLType().isNotConvertibleTo(CVLType.PureCVLType.Primitive.UIntK(256))) {
+                    return CVLError.Exp(typedExp, "the roll cheatcode argument must have type `uint256`, got `${typedArgs.single().getCVLType()}.").asError()
+                }
+                typedExp.updateType(CVLType.PureCVLType.Void).uncheckedAs<CVLExp.ApplyExp.CVLBuiltIn>().lift()
+            }
             CVLBuiltInName.FOUNDRY_MOCK_CALL -> {
                 if (typedArgs.size != 4) {
                     return CVLError.Exp(typedExp, "the mockCall cheatcode accepts exactly 4 arguments (address, mathint, bytes, bytes), got `$typedArgs`").asError()
@@ -778,6 +787,12 @@ class CVLExpTypeCheckerWithContext(
             CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS -> {
                 if (typedArgs.isNotEmpty()) {
                     return CVLError.Exp(typedExp, "the `clearMockedCalls` cheatcode accepts no arguments, got `$typedArgs`").asError()
+                }
+                typedExp.copy(args = typedArgs, tag = typedExp.tag.updateType(CVLType.PureCVLType.Void)).lift()
+            }
+            CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> {
+                if (typedArgs.isNotEmpty()) {
+                    return CVLError.Exp(typedExp, "the `expectEmit` cheatcode accepts no arguments, got `$typedArgs`").asError()
                 }
                 typedExp.copy(args = typedArgs, tag = typedExp.tag.updateType(CVLType.PureCVLType.Void)).lift()
             }
@@ -857,8 +872,10 @@ class CVLExpTypeCheckerWithContext(
                 CVLBuiltInName.FOUNDRY_START_PRANK,
                 CVLBuiltInName.FOUNDRY_STOP_PRANK,
                 CVLBuiltInName.FOUNDRY_WARP,
+                CVLBuiltInName.FOUNDRY_ROLL,
                 CVLBuiltInName.FOUNDRY_MOCK_CALL,
-                CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS -> return@bind builtinFoundryCheatcode(typedExp)
+                CVLBuiltInName.FOUNDRY_CLEAR_MOCKED_CALLS,
+                CVLBuiltInName.FOUNDRY_EXPECT_EMIT -> return@bind builtinFoundryCheatcode(typedExp)
             }
         }
     }

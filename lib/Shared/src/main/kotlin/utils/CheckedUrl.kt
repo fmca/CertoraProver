@@ -42,6 +42,7 @@ enum class CheckedUrl(val url: java.net.URL) {
     TIMEOUT("https://docs.certora.com/en/latest/docs/user-guide/out-of-resources/timeout.html"),
     TIMEOUT_PREVENTION("https://docs.certora.com/en/latest/docs/user-guide/out-of-resources/timeout.html#timeout-prevention"),
     OUT_OF_MEMORY("https://docs.certora.com/en/latest/docs/user-guide/out-of-resources/memout.html"),
+    FOUNDRY_INTEGRATION("https://docs.certora.com/en/latest/docs/cvl/foundry-integration.html"),
     ;
 
     constructor(str: String) : this(java.net.URI(str).toURL())

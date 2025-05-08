@@ -1829,6 +1829,44 @@ class StorageAnalysisTest : SingleMethodTest {
     }
 
     @Test
+    fun testOverflowNotInfeasible() {
+        val cfg = TACMockLanguage.make {
+            L1020 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0"
+            L1021 = "0x20"
+            L1023 = "L1020 + L1021"
+            L1024 = "0x0"
+            L1024 = storage[L1024]
+        }
+        StorageAnalysis.doAnalysis(cfg, null).let {result ->
+            result as StorageAnalysisResult.Complete
+        }.let {
+            assertEquals(
+                StorageAnalysisResult.AccessPaths(setOf(Root(BigInteger.ZERO).build())),
+                it.accessedPaths.values.singleOrNull()
+            )
+        }
+    }
+    @Test
+    fun testOverflowNotInfeasibleBranch() {
+        val cfg = TACMockLanguage.make {
+            L1020 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0"
+            L1021 = "0x20"
+            L1023 = "L1020 + L1021"
+            L1024 = "0x0"
+            jump()
+            L1024 = storage[L1024]
+        }
+        StorageAnalysis.doAnalysis(cfg, null).let {result ->
+            result as StorageAnalysisResult.Complete
+        }.let {
+            assertEquals(
+                StorageAnalysisResult.AccessPaths(setOf(Root(BigInteger.ZERO).build())),
+                it.accessedPaths.values.singleOrNull()
+            )
+        }
+    }
+
+    @Test
     fun testInfeasibleStates() {
         val cfg = TACMockLanguage.make {
             L1020 = `*`

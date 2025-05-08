@@ -231,6 +231,7 @@ methods {
     function _.startPrank(address msgSender) external => __certora_foundry_startPrank(msgSender) expect void;
     function _.stopPrank() external => __certora_foundry_stopPrank() expect void;
     function _.warp(uint256 newTimestamp) external => __certora_foundry_warp(newTimestamp) expect void;
+    function _.roll(uint256 newBlockNumber) external => __certora_foundry_roll(newBlockNumber) expect void;
     function _.mockCall(address where, bytes data, bytes retdata) external => __certora_foundry_mockCall(where, -1, data, retdata) expect void;
     function _.mockCall(address where, uint256 value, bytes data, bytes retdata) external => __certora_foundry_mockCall(where, value, data, retdata) expect void;
     function _.clearMockedCalls() external => __certora_foundry_clearMockedCalls() expect void;
@@ -259,6 +260,7 @@ function cvlDealERC20(env e, address token, address to, uint256 give, bool adjus
 persistent ghost mapping(string => uint256) g_name_to_pk;
 persistent ghost mapping(uint256 => address) g_pk_to_addr {
     axiom forall uint256 u. g_pk_to_addr[u] != 0;
+    axiom forall uint256 u1. forall uint256 u2. (u1 != u2) => g_pk_to_addr[u1] != g_pk_to_addr[u2];
 }
 
 function addrSumm(uint256 privateKey) returns address {
@@ -312,6 +314,12 @@ methods {
     // unimplemented cheatcodes that can't be ignored
     function _.expectCall(address callee, bytes data) external => unsupportedCheatcode() expect void;
     function _.expectCall(address callee, uint256 msgValue, bytes data) external => unsupportedCheatcode() expect void;
+
+    // unimplemented cheatcode that will trigger a warning
+    function _.expectEmit() external => __certora_foundry_expectEmit() expect void;
+    function _.expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData) external => __certora_foundry_expectEmit() expect void;
+    function _.expectEmit(address emitter) external => __certora_foundry_expectEmit() expect void;
+    function _.expectEmit(bool checkTopic1, bool checkTopic2, bool checkTopic3, bool checkData, address emitter) external => __certora_foundry_expectEmit() expect void;
 }
 
 function unsupportedCheatcode() {

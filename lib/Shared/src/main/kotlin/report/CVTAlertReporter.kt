@@ -114,6 +114,11 @@ enum class CVTAlertType(
     BMC(
         externalName = "Bounded Model Check",
         defaultUrl = CheckedUrl.LATEST_DOCS
+    ),
+    /** Alerts related to a run on Foundry tests */
+    FOUNDRY(
+        externalName = "Foundry mode",
+        defaultUrl = CheckedUrl.FOUNDRY_INTEGRATION
     )
     ;
 }
