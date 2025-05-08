@@ -1375,11 +1375,11 @@ class TestClient(unittest.TestCase):
 
         # creating 2 conf files: a base and a child
         base_data = {
+            "files": ["Test/CITests/test_data/A.sol"],
             "solc": "solc5.11"
         }
 
         child_data = {
-            "files": ["Test/CITests/test_data/A.sol"],
             "verify": "A:Test/CITests/test_data/spec1.spec",
             "override_base_config": "base.conf"
         }
