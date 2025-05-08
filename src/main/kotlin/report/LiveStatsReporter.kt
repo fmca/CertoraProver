@@ -51,6 +51,7 @@ data class LiveCheckData(
 sealed interface LiveStatsReporter {
     fun reportDifficulty(rule: RuleIdentifier, callGraphInfo: CallGraphInfo, stats: SingleDifficultyStats)
     fun reportProgress(rule: RuleIdentifier, stats: LiveStatsProgressInfo)
+    fun updateRuleIdentifier(oldId: RuleIdentifier, newId: RuleIdentifier)
     val ruleToLiveCheckData: Map<RuleIdentifier, LiveCheckData>
 
 }
@@ -65,6 +66,7 @@ object DummyLiveStatsReporter : LiveStatsReporter {
     override fun reportProgress(rule: RuleIdentifier, stats: LiveStatsProgressInfo) {
         logger.info { info(stats) }
     }
+    override fun updateRuleIdentifier(oldId: RuleIdentifier, newId: RuleIdentifier) {}
     override val ruleToLiveCheckData: Map<RuleIdentifier, LiveCheckData> = emptyMap()
 }
 
@@ -90,6 +92,17 @@ class ConcreteLiveStatsReporter : LiveStatsReporter {
         logger.info { "report progress for rule: $rule; type: ${stats.javaClass.simpleName}" }
         synchronized(this) {
             collectedLiveStats.getOrPut(rule) { mutableListOf() }.add(stats)
+        }
+    }
+
+    override fun updateRuleIdentifier(oldId: RuleIdentifier, newId: RuleIdentifier) {
+        synchronized(this) {
+            if (oldId in ruleToCallGraph) {
+                ruleToCallGraph[newId] = ruleToCallGraph[oldId]
+                ruleToCallGraph.remove(oldId)
+            }
+            collectedLiveStats[newId] = collectedLiveStats[oldId] ?: error("should have been there")
+            collectedLiveStats.remove(oldId)
         }
     }
 

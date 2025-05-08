@@ -204,12 +204,12 @@ sealed class RuleCheckResult(open val rule: IRule) {
          */
         protected fun baseTreeViewRepBuilder(
             location: TreeViewLocation?,
-            treeViewNode: DisplayableIdentifier,
+            breadcrumbs: String,
             exampleMeta: Result<CallResolutionTableWithExampleMeta.ExampleMeta>,
             dumpGraphLink: String?,
         ): TreeViewRepBuilder<JsonObjectBuilder> = TreeViewRepJsonObjectBuilder {
 
-            put(OutputReportViewAttribute.TREE_VIEW_PATH(), treeViewNode.toString())
+            put(OutputReportViewAttribute.TREE_VIEW_PATH(), breadcrumbs)
 
             /** graph_link */
             put(OutputReportViewAttribute.GRAPH_LINK(), dumpGraphLink)
@@ -294,7 +294,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
             ): OutputReportView {
                 val baseBuilder = baseTreeViewRepBuilder(
                     location,
-                    treeViewNode,
+                    treeViewNode.toString(),
                     exampleMeta = Result.success(CallResolutionTableWithExampleMeta.ExampleMeta.None),
                     dumpGraphLink = ruleCheckInfo.dumpGraphLink,
                 )
@@ -327,12 +327,12 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
             fun toOutputReportView(
                 location: TreeViewLocation?,
-                treeViewNode: DisplayableIdentifier,
+                breadcrumbs: String,
                 counterExample: RuleCheckInfo.WithExamplesData.CounterExample
             ): OutputReportView {
                 val baseBuilder = baseTreeViewRepBuilder(
                     location,
-                    treeViewNode,
+                    breadcrumbs,
                     exampleMeta = counterExample.callResolutionExampleMeta,
                     dumpGraphLink = counterExample.dumpGraphLink,
                 )

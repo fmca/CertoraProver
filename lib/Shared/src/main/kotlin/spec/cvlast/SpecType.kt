@@ -321,10 +321,20 @@ sealed class SpecType: AmbiSerializable {
         }
 
         @Serializable
-        data object BMC : Single() {
-            private fun readResolve(): Any = BMC
-        }
+        sealed class BMC : Single() {
 
+            @Serializable
+            object Invariant : BMC() {
+                private fun readResolve(): Any = Invariant
+                override fun hashCode() = hashObject(this)
+            }
+
+            @Serializable
+            data class Range(val len: Int) : BMC()
+
+            @Serializable
+            data class Sequence(val inv: CVLInvariant) : BMC()
+        }
     }
 
     @Serializable

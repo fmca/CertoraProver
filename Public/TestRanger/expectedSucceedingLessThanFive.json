@@ -1,10 +1,10 @@
 {
 	"assertMessages": {},
 	"rules": {
-		"succeedingLessThanFive-constructors": "SUCCESS",
-		"succeedingLessThanFive-constructors-InvParams.setBar(uint256)-InvParams.setFooConditionally((uint256))": "SUCCESS",
-		"succeedingLessThanFive-constructors-InvParams.setFoo()-InvParams.setFooConditionally((uint256))": "SUCCESS",
-		"succeedingLessThanFive-constructors-InvParams.setFooConditionally((uint256))-InvParams.setFoo()": "SUCCESS",
-		"succeedingLessThanFive-constructors-[ InvParams.setFoo() | InvParams.setFooConditionally((uint256)) ]": "SUCCESS"
+		"succeedingLessThanFive-Initial State": "SUCCESS",
+		"succeedingLessThanFive-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "SUCCESS",
+		"succeedingLessThanFive-Initial State-InvParams.setBar(uint256)-InvParams.setFooConditionally": "SUCCESS",
+		"succeedingLessThanFive-Initial State-InvParams.setFoo()-InvParams.setFooConditionally": "SUCCESS",
+		"succeedingLessThanFive-Initial State-InvParams.setFooConditionally((uint256))-InvParams.setFoo": "SUCCESS"
 	}
 }

@@ -1,9 +1,9 @@
 {
 	"assertMessages": {
-		"violatedLessThanFive-constructors-[ InvParams.setFoo() | InvParams.setFooConditionally((uint256)) ]": "invariant assertion - InvParams.spec line 28"
+		"violatedLessThanFive-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "invariant assertion - InvParams.spec line 28"
 	},
 	"rules": {
-		"violatedLessThanFive-constructors": "SUCCESS",
-		"violatedLessThanFive-constructors-[ InvParams.setFoo() | InvParams.setFooConditionally((uint256)) ]": "FAIL"
+		"violatedLessThanFive-Initial State": "SUCCESS",
+		"violatedLessThanFive-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "FAIL"
 	}
 }

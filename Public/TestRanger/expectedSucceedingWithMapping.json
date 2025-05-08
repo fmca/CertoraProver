@@ -1,9 +1,9 @@
 {
 	"assertMessages": {},
 	"rules": {
-		"succeedingWithMapping-constructors": "SUCCESS",
-		"succeedingWithMapping-constructors-WithMapping.setFoo()-WithMapping.setFooConditionally(address)": "SUCCESS",
-		"succeedingWithMapping-constructors-WithMapping.setFooConditionally(address)-WithMapping.setFoo()": "SUCCESS",
-		"succeedingWithMapping-constructors-[ WithMapping.setFoo() | WithMapping.setFooConditionally(address) ]": "SUCCESS"
+		"succeedingWithMapping-Initial State": "SUCCESS",
+		"succeedingWithMapping-Initial State-Any of: WithMapping.setFoo, WithMapping.setFooConditionally": "SUCCESS",
+		"succeedingWithMapping-Initial State-WithMapping.setFoo()-WithMapping.setFooConditionally": "SUCCESS",
+		"succeedingWithMapping-Initial State-WithMapping.setFooConditionally(address)-WithMapping.setFoo": "SUCCESS"
 	}
 }

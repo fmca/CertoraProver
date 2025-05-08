@@ -1,0 +1,9 @@
+{
+	"assertMessages": {},
+	"rules": {
+		"succeedingWithMappingQuantified-Initial State": "SUCCESS",
+		"succeedingWithMappingQuantified-Initial State-Any of: WithMapping.setFoo, WithMapping.setFooConditionally": "SUCCESS",
+		"succeedingWithMappingQuantified-Initial State-WithMapping.setFoo()-WithMapping.setFooConditionally": "SUCCESS",
+		"succeedingWithMappingQuantified-Initial State-WithMapping.setFooConditionally(address)-WithMapping.setFoo": "SUCCESS"
+	}
+}

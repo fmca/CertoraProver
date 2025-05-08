@@ -26,7 +26,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import log.*
-import report.TreeViewReporter
 import rules.CompiledRule
 import rules.RuleCheckResult
 import scene.IScene
@@ -67,10 +66,9 @@ enum class BoundedModelCheckerFilters(private val filter: BoundedModelCheckerFil
             compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
             funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
             funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-            invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
-            treeViewReporter: TreeViewReporter
+            invAssertProgs: Map<CVLInvariant, CoreTACProgram>
         ) {
-            entries.forEach { it.filter.init(cvl, scene, compiler, compiledFuncs, funcReads, funcWrites, invAssertProgs, treeViewReporter) }
+            entries.forEach { it.filter.init(cvl, scene, compiler, compiledFuncs, funcReads, funcWrites, invAssertProgs) }
         }
 
         /**
@@ -97,8 +95,7 @@ private sealed interface BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
-        treeViewReporter: TreeViewReporter
+        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
     )
 
     suspend fun filter(
@@ -129,8 +126,7 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
-        treeViewReporter: TreeViewReporter
+        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
     ) {
         val res = mutableSetOf<Pair<ContractFunction, ContractFunction>>()
         val ent = compiledFuncs.keys
@@ -162,7 +158,7 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
             }
         }
         commutativeFuncs = res
-        logger.info { "There are ${commutativeFuncs.size} commutative function pairs" }
+        Logger.always("There are ${commutativeFuncs.size} commutative function pairs", respectQuiet = true)
     }
 
     override suspend fun filter(
@@ -198,7 +194,6 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
  */
 private data object IdempotencyFilter : BoundedModelCheckerFilter {
     private lateinit var idempotencyCheckProgs: Map<ContractFunction, CoreTACProgram>
-    private lateinit var treeViewReporter: TreeViewReporter
     private lateinit var scene: IScene
     private val idempotentFuncs = ConcurrentHashMap<ContractFunction, Deferred<Boolean>>()
     private val parentRule = IRule.createDummyRule("").copy(ruleIdentifier = RuleIdentifier.freshIdentifier("Idempotency checks"))
@@ -238,8 +233,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
-        treeViewReporter: TreeViewReporter
+        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
     ) {
         if (Config.BoundedModelChecking.get() < 2) {
             // There will be no sequences where this check is relevant
@@ -352,22 +346,16 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
             func to prog.copy(name = "idempotency of $func")
         }.toMap()
 
-        treeViewReporter.addTopLevelRule(parentRule)
-        this.treeViewReporter = treeViewReporter
         this.scene = scene
     }
 
     private suspend fun computeIdempotency(func: ContractFunction): Boolean {
         val rule = IRule.createDummyRule("").copy(ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier("$func"))
-        treeViewReporter.registerSubruleOf(rule, parentRule)
-        treeViewReporter.signalStart(rule)
-        val compiledRule = CompiledRule.create(rule, idempotencyCheckProgs[func]!!, treeViewReporter.liveStatsReporter)
+        val compiledRule = CompiledRule.create(rule, idempotencyCheckProgs[func]!!, report.DummyLiveStatsReporter)
         val res = compiledRule.check(scene.toIdentifiers(), true).toCheckResult(scene, compiledRule).getOrElse { RuleCheckResult.Error(compiledRule.rule, it) }
-        treeViewReporter.signalEnd(rule, res)
 
         if (res is RuleCheckResult.Single && res.result == SolverResult.UNSAT) {
-            val msg = "The function ${func.methodSignature} is idempotent"
-            logger.info { msg }
+            Logger.always("The function ${func.methodSignature} is idempotent", respectQuiet = true)
             return true
         }
 
@@ -384,7 +372,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
             a != b || !idempotentFuncs.computeIfAbsent(a) {
                 async { computeIdempotency(a) }
             }.await()
-        }.all { it != false }
+        }.all { it }
     }
 }
 
@@ -408,8 +396,7 @@ private data object FunctionNonModifyingFilter : BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>,
-        treeViewReporter: TreeViewReporter
+        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
     ) {
         val invAccesses = invAssertProgs.mapValues { (_, assertProg) ->
             val (writes, reads) = BoundedModelChecker.getAllWritesAndReads(assertProg, null)

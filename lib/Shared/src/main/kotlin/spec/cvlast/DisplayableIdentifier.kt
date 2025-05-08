@@ -39,7 +39,7 @@ import utils.*
  */
 @KSerializable
 class RuleIdentifier private constructor(
-    override val parentIdentifier: DisplayableIdentifier?,
+    override val parentIdentifier: RuleIdentifier?,
     override val displayName: String,
     override val counter: Int
 ) : DisplayableIdentifier() {
