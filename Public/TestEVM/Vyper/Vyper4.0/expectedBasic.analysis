@@ -1,0 +1,34 @@
+{
+  "CALLGRAPH": {
+    "__init__()": false,
+    "user_favorite_language(address)": true,
+    "language_to_greeting(address)": true,
+    "greeting()": true,
+    "owner()": true,
+    "supported_languages(uint256,uint256)": true,
+    "greeting_history(uint256)": true
+  },
+  "INIT": {
+    "basic-supported_languages(uint256,uint256)": true,
+    "basic-user_favorite_language(address)": true,
+    "basic-owner()": true,
+    "basic-language_to_greeting(address)": true,
+    "basic-greeting()": true,
+    "basic-greeting_history(uint256)": true
+  },
+  "POINTSTO": {
+    "basic-owner()": true,
+    "basic-supported_languages(uint256,uint256)": true,
+    "basic-user_favorite_language(address)": true,
+    "basic-language_to_greeting(address)": true,
+    "basic-greeting_history(uint256)": true,
+    "basic-greeting()": true,
+    "__init__()": false,
+    "owner()": true,
+    "supported_languages(uint256,uint256)": true,
+    "user_favorite_language(address)": true,
+    "greeting()": true,
+    "language_to_greeting(address)": true,
+    "greeting_history(uint256)": true
+  }
+}
