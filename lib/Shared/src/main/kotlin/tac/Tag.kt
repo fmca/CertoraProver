@@ -19,7 +19,7 @@
 package tac
 
 import com.certora.collect.*
-import datastructures.Memoized
+import datastructures.memoized
 import datastructures.stdcollections.*
 import evm.twoToThe
 import kotlinx.serialization.KSerializer
@@ -102,7 +102,7 @@ sealed class Tag : AmbiSerializable {
         }
 
         companion object {
-            private val cache = Memoized { bitwidth: kotlin.Int -> BitN(bitwidth) }
+            private val cache = memoized { bitwidth: kotlin.Int -> BitN(bitwidth) }
             operator fun invoke(bitwidth: kotlin.Int) = when (bitwidth) {
                 32 -> Bit32
                 64 -> Bit64

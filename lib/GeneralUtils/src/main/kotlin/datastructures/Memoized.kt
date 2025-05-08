@@ -21,64 +21,36 @@ import datastructures.stdcollections.*
 import utils.*
 import java.util.concurrent.ConcurrentHashMap
 
+/** Used in place of null keys and values in ConcurrentHashMap */
+private object WrappedNull
 
 /**
- * Just a nice wrapper around `getOrPut` - and it behaves like a function. So it's quite elegant to use.
- * For example:
- * ```
- * val f = Memoized { i : Int -> i * i }
- * ```
- * use `f` as a function (although it's a val), and the multiplication won't be recalculated every time.
- *
- * Note:
- *   [K] can't be nullable because of [ConcurrentHashMap].
- *   [V] can't be nullable because of the behavior of `computeIfAbsent`.
- *   If you need [V] to be nullable, use [NullableMemoized] below.
+    Returns a memoized version of the function [f]. The memoized function will cache the results of previous calls and
+    return the cached result for the same input on subsequent calls.
  */
-open class Memoized<K : Any, V : Any>(val concurrent: Boolean = true, val f: (K) -> V) {
-    private val cache: MutableMap<K, V> =
-        if (concurrent) {
-            ConcurrentHashMap()
-        } else {
-            mutableMapOf()
-        }
-
-    operator fun invoke(k: K): V = cache.computeIfAbsent(k) { f(k) }
-}
-
-class Memoized2<K1, K2, V : Any>(concurrent: Boolean = true, f: (K1, K2) -> V)
-    : Memoized<Pair<K1, K2>, V>(concurrent, f = { pair -> f(pair.first, pair.second) }) {
-        operator fun invoke(k1: K1, k2 : K2): V = invoke(k1 to k2)
+fun <T, R> memoized(f: (T) -> R): (T) -> R {
+    fun <T> T.wrap(): Any = this ?: WrappedNull
+    fun <T> Any.unwrap(): T = this.takeIf { it != WrappedNull }.uncheckedAs<T>()
+    val cache = ConcurrentHashMap<Any, Any>()
+    return { t ->
+        cache.computeIfAbsent(t.wrap()) { f(it.unwrap()).wrap() }.unwrap()
     }
-
+}
 
 /**
- * Use this instead of [Memoized] if [V] is nullable.
+    Returns a memoized version of the function [f]. The memoized function will cache the results of previous calls and
+    return the cached result for the same input on subsequent calls.
  */
-open class NullableMemoized<K: Any, V>(val concurrent: Boolean = true, val f: (K) -> V) {
-    sealed interface R {
-        @JvmInline
-        value class Value<V>(val v: V) : R
-        data object NULL : R
-    }
-
-    private val cache : MutableMap<K, R> =
-        if (concurrent) {
-            ConcurrentHashMap()
-        } else {
-            mutableMapOf()
-        }
-
-    operator fun invoke(k: K): V? =
-        cache.computeIfAbsent(k) {
-            f(k)?.let { R.Value(it) } ?: R.NULL
-        }.let {
-            (it as? R.Value<*>)?.v?.uncheckedAs<V>()
-        }
+fun <T, U, R> memoized(f: (T, U) -> R): (T, U) -> R {
+    val memo = memoized<Pair<T, U>, R> { (t, u) -> f(t, u) }
+    return { t, u -> memo(Pair(t, u)) }
 }
 
-
-class NullableMemoized2<K1, K2, V>(concurrent: Boolean = true, f: (K1, K2) -> V)
-    : NullableMemoized<Pair<K1, K2>, V>(concurrent, f = { pair -> f(pair.first, pair.second) }) {
-    operator fun invoke(k1: K1, k2 : K2): V? = invoke(k1 to k2)
+/**
+    Returns a memoized version of the function [f]. The memoized function will cache the results of previous calls and
+    return the cached result for the same input on subsequent calls.
+ */
+fun <T, U, V, R> memoized(f: (T, U, V) -> R): (T, U, V) -> R {
+    val memo = memoized<Triple<T, U, V>, R> { (t, u, v) -> f(t, u, v) }
+    return { t, u, v -> memo(Triple(t, u, v)) }
 }

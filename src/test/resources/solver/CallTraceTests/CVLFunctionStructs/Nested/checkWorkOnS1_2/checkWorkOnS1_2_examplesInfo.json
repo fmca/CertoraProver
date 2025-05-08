@@ -2921,7 +2921,7 @@
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "i.2405",
+                    "namePrefix": "i.2390",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
@@ -2932,7 +2932,7 @@
                     "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
                 },
                 {
-                    "namePrefix": "i.2406",
+                    "namePrefix": "i.2391",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
@@ -4178,7 +4178,7 @@
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
                 },
                 {
-                    "namePrefix": "CANON21.2398",
+                    "namePrefix": "CANON21.2384",
                     "tag": {
                         "type": "tac.Tag.Bit256"
                     },
