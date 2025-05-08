@@ -107,7 +107,8 @@ class ContractInSDC:
                  extension_contracts: List[ContractExtension],
                  local_assignments: Dict[str, UnspecializedSourceFinder],
                  branches: Dict[str, UnspecializedSourceFinder],
-                 requires: Dict[str, UnspecializedSourceFinder]
+                 requires: Dict[str, UnspecializedSourceFinder],
+                 internal_starts: List[int]
                  ):
         self.name = name
         self.original_file = source_file
@@ -139,6 +140,7 @@ class ContractInSDC:
         self.original_file_name = Path(source_file).name
         self.compiler_collector = compiler_collector
         self.compiler_parameters = compiler_parameters
+        self.internal_starts = internal_starts
 
         if not self.compiler_collector:
             compiler_version = ""
@@ -193,7 +195,8 @@ class ContractInSDC:
             "compilerParameters": None if not self.compiler_parameters else self.compiler_parameters.as_dict(),
             "sourceBytes": None if self.source_bytes is None else self.source_bytes.as_dict(),
             "extensionContracts": [e.as_dict() for e in self.extension_contracts],
-            "localAssignments": {k: v.as_dict() for k, v in self.local_assignments.items()}
+            "localAssignments": {k: v.as_dict() for k, v in self.local_assignments.items()},
+            "internalFunctionStarts": self.internal_starts
         }
         # "sourceHints": {"localAssignments": {k: v.as_dict() for k, v in self.local_assignments.items()},
         #                 "branches": {k: v.as_dict() for k, v in self.branches.items()},
