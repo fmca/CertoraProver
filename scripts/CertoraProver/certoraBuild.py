@@ -1200,10 +1200,15 @@ class CertoraBuildGenerator:
         return x[TYPE] == FUNCTION or x[TYPE] == CertoraBuildGenerator.CONSTRUCTOR_STRING
 
     @staticmethod
-    def collect_srcmap(data: Dict[str, Any]) -> Any:
+    def collect_srcmap(data: Dict[str, Any]) -> Tuple[str, str]:
         # no source map object in vyper
-        return (data["evm"]["deployedBytecode"].get("sourceMap", ""),
-                data["evm"]["bytecode"].get("sourceMap", ""))
+        deployed = data["evm"]["deployedBytecode"].get("sourceMap", "")
+        if isinstance(deployed, dict):
+            deployed = deployed.get("pc_pos_map_compressed", "")
+        regular = data["evm"]["bytecode"].get("sourceMap", "")
+        if isinstance(regular, dict):
+            regular = regular.get("pc_pos_map_compressed", "")
+        return deployed, regular
 
     @staticmethod
     def collect_varmap(contract: str, data: Dict[str, Any]) -> Any:
@@ -1742,6 +1747,10 @@ class CertoraBuildGenerator:
         sdc_name = f"{Path(build_arg_contract_file).name}_{file_index}"
         compilation_path = self.get_compilation_path(sdc_name)
         self.file_to_sdc_name[Util.abs_norm_path(build_arg_contract_file)] = sdc_name
+
+        compiler_collector = self.compiler_coll_factory \
+            .get_compiler_collector(Path(path_for_compiler_collector_file))
+
         # update remappings and collect_cmd:
         if not is_vyper:
             Util.safe_create_dir(compilation_path)
@@ -1789,8 +1798,10 @@ class CertoraBuildGenerator:
             compiler_logger.debug(f"collect_cmd: {collect_cmd}\n")
         else:
             compiler_ver_to_run = get_relevant_compiler(Path(build_arg_contract_file), self.context)
-
-            collect_cmd = f'{compiler_ver_to_run} -p "{self.context.solc_allow_path}" -o "{compilation_path}" ' \
+            path_string = ""
+            if compiler_collector.compiler_version[1] < 4:
+                path_string = f'-p "{self.context.solc_allow_path}"'
+            collect_cmd = f'{compiler_ver_to_run} {path_string} -o "{compilation_path}" ' \
                           f'--standard-json'
 
         # Make sure compilation artifacts are always deleted
@@ -1802,9 +1813,6 @@ class CertoraBuildGenerator:
             # we want to preserve the previous artifacts too for a comprehensive view
             # (we do not try to save a big chain history of changes, just a previous and current)
             self.backup_compiler_outputs(sdc_name, smart_contract_lang, "prev")
-
-        compiler_collector = self.compiler_coll_factory \
-            .get_compiler_collector(Path(path_for_compiler_collector_file))
 
         # Standard JSON
         remappings = [] if isinstance(compiler_collector, CompilerCollectorYul) else self.context.remappings
