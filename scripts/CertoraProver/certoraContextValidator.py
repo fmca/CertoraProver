@@ -43,6 +43,39 @@ class CertoraContextValidator:
     def __init__(self, context: CertoraContext):
         self.context = context
 
+    def handle_ranger_attrs(self) -> None:
+        # unset unsupported attributes
+        if Attrs.is_ranger_app():
+            for attr in Attrs.RangerAttributes.ranger_unsupported_attributes():
+                attr_name = attr.get_conf_key()
+                if getattr(self.context, attr_name):
+                    if attr.arg_type == AttrUtil.AttrArgType.BOOLEAN:
+                        setattr(self.context, attr_name, False)
+                    else:
+                        setattr(self.context, attr_name, None)
+                    validation_logger.info(f"Ranger does not support {attr_name}, ignoring this attribute")
+
+            # setting the default Ranger attributes
+
+            self.context.range = self.context.range or Util.DEFAULT_RANGER_RANGE
+            self.context.ranger_failure_limit = self.context.ranger_failure_limit or Util.DEFAULT_RANGER_FAILURE_LIMIT
+            if self.context.loop_iter and self.context.loop_iter != Util.DEFAULT_RANGER_LOOP_ITER:
+                validation_logger.info(f"While running Ranger, loop iter is {Util.DEFAULT_RANGER_LOOP_ITER} "
+                                       f"ignoring the set value of {self.context.loop_iter}")
+            self.context.loop_iter = self.context.loop_iter or Util.DEFAULT_RANGER_LOOP_ITER
+
+            for attr in Attrs.RangerAttributes.ranger_true_by_default_attributes():
+                attr_name = attr.get_conf_key()
+                setattr(self.context, attr_name, True)
+
+        else:
+            if self.context.range:
+                # self.context.range = None
+                validation_logger.info("the 'range' attribute is ignored when not running from the Ranger App")
+            if self.context.ranger_failure_limit:
+                # self.context.ranger_failure_limit = None
+                validation_logger.info("the 'ranger_failure_limit' is ignored when not running from the Ranger App")
+
     def validate(self) -> None:
 
         for attr_def in Attrs.get_attribute_class().attribute_list():

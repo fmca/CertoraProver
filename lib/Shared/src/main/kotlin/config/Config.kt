@@ -148,7 +148,7 @@ object Config {
             true,
             "Check via bounded model checking instead of regular invariants"
         ),
-        pythonName = "--bmc"
+        pythonName = "--range"
     ) {}
 
     val BoundedModelCheckingFailureLimit = object : ConfigType.IntCmdLine(
@@ -158,7 +158,7 @@ object Config {
             true,
             "When in bounded checking mode, defines how many counter examples to find before stopping the search. 0 means don't stop [default=1]"
         ),
-        pythonName = "--bmc_failure_limit"
+        pythonName = "--ranger_failure_limit"
     ) {}
 
     val AutoDispatcher = object : ConfigType.BooleanCmdLine(

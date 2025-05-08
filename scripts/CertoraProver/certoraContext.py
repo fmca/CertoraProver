@@ -159,10 +159,16 @@ class ProverParser(AttrUtil.ContextAttributeParser):
 
     def format_help(self) -> str:
         console = Console()
-        console.print("\n\nThe Certora Prover - A formal verification tool for smart contracts")
+        if Attrs.is_ranger_app():
+            console.print("\n\nRanger - Certora’s bounded model checker for smart contracts")
+        else:
+            console.print("\n\nThe Certora Prover - A formal verification tool for smart contracts")
         # Using sys.stdout.write() as print() would color some of the strings here
         sys.stdout.write(f"\n\nUsage: {sys.argv[0]} <Files> <Flags>\n\n")
-        if Attrs.is_evm_app():
+        if Attrs.is_ranger_app():
+            sys.stdout.write("Ranger supports only Solidity (.sol) and configuration (.conf) files.\n"
+                             "Rust and Vyper contracts are not currently supported.\n\n")
+        elif Attrs.is_evm_app():
             sys.stdout.write("Acceptable files for EVM projects are Solidity files (.sol suffix), "
                              "Vyper files (.vy suffix), or conf files (.conf suffix)\n\n")
         elif Attrs.is_solana_app():
@@ -252,6 +258,8 @@ def get_args(args_list: Optional[List[str]] = None) -> CertoraContext:
         Cv.check_mode_of_operation(context)  # Here boolean run characteristics are set
 
     validator = Cv.CertoraContextValidator(context)
+    if Attrs.is_evm_app():
+        validator.handle_ranger_attrs()
     validator.validate()
     if Attrs.is_evm_app() or Attrs.is_rust_app():
         current_build_directory = Util.get_build_dir()

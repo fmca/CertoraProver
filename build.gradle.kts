@@ -788,6 +788,7 @@ val scripts = project.fileTree("scripts") {
 		"certoraSolanaProver.py",
 		"certoraSorobanProver.py",
 		"certoraEVMProver.py",
+		"certoraRanger.py",
 		"certoraMutate.py",
 		"rustMutator.py",
 		"certoraEqCheck.py",

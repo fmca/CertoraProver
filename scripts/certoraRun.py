@@ -61,13 +61,6 @@ class CertoraFoundViolations(Exception):
         super().__init__(message)
         self.results = results
 
-
-class ExitException(Exception):
-    def __init__(self, message: str, exit_code: int):
-        super().__init__(message)
-        self.exit_code = exit_code  # Store the integer data
-
-
 def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]] = None,
                 prover_cmd: Optional[str] = None) -> Optional[CertoraRunResult]:
     """
@@ -133,7 +126,10 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
         rule_handler = splitRules.SplitRulesHandler(context)
         exit_code = rule_handler.generate_runs()
         CloudVerification(context).print_group_id_url()
-        raise ExitException(f"Split Rules {'succeeded' if exit_code == 0 else 'failed'}", exit_code)
+        if exit_code == 0:
+            print("Split rules succeeded")
+        else:
+            raise Util.ExitException("Split rules failed", exit_code)
 
     if Attrs.is_rust_app():
         build_rust_app(context)
@@ -311,7 +307,7 @@ def entry_point() -> None:
         Console().print(f"[bold red]\n{e}\n")
         sys.exit(1)
 
-    except ExitException as e:
+    except Util.ExitException as e:
         Console().print(f"[bold red]{e}")
         sys.exit(e.exit_code)
 

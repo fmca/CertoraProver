@@ -176,6 +176,7 @@ if __name__ == '__main__':
     copy(SCRIPTS / "certoraSolanaProver.py", CERTORA_CLI_DIR)
     copy(SCRIPTS / "certoraSorobanProver.py", CERTORA_CLI_DIR)
     copy(SCRIPTS / "certoraEVMProver.py", CERTORA_CLI_DIR)
+    copy(SCRIPTS / "certoraRanger.py", CERTORA_CLI_DIR)
 
     # write inputs
     INIT_PY = "__init__.py"
@@ -251,7 +252,8 @@ setuptools.setup(
             "certoraEqCheck = certora_cli.certoraEqCheck:equiv_check_entry_point",
             "certoraSolanaProver = certora_cli.certoraSolanaProver:entry_point",
             "certoraSorobanProver = certora_cli.certoraSorobanProver:entry_point",
-            "certoraEVMProver = certora_cli.certoraEVMProver:entry_point"
+            "certoraEVMProver = certora_cli.certoraEVMProver:entry_point",
+            "certoraRanger = certora_cli.certoraRanger:entry_point"
         ]
     }},
     python_requires='>={MIN_PYTHON_VERSION}',
@@ -299,7 +301,8 @@ setuptools.setup(
         "certoraMutate",
         "certoraSolanaProver",
         "certoraSorobanProver",
-        "certoraEVMProver"
+        "certoraEVMProver",
+        "certoraRanger"
     ]
 
     with TEST_FILE.open("w+") as test_file:

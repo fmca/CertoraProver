@@ -59,6 +59,8 @@ from Mutate import mutateAttributes as MutAttrs
 import CITests.testCertoraUtils as TestUtil
 from certoraSolanaProver import run_solana_prover
 from certoraSorobanProver import run_soroban_prover
+from certoraRanger import run_ranger
+
 
 from certoraRun import run_certora
 from Shared import certoraUtils as Util
@@ -97,6 +99,10 @@ class SorobanProverTestSuite(TestUtil.TestSuite):
 class SolanaProverTestSuite(TestUtil.TestSuite):
     def __init__(self, **kwargs: Any):
         super().__init__(run_solana_prover, **kwargs)
+
+class RangerTestSuite(TestUtil.TestSuite):
+    def __init__(self, **kwargs: Any):
+        super().__init__(run_ranger, **kwargs)
 
 
 class ProverTestSuite(TestUtil.TestSuite):
@@ -1473,6 +1479,33 @@ class TestClient(unittest.TestCase):
                                                     "--cargo_tools_version", "v1.41"])
         expected = ['cargo', 'certora-sbf', '--tools-version', 'v1.41', '--features', 'feature1', '--json', '-l']
         assert result == expected, f"without  --build_script: expected {expected}, got {result}"
+
+    def test_ranger(self) -> None:
+        suite = ProverTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+        suite.expect_success(description='run certoraRun with ranger attributes',
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", "--range", "8",
+                                        "--ranger_failure_limit", "7"])
+        suite = RangerTestSuite(test_attribute=str(Util.TestValue.CHECK_ARGS))
+
+        result = suite.expect_checkpoint(description='run certoraRun with ranger attributes',
+                                         run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}",
+                                                    "--rule_sanity",
+                                                    "--coverage_info",
+                                                    "--independent_satisfy",
+                                                    "--multi_assert_check",
+                                                    "--multi_example"])
+        assert result.loop_iter == Util.DEFAULT_RANGER_LOOP_ITER, ("test_ranger: expect default loop iter "
+                                                                   f"{Util.DEFAULT_RANGER_LOOP_ITER} got {result.loop_iter}")
+        assert result.range == Util.DEFAULT_RANGER_RANGE, ("test_ranger: expect default range "
+                                                                   f"{Util.DEFAULT_RANGER_RANGE} got {result.range}")
+        assert result.ranger_failure_limit == Util.DEFAULT_RANGER_FAILURE_LIMIT, ("test_ranger: expect default "
+                                                                                  "ranger_failure_limit "
+                                                                                  f"{Util.DEFAULT_RANGER_FAILURE_LIMIT}"
+                                                                                  f" got {result.ranger_failure_limit}")
+        for attr in Attrs.RangerAttributes.ranger_unsupported_attributes():
+            attr_name = attr.get_conf_key()
+            assert not getattr(result, attr_name), f"test_ranger: {attr_name} should not be in set during Ranger run"
+
 
 if __name__ == '__main__':
     test_argv = [f"{sys.argv[1]}, {sys.argv[2]}"]
