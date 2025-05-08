@@ -437,19 +437,7 @@ class ScalarDomain(// Model stack's contents
         }
     }
 
-    private fun getScalarValue(x: Value): ScalarValue {
-        return when (x) {
-            is Value.Imm -> {
-                ScalarValue.from(x.v)
-            }
-            is Value.Reg -> {
-                getRegister(x)
-            }
-        }
-    }
-
-
-    private fun getScalarValue(x: Value, globals: GlobalVariableMap): ScalarValue {
+    private fun getValue(x: Value, globals: GlobalVariableMap): ScalarValue {
         when (x) {
             is Value.Imm -> {
                 // We cast a number to a global variable if it matches an address from our [globals] map
@@ -483,9 +471,9 @@ class ScalarDomain(// Model stack's contents
                      * it is a global variable.
                      **/
                     setRegister(dst, if (stmt.metaData.getVal(SbfMeta.SET_GLOBAL) != null) {
-                        getScalarValue(src, globals)
+                        getValue(src, globals)
                     }  else {
-                        getScalarValue(src)
+                        getValue(src)
                     })
                 }
                 else ->  {
@@ -511,7 +499,7 @@ class ScalarDomain(// Model stack's contents
                      * that global variable.
                      */
                     setRegister(dst, if (stmt.metaData.getVal(SbfMeta.SET_GLOBAL) != null) {
-                        (getScalarValue(src).get() as? SbfType.NumType)?.value?.get().let {
+                        (getValue(src).get() as? SbfType.NumType)?.value?.get().let {
                             if (it != null) {
                                 val gv = globals[it]
                                 if (gv != null) {
@@ -952,13 +940,7 @@ class ScalarDomain(// Model stack's contents
     }
 
     private fun analyzeHavoc(stmt: SbfInstruction.Havoc) {
-        // If the havoced variable has a type then we keep it.
-        val dstType = stmt.dstType
-        if (dstType == null) {
-            forget(stmt.dst)
-        } else {
-            setRegister(stmt.dst, ScalarValue(dstType))
-        }
+        forget(stmt.dst)
     }
 
     private fun refineSelectCond(cond: Condition, other: ScalarDomain) {
@@ -978,17 +960,17 @@ class ScalarDomain(// Model stack's contents
         val trueAbsVal = deepCopy()
         trueAbsVal.analyzeAssume(stmt.cond)
         if (trueAbsVal.isBottom()) {
-            setRegister(stmt.dst, getScalarValue(stmt.falseVal))
+            setRegister(stmt.dst, getValue(stmt.falseVal))
         } else {
             val falseAbsVal = deepCopy()
             falseAbsVal.analyzeAssume(stmt.cond.negate())
             if (falseAbsVal.isBottom()) {
-                setRegister(stmt.dst, getScalarValue(stmt.trueVal))
+                setRegister(stmt.dst, getValue(stmt.trueVal))
             } else {
                 refineSelectCond(stmt.cond, trueAbsVal.join(falseAbsVal))
                 setRegister(stmt.dst,
-                            getScalarValue(stmt.falseVal)
-                                .join(getScalarValue(stmt.trueVal)))
+                            getValue(stmt.falseVal)
+                                .join(getValue(stmt.trueVal)))
             }
         }
     }
@@ -1141,10 +1123,13 @@ class ScalarDomain(// Model stack's contents
     }
 
     override fun getValue(value: Value): ScalarValue {
-        return if (value is Value.Imm) {
-            ScalarValue.from(value.v)
-        } else {
-            getRegister(value as Value.Reg)
+        return when (value) {
+            is Value.Imm -> {
+                ScalarValue.from(value.v)
+            }
+            is Value.Reg -> {
+                getRegister(value)
+            }
         }
     }
 
