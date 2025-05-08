@@ -6,8 +6,6 @@
         <ID>BracesOnIfStatements:Color.kt$Color$else</ID>
         <ID>BracesOnIfStatements:Color.kt$Color$if</ID>
         <ID>BracesOnIfStatements:Configurable.kt$CLIParser$if</ID>
-        <ID>BracesOnIfStatements:EVMOps.kt$EVMOps$else</ID>
-        <ID>BracesOnIfStatements:EVMOps.kt$EVMOps$if</ID>
         <ID>BracesOnIfStatements:ExtStdlib.kt$else</ID>
         <ID>BracesOnIfStatements:Iterables.kt$else</ID>
         <ID>BracesOnIfStatements:Iterables.kt$if</ID>
