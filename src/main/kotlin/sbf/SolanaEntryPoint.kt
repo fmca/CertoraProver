@@ -156,7 +156,7 @@ private fun solanaRuleToTAC(rule: EcosystemAgnosticRule,
     // If the rule is not a vacuity rule, the ruleIdentifier doesn't have a parent and `root` is the name of the rule (i.e., `target`)
     // after removing `devVacuitySuffix` in case it has it. Otherwise, `root` is the name of the parent rule associated with the vacuity rule.
     val root = rule.ruleIdentifier.parentIdentifier?.displayName ?: target.removeSuffix(devVacuitySuffix)
-    val inlinedProg = inline(root, target, prog, inliningConfig)
+    val inlinedProg = inline(root, target, prog, memSummaries, inliningConfig)
     val end1 = System.currentTimeMillis()
     sbfLogger.info { "[$target] Finished inlining in ${(end1 - start1) / 1000}s" }
 

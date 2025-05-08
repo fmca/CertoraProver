@@ -22,6 +22,9 @@ import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.sbfLogger
 import datastructures.stdcollections.*
+import sbf.SolanaConfig
+import sbf.domains.MemorySummaries
+import java.io.File
 
 class InlinerError(msg: String): RuntimeException("Inliner error: $msg")
 
@@ -37,15 +40,16 @@ const val SBF_CALL_MAX_DEPTH = 64
  * The inliner starts from [newEntry] (before it clones [entry] into [newEntry])
  * and folds each callee body into its caller by cloning callee CFG into caller.
  */
-fun inline(entry: String, newEntry: String, prog: SbfCallGraph, inlineConfig: InlinerConfig): MutableSbfCallGraph {
+fun inline(entry: String, newEntry: String, prog: SbfCallGraph, memSummaries: MemorySummaries, inlineConfig: InlinerConfig): MutableSbfCallGraph {
     sbfLogger.debug {"[Inliner]\n" + prog.callGraphStructureToString()}
 
     val rootNames = prog.getCallGraphRoots().map{ it.getName()}
     check(rootNames.contains(entry)) {"Inliner: $entry is not a root of the callgraph. Known roots=$rootNames"}
-    return Inliner(entry, newEntry, prog, inlineConfig).inline()
+    return Inliner(entry, newEntry, prog, memSummaries, inlineConfig).inline()
 }
 
-fun inline(entry: String, prog: SbfCallGraph, inlineConfig: InlinerConfig) = inline(entry, entry, prog, inlineConfig)
+fun inline(entry: String, prog: SbfCallGraph, memSummaries: MemorySummaries, inlineConfig: InlinerConfig) =
+    inline(entry, entry, prog, memSummaries, inlineConfig)
 
 /**
  * This class reduces the API of `SbfCallGraph` to avoid calling methods that might use obsolete information
@@ -68,6 +72,7 @@ private class InlinerSbfCallGraph(private val prog: SbfCallGraph) {
 private class Inliner(val entry: String,
                       private val newEntry: String,
                       callgraph: SbfCallGraph,
+                      private val memSummaries: MemorySummaries,
                       private val inlinerConfig: InlinerConfig) {
 
     val prog = InlinerSbfCallGraph(callgraph)
@@ -325,9 +330,26 @@ private class Inliner(val entry: String,
         return stubs
     }
 
+    private fun printExternalFunctions(extFunctions: List<String>) {
+        val sb = StringBuilder()
+        sb.append("\nThe following functions are neither inlined nor summarized. They are treated as external. This is likely to affect soundness.\n\n")
+        extFunctions.forEach {
+            sb.append("\t$it\n")
+        }
+        sb.append("\n")
+        sb.append("If you are seeing this message for the first time (i.e., during the initial project setup). Do one of the following (in order of preference):\n")
+        sb.append("\n(1) Add the following lines in one of sbf prover inlining files located in ${File(SolanaConfig.InlineFilePath.get()).parent} " +
+            "and regenerate again ${SolanaConfig.InlineFilePath.get()}\n\n")
+        extFunctions.forEach { sb.append("  #[inline] ^$it$\n") }
+        sb.append("\n(2) Add a summary for each function in one of the sbf prover summary files located in ${File(SolanaConfig.SummariesFilePath.get()).parent} " +
+            "and regenerate again ${SolanaConfig.SummariesFilePath.get()}\n")
+        sb.append("\nThe syntax for adding summaries follows this grammar:\n\n${MemorySummaries.grammar}\n")
+        sb.append("\n(3) Do nothing if the function does not have side-effects or its effects are not modeled by the prover (e.g., dealloc/drop functions)\n")
+        sb.append("\nBeware: solution (1) is the safest, but is likely to create performance issues and/or pointer analysis errors.\n")
+        sbfLogger.warn {sb.toString()}
+    }
+
     fun inline(): MutableSbfCallGraph {
-
-
         val entryCFG = prog.getCFG(entry)?.clone(newEntry)
         check(entryCFG != null) {"Inliner expects a callgraph with a single root"}
         val statsBefore = prog.getStats()
@@ -338,20 +360,21 @@ private class Inliner(val entry: String,
         renameCVTCalls(entryCFG)
         entryCFG.verify(true, "After inline+simplify")
         val statsAfter = entryCFG.getStats()
+
+        sbfLogger.info { "INLINING INFO\nBefore inlining\n$statsBefore\n" +
+                         "After inlining\n$statsAfter\n\n"
+        }
+
         // Ideally inlineProg should contain only one function.
         // However, if there are recursive calls or blacklisted functions then
         // we need to include other functions.
-
         val cfgs = addEmptyStubs(entryCFG)
 
-        val sb = StringBuilder()
-        sb.append("INLINING INFO\nBefore inlining\n$statsBefore\n" +
-            "After inlining\n$statsAfter\n" +
-            "Functions that were NOT inlined and created an empty STUB for them:\n")
-        for (stub in cfgs.toSortedSet { x, y -> x.getName().compareTo(y.getName()) }) {
-            sb.append("\t${stub.getName()}\n")
-        }
-        sbfLogger.info {sb.toString()}
+        printExternalFunctions(
+            cfgs.toSortedSet { x, y -> x.getName().compareTo(y.getName()) }.filter {
+                !sbf.domains.hasSummary(it.getName(), memSummaries)
+            }.map{ it.getName() }
+        )
 
         cfgs.add(entryCFG)
         return MutableSbfCallGraph(cfgs, setOf(entryCFG.getName()), prog.getGlobals())

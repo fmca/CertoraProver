@@ -106,8 +106,9 @@ class InlinerTest {
         val globals = newGlobalVariableMap()
         val prog = MutableSbfCallGraph(mutableListOf(entrypoint, foo), setOf("entrypoint"), globals)
         val inlinerConfig = InlinerConfigFromFile(listOf(), listOf())
+        val memSummaries = MemorySummaries()
         sbfLogger.warn {"Program\n$prog\n"}
-        val inlinedProg = inline("entrypoint", prog, inlinerConfig)
+        val inlinedProg = inline("entrypoint", prog, memSummaries, inlinerConfig)
         sbfLogger.warn {"Inlined program\n$inlinedProg"}
     }
 

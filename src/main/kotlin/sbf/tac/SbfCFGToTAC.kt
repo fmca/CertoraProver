@@ -93,7 +93,7 @@ fun sbfCFGsToTAC(program: SbfCallGraph,
 @Suppress("ForbiddenComment")
 internal class SbfCFGToTAC(private val cfg: SbfCFG,
                            globals: GlobalVariableMap,
-                           memSummaries: MemorySummaries,
+                           private val memSummaries: MemorySummaries,
                            private val globalsSymTable: IGlobalsSymbolTable,
                            private val memoryAnalysis: MemoryAnalysis?) {
     private val blockMap: MutableMap<Label, NBId> = mutableMapOf()
@@ -1564,8 +1564,10 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
             val sb = StringBuilder()
             sb.append("TAC encoding of the following external calls might be unsound because " +
                       "only the output has been havoced\n")
-            for (e in unsupportedCalls) {
-                sb.append("\t$e\n")
+            for (fname in unsupportedCalls) {
+                if (!sbf.domains.hasSummary(fname, memSummaries)) {
+                    sb.append("\t$fname\n")
+                }
             }
             sbfLogger.warn { sb.toString() }
         }

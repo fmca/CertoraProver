@@ -24,6 +24,7 @@ import sbf.inliner.EmptyInlinerConfig
 import sbf.inliner.inline
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import sbf.domains.MemorySummaries
 import sbf.testing.SbfTestDSL
 
 class SbfTestDSLTest {
@@ -85,7 +86,8 @@ class SbfTestDSLTest {
         }
         val globals = newGlobalVariableMap()
         val callgraph = MutableSbfCallGraph(listOf(entrypoint, foo), setOf("entrypoint"), globals)
-        val inlined = inline("entrypoint", callgraph, EmptyInlinerConfig)
+        val memSummaries = MemorySummaries()
+        val inlined = inline("entrypoint", callgraph, memSummaries, EmptyInlinerConfig)
 
         // Just check we got a CFG with "foo" inlined somewhere
         Assertions.assertTrue(
