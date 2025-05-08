@@ -277,7 +277,7 @@ data class CalldataEncoding(
                 ExprUnfolder.unfoldPlusOneCmd("callSizeLowerBound", TACExprFactoryExtensions.run {
                     calldataSize ge refinedInputSizeLowerBound
                 }) {
-                    TACCmd.Simple.AssumeCmd(it.s)
+                    TACCmd.Simple.AssumeCmd(it.s, "callSizeLowerBound")
                 }.let(ret::extend)
             }
         }
@@ -289,7 +289,7 @@ data class CalldataEncoding(
                 it and (calldataSize eq expectedCalldataSize!!)
             }
         }) {
-            TACCmd.Simple.AssumeCmd(it.s)
+            TACCmd.Simple.AssumeCmd(it.s, "calldataEq")
         }.let(ret::extend)
         ret.extend(calldataSize.s)
         ret.extend(input.size.s)
@@ -302,7 +302,7 @@ data class CalldataEncoding(
             ExprUnfolder.unfoldPlusOneCmd("sighashEq", TACExprFactoryExtensions.run {
                 sighashArg eq data
             }) {
-                TACCmd.Simple.AssumeCmd(it.s)
+                TACCmd.Simple.AssumeCmd(it.s, "sighashEq")
             }.let(ret::extend)
             ret.extend(sighashArg.getFreeVars())
             val calleeSighash = callee.sigHash?.n
@@ -319,7 +319,7 @@ data class CalldataEncoding(
                     ExprUnfolder.unfoldPlusOneCmd("sighashMidByte$i", TACExprFactoryExtensions.run {
                         actual eq determinism
                     }) {
-                        TACCmd.Simple.AssumeCmd(it.s)
+                        TACCmd.Simple.AssumeCmd(it.s, "sighashMidByte$i")
                     }.let(ret::extend)
                 }
             }

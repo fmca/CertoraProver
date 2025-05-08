@@ -1026,7 +1026,7 @@ data class CodeMap(
             }
 
             TACCmd.Simple.NopCmd -> "NOP".asRaw()
-            is TACCmd.Simple.AssumeCmd -> colorText("assume ${getHtmlRep(c.cond)}", Color.DARKPINK)
+            is TACCmd.Simple.AssumeCmd -> colorText("assume ${getHtmlRep(c.cond)}, ${c.msg.sanitize()}", Color.DARKPINK)
             is TACCmd.Simple.AssumeNotCmd -> colorText("assume !${getHtmlRep(c.cond)}", Color.DARKPINK)
             is TACCmd.Simple.AssumeExpCmd -> colorText("assume ${getHtmlRepExpr(c.cond)}", Color.DARKPINK)
 //            is TACCmd.Simple.AssignSelect2DCmd -> "${getHtmlRep(c.lhs)} = ${getHtmlRep(c.map)}[${c.loc1}][${getHtmlRep(c.loc2)}]"

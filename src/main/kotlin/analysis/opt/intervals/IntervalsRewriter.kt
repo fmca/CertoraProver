@@ -296,14 +296,14 @@ class IntervalsRewriter(
     private fun expToAssumeCmd(e: TACExpr, meta: MetaMap = MetaMap(), isPositive: Boolean = true): TACCmd.Simple =
         when (e) {
             is TACExpr.Sym.Const -> when (e.s.value) {
-                BigInteger.ONE -> TACCmd.Simple.AssumeCmd(isPositive.asTACSymbol())
-                BigInteger.ZERO -> TACCmd.Simple.AssumeCmd((!isPositive).asTACSymbol())
+                BigInteger.ONE -> TACCmd.Simple.AssumeCmd(isPositive.asTACSymbol(), "expToAssumeCmd")
+                BigInteger.ZERO -> TACCmd.Simple.AssumeCmd((!isPositive).asTACSymbol(), "expToAssumeCmd")
                 else -> error("Expected boolean in assumeCmd but got ${e.s.value}")
             }
 
             is TACExpr.Sym.Var ->
                 if (isPositive) {
-                    TACCmd.Simple.AssumeCmd(e.s, meta)
+                    TACCmd.Simple.AssumeCmd(e.s, "expToAssumeCmd", meta)
                 } else {
                     TACCmd.Simple.AssumeNotCmd(e.s, meta)
                 }

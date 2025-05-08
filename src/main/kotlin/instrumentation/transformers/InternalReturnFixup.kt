@@ -63,7 +63,7 @@ private val logger = Logger(LoggerTypes.SUMMARIZATION)
  * ```
  *
  * Of course, depending on which path you take through the program, the internal call stack will be incoherent:
- * we'll be tasked with popping a frame that isn't on the stack.
+ * we'Ll be tasked with popping a frame that isn't on the stack.
  *
  * This Fixup solves the issue by simulating the internal call stack throughout execution of the program (this is the [StackTrace]).
  * When it detects an error (i.e., exeuction can reach the same point with two different call stacks) it records

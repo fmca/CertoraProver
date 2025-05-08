@@ -1495,7 +1495,7 @@
                     }
                 }
             },
-            "description": "extSum == cvlSum",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -3015,7 +3015,7 @@
                             }
                         }
                     },
-                    "description": "extSum == cvlSum",
+                    "description": null,
                     "scope": {
                         "scopeStack": [
                             {

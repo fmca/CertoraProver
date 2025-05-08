@@ -72,7 +72,8 @@ sealed class EVMInternalCalldataArg(
                             )
                         ),
                         TACCmd.Simple.AssumeCmd(
-                            cond = boundsCheck
+                            cond = boundsCheck,
+                            msg = "boundsCheck"
                         )),
                         setOf(calldataSize, endLocation, boundsCheck)
                     )
@@ -114,7 +115,8 @@ sealed class EVMInternalCalldataArg(
                     )
                 ),
                 TACCmd.Simple.AssumeCmd(
-                    cond = offsetSanity
+                    cond = offsetSanity,
+                    msg = "offsetSanity"
                 ),
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(
                     lhs = startPosition,

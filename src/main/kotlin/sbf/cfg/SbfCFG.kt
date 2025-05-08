@@ -1130,6 +1130,8 @@ class MutableSbfCFG(private val name: String): SbfCFG {
                         .replace("&", "&amp;")
                         .replace("<", "&lt;")
                         .replace(">", "&gt;")
+                        .replace("{", "&#123;")
+                        .replace("}", "&#125;")
                     )
                     sb.append("</TD></TR>")
                 }

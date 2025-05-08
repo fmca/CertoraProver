@@ -1506,7 +1506,7 @@ class CVLExpressionCompiler(
                     cmds.add(TACCmd.Simple.AssigningCmd.AssignExpCmd(castCheckVar, f.safeCastExpr(inner.out)))
                     when (exp.castType) {
                         CastType.REQUIRE -> {
-                            cmds.add(TACCmd.Simple.AssumeCmd(castCheckVar))
+                            cmds.add(TACCmd.Simple.AssumeCmd(castCheckVar, "require cast"))
                         }
 
                         CastType.ASSERT -> {
@@ -2970,7 +2970,7 @@ class CVLExpressionCompiler(
                                 Tag.Bool
                             )
                         ),
-                        TACCmd.Simple.AssumeCmd(idxAssumeSym)
+                        TACCmd.Simple.AssumeCmd(idxAssumeSym, "indexCompiler")
                     ), setOfNotNull(symbol, idx as? TACSymbol.Var, idxAssumeSym)
                 ) to symbol
             } else {

@@ -219,7 +219,7 @@ object ConditionalConstantPropagation {
                 if(tac.cond is TACSymbol.Const) { return null }
                 val absCond = absInterpSymbol(thisCmdState, tac.cond)
                 if(absCond is ConstValue) {
-                    TACCmd.Simple.AssumeCmd((absCond.value.asTACSymbol(tac.cond.tag)))
+                    TACCmd.Simple.AssumeCmd(absCond.value.asTACSymbol(tac.cond.tag), tac.msg)
                 } else {
                     null
                 }

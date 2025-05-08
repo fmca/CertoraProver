@@ -259,7 +259,7 @@ class TACProgramPrinter {
                 ln("${cmd.lhs} $lhsInfo:= ${cmd.rhs}")
 
             is TACCmd.Simple.Assume ->
-                ln("ASSUME ${cmd.condExpr}".bMagenta)
+                ln("ASSUME ${cmd.condExpr}".bMagenta +if(cmd is TACCmd.Simple.AssumeCmd){"[${cmd.msg}]"} else {""})
 
             is TACCmd.Simple.AssertCmd ->
                 ln("ASSERT ${cmd.o}".bRed +" [${cmd.msg}]")

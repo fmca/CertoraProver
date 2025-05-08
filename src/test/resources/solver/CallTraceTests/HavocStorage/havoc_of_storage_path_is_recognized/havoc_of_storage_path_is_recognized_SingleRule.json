@@ -834,6 +834,7 @@
                     }
                 }
             },
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
