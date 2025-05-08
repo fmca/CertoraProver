@@ -549,15 +549,16 @@ def check_mode_of_operation(context: CertoraContext) -> None:
     context.is_verify = context.verify is not None and len(context.verify) > 0
     context.is_assert = context.assert_contracts is not None and len(context.assert_contracts) > 0
     context.is_bytecode = context.bytecode_jsons is not None and len(context.bytecode_jsons) > 0
+    context.is_equivalence = context.equivalence_contracts is not None
 
-    if (context.project_sanity or context.foundry) and (context.is_verify or context.is_assert or context.is_bytecode):
+    if (context.project_sanity or context.foundry) and (context.is_verify or context.is_assert or context.is_bytecode or context.is_equivalence):
         raise Util.CertoraUserInputError("The 'project_sanity' and 'foundry' options cannot coexist with the 'verify', 'assert_contract' or 'bytecode_jsons' options")
 
     if context.project_sanity and context.foundry:
         raise Util.CertoraUserInputError("The 'project_sanity' and 'foundry' options cannot coexist")
 
-    if context.is_verify and context.is_assert:
-        raise Util.CertoraUserInputError("only one option of 'assert_contracts' and 'verify' can be used")
+    if len(list(filter(None, [context.is_verify, context.is_assert, context.is_equivalence]))) > 1:
+        raise Util.CertoraUserInputError("only one option of 'assert_contracts', 'verify', 'equivalence' can be used")
 
     has_bytecode_spec = context.bytecode_spec is not None
     if has_bytecode_spec != context.is_bytecode:
@@ -624,7 +625,7 @@ def check_mode_of_operation(context: CertoraContext) -> None:
                     raise Util.CertoraUserInputError(
                         f"Option 'assert_contracts' cannot be used with a {special_file_type} file {input_file}")
 
-    if not any([context.is_assert, context.is_verify, context.is_bytecode,
+    if not any([context.is_assert, context.is_verify, context.is_bytecode, context.equivalence_contracts,
                 special_file_type]) and not context.build_only:
         raise Util.CertoraUserInputError("You must use 'verify' when running the Certora Prover")
 
@@ -872,7 +873,7 @@ def set_wait_for_results_default(context: CertoraContext) -> None:
 
 
 def mode_has_spec_file(context: CertoraContext) -> bool:
-    return not context.is_assert and not context.is_tac
+    return not context.is_assert and not context.is_tac and not context.is_equivalence
 
 
 def to_relative_paths(paths: Union[str, List[str]]) -> Union[str, List[str]]:

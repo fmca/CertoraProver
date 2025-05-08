@@ -65,6 +65,7 @@ import tac.*
 import utils.*
 import vc.data.*
 import verifier.ContractUtils.tacOptimizations
+import verifier.equivalence.EquivalenceChecker
 import java.math.BigInteger
 
 private val logger = Logger(LoggerTypes.COMMON)
@@ -601,9 +602,25 @@ object IntegrativeChecker {
           optimizations or code transformations that run on library code.
          */
         // loop unrolling
-        scene.mapContractMethodsInPlace(IScene.MapSort.PARALLEL,"unroll") { theScene, method ->
+        runLoopUnrolling(scene)
+
+        // optimizations (mostly peephole but also path pruning, see tacOptimizations())
+        scene.mapContractMethodsInPlace("initial_postInline") { _, method ->
             val isLibrary = (method.getContainingContract() as? IContractWithSource)?.src?.isLibrary == true
             if(isLibrary) {
+                return@mapContractMethodsInPlace
+            }
+            ContractUtils.transformMethodInPlace(
+                method,
+                tacOptimizations()
+            )
+        }
+    }
+
+    fun runLoopUnrolling(scene: IScene) {
+        scene.mapContractMethodsInPlace(IScene.MapSort.PARALLEL, "unroll") { theScene, method ->
+            val isLibrary = (method.getContainingContract() as? IContractWithSource)?.src?.isLibrary == true
+            if (isLibrary) {
                 return@mapContractMethodsInPlace
             }
             ContractUtils.transformMethodInPlace(
@@ -621,18 +638,6 @@ object IntegrativeChecker {
                         }.lift()
                     )
                 )
-            )
-        }
-
-        // optimizations (mostly peephole but also path pruning, see tacOptimizations())
-        scene.mapContractMethodsInPlace("initial_postInline") { _, method ->
-            val isLibrary = (method.getContainingContract() as? IContractWithSource)?.src?.isLibrary == true
-            if(isLibrary) {
-                return@mapContractMethodsInPlace
-            }
-            ContractUtils.transformMethodInPlace(
-                method,
-                tacOptimizations()
             )
         }
     }
@@ -774,6 +779,11 @@ object IntegrativeChecker {
     ): List<RuleCheckResult> {
         val result = if (!Config.SceneConstructionOnly.get()) { // works thanks to logSceneInfo above which triggers the lazy computation
             // run initial transformations, before checking specs or assertions
+            if(query is ProverQuery.EquivalenceQuery) {
+                return handleEquivalence(query, scene, reporterContainer).also {
+                    reporterContainer.toFile(scene)
+                }
+            }
             runInitialTransformations(scene, query, extensionContractsMapping)
             if(!Config.PreprocessOnly.get()) {
 
@@ -795,6 +805,8 @@ object IntegrativeChecker {
                                 scene,
                             )
                         })
+
+                    is ProverQuery.EquivalenceQuery -> `impossible!`
                 }
             } else {
                 Logger.always("Preprocess-only mode enabled", respectQuiet = false)
@@ -810,6 +822,10 @@ object IntegrativeChecker {
             reporterContainer.toFile(scene)
         }
         return result
+    }
+
+    private suspend fun handleEquivalence(query: ProverQuery.EquivalenceQuery, scene: IScene, reporter: OutputReporter): List<RuleCheckResult> {
+        return EquivalenceChecker.handleEquivalence(query, scene, reporter)
     }
 
     // sets up the status reporter, tree view reporter and reporter container

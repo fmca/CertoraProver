@@ -81,6 +81,8 @@ data class CommandWithRequiredDecls<out T: TACCmd>(
 
         operator fun <T: TACCmd.Spec> invoke(cmds: List<T>, decls: Collection<TACSymbol>) = CommandWithRequiredDecls(cmds, decls.filterIsInstance<TACSymbol.Var>())
     }
+
+    fun merge(other: Iterable<TACSymbol>) = this.merge(*other.filterIsInstance<TACSymbol.Var>().toTypedArray())
 }
 
 class MutableCommandWithRequiredDecls<T: TACCmd> {

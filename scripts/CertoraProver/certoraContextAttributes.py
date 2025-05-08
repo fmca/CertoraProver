@@ -824,6 +824,13 @@ class EvmAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    EQUIVALENCE_CONTRACTS = AttrUtil.AttributeDefinition(
+        attr_validation_func=Vf.validate_equivalence_contracts,
+        arg_type=AttrUtil.AttrArgType.STRING,
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
+
     BYTECODE_JSONS = AttrUtil.AttributeDefinition(
         attr_validation_func=Vf.validate_json_file,
         arg_type=AttrUtil.AttrArgType.LIST,

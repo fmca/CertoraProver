@@ -89,7 +89,7 @@ internal sealed class CallTraceGenerator(
         }
     }
 
-    val callInputsAndOutputs = CallInputsAndOutputs(formatter, blocks, model, program.analysisCache, scene)
+    val callInputsAndOutputs = CallInputsAndOutputs(blocks, model, program.analysisCache, scene)
 
     private val callHierarchyRoot = initCallHierarchyRoot(ruleCallString)
 

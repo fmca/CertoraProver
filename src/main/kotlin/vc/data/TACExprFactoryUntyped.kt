@@ -176,9 +176,9 @@ interface TACExprFact {
     infix fun ToTACExpr.or(other: ToTACExpr) = this@TACExprFact.LOr(this.toTACExpr(), other.toTACExpr())
     fun or(vararg args: TACExpr) = LOr(args.toList())
 
-    fun not(exp: TACExpr) = this@TACExprFact.LNot(exp)
+    fun not(exp: ToTACExpr) = this@TACExprFact.LNot(exp.toTACExpr())
 
-    fun ite(i: TACExpr, t: TACExpr, e: TACExpr) = Ite(i, t, e)
+    fun ite(i: ToTACExpr, t: ToTACExpr, e: ToTACExpr) = Ite(i.toTACExpr(), t.toTACExpr(), e.toTACExpr())
 
     // relational operator shorthands
 
@@ -214,13 +214,13 @@ interface TACExprFact {
 
     // bitwise operator shorthands
 
-    infix fun ToTACExpr.bwAnd(other:TACExpr) = this@TACExprFact.BWAnd(this.toTACExpr(), other.toTACExpr())
-    infix fun ToTACExpr.bwOr(other:TACExpr) = this@TACExprFact.BWOr(this.toTACExpr(), other.toTACExpr())
-    infix fun ToTACExpr.bwXor(other:TACExpr) = this@TACExprFact.BWXOr(this.toTACExpr(), other.toTACExpr())
+    infix fun ToTACExpr.bwAnd(other: ToTACExpr) = this@TACExprFact.BWAnd(this.toTACExpr(), other.toTACExpr())
+    infix fun ToTACExpr.bwOr(other: ToTACExpr) = this@TACExprFact.BWOr(this.toTACExpr(), other.toTACExpr())
+    infix fun ToTACExpr.bwXor(other: ToTACExpr) = this@TACExprFact.BWXOr(this.toTACExpr(), other.toTACExpr())
     fun bwNot(exp:TACExpr) = this@TACExprFact.BWNot(exp)
-    infix fun ToTACExpr.shiftRLog(other:TACExpr) = this@TACExprFact.ShiftRightLogical(this.toTACExpr(), other.toTACExpr())
-    infix fun ToTACExpr.shiftRArith(other:TACExpr) = this@TACExprFact.ShiftRightArithmetical(this.toTACExpr(), other.toTACExpr())
-    infix fun ToTACExpr.shiftL(other:TACExpr) = this@TACExprFact.ShiftLeft(this.toTACExpr(), other.toTACExpr())
+    infix fun ToTACExpr.shiftRLog(other: ToTACExpr) = this@TACExprFact.ShiftRightLogical(this.toTACExpr(), other.toTACExpr())
+    infix fun ToTACExpr.shiftRArith(other: ToTACExpr) = this@TACExprFact.ShiftRightArithmetical(this.toTACExpr(), other.toTACExpr())
+    infix fun ToTACExpr.shiftL(other: ToTACExpr) = this@TACExprFact.ShiftLeft(this.toTACExpr(), other.toTACExpr())
 
     // other shorthands
     fun unconstrained(tag: Tag) = Unconstrained(tag)

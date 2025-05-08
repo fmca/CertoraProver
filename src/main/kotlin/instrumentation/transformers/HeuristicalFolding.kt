@@ -229,7 +229,6 @@ object HeuristicalFolding {
         return patching.toCode(p, TACCmd.Simple.NopCmd)
     }
 
-
     /**
      * Folds assignments that are used once to save on variables in the program [p].
      * Assignments that contain sub-expressions for arithmetic operations,
@@ -294,10 +293,16 @@ object HeuristicalFolding {
         }.toMap() // improve the map creation
 
         var changed = false
+        val maxDepth = Config.MaxHeuristicFoldingDepth.get()
         val mapper = object : DefaultTACCmdMapperWithPointer() {
+            var depth = 0
 
             override val exprMapper = object : DefaultTACExprTransformer() {
                 override fun transform(exp: TACExpr): TACExpr {
+                    if(depth >= maxDepth && maxDepth != -1) {
+                        return exp
+                    }
+                    depth++
                     return try {
                         when (exp) {
                             is TACExpr.Sym.Var -> {
@@ -317,8 +322,9 @@ object HeuristicalFolding {
                     } catch (e: TACExprTransformerException) {
                         logger.warn(e) { "Could not transform $exp, falling back to original expression" }
                         exp
+                    } finally {
+                        depth--
                     }
-
                 }
             }
 

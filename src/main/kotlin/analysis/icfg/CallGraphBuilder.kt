@@ -415,6 +415,29 @@ object CallGraphBuilder {
      * [end] is *inclusive*
      */
     data class ByteRange(val start: BigInteger, val end: BigInteger) {
+        companion object {
+            fun BigInteger.withLength(length: BigInteger) = ByteRange(this, this + length - BigInteger.ONE)
+        }
+
+        infix fun overlaps(that: ByteRange) : Boolean {
+            return this.start <= that.end && this.end >= that.start
+        }
+
+        infix fun union(that: ByteRange): ByteRange {
+            require(this adjoins that) {
+                "Cannot perform disjoint union between $this and $that"
+            }
+            return ByteRange(this.start.min(that.start), this.end.max(that.end))
+        }
+
+        infix fun subsumes(that: ByteRange) = this.start <= that.start && this.end >= that.end
+
+        infix fun adjoins(that: ByteRange) = this overlaps that || this.start == that.end + BigInteger.ONE || this.end + BigInteger.ONE == that.start
+
+        infix fun strictlySubsumes(that: ByteRange) = this subsumes that && this != that
+
+
+
         val size : BigInteger = (end - start) + BigInteger.ONE
 
         /**

@@ -564,6 +564,11 @@ TEST_VALUES: Dict[Callable, Dict[str, Any]] = {
     Vf.validate_storage_extension_harness_attr: {
         'valid': ['A=B'],
         'invalid': ['A']
+    },
+
+    Vf.validate_equivalence_contracts: {
+        'valid': ["A=B"],
+        "invalid": ["A", "A=3", "3;5"]
     }
 }
 

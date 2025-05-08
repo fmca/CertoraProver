@@ -488,9 +488,9 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="unrecognized contract in 'address'",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--address', 'C:2', 'A:3'],
                              expected="unrecognized contract in 'address'")
-        suite.expect_failure(description="only one option of 'assert_contracts' and 'verify' can be used",
+        suite.expect_failure(description="only one option of 'assert_contracts', 'verify', 'equivalence' can be used",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--assert_contracts', 'A'],
-                             expected="only one option of 'assert_contracts' and 'verify' can be used")
+                             expected="only one option of 'assert_contracts', 'verify', 'equivalence' can be used")
         suite.expect_failure(description="Must use 'bytecode' together with 'bytecode_spec'",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--bytecode_jsons',
                                         f"{_p('empty.json')}"],

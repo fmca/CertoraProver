@@ -98,6 +98,9 @@ sealed class TACExpr : AmbiSerializable, ToLExpression, ToTACExpr {
     /**
      * Checks if the TAC Expr `uses` the variable `v`.
      */
+    /**
+     * Checks if the TAC Expr `uses` the variable `v`.
+     */
     fun usesVar(v: TACSymbol.Var) =
         subs.filterIsInstance<Sym.Var>().any { it.s == v }
 

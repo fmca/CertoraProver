@@ -1209,3 +1209,11 @@ inline fun <T> List<T>.forWithNext(action : (T, T) -> Unit) {
         action(this[i], this[i+1])
     }
 }
+
+infix fun <T: Comparable<T>> ClosedRange<T>.overlaps(that: ClosedRange<T>): Boolean {
+    return this.start <= that.endInclusive && this.endInclusive >= that.start
+}
+
+infix fun <T: Comparable<T>> ClosedRange<T>.subsumes(that: ClosedRange<T>): Boolean {
+    return this.start <= that.start && this.endInclusive >= that.endInclusive
+}

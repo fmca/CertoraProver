@@ -85,15 +85,14 @@ private class CVLFunctionInfo {
  *
  * For internal and internal summary calls, we just write all the values out as soon as they're available.
  */
-class CallInputsAndOutputs private constructor(private val formatter: CallTraceValueFormatter, private val model: CounterexampleModel) {
+class CallInputsAndOutputs private constructor(private val model: CounterexampleModel) {
 
     constructor(
-        formatter: CallTraceValueFormatter,
         blocks: List<NBId>,
         model: CounterexampleModel,
         analysisCache: IAnalysisCache,
         scene: ISceneIdentifiers
-    ) : this(formatter, model) {
+    ) : this(model) {
         Initializer(blocks, model, analysisCache, scene).initialize(this)
     }
 

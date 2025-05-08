@@ -86,6 +86,13 @@ sealed class SpecType: AmbiSerializable {
             private fun readResolve(): Any = InCodeAssertions
         }
 
+        @Serializable
+        object EquivalenceCheck : SpecType() {
+            override fun hashCode() = hashObject(this)
+
+            private fun readResolve(): Any = EquivalenceCheck
+        }
+
         /**
          * [SpecType]s for sanity rules and for multi-assert checks. Both flows create sub rules from a base rule.
          * When creating the sub rules receive the ruleType [GeneratedFromBasicRule] which creates a parent / child relationship.

@@ -29,7 +29,7 @@ object MustPathInclusionAnalysis {
      *
      * Computed by iterating the following system of equations until it converges:
      *
-     * f_0(a to b) = {a} (b is an immediate successor of b)
+     * f_0(a to b) = {a} (b is an immediate successor of a)
      * f_0(a to b) = {} (otherwise)
      *
      * f_i+1(a to b) = /\ s in succ(a),fi(s to b)

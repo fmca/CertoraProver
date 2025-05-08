@@ -86,6 +86,7 @@ object SolverResultStatusToTreeViewStatusMapper{
                 } else {
                     getStatusForRegularRule(solverResult)
                 }
+            is EquivalenceRule,
             is StaticRule,
             is AssertRule -> if (rule.isSatisfyRule) {
                 getStatusForSatisfyRule(solverResult)
@@ -683,6 +684,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             is SpecType.Group.ContractRuleType -> NodeType.CONTRACT
 
             //Logic related to Asserts
+            is SpecType.Single.EquivalenceCheck,
             SpecType.Single.InCodeAssertions,
             is SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule -> NodeType.ASSERT_SUBRULE_AUTO_GEN
             is SpecType.Single.GeneratedFromBasicRule.SanityRule -> NodeType.SANITY

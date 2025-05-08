@@ -1582,6 +1582,24 @@ object Config {
         )
     ) {}
 
+    val MaxHeuristicFoldingDepth = object : ConfigType.IntCmdLine(
+        50,
+        Option(
+            "maxHeuristicFoldingDepth",
+            true,
+            "The maximum depth of variables within an expression to fold in the heuristic folder. -1 for no limit."
+        )
+    ) {}
+
+    val MaxStaticBufferRefinementLength = object : ConfigType.IntCmdLine(
+        1024,
+        Option(
+            "maxStaticBufferRefinementLength",
+            true,
+            "The maximum size of a buffer to attempt static refinement during equivalence checking"
+        )
+    ) {}
+
     val SummarizeExtLibraryCallsAsNonDetPreLinking = object : ConfigType.BooleanCmdLine(
         false,
         Option(
