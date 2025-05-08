@@ -300,7 +300,9 @@ class PatchingProgramWrapper(private val code: CoreTACProgram) {
             val succs = g[b].orEmpty()
             when (succs.size) {
                 0 -> {
-                    if (code.coiOptimizations) {
+                    // If we're doing cone-of-influence optimizations, or if some block was erased anyway (eg. it had an
+                    // `assume false`), we search backwards for a non-trivial assert and remove all code after it.
+                    if (code.coiOptimizations || origG.succ(b).isNotEmpty()) {
                         val lastAssert =
                             origG.blockCmdsBackwardSeq(b).firstOrNull { (ptr, cmd) ->
                                 (replacements[ptr] ?: listOf(cmd)).any { isNonTrivialAssert(it) }

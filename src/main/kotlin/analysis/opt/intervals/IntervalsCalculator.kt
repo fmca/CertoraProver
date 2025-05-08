@@ -632,10 +632,13 @@ class IntervalsCalculator(
         // we see an assert which is non-constant. We still continue going backwards, because if at some point
         // we identify a contradiction, then all commands from this point on should be erased. Also, an `assert(false)`
         // means everything after it can be erased.
-        // Note that if cone-of-influence optimizations are disabled we don't start blindly erasing from the end of a block.
+        // Note that if cone-of-influence optimizations are disabled we don't start blindly erasing from the end of a
+        // block - we'll only do it in this case if the block has a successor that was removed anyway (e.g. it had an
+        // `assume false`)
         g.topOrderSinksFirst().forEach { nbid ->
             val realSuccs = realSuccs(nbid)
-            var erasingMode = realSuccs.isEmpty() && code.coiOptimizations
+            var erasingMode = realSuccs.isEmpty() &&
+                (code.coiOptimizations || (origGraph.succ(nbid).isNotEmpty() && g.successors[nbid].isNullOrEmpty()))
             val cmds = blockCommands(nbid)
             var erasureStart = cmds.size
 
