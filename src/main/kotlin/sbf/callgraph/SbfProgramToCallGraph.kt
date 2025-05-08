@@ -354,9 +354,11 @@ private class Demangler(private val cfgs: List<MutableSbfCFG>) {
             for (block in demangledCFG.getMutableBlocks().values) {
                 for ((i, inst) in block.getInstructions().withIndex()) {
                     if (inst is SbfInstruction.Call) {
+                        val mangledName = inst.name
+                        val demangledName = demanglerMap.getOrDefault(mangledName, mangledName)
+                        val newMetadata = inst.metaData.plus(SbfMeta.MANGLED_NAME to mangledName)
                         block.replaceInstruction(
-                            i,
-                            inst.copy(name = demanglerMap.getOrDefault(inst.name, inst.name))
+                            i, inst.copy(name = demangledName, metaData = newMetadata)
                         )
                     }
                 }

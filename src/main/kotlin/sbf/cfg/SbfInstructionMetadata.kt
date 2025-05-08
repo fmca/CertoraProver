@@ -48,6 +48,8 @@ object SbfMeta {
     val INLINED_FUNCTION_NAME = MetaKey<String>("inlined_function_name")
     // number of instructions of the inlined function before any slicing/optimization
     val INLINED_FUNCTION_SIZE = MetaKey<ULong>("inlined_function_size")
+    // mangled name of called function
+    val MANGLED_NAME = MetaKey<String>("mangled_name")
     // number of registers used by the call
     val KNOWN_ARITY = MetaKey<Int>("external_function_arity")
     // keep track of some equalities
@@ -125,6 +127,7 @@ fun toString(metaData: MetaData): String {
                     strB.append(" /* type($reg)=$type */")
                 }
             }
+            SbfMeta.MANGLED_NAME -> {}
         }
     }
     return strB.toString()

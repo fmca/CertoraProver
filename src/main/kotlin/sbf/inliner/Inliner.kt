@@ -173,7 +173,9 @@ private class Inliner(val entry: String,
         return cfg.splitBlock(bb.getLabel(), i - 1)
     }
 
-    private fun inlineCalleeIntoCaller(callerCFG: MutableSbfCFG, callerBB: MutableSbfBasicBlock, call: SbfInstruction,
+    private fun inlineCalleeIntoCaller(callerCFG: MutableSbfCFG,
+                                       callerBB: MutableSbfBasicBlock,
+                                       call: SbfInstruction.Call,
                                        calleeCFG: MutableSbfCFG) {
         val continuationBB = splitBasicBlock(callerCFG, callerBB, call)
         if (callerBB.getLabel() == callerCFG.getExit().getLabel()) {
@@ -195,9 +197,10 @@ private class Inliner(val entry: String,
         // reset callee CFG
         calleeCFG.clear()
 
-        val metaData = MetaData(Pair(SbfMeta.CALL_ID, callId)).plus(
-            Pair(SbfMeta.INLINED_FUNCTION_NAME, calleeCFG.getName())).plus(
-                Pair(SbfMeta.INLINED_FUNCTION_SIZE, numCalleeInsts)
+        val metaData = call.metaData.plus(
+            SbfMeta.CALL_ID to callId).plus(
+            SbfMeta.INLINED_FUNCTION_NAME to calleeCFG.getName()).plus(
+                SbfMeta.INLINED_FUNCTION_SIZE to numCalleeInsts
             )
 
         val saveRegistersInst = SbfInstruction.Call(name = CVTCore.SAVE_SCRATCH_REGISTERS.function.name, metaData = metaData)

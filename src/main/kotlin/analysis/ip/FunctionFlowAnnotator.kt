@@ -1203,7 +1203,7 @@ object FunctionFlowAnnotator {
         data class Scalar(override val v: TACSymbol.Var) : StackArg(), ScalarOnStack
         data class CalldataPointer(override val v: TACSymbol.Var) : StackArg(), ScalarOnStack
         data class ConstantValue(val v: TACSymbol.Const) : StackArg(), SingleSlotArg
-        data class DecomposedArray(val lenSym: TACSymbol.Var, val offsetSym: TACSymbol) : StackArg()
+        data class DecomposedArray(val lenSym: TACSymbol.Var, val offsetSym: TACSymbol.Var) : StackArg()
         object ArrayPlaceHolder : StackArg()
         object ScalarPlaceHolder : StackArg()
         object CalldataPointerPlaceHolder : StackArg()
@@ -1285,7 +1285,7 @@ object FunctionFlowAnnotator {
                 ResolutionHints.None
             }
         }
-        var elemSym: TACSymbol? = null
+        var elemSym: TACSymbol.Var? = null
         var elemIdx: Int? = null
 
         var symbolsParsed = 0
@@ -1495,7 +1495,7 @@ object FunctionFlowAnnotator {
                         if(elemSym != null || elemIdx != null) {
                             return noneResult("Found a decomposed calldata elem, but alaredy in a state where we've seen one")
                         }
-                        elemSym = argSym ?: (hint.sym as? TACSymbol.Const) ?: error("Impossible type hierarchy ${hint.sym}")
+                        elemSym = argSym!!
                         elemIdx = argOffs
                     } else if(upper4Bit == 4) {
                         if (elemSym != null || elemIdx != null) {
