@@ -565,6 +565,7 @@ sealed class CVLType : AmbiSerializable {
                 override fun toTag(): Tag = Tag.Int
 
                 fun smallestTypeForNumberLit() = n.smallestTypeForNumberLit()
+                fun smallestSignedTypeForNumberLit() = n.smallestSignedTypeForNumberLit()
             }
 
             /**
@@ -1020,8 +1021,27 @@ fun BigInteger.smallestTypeForNumberLit() =
         } else {
             PureCVLType.Primitive.UIntK(bitLength.roundUpToNearestNonZero8())
         }
-    } catch (_: Exception) {
-        //In case the number can't be represented by UintK or IntK (the constructors throw an exception),
+    } catch (_: NumberFormatException) {
+        // In case the number can't be represented by UintK or IntK (the constructors throw an exception),
+        // suggest Mathint instead
+        PureCVLType.Primitive.Mathint
+    }
+
+fun BigInteger.smallestSignedTypeForNumberLit() =
+    try {
+        val bitLength = this.bitLength()
+        PureCVLType.Primitive.IntK(bitLength.plus(1).roundUpToNearestNonZero8())
+    } catch (_: NumberFormatException) {
+        // In case the number can't be represented by IntK (the constructor throws an exception),
+        // suggest Mathint instead
+        PureCVLType.Primitive.Mathint
+    }
+
+fun PureCVLType.Primitive.UIntK.smallestContainingSignedInt() =
+    try {
+        PureCVLType.Primitive.IntK(bitWidth.plus(1).roundUpToNearestNonZero8())
+    } catch (_: NumberFormatException) {
+        // In case the number can't be represented by IntK (the constructor throws an exception),
         // suggest Mathint instead
         PureCVLType.Primitive.Mathint
     }

@@ -467,12 +467,47 @@ class CVLExpTypeCheckerWithContext(
                 } else if (rConverted isSubtypeOf lConverted) {
                     lConverted.lift()
                 } else {
-                    topLevelError().asError()
+                    // if they were both unsigned ints of some sort, we should have succeeded already, so now try to find a signed bound
+                    // we don't want to go from the already converted type to a signed type,
+                    // since e.g. number literal 1 would be a uint8 -> int16, while it can fit in int8 if we convert directly from literal
+                    signedUpperBoundForNumbers(lPure, rPure, topLevelError)
                 }
             } else {
-                topLevelError().asError()
+                signedUpperBoundForNumbers(lPure, rPure, topLevelError)
             }
         }
+
+    /**
+     * Attempts to find a signed integer type containing [l] and [r]
+     */
+    private fun signedUpperBoundForNumbers(
+        l: CVLType.PureCVLType,
+        r: CVLType.PureCVLType,
+        topLevelError: () -> CVLError
+    ): CollectingResult<CVLType.PureCVLType, CVLError> {
+        fun toSigned(t: CVLType.PureCVLType): CVLType.PureCVLType? =
+            when (t) {
+                is CVLType.PureCVLType.Primitive.IntK -> t
+                is CVLType.PureCVLType.Primitive.UIntK -> t.smallestContainingSignedInt()
+                is CVLType.PureCVLType.Primitive.NumberLiteral -> t.smallestSignedTypeForNumberLit()
+                else -> if (t isSubtypeOf CVLType.PureCVLType.Primitive.Mathint) {
+                    CVLType.PureCVLType.Primitive.Mathint
+                } else {
+                    null
+                }
+            }
+        return toSigned(l)?.let { signedL ->
+            toSigned(r)?.let { signedR ->
+                if (signedL isSubtypeOf signedR) {
+                    signedR.lift()
+                } else if (signedR isSubtypeOf signedL) {
+                    signedL.lift()
+                } else {
+                    topLevelError().asError()
+                }
+            }
+        } ?: topLevelError().asError()
+    }
 
     private fun arithRelopBinder(exp: CVLExp.RelopExp): CollectingResult<Pair<CVLExp, CVLExp>, CVLError> = collectingErrors {
         val lType = exp.l.getCVLTypeOrNull()!!
