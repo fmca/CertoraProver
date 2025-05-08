@@ -197,6 +197,35 @@ sealed class SbfType {
         }
     }
 
+    fun widen(other: SbfType): SbfType {
+        if (this is Bottom) {
+            return other
+        } else if (other is Bottom) {
+            return this
+        } else if (this is Top || other is Top) {
+            return Top
+        }
+
+        return if (this is NumType && other is NumType) {
+            NumType(value.widen(other.value))
+        } else if (this is PointerType.Stack && other is PointerType.Stack) {
+            PointerType.Stack(offset.widen(other.offset))
+        } else if (this is PointerType.Input && other is PointerType.Input) {
+            PointerType.Input(offset.widen(other.offset))
+        } else if (this is PointerType.Heap && other is PointerType.Heap) {
+            PointerType.Heap(offset.widen(other.offset))
+        } else if (this is PointerType.Global && other is PointerType.Global) {
+            PointerType.Global(offset.widen(other.offset),
+                if (global == other.global) {
+                    global
+                } else {
+                    null
+                })
+        } else {
+            Top
+        }
+    }
+
     fun lessOrEqual(other: SbfType): Boolean {
         if (other is Top || this is Bottom) {
             return true
@@ -259,7 +288,7 @@ class ScalarValue(private val type: SbfType): StackEnvironmentValue<ScalarValue>
     override fun isTop() = type is SbfType.Top
     override fun mkTop() = ScalarValue(SbfType.Top)
     override fun join(other: ScalarValue) = ScalarValue(type.join(other.type))
-    override fun widen(other: ScalarValue)= ScalarValue(type.join(other.type))
+    override fun widen(other: ScalarValue)= ScalarValue(type.widen(other.type))
     override fun lessOrEqual(other: ScalarValue) = type.lessOrEqual(other.type)
     override fun toString() = type.toString()
 }

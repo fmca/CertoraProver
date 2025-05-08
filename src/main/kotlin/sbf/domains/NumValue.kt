@@ -50,6 +50,7 @@ interface NumValue<V> {
     fun isTop(): Boolean
     fun isBottom(): Boolean
     fun join(other: V): V
+    fun widen(other: V): V
     fun meet(other: V): V
     fun lessOrEqual(other: V): Boolean
     override fun toString(): String
