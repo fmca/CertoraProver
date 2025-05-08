@@ -48,6 +48,11 @@ interface CTPOptimizationPass {
                 override fun optimize(ctp: CoreTACProgram) = optimize(ctp)
             }
 
+        fun Iterable<CTPOptimizationPass>.runOn(tacToCheck : CoreTACProgram) =
+            fold(CoreTACProgram.Linear(tacToCheck)) { acc, opt ->
+                acc.mapIfAllowed(CoreToCoreTransformer(opt.reportType) { c -> opt.optimize(c) })
+            }.ref
+
         val snippetRemoval = make(SNIPPET_REMOVAL, SnippetRemover::rewrite)
 
         fun constantPropagatorAndSimplifier(mergeBlocks: Boolean) = make(PROPAGATOR_SIMPLIFIER) { ctp ->
