@@ -32,7 +32,6 @@ import vc.data.TACCmd
 import vc.data.TACKeyword
 import vc.data.TACSymbol
 import java.math.BigInteger
-import kotlin.streams.toList
 
 /**
  * Find storage array allocations. Despite the name, this object will *technically* find any allocation of an array

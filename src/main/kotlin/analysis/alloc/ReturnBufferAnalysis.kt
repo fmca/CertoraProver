@@ -33,7 +33,6 @@ import tac.Tag
 import utils.*
 import vc.data.*
 import java.math.BigInteger
-import kotlin.streams.toList
 
 private val logger = Logger(LoggerTypes.PER_FUNCTION_SIMPLIFICATION)
 
