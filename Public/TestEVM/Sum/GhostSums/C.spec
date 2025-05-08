@@ -53,6 +53,22 @@ rule nestedMapping {
     satisfy true; // to force creation of calltrace
 }
 
+rule nestedMappingSumOnAllIndices {
+    mathint initialSum = sum uint8 u, bytes4 b, mathint m, address a. ghostNestedMapping[u][b][m][a];
+
+    uint8 u8;
+    mathint ma;
+    bytes4 b4;
+    address addr;
+
+    int8 oldVal = ghostNestedMapping[u8][b4][ma][addr];
+    int8 newVal;
+    ghostNestedMapping[u8][b4][ma][addr] = newVal;
+
+    assert (sum uint8 u, bytes4 b, mathint m, address a. ghostNestedMapping[u][b][m][a]) == initialSum + newVal - oldVal;
+    satisfy true;
+}
+
 rule updateViaHook {
     mathint initialSum = sum address a. ghostAddrToInt256[a];
     address addr;

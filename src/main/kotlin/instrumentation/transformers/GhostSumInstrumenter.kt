@@ -354,65 +354,65 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
             // For each ghost sum, ghostSum = oldGhostSum + newGhostVal - oldGhostVal
             val sym = globalScope[sumGhost.id]!!
 
-            when (rhs) {
-                is TACExpr.Store -> {
-                    listOf(
-                        TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                            lhs = sym,
-                            rhs = TACExprFactUntyped { sym.asSym() intAdd rhs.value intSub oldGhostValSym.asSym() }
-                        ),
-                        SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
-                            sym,
-                            sumGhost.origGhost.id,
-                            listOf(null),
-                            sumGhost.persistent
-                        ).toAnnotation()
-                    )
+
+
+
+            if (sumGhost.nonSummedIndices.isEmpty()) {
+                listOf(
+                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = sym,
+                        rhs = TACExprFactUntyped { sym.asSym() intAdd rhs.value intSub oldGhostValSym.asSym() }
+                    ),
+                    SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
+                        sym,
+                        sumGhost.origGhost.id,
+                        listOf(null),
+                        sumGhost.persistent
+                    ).toAnnotation()
+                )
+            } else {
+                val nonSummedLocs = rhs.locs.filterIndexed { index, _ -> index in sumGhost.nonSummedIndices }
+
+                val nonSummedVars = nonSummedLocs.map {
+                    ((it as? TACExpr.Sym)?.s as? TACSymbol.Var)
+                        ?: error("expected the index expressions to be symbols")
                 }
-                is TACExpr.MultiDimStore -> {
-                    val nonSummedLocs = rhs.locs.filterIndexed { index, _ -> index in sumGhost.nonSummedIndices }
 
-                    val nonSummedVars = nonSummedLocs.map {
-                        ((it as? TACExpr.Sym)?.s as? TACSymbol.Var)
-                            ?: error("expected the index expressions to be symbols")
-                    }
+                val indices = sumGhost.placeItemsInNonSummedIndices(nonSummedVars)
 
-                    val indices = sumGhost.placeItemsInNonSummedIndices(nonSummedVars)
+                // We need this temp var (instead of just using the select expression as the value of the
+                // store) so that we have a "simple" variable holding the new value for the snippet to use.
+                val newGhostValSym = TACKeyword.TMP(Tag.Int, "NewGhostVal")
+                    .withMeta(TACMeta.CVL_TYPE, CVLType.PureCVLType.Primitive.Mathint)
+                patching.addVarDecl(newGhostValSym)
 
-                    // We need this temp var (instead of just using the select expression as the value of the
-                    // store) so that we have a "simple" variable holding the new value for the snippet to use.
-                    val newGhostValSym = TACKeyword.TMP(Tag.Int, "NewGhostVal")
-                        .withMeta(TACMeta.CVL_TYPE, CVLType.PureCVLType.Primitive.Mathint)
-                    patching.addVarDecl(newGhostValSym)
-
-                    listOf(
-                        TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                            lhs = newGhostValSym,
-                            rhs = TACExprFactUntyped {
-                                Select(
-                                    sym.asSym(),
-                                    *nonSummedLocs.toTypedArray()
-                                ) intAdd rhs.value intSub oldGhostValSym.asSym()
-                            }
-                        ),
-                        TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                            lhs = sym,
-                            rhs = TACExprFactUntyped {
-                                Store(
-                                    sym.asSym(),
-                                    locs = nonSummedLocs,
-                                    newGhostValSym.asSym()
-                                )
-                            }
-                        ),
-                        SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
-                            newGhostValSym,
-                            sumGhost.origGhost.id,
-                            indices,
-                            sumGhost.persistent
-                        ).toAnnotation()
-                    )
-                }
+                listOf(
+                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = newGhostValSym,
+                        rhs = TACExprFactUntyped {
+                            Select(
+                                sym.asSym(),
+                                *nonSummedLocs.toTypedArray()
+                            ) intAdd rhs.value intSub oldGhostValSym.asSym()
+                        }
+                    ),
+                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                        lhs = sym,
+                        rhs = TACExprFactUntyped {
+                            Store(
+                                sym.asSym(),
+                                locs = nonSummedLocs,
+                                newGhostValSym.asSym()
+                            )
+                        }
+                    ),
+                    SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
+                        newGhostValSym,
+                        sumGhost.origGhost.id,
+                        indices,
+                        sumGhost.persistent
+                    ).toAnnotation()
+                )
             }
         }
 
