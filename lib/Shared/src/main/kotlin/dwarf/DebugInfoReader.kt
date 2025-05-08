@@ -33,10 +33,13 @@ import java.nio.file.Paths
 private val debugSymbolsLogger = Logger(LoggerTypes.DEBUG_SYMBOLS)
 
 /**
- * The [InlinedFramesInfo] object provides functionality for retrieving inlined call stack information
- * for a list of bytecode addresses from a specified ELF file containing DWARF debug information.
+ * The [DebugInfoReader] object provides utilities for extracting debug information from ELF files compiled with DWARF data.
+ *
+ * Specifically, it enables:
+ * - Retrieving inlined call stack information for a list of bytecode addresses.
+ * - Locating the source range of a function based on its mangled name.
  */
-object InlinedFramesInfo {
+object DebugInfoReader {
     /**
      * Path to the ELF file that has the debug information.
      */
@@ -51,42 +54,104 @@ object InlinedFramesInfo {
     }
 
     /**
-     * Finds the innermost inlined frame from the provided address that corresponds to an existing file located within
-     * the Certora sources directory.
+     * Returns the location of a function. The name of the function must be *mangled* to avoid ambiguity.
+     * Returns a range only if the function exists in the sources directory.
      * Requires that the [init] method has been called on this object, otherwise throws an exception.
      */
-    fun findInnermostInlinedFrameInProjectRootDirectory(address: ULong): Range.Range? {
-        val inlinedFramesMap = getInlinedFrames(listOf(address))
-        return inlinedFramesMap[address]?.let {
-            it.firstOrNull { range ->
-                val file = File(Config.prependSourcesDir(range.file))
-                debugSymbolsLogger.info {
-                    "Considering range for file '${range.file}' at ${range.start.lineForIDE}:${range.start.characterForIDE}-${range.end.lineForIDE}:${range.end.characterForIDE}. File '$file' exists: ${file.exists()}"
-                }
-                // If the range is absolute, we ignore it: it is likely that llvm-symbolizer points to an absolute path
-                // to a library function.
-                val pathIsRelative = !Paths.get(range.file).isAbsolute
-                pathIsRelative && file.exists()
+    @Suppress("ForbiddenMethodCall")
+    fun findFunctionRangeInSourcesDir(mangledName: String): Range.Range? {
+        assert(elfFile != null) { "called findFunctionLocation before initializing the ELF file path" }
+
+        // Prepare the command.
+        val cmd = mutableListOf(
+            "llvm-dwarfdump",
+            "--name",
+            mangledName,
+            elfFile,
+        )
+
+        debugSymbolsLogger.info {
+            "Running command to get range of function '$mangledName': ${cmd.joinToString(" ")}"
+        }
+
+        val pb = ProcessBuilder(cmd)
+        val llvmDwarfDumpProcess = pb.start()
+        val llvmDwarfDumpStdout = llvmDwarfDumpProcess.inputStream.bufferedReader().use { it.readText() }
+        debugSymbolsLogger.info {
+            "llvm-dwarfdump process stdout: $llvmDwarfDumpStdout"
+        }
+
+        if (llvmDwarfDumpProcess.waitFor() != 0) {
+            val errorText = String(llvmDwarfDumpProcess.errorStream.use { it.readAllBytes() })
+            CVTAlertReporter.reportAlert(
+                type = CVTAlertType.DIAGNOSABILITY,
+                severity = CVTAlertSeverity.WARNING,
+                jumpToDefinition = null,
+                message = "Failed to read range of function '$mangledName' - proceeding without debug information.",
+                hint = null
+            )
+            debugSymbolsLogger.warn { "Failed to read range of function '$mangledName' - proceeding without debug information, reason $errorText" }
+            return null
+        }
+
+        // Regex to extract the source file name from a DWARF attribute line like:
+        // DW_AT_decl_file ("src/module/file.rs")
+        // This regex matches the string within double quotes after DW_AT_decl_file,
+        // ensuring it captures only non-quote characters as the file path.
+        val fileRegex = Regex("""DW_AT_decl_file\s+\("([^"]+)"\)""")
+
+        // Regex to extract the line number where a symbol is declared from a line like:
+        // DW_AT_decl_line (42)
+        // It captures the integer value inside the parentheses.
+        val lineRegex = Regex("""DW_AT_decl_line\s+\((\d+)\)""")
+
+        // Regex to extract the column number (if available) from a line like:
+        // DW_AT_decl_column (12)
+        // It captures the integer value inside the parentheses.
+        val columnRegex = Regex("""DW_AT_decl_column\s+\((\d+)\)""")
+
+        val fileMatches = fileRegex.findAll(llvmDwarfDumpStdout).toList()
+        val lineMatches = lineRegex.findAll(llvmDwarfDumpStdout).toList()
+        val columnMatches = columnRegex.findAll(llvmDwarfDumpStdout).toList()
+
+        if (fileMatches.size != 1 || lineMatches.size != 1) {
+            debugSymbolsLogger.warn { "Warning: Unexpected number of file (${fileMatches.size}) or line (${lineMatches.size}) matches in DWARF dump. Proceeding without debug information." }
+            return null
+        }
+
+        val file = fileMatches.first().groupValues[1]
+        val line = lineMatches.first().groupValues[1].toUInt() - 1U
+
+        val column = if (columnMatches.size == 1) {
+            columnMatches.first().groupValues[1].toUInt() - 1U
+        } else {
+            if (columnMatches.size > 1) {
+                debugSymbolsLogger.warn { "Warning: Multiple column matches (${columnMatches.size}) found, using the first one." }
+                columnMatches.first().groupValues[1].toUInt() - 1U
+            } else {
+                // Column information is not essential: if we have the file and the line number, we can just use the
+                // first column as a heuristic.
+                0U
             }
+        }
+
+        val start = SourcePosition(line, column)
+        val end = SourcePosition(line + 1U, 0U)
+        val range = Range.Range(file, start, end)
+        return if (fileExistsInSourcesDir(range)) {
+            range
+        } else {
+            null
         }
     }
 
     /**
-     * Returns the inlined frames for each address, but only the ones that exist in project files.
+     * Returns the inlined frames for each address, but only the ones that exist in the sources directory.
      */
     @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
-    fun getInlinedFramesInProjectFiles(addresses: List<ULong>): Map<ULong, List<Range.Range>> {
-        return getInlinedFrames(addresses).mapValues{ (_, inlinedFrames) ->
-            inlinedFrames.filter { range ->
-                val file = File(Config.prependSourcesDir(range.file))
-                debugSymbolsLogger.info {
-                    "Considering range for file '${range.file}' at ${range.start.lineForIDE}:${range.start.characterForIDE}-${range.end.lineForIDE}:${range.end.characterForIDE}. File '$file' exists: ${file.exists()}"
-                }
-                // If the range is absolute, we ignore it: it is likely that llvm-symbolizer points to an absolute path
-                // to a library function.
-                val pathIsRelative = !Paths.get(range.file).isAbsolute
-                pathIsRelative && file.exists()
-            }
+    fun getInlinedFramesInSourcesDir(addresses: List<ULong>): Map<ULong, List<Range.Range>> {
+        return getInlinedFrames(addresses).mapValues { (_, inlinedFrames) ->
+            inlinedFrames.filter { fileExistsInSourcesDir(it) }
         }
     }
 
@@ -208,6 +273,17 @@ object InlinedFramesInfo {
             val sourcePositionEnd = SourcePosition(rangeLineNumber + 1.toUInt(), 0.toUInt())
             return Range.Range(symbol.fileName, sourcePositionStart, sourcePositionEnd)
         }
+    }
+
+    /** Checks if the file referenced by the given [range] exists in the local sources directory. */
+    private fun fileExistsInSourcesDir(range: Range.Range): Boolean {
+        val file = File(Config.prependSourcesDir(range.file))
+        debugSymbolsLogger.info {
+            "Considering range for file '${range.file}' at ${range.start.lineForIDE}:${range.start.characterForIDE}-${range.end.lineForIDE}:${range.end.characterForIDE}. File '$file' exists: ${file.exists()}"
+        }
+        // If the range is absolute, we ignore it: we cannot resolve files in the local sources directory if the path is absolute.
+        val pathIsRelative = !Paths.get(range.file).isAbsolute
+        return pathIsRelative && file.exists()
     }
 
 }

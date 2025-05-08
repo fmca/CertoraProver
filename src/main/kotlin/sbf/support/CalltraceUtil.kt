@@ -17,7 +17,7 @@
 
 package sbf.support
 
-import dwarf.InlinedFramesInfo
+import dwarf.DebugInfoReader
 import sbf.tac.SBF_ADDRESS
 import utils.Range
 import vc.data.TACCmd
@@ -42,7 +42,7 @@ object SolanaCalltraceUtil {
                 addresses.add(nextAddress)
                 nextAddress -= 8U
             }
-            val rangesMap = InlinedFramesInfo.getInlinedFramesInProjectFiles(addresses)
+            val rangesMap = DebugInfoReader.getInlinedFramesInSourcesDir(addresses)
             // Iterate over the addresses: address, address - 8, address - 16, ...
             // The first address that is associated with non-null range information will be the returned address.
             for (addr in addresses) {

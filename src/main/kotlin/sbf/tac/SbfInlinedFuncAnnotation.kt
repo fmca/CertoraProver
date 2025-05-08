@@ -96,6 +96,7 @@ data class SbfFuncArgInfo(
 @Treapable
 data class SbfInlinedFuncStartAnnotation(
     val name: String,
+    val mangledName: String,
     val id: Int,
     val args: List<Pair<TACSymbol.Var, SbfFuncArgInfo>>,
 ): HasKSerializable, AmbiSerializable,

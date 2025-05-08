@@ -23,7 +23,7 @@ import cli.SanityValues
 import config.Config
 import vc.data.CoreTACProgram
 import datastructures.stdcollections.*
-import dwarf.InlinedFramesInfo
+import dwarf.DebugInfoReader
 import sbf.callgraph.*
 import sbf.disassembler.*
 import sbf.inliner.*
@@ -103,7 +103,7 @@ fun solanaSbfToTAC(elfFile: String): List<CompiledSolanaRule> {
     }
 
     // Initialize the [InlinedFramesInfo] object for subsequent inlined frames queries.
-    InlinedFramesInfo.init(elfFile)
+    DebugInfoReader.init(elfFile)
 
     // 1. Process the ELF file that contains the SBF bytecode
     sbfLogger.info { "Disassembling ELF program $elfFile" }

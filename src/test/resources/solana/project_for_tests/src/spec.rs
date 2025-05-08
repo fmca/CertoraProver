@@ -10,3 +10,4 @@ mod print_locations;
 mod print_tags;
 mod print_values;
 mod tree_view;
+mod functions;

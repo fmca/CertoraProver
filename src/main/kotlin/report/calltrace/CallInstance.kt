@@ -274,7 +274,7 @@ sealed class CallInstance : TreeViewReportable {
         sealed class VMInvokingInstance: InvokingInstance<VMTypeDescriptor>()
 
         // solana
-        class SolanaFunctionInstance(override val name: String, val callIndex: Int) : ScopeInstance()
+        class SolanaFunctionInstance(override val name: String, override val range: Range.Range?, val callIndex: Int) : ScopeInstance()
 
         // wasm
         class WasmFunctionInstance(override val name: String, val funcName: String) : ScopeInstance()

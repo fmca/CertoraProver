@@ -39,3 +39,11 @@ pub fn satisfy_x_greater_than_10(x: u64) {
 pub fn print_u64_as_fixed(num: u64, bits: u64) {
     cvt_print_u64_as_fixed!("tag", num, bits);
 }
+
+/// This is an exact copy of another function declared in `src/functions.rs`.
+/// This is to create ambiguity: the Prover must be able to distinguish between
+/// the two functions, even though they are identical.
+#[inline(never)]
+pub fn a_function() -> u64 {
+    cvt_nondet_u64!()
+}

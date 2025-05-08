@@ -18,6 +18,7 @@
 package solver
 
 
+import annotations.PollutesGlobalState
 import handleSolanaFlow
 import infra.CertoraBuildKind
 import infra.CertoraBuild
@@ -32,8 +33,10 @@ import report.calltrace.CallInstance
 import report.calltrace.CallTrace
 import report.calltrace.formatter.AlternativeRepresentations
 import rules.RuleCheckResult
+import sbf.SolanaConfig
 import utils.Range
 import utils.*
+import vc.data.ProcedureId
 import java.math.BigInteger
 import kotlin.io.path.Path
 
@@ -119,6 +122,8 @@ class SolanaCallTraceTest {
                 "rule_attach_location_satisfy_main_body",
                 "rule_attach_location_satisfy_nested_call",
                 "rule_attach_location_satisfy_other_module",
+                "rule_function_call_in_main_body",
+                "rule_nested_function_call_in_main_body",
             )
 
         /**
@@ -595,6 +600,30 @@ class SolanaCallTraceTest {
         )
     }
 
+    @Test
+    fun functionCallInMainBody() {
+        ruleContainsSolanaFunctionInstanceAt(
+            "rule_function_call_in_main_body",
+            results,
+            callInstanceRange("src/functions.rs", 4U, 1U)
+        )
+    }
+
+    @Test
+    fun nestedFunctionCallInMainBody() {
+        ruleContainsSolanaFunctionInstanceAt(
+            "rule_nested_function_call_in_main_body",
+            results,
+            callInstanceRange("src/functions.rs", 4U, 1U)
+        )
+        ruleContainsSolanaFunctionInstanceAt(
+            "rule_nested_function_call_in_main_body",
+            results,
+            callInstanceRange("src/functions.rs", 9U, 1U)
+        )
+    }
+
+
     private fun ruleContainsSolanaUserAssertAt(
         ruleName: String,
         results: List<RuleCheckResult.Single>,
@@ -692,8 +721,8 @@ class SolanaCallTraceTest {
         expectedRange: Range.Range
     ) {
         val solanaExternalCalls = getExternalCalls(ruleName, results)
-        val existsAssertWithExpectedRange = existsCallInstanceAtRange(solanaExternalCalls, expectedRange)
-        assert(existsAssertWithExpectedRange) { "Did not find any external call with range ${expectedRange.file}:${expectedRange.lineNumber}" }
+        val existsExternalCallWithExpectedRange = existsCallInstanceAtRange(solanaExternalCalls, expectedRange)
+        assert(existsExternalCallWithExpectedRange) { "Did not find any external call with range ${expectedRange.file}:${expectedRange.lineNumber}" }
     }
 
     private fun getExternalCalls(
@@ -702,6 +731,24 @@ class SolanaCallTraceTest {
     ): List<CallInstance.SolanaExternalCall> {
         val calltrace = getCalltraceOfRule(ruleName, results)
         return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.SolanaExternalCall> { true }
+    }
+
+    private fun ruleContainsSolanaFunctionInstanceAt(
+        ruleName: String,
+        results: List<RuleCheckResult.Single>,
+        expectedRange: Range.Range
+    ) {
+        val solanaFunctionInstances = getSolanaFunctionInstance(ruleName, results)
+        val existsSolanaFunctionInstanceWithExpectedRange = existsCallInstanceAtRange(solanaFunctionInstances, expectedRange)
+        assert(existsSolanaFunctionInstanceWithExpectedRange) { "Did not find any Solana function instance with range ${expectedRange.file}:${expectedRange.lineNumber}" }
+    }
+
+    private fun getSolanaFunctionInstance(
+        ruleName: String,
+        results: List<RuleCheckResult.Single>,
+    ): List<CallInstance.InvokingInstance.SolanaFunctionInstance> {
+        val calltrace = getCalltraceOfRule(ruleName, results)
+        return calltrace.callHierarchyRoot.filterCallInstancesOf<CallInstance.InvokingInstance.SolanaFunctionInstance> { true }
     }
 
     private fun getCalltraceOfRule(

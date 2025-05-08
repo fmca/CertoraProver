@@ -17,6 +17,7 @@
 
 package report.calltrace.generator
 
+import dwarf.DebugInfoReader
 import report.calltrace.*
 import report.calltrace.formatter.CallTraceValue
 import report.calltrace.formatter.CallTraceValueFormatter
@@ -75,9 +76,11 @@ internal class SolanaCallTraceGenerator(
     }
 
     private fun handleSolanaFunctionStart(annot: SbfInlinedFuncStartAnnotation): HandleCmdResult {
+        val range = DebugInfoReader.findFunctionRangeInSourcesDir(annot.mangledName)
         val newInstance = CallInstance.InvokingInstance.SolanaFunctionInstance(
-            "${annot.name}(...)",
-            annot.id
+            name = "${annot.name}(...)",
+            range = range,
+            callIndex = annot.id
         )
         callTracePush(newInstance)
         return HandleCmdResult.Continue

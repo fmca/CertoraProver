@@ -926,6 +926,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
             return null
         }
         val fnName = metaData.getVal(SbfMeta.INLINED_FUNCTION_NAME) ?: return null
+        val fnMangledName = metaData.getVal(SbfMeta.MANGLED_NAME) ?: return null
         val callId = metaData.getVal(SbfMeta.CALL_ID)?.toInt() ?: return null
 
         // These are the observed args across all call sites
@@ -949,6 +950,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
 
         return SbfInlinedFuncStartAnnotation(
             name = fnName,
+            mangledName = fnMangledName,
             args = tacArgs,
             id = callId
         )

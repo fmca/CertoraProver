@@ -29,8 +29,8 @@ The instructions here are for users on Mac OS and Linux.
 
 * Rust (tested on Version 1.81.0+) -- https://www.rust-lang.org/tools/install
 
-* [`llvm-symbolizer`](https://llvm.org/docs/CommandGuide/llvm-symbolizer.html),
-  which is installed as part of LLVM.
+* [`llvm-symbolizer`](https://llvm.org/docs/CommandGuide/llvm-symbolizer.html) and [`llvm-dwarfdump`](https://llvm.org/docs/CommandGuide/llvm-dwarfdump.html),
+  which are installed as part of LLVM.
 
 * [`rustfilt`](https://github.com/luser/rustfilt)
 
