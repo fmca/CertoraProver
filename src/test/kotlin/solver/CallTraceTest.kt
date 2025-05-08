@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("ReplaceGetOrSet")
+
 package solver
 
 
@@ -32,8 +34,7 @@ import log.TestLoggers.CallTrace.noXs
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import report.LocalAssignment
-import report.LocalAssignmentState
+import report.LocalAssignments
 import report.calltrace.CallEndStatus
 import report.calltrace.CallInstance
 import report.calltrace.CallTrace
@@ -41,6 +42,7 @@ import report.calltrace.formatter.AlternativeRepresentations.Representations
 import report.calltrace.formatter.FormatterType
 import report.calltrace.sarif.Sarif
 import report.globalstate.GlobalState
+import rules.RuleCheckResult.Single.RuleCheckInfo.WithExamplesData.CounterExample
 import solver.StructuralInvariants.globalPropertiesChecks
 import solver.StructuralInvariants.verifyAssertCast
 import solver.StructuralInvariants.verifyAssertChildren
@@ -609,28 +611,34 @@ class CallTraceTest {
 
 
     @Test
-    fun testLocalVariables() {
-        val confPath = Path("src/test/resources/solver/CallTraceTests/LocalVariables/Basic.conf")
-        val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/LocalVariables/test/")
-        val counterExample = CallTraceInfra.getCounterExampleFromSerialized(confPath, verifierResultPath)
-        val localAssignments = counterExample.localAssignments
+    fun testLocalAssignments() {
+        val counterExample = CallTraceInfra.runConfAndGetCounterExample(
+            confPath = Path("src/test/resources/solver/CallTraceTests/LocalAssignments/Basic.conf"),
+            specFilename = Path("src/test/resources/solver/CallTraceTests/LocalAssignments/Basic.spec"),
+            ruleName = "test",
+            methodName = null,
+            primaryContract = "TestContract",
+        )
 
-        fun checkAssignment(varName: String): LocalAssignment {
-            val local = localAssignments[varName]
+        val assignments = counterExample.expectAssignments()
+        val assignmentsByName = assignments.terminalsByName()
+
+        fun checkAssignment(varName: String): LocalAssignments.Node.Terminal {
+            val local = assignmentsByName[varName]
             assertNotNull(local, "local variable $varName not found in local assignments")
             return local
         }
 
         val t = checkAssignment("t")
-        assertEquals("0x14", t.formattedValue)
+        assertEquals("0x14", t.formattedValue(assignments.formatter))
         assertRangeMatches(t.range, SourcePosition(34u, 4u), SourcePosition(34u, 14u))
 
         val r1 = checkAssignment("r1")
-        assertEquals("0x14", r1.formattedValue)
+        assertEquals("0x14", r1.formattedValue(assignments.formatter))
         assertRangeMatches(r1.range, SourcePosition(35u, 4u), SourcePosition(35u, 14u))
 
         val r2 = checkAssignment("r2")
-        assertEquals("0x9", r2.formattedValue)
+        assertEquals("0x9", r2.formattedValue(assignments.formatter))
         assertRangeMatches(r2.range, SourcePosition(36u, 4u), SourcePosition(36u, 14u))
 
         val r3 = checkAssignment("r3")
@@ -640,14 +648,14 @@ class CallTraceTest {
         assertRangeMatches(r4.range, SourcePosition(38u, 4u), SourcePosition(38u, 14u))
 
 
-        assertTrue("ret" !in localAssignments)
-        assertTrue("a" !in localAssignments)
-        assertTrue("b" !in localAssignments)
-        assertTrue("val" !in localAssignments)
-        assertTrue("innerVal" !in localAssignments)
-        assertTrue("contractVal" !in localAssignments)
-        assertTrue("contractValOld" !in localAssignments)
-        assertTrue("contractValNew" !in localAssignments)
+        assertTrue("ret" !in assignmentsByName)
+        assertTrue("a" !in assignmentsByName)
+        assertTrue("b" !in assignmentsByName)
+        assertTrue("val" !in assignmentsByName)
+        assertTrue("innerVal" !in assignmentsByName)
+        assertTrue("contractVal" !in assignmentsByName)
+        assertTrue("contractValOld" !in assignmentsByName)
+        assertTrue("contractValNew" !in assignmentsByName)
     }
 
     // to be made into an actual test later on (during revising our testing infra)
@@ -664,10 +672,10 @@ class CallTraceTest {
     }
 
     @Test
-    fun testLocalVariables_LenInExpression1() {
-        val confPath = Path("src/test/resources/solver/CallTraceTests/LocalVariables/TestArray.conf")
+    fun testLocalAssignments_LenInExpression1() {
+        val confPath = Path("src/test/resources/solver/CallTraceTests/LocalAssignments/TestArray.conf")
         val specPath =
-            Path("src/test/resources/solver/CallTraceTests/LocalVariables/TestArray.spec") // reading this not through our framework, so no leading "/"
+            Path("src/test/resources/solver/CallTraceTests/LocalAssignments/TestArray.spec") // reading this not through our framework, so no leading "/"
 
         val callTrace = CallTraceInfra.runConfAndGetCallTrace(
             confPath = confPath,
@@ -677,19 +685,19 @@ class CallTraceTest {
             primaryContract = "TestArray",
         )
 
-        val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/LocalVariables/LenInExpression1/")
+        val verifierResultPath = Path("src/test/resources/solver/CallTraceTests/LocalAssignments/LenInExpression1/")
         val counterExample = CallTraceInfra.getCounterExampleFromSerialized(confPath, verifierResultPath)
-        val lenVarValue = counterExample.localAssignments[lenVarName]?.scalarValue
+        val lenVarValue = counterExample.expectAssignments().terminalsByName().get(lenVarName)?.scalarValue
         val lenInstance = lenInstance(callTrace)
 
         assertEquals(lenVarValue, lenInstance.value)
     }
 
     @Test
-    fun testLocalVariables_LenInExpression2() {
-        val confPath = Path("src/test/resources/solver/CallTraceTests/LocalVariables2/TestArray.conf")
+    fun testLocalAssignments_LenInExpression2() {
+        val confPath = Path("src/test/resources/solver/CallTraceTests/LocalAssignments2/TestArray.conf")
 
-        val specPath = Path("src/test/resources/solver/CallTraceTests/LocalVariables2/TestArray.spec") // reading this not through our framework, so no leading "/"
+        val specPath = Path("src/test/resources/solver/CallTraceTests/LocalAssignments2/TestArray.spec") // reading this not through our framework, so no leading "/"
 
         // this could still be made better by reading everything from the conf file, but I think I'll need some
         // infrastructure advice
@@ -708,13 +716,13 @@ class CallTraceTest {
     }
 
     @Test
-    fun testLocalVariables_CheckUint25StaticArray() {
-        val confPath = Path("src/test/resources/solver/CallTraceTests/LocalVariables/TestArray.conf")
+    fun testLocalAssignments_CheckUint25StaticArray() {
+        val confPath = Path("src/test/resources/solver/CallTraceTests/LocalAssignments/TestArray.conf")
         val verifierResultPath =
-            Path("src/test/resources/solver/CallTraceTests/LocalVariables/Satisfy_extSum__cvlSum_LPTestArray_spec_17_5RP/")
+            Path("src/test/resources/solver/CallTraceTests/LocalAssignments/Satisfy_extSum__cvlSum_LPTestArray_spec_17_5RP/")
         val counterExample = CallTraceInfra.getCounterExampleFromSerialized(confPath, verifierResultPath)
 
-        val lenVarValue = counterExample.localAssignments[lenVarName]?.scalarValue
+        val lenVarValue = counterExample.expectAssignments().terminalsByName().get(lenVarName)?.scalarValue
 
         assertTrue(lenVarValue == TACValue.valueOf(3))
     }
@@ -1137,7 +1145,6 @@ class CallTraceTest {
     }
 }
 
-
 /** Checks for structural invariants that we might want to check on a given call trace. Some apply to all call
  * traces, some are more specific. */
 internal object StructuralInvariants {
@@ -1459,12 +1466,15 @@ private fun assertIsTrueOrOne(v: TACValue?) {
     assertTrue(v == TACValue.True || v == TACValue.valueOf(1))
 }
 
-private val LocalAssignment.scalarValue: TACValue?
-    get() = when (this.state) {
-        LocalAssignmentState.ByteMap -> null
-        is LocalAssignmentState.CVLString -> (this.state as LocalAssignmentState.CVLString).contents
-        is LocalAssignmentState.Contract -> (this.state as LocalAssignmentState.Contract).value
-        is LocalAssignmentState.Initialized -> (this.state as LocalAssignmentState.Initialized).value
-        LocalAssignmentState.InitializedButMissing -> null
-        LocalAssignmentState.Uninitialized -> null
+private val LocalAssignments.Node.Terminal.scalarValue: TACValue?
+    get() = when (val state = this.state) {
+        LocalAssignments.State.ByteMap -> null
+        is LocalAssignments.State.CVLString -> state.contents
+        is LocalAssignments.State.Contract -> state.value
+        is LocalAssignments.State.Initialized -> state.value
+        LocalAssignments.State.InitializedButMissing -> null
+        LocalAssignments.State.Uninitialized -> null
     }
+
+private fun CounterExample.expectAssignments(): LocalAssignments =
+    this.localAssignments ?: fail("expected assignments, got null")

@@ -283,7 +283,8 @@ object IntegrativeChecker {
                                     },
                                     rule = assertRule,
                                     model = exampleInfo.model,
-                                    dumpGraphLink = null
+                                    dumpGraphLink = null,
+                                    localAssignments = null,
                                 )
                             },
                             isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,

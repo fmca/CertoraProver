@@ -22,7 +22,6 @@ import datastructures.stdcollections.listOf
 import report.calltrace.CallEndStatus
 import report.calltrace.formatter.FormatterType
 import report.calltrace.sarif.Sarif
-import report.hasFailedInModel
 import solver.CounterexampleModel
 import utils.Range
 import tac.NBId
@@ -62,19 +61,10 @@ internal class SequenceGenerator(
     fun snippets(startPtr: CmdPointer = zeroPtr): Sequence<SnippetCmd> =
         graph
             .iterateFrom(startPtr, blocks)
-            .takeWhile { !isFailedAssert(it) }
+            .takeWhile { it.cmd !is TACCmd.Simple.AssertCmd || !it.cmd.isViolated(model) }
             .flatMap {
                 it.asSnippetCmd()?.let { listOf(it) } ?: it.cmd.subExprs().mapNotNull { (it as? TACExpr.AnnotationExp<*>)?.annot?.v as? SnippetCmd }
             }
-
-    private fun isFailedAssert(ltac: LTACCmd): Boolean {
-        val (ptr, cmd) = ltac
-
-        return when (cmd) {
-            is TACCmd.Simple.AssertCmd -> cmd.hasFailedInModel(model, ptr).getOrThrow()
-            else -> false
-        }
-    }
 }
 
 internal val zeroPtr = CmdPointer(StartBlock, 0)

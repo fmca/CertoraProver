@@ -41,7 +41,7 @@ import utils.*
  *
  * for example, one such string could be: myFunc('{0}', '{1}') returns '{2}'
  */
-data class Sarif internal constructor(val pieces: List<String>, val args: List<Arg>): TreeViewReportable {
+class Sarif internal constructor(val pieces: List<String>, val args: List<Arg>): TreeViewReportable {
     init {
         require(pieces.size == args.size + 1) {
             "got malformed input: pieces = $pieces, args = $args"
@@ -141,17 +141,15 @@ data class Sarif internal constructor(val pieces: List<String>, val args: List<A
     ) : TreeViewReportable {
 
         override val treeViewRepBuilder get() = TreeViewRepJsonObjectBuilder {
-            val arg = this@Arg
-
-            put(CallTraceAttribute.VALUE(), arg.values[Pretty]) // legacy, for backwards compatibility
+            put(CallTraceAttribute.VALUE(), this@Arg.values[Pretty]) // legacy, for backwards compatibility
 
             if (altReprsInTreeView) {
-                put(
+                putJsonArray(
                     CallTraceAttribute.VALUES(),
-                    buildJsonArray { arg.values.asRepList().forEach { add(it) } }
+                    this@Arg.values.asRepList().map(::JsonPrimitive)
                 )
             }
-            arg.tooltip?.let { put(CallTraceAttribute.TOOLTIP(), it) }
+            this@Arg.tooltip?.let { put(CallTraceAttribute.TOOLTIP(), it) }
             // arg.type?.let { put(CallTraceAttribute.TYPE(), it) } // not printing them for now -- bring them back if/when they're used
             put(CallTraceAttribute.TRUNCATABLE(), truncatable)
         }

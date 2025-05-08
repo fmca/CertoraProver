@@ -118,13 +118,13 @@ object CallTraceInfra {
             ?: error("Expected to have a single example but got ${examplesData.examples.size}")
     }
 
-    fun runConfAndGetCallTrace(
+    fun runConfAndGetCounterExample(
         confPath: Path,
         specFilename: Path,
         ruleName: String,
         methodName: String?,
         primaryContract: String,
-    ): CallTrace {
+    ): RuleCheckInfo.WithExamplesData.CounterExample {
         val cvlText = specFilename.readText()
 
         val flow = CVLFlow()
@@ -185,8 +185,19 @@ object CallTraceInfra {
                 isSolverResultFromCache = IsFromCache.DISABLED
             )
 
-            wed.examples.head.callTrace ?: error("failed to get call trace, got: ${wed.examples.head}")
+            wed.examples.head
         }
+    }
+
+    fun runConfAndGetCallTrace(
+        confPath: Path,
+        specFilename: Path,
+        ruleName: String,
+        methodName: String?,
+        primaryContract: String,
+    ): CallTrace {
+        val counterExample = runConfAndGetCounterExample(confPath, specFilename, ruleName, methodName, primaryContract)
+        return counterExample.callTrace ?: error("failed to get call trace, got: $counterExample")
     }
 
     /**

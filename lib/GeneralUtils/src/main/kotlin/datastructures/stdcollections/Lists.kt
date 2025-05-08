@@ -21,15 +21,27 @@ import kotlin.collections.plus as stdPlus
 import kotlin.collections.toList as stdToList
 import datastructures.*
 
+fun <T> List<T>.allButFirst(): List<T> {
+    return this.subList(1, this.size)
+}
+
+fun <T> List<T>.allButLast(): List<T> {
+    val end = when (val size = this.size) {
+        0 -> 0
+        else -> size - 1
+    }
+    return this.subList(0, end)
+}
+
 inline fun <T> List<T>.forAllButFirst(action: (T) -> Unit) {
-    for (i in 1..lastIndex) {
-        action(this[i])
+    for (elem in this.allButFirst()) {
+        action(elem)
     }
 }
 
 inline fun <T> List<T>.forAllButLast(action: (T) -> Unit) {
-    for (i in 0..(lastIndex - 1)) {
-        action(this[i])
+    for (elem in this.allButLast()) {
+        action(elem)
     }
 }
 

@@ -61,6 +61,9 @@ value class NonEmptyList<out T> internal constructor(
         )
     }
 
+    /** returns the last element. can't throw, since the list isn't empty */
+    fun last(): T = this.tail.lastOrNull() ?: this.head
+
     override fun toString(): String = backing.toString()
 }
 
