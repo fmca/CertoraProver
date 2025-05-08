@@ -44,35 +44,6 @@ import org.jetbrains.annotations.TestOnly
 /** For internal errors **/
 private class ScalarDomainError(msg: String): SolanaInternalError("ScalarDomain error: $msg")
 
-/**
- * This class wraps SbfType inside StackEnvironmentValue which is an interface.
- * It represents the value stored in a register or stack offset.
- **/
-class ScalarValue(private val type: SbfType): StackEnvironmentValue<ScalarValue> {
-    companion object {
-        fun mkTop() = ScalarValue(SbfType.Top)
-        fun mkBottom() = ScalarValue(SbfType.Bottom)
-        fun from(value: ULong): ScalarValue {
-            // REVISIT: immediate values are represented as ULong
-            // The analysis uses signed integer semantics, so we need to convert the value to Long.
-            // Therefore, overflow will happen if value represents a negative number.
-            return ScalarValue(SbfType.NumType(Constant(value.toLong())))
-        }
-        fun from(value: Long) = ScalarValue(SbfType.NumType(Constant(value)))
-
-        fun anyNum() = ScalarValue(SbfType.NumType(Constant.makeTop()))
-    }
-
-    fun get() = type
-    override fun isBottom() = type is SbfType.Bottom
-    override fun isTop() = type is SbfType.Top
-    override fun mkTop() = ScalarValue(SbfType.Top)
-    override fun join(other: ScalarValue) = ScalarValue(type.join(other.type))
-    override fun widen(other: ScalarValue)= ScalarValue(type.join(other.type))
-    override fun lessOrEqual(other: ScalarValue) = type.lessOrEqual(other.type)
-    override fun toString() = type.toString()
-}
-
 class ScalarDomain(// Model stack's contents
                    private var stack: StackEnvironment<ScalarValue>,
                    // Model each normal register

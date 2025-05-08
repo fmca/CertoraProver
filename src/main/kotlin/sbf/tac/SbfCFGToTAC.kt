@@ -58,6 +58,8 @@ import tac.*
 import vc.data.*
 import com.certora.collect.*
 import datastructures.stdcollections.*
+import sbf.domains.Constant
+import sbf.domains.SbfType
 import java.math.BigInteger
 
 // TAC annotations for TAC debugging
@@ -428,7 +430,7 @@ internal class SbfCFGToTAC(private val cfg: SbfCFG,
                     }
                 }
                 is Value.Imm -> {
-                    ConstantNum(right.v.toLong())
+                    Constant(right.v.toLong())
                 }
             }
             if (rightVal != null) {

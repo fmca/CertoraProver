@@ -21,6 +21,7 @@ import sbf.cfg.*
 import sbf.disassembler.*
 import datastructures.stdcollections.*
 import sbf.SolanaConfig
+import sbf.domains.SbfType
 import java.math.BigInteger
 
 /**

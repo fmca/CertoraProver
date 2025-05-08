@@ -28,6 +28,7 @@ import sbf.domains.ScalarDomain
 import sbf.testing.SbfTestDSL
 import log.*
 import org.junit.jupiter.api.*
+import sbf.domains.SbfType
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 

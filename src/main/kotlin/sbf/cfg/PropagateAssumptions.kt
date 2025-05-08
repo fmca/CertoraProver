@@ -18,6 +18,7 @@
 package sbf.cfg
 
 import sbf.analysis.ScalarAnalysisRegisterTypes
+import sbf.domains.SbfType
 
 /**
  * This pass adds annotations in the CFG to propagate certain equalities.

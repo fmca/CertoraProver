@@ -22,6 +22,7 @@ import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.disassembler.*
 import sbf.domains.MemorySummaries
 import datastructures.stdcollections.*
+import sbf.domains.SbfType
 
 /**
  * LLVM can sometimes optimize two consecutive memory stores into a single store if the stored value is an immediate value.

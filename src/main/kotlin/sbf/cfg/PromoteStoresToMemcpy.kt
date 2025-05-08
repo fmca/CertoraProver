@@ -24,8 +24,7 @@ import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.callgraph.CVTFunction
 import sbf.callgraph.SolanaFunction
 import sbf.disassembler.*
-import sbf.domains.MemorySummaries
-import sbf.domains.SetOfFiniteIntervals
+import sbf.domains.*
 import sbf.sbfLogger
 import datastructures.stdcollections.*
 import org.jetbrains.annotations.TestOnly

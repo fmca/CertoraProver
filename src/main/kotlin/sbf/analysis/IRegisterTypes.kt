@@ -18,8 +18,8 @@
 package sbf.analysis
 
 import sbf.cfg.LocatedSbfInstruction
-import sbf.cfg.SbfType
 import sbf.disassembler.SbfRegister
+import sbf.domains.SbfType
 
 interface IRegisterTypes {
     fun typeAtInstruction(i: LocatedSbfInstruction, r: SbfRegister): SbfType

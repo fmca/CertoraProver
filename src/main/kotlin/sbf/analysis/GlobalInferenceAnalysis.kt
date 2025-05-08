@@ -22,6 +22,7 @@ import sbf.disassembler.*
 import sbf.SolanaConfig
 import sbf.callgraph.*
 import sbf.domains.MemorySummaries
+import sbf.domains.SbfType
 
 /**
  * Whole-program analysis that identifies global variables that were not part of the ELF symbol table.

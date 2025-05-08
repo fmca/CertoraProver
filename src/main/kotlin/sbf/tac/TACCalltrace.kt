@@ -21,6 +21,7 @@ import sbf.callgraph.CVTCalltrace
 import sbf.callgraph.CVTFunction
 import sbf.cfg.*
 import sbf.disassembler.*
+import sbf.domains.SbfType
 import sbf.sbfLogger
 import vc.data.*
 

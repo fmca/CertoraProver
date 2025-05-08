@@ -21,8 +21,7 @@ import datastructures.stdcollections.*
 import sbf.callgraph.CVTCalltrace
 import sbf.cfg.*
 import sbf.disassembler.SbfRegister
-import sbf.domains.AbstractDomain
-import sbf.domains.InstructionListener
+import sbf.domains.*
 
 /**
  * Retrieves SbfTypes from [analysis]

@@ -19,6 +19,7 @@ package sbf.cfg
 
 import sbf.analysis.ScalarAnalysisRegisterTypes
 import sbf.disassembler.SbfRegister
+import sbf.domains.SbfType
 
 /**
  *  Normalize the memory access at [base]+[offset] at [locatedInst] as an offset with respect to r10.

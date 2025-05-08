@@ -18,10 +18,10 @@
 @file:kotlinx.serialization.UseSerializers(utils.BigIntegerSerializer::class)
 package sbf.tac
 
-import sbf.cfg.SbfType
 import tac.MetaKey
 import com.certora.collect.*
 import datastructures.stdcollections.*
+import sbf.domains.SbfType
 import utils.AmbiSerializable
 import utils.HasKSerializable
 import vc.data.TACSymbol

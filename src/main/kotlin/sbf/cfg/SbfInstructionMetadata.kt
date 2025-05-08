@@ -19,6 +19,7 @@ package sbf.cfg
 
 import utils.*
 import datastructures.stdcollections.*
+import sbf.domains.SbfType
 
 class MetaData private constructor(private val meta: Map<MetaKey<*>, Any>) {
     constructor(): this(mutableMapOf())
