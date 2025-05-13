@@ -24,15 +24,20 @@ import datastructures.buildMultiMap
 import datastructures.stdcollections.*
 import tac.NBId
 import utils.*
+import vc.data.AnalysisCache
 import vc.data.CoreTACProgram
 import vc.data.TACCmd
 import vc.data.TACSymbol
 import kotlin.collections.removeLast
 
-class OnDemandUseAnalysis(private val graph: TACCommandGraph) : IUseAnalysis {
+class OnDemandUseAnalysis private constructor(private val graph: TACCommandGraph) : IUseAnalysis {
+    companion object : AnalysisCache.Key<OnDemandUseAnalysis> {
+        override fun createCached(graph: TACCommandGraph) = OnDemandUseAnalysis(graph)
+    }
+
     // Accessing these early prevents some problematic lazy initialization recursion; see Lazy.kt
     private val lva = graph.cache.lva
-    private val variableLookup = graph.cache.variableLookup
+    private val variableLookup = graph.cache[VariableLookupComputation]
 
     override fun useSitesAfter(v: TACSymbol.Var, pointer: CmdPointer): Set<CmdPointer> {
         val useSites = mutableSetOf<CmdPointer>()

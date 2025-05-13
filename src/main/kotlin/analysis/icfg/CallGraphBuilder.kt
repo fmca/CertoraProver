@@ -34,7 +34,6 @@ import analysis.pta.*
 import analysis.pta.abi.*
 import analysis.pta.abi.DecoderAnalysis.Companion.sizeInArray
 import analysis.worklist.IWorklistScheduler
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StatefulWorklistIteration
 import analysis.worklist.StepResult
 import com.certora.collect.*
@@ -2419,7 +2418,7 @@ object CallGraphBuilder {
             )
             exportState = state
             object : StatefulWorklistIteration<NBId, Unit, Unit>() {
-                override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(g)
+                override val scheduler: IWorklistScheduler<NBId> = g.cache.naturalBlockScheduler
 
                 override fun process(it: NBId): StepResult<NBId, Unit, Unit> {
                     val block = g.elab(it)

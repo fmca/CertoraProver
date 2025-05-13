@@ -22,7 +22,6 @@ import analysis.*
 import analysis.numeric.SimpleIntQualifier
 import analysis.numeric.SimpleQualifiedInt
 import analysis.worklist.IWorklistScheduler
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StatefulWorklistIteration
 import analysis.worklist.StepResult
 import com.certora.collect.*
@@ -86,7 +85,7 @@ class IntervalAnalysis(private val graph: TACCommandGraph) {
             inState[it.id] = treapMapOf()
         }
         (object : StatefulWorklistIteration<NBId, Unit, Unit>() {
-            override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph)
+            override val scheduler: IWorklistScheduler<NBId> = graph.cache.naturalBlockScheduler
 
             override fun reduce(results: List<Unit>) {}
 

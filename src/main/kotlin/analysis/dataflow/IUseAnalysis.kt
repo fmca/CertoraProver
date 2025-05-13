@@ -26,6 +26,6 @@ interface IUseAnalysis {
 
     companion object {
         fun UseAnalysis(graph: TACCommandGraph) : IUseAnalysis =
-            OnDemandUseAnalysis(graph)
+            graph.cache[OnDemandUseAnalysis]
     }
 }

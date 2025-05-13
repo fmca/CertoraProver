@@ -90,7 +90,7 @@ class CallInputsAndOutputs private constructor(private val model: Counterexample
     constructor(
         blocks: List<NBId>,
         model: CounterexampleModel,
-        analysisCache: IAnalysisCache,
+        analysisCache: AnalysisCache,
         scene: ISceneIdentifiers
     ) : this(model) {
         Initializer(blocks, model, analysisCache, scene).initialize(this)

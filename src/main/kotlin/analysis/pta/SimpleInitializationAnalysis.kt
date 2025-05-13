@@ -720,7 +720,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
         }
     }
 
-    private val blockScheduler = NaturalBlockScheduler(graph)
+    private val blockScheduler = graph.cache.naturalBlockScheduler
     private val visited = newKeySet<NBId>()
 
     private fun doInnerAnalysis(

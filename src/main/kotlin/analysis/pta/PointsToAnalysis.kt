@@ -31,7 +31,6 @@ import analysis.numeric.linear.TermMatching.matches
 import analysis.pta.abi.*
 import analysis.storage.BytesKeyHash
 import analysis.worklist.IWorklistScheduler
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StatefulWorklistIteration
 import analysis.worklist.StepResult
 import com.certora.collect.*
@@ -1473,7 +1472,7 @@ class PointsToAnalysis(
             (object : StatefulWorklistIteration<NBId, Unit, String?>() {
                 override fun reduce(results: List<Unit>): String? = null
 
-                override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph)
+                override val scheduler: IWorklistScheduler<NBId> = graph.cache.naturalBlockScheduler
 
                 /**
                 * After an upper bound operation in the pointer analysis "kills" pointer variables, adjust those variables

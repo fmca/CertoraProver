@@ -18,6 +18,7 @@
 package instrumentation.transformers
 
 import analysis.*
+import analysis.dataflow.VariableLookupComputation
 import utils.`to?`
 import utils.mapNotNull
 import vc.data.*
@@ -54,7 +55,7 @@ object InitializationPointerShift {
      * the definition of z, leading to an initialization analysis failure.
      */
     fun shiftPointerComputation(c: CoreTACProgram) : CoreTACProgram {
-        val touchedVars = c.analysisCache.variableLookup
+        val touchedVars = c.analysisCache[VariableLookupComputation]
         val matcher = PatternMatcher.compilePattern(graph = c.analysisCache.graph, patt = PatternDSL.build {
             (Var { p: TACSymbol.Var, lc: LTACCmd ->
                 if(p == TACKeyword.MEM64.toVar()) {

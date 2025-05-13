@@ -38,7 +38,7 @@ import java.math.BigInteger
  */
 object SighashReadNormalizer {
     fun doWork(c: CoreTACProgram) : CoreTACProgram {
-        val d = StrictDefAnalysis(c.analysisCache.graph)
+        val d = c.analysisCache.strictDef
         return c.parallelLtacStream().mapNotNull {
             it.maybeNarrow<TACCmd.Simple.ByteLongCopy>()?.takeIf {
                 it.cmd.srcBase == TACKeyword.CALLDATA.toVar() && it.cmd.dstBase == TACKeyword.MEMORY.toVar() &&

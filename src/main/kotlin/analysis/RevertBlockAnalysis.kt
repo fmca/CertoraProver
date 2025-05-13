@@ -24,6 +24,7 @@ import log.LoggerTypes
 import tac.MetaKey
 import tac.NBId
 import utils.mapToSet
+import vc.data.AnalysisCache
 import vc.data.TACCmd
 import vc.data.TACMeta
 
@@ -31,7 +32,9 @@ private val logger = Logger(LoggerTypes.COMMON)
 
 
 // What does this match exactly?
-object RevertBlockAnalysis {
+object RevertBlockAnalysis : AnalysisCache.Key<Set<NBId>> {
+    override fun createCached(graph: TACCommandGraph) = findRevertBlocks(graph)
+
     fun findRevertBlocks(graph: TACCommandGraph) : Set<NBId> =
         graph.blocks.asSequence().filter {
             it.commands.any { it.cmd is TACCmd.Simple.RevertCmd }

@@ -21,11 +21,15 @@ import analysis.*
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import tac.NBId
+import vc.data.AnalysisCache
 import vc.data.AssigningSummary
 import vc.data.TACCmd
 import vc.data.TACSymbol
 
 class LiveVariableAnalysis(private val graph: TACCommandGraph, val cmdFilter: ((LTACCmd) -> Boolean) = {_ -> true}) {
+    companion object : AnalysisCache.Key<LiveVariableAnalysis> {
+        override fun createCached(graph: TACCommandGraph) = LiveVariableAnalysis(graph)
+    }
 
     private val lvars: Map<CmdPointer, Pair<TreapSet<TACSymbol.Var>, TreapSet<TACSymbol.Var>>>
 

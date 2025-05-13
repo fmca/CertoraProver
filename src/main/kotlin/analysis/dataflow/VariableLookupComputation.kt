@@ -17,13 +17,20 @@
 
 package analysis.dataflow
 
-import analysis.LTACCmd
+import analysis.*
 import tac.NBId
+import vc.data.AnalysisCache
 import vc.data.TACSymbol
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
-object VariableLookupComputation {
+object VariableLookupComputation : AnalysisCache.Key<Map<NBId, Set<TACSymbol.Var>>> {
+    override fun createCached(graph: TACCommandGraph) = compute(
+        graph.blocks.stream().flatMap {
+            it.commands.stream()
+        }
+    )
+
     fun compute(s: Stream<LTACCmd>) : Map<NBId, Set<TACSymbol.Var>> {
         return s.map {
             val vars = mutableSetOf<TACSymbol.Var>()

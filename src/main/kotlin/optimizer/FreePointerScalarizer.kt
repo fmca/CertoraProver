@@ -384,7 +384,7 @@ object FreePointerScalarizer {
             val graph = code.analysisCache.graph
             val expSimplifier = ExpressionSimplifier(code.analysisCache.graph)
 
-            override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph)
+            override val scheduler: IWorklistScheduler<NBId> = graph.cache.naturalBlockScheduler
 
             fun combineStates(l: STATE, r: STATE) : STATE =
                 when(l) {
@@ -639,7 +639,7 @@ object FreePointerScalarizer {
 
         return code.patching { p ->
             object : StatefulWorklistIteration<NBId, Unit, Unit>() {
-                override val scheduler = NaturalBlockScheduler(g)
+                override val scheduler = g.cache.naturalBlockScheduler
 
                 val state = mutableMapOf<NBId, VROIntMap>()
                 val conditions = mutableMapOf<LTACCmd, VROIntMap>()

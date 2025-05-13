@@ -24,7 +24,6 @@ import analysis.TACCommandGraph
 import analysis.numeric.*
 import analysis.pta.LoopCopyAnalysis
 import analysis.worklist.IWorklistScheduler
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StatefulWorklistIteration
 import analysis.worklist.StepResult
 import com.certora.collect.*
@@ -159,7 +158,7 @@ open class FreePointerAnalysis(private val graph: TACCommandGraph) {
         val result = mutableMapOf<CmdPointer, State>()
 
         val res = object : StatefulWorklistIteration<NBId, Boolean, Boolean>() {
-            override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph)
+            override val scheduler: IWorklistScheduler<NBId> = graph.cache.naturalBlockScheduler
 
             override fun reduce(results: List<Boolean>): Boolean {
                 return results.none {

@@ -52,6 +52,10 @@ class GlobalValueNumbering(graph: TACCommandGraph, val followIdentities: Boolean
         ),
         IGlobalValueNumbering {
 
+    companion object : AnalysisCache.Key<GlobalValueNumbering> {
+        override fun createCached(graph: TACCommandGraph) = GlobalValueNumbering(graph)
+    }
+
     // Maps b |-> { v | b is in one of v's def's dominance frontier }
     private val phis: Map<NBId, TreapSet<TACSymbol.Var>>
 

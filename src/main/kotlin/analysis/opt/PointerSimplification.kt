@@ -22,7 +22,6 @@ import analysis.numeric.linear.*
 import analysis.numeric.linear.TermMatching.matchesAny
 import analysis.worklist.IWorklistScheduler
 import analysis.worklist.MonadicStatefulParallelWorklistIteration
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.ParallelStepResult
 import com.certora.collect.*
 import config.Config
@@ -591,7 +590,7 @@ object PointerSimplification {
                 object : MonadicStatefulParallelWorklistIteration<NBId, Pair<NBId, LinearInvariants>, Unit, Unit>(
                   inheritPool = (Thread.currentThread() as? ParallelPool.ParallelPoolWorkerThread)?.parallelPool
                 ) {
-                    override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(g)
+                    override val scheduler: IWorklistScheduler<NBId> = g.cache.naturalBlockScheduler
 
                     override fun commit(c: Pair<NBId, LinearInvariants>, nxt: MutableCollection<NBId>, res: MutableCollection<Unit>) {
                         val (where, inv) = c

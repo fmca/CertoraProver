@@ -21,7 +21,6 @@ import datastructures.stdcollections.*
 import analysis.numeric.*
 import analysis.numeric.linear.*
 import analysis.worklist.IWorklistScheduler
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StatefulWorklistIteration
 import analysis.worklist.StepResult
 import com.certora.collect.*
@@ -68,7 +67,7 @@ class GlobalInvariantAnalysis(private val semantics: GlobalInvariantAnalysisSema
     private inner class GlobalInvariantWorker(private val graph: TACCommandGraph) :
         StatefulWorklistIteration<NBId, Unit, GlobalInvariantAnalysisResult>() {
 
-        override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph)
+        override val scheduler: IWorklistScheduler<NBId> = graph.cache.naturalBlockScheduler
         private val invStartOfBlock: MutableMap<NBId, LinearInvariants> = mutableMapOf()
         private val invEndOfBlock: MutableMap<NBId, LinearInvariants> = mutableMapOf()
 
@@ -132,11 +131,11 @@ open class GlobalInvariantAnalysisSemantics(private val maxTerms: Int) : Abstrac
                 return if (cmd.lhs == TACKeyword.MEM64.toVar() || cmd.usesVar(TACKeyword.MEM64.toVar())) {
                     toStep
                 } else {
-                    fun LinearEquality.filter() = treapSetOfNotNull(this.takeIf { 
-                        isRelevant(it) && it.term.size <= maxTerms 
+                    fun LinearEquality.filter() = treapSetOfNotNull(this.takeIf {
+                        isRelevant(it) && it.term.size <= maxTerms
                     })
-                    fun TreapSet<LinearEquality>.filter() = this.retainAll { 
-                        isRelevant(it) && it.term.size <= maxTerms 
+                    fun TreapSet<LinearEquality>.filter() = this.retainAll {
+                        isRelevant(it) && it.term.size <= maxTerms
                     }
 
                     val gen = treapSetOfNotNull(

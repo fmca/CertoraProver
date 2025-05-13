@@ -3998,7 +3998,7 @@ class StorageAnalysis(private val compilerStorage: TACStorageLayout?, private va
             (object : StatefulWorklistIteration<NBId, Unit, Unit>() {
                 // We use NaturalBlockScheduler since we may delete state corresponding
                 // to loop body blocks at the tail of a loop
-                override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph)
+                override val scheduler: IWorklistScheduler<NBId> = graph.cache.naturalBlockScheduler
 
                 override fun reduce(results: List<Unit>) {}
 
