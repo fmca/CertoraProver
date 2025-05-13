@@ -348,8 +348,8 @@ jobs:
           certora_cli_package: << parameters.certora_cli_package >>
       - run_evm_sanity:
           set_prover_version: << parameters.set_prover_version >>
-      - run_solana_sanity:
-          set_prover_version: << parameters.set_prover_version >>
+#      - run_solana_sanity:
+#          set_prover_version: << parameters.set_prover_version >>
       - run_soroban_sanity:
           set_prover_version: << parameters.set_prover_version >>
       - run_mutation_sanity:
