@@ -23,7 +23,7 @@ import vc.data.state.ConcreteTACState
 import vc.data.state.TACValue
 import java.math.BigInteger
 
-abstract class TACValueGenerator {
+sealed class TACValueGenerator {
 
     /**
      * UserValue oracle reads its initial state from a file.

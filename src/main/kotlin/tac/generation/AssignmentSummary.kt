@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package wasm.tacutils
+package tac.generation
 
 import analysis.CommandWithRequiredDecls.Companion.withDecls
 import datastructures.stdcollections.*

@@ -17,20 +17,23 @@
 
 package algorithms
 
-import analysis.CmdPointer
-import analysis.LTACCmd
+import analysis.*
 import com.certora.collect.*
 import datastructures.*
 import datastructures.stdcollections.*
 import instrumentation.transformers.TACDSA
 import tac.NBId
 import utils.*
+import vc.data.AnalysisCache
 
 //
 // See "A Simple, Fast Dominance Algorithm," Cooper, Harvey, Kennedy (2001):
 //     http://www.hipersoft.rice.edu/grads/publications/dom14.pdf
 //
 class SimpleDominanceAnalysis<@Treapable T : Any>(g: Map<T, Set<T>>) {
+    companion object : AnalysisCache.Key<SimpleDominanceAnalysis<NBId>> {
+        override fun createCached(graph: TACCommandGraph) = SimpleDominanceAnalysis(graph.toBlockGraph())
+    }
 
     private val nodeCount: Int
     private val nodes: Array<T>

@@ -24,6 +24,7 @@ import com.certora.collect.*
 import datastructures.stdcollections.*
 import tac.NBId
 import utils.*
+import vc.data.AnalysisCache
 
 //
 // Work scheduler based on part of jtoman's dissertation:
@@ -38,13 +39,8 @@ import utils.*
 // loop header.  Finally, we precompute the transitive closures of the nodes in the dependency graph.
 //
 class NaturalBlockScheduler private constructor(graph: TACCommandGraph) : IWorklistScheduler<NBId> {
-    companion object {
-        operator fun invoke(graph: TACCommandGraph, dummy: Int? = null): NaturalBlockScheduler {
-            unused(dummy)
-            return graph.cache.naturalBlockScheduler
-        }
-
-        fun createForCache(graph: TACCommandGraph) = NaturalBlockScheduler(graph)
+    companion object : AnalysisCache.Key<NaturalBlockScheduler> {
+        override fun createCached(graph: TACCommandGraph) = NaturalBlockScheduler(graph)
     }
 
     private data class DependencyNode(val block: NBId, val isLoopHeaderDependency: Boolean) : Comparable<DependencyNode> {

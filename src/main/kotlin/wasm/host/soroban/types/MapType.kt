@@ -22,13 +22,11 @@ import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.analysis.memory.*
 import wasm.host.soroban.*
-import wasm.host.soroban.opt.LONG_COPY_STRIDE
-import wasm.tacutils.*
-import wasm.traps.*
 
 /**
     Soroban map objects are arbitrary key/value mappings.
@@ -332,8 +330,10 @@ object MapType : MappingType() {
 
         protected override fun gen(
             simplifiedInputs: List<TACExpr>,
-            staticData: StaticMemoryAnalysis
+            analysisCache: AnalysisCache
         ) = simplifiedInputs.let { (keysPos, valsPos, length) ->
+            val staticData = analysisCache[StaticMemoryAnalysis]
+
             // Try to get the length as a constant
             val constLength = length.getAsConst()?.toIntOrNull()
             if (constLength == null) {
@@ -416,8 +416,9 @@ object MapType : MappingType() {
 
         protected override fun gen(
             simplifiedInputs: List<TACExpr>,
-            staticData: StaticMemoryAnalysis
+            analysisCache: AnalysisCache
         ) = simplifiedInputs.let { (_, keysPos, valsPos, length) ->
+            val staticData = analysisCache[StaticMemoryAnalysis]
             val constLength = length.getAsConst()?.toIntOrNull()
             if (constLength == null) {
                 // Havoc the target memory

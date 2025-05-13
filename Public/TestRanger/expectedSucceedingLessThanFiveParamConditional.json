@@ -1,10 +1,21 @@
 {
-	"assertMessages": {},
 	"rules": {
-		"succeedingLessThanFiveParamConditional-Initial State": "SUCCESS",
-		"succeedingLessThanFiveParamConditional-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally": "SUCCESS",
-		"succeedingLessThanFiveParamConditional-Initial State-InvParams.setBar(uint256)-InvParams.setFooConditionally": "SUCCESS",
-		"succeedingLessThanFiveParamConditional-Initial State-InvParams.setFoo()-InvParams.setFooConditionally": "SUCCESS",
-		"succeedingLessThanFiveParamConditional-Initial State-InvParams.setFooConditionally((uint256))-InvParams.setFoo": "SUCCESS"
+		"succeedingLessThanFiveParamConditional": {
+			"Initial State": {
+				"succeedingLessThanFiveParamConditional-Initial State-vacuity": "SUCCESS"
+			},
+			"Range 1": {
+				"SUCCESS": [
+					"succeedingLessThanFiveParamConditional-Initial State-Any of: InvParams.setFoo, InvParams.setFooConditionally"
+				]
+			},
+			"Range 2": {
+				"SUCCESS": [
+					"succeedingLessThanFiveParamConditional-Initial State-InvParams.setBar(uint256)-InvParams.setFooConditionally",
+					"succeedingLessThanFiveParamConditional-Initial State-InvParams.setFoo()-InvParams.setFooConditionally",
+					"succeedingLessThanFiveParamConditional-Initial State-InvParams.setFooConditionally((uint256))-InvParams.setFoo"
+				]
+			}
+		}
 	}
 }

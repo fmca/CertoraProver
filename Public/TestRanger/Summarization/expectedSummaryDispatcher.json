@@ -1,9 +1,14 @@
 {
-	"assertMessages": {
-		"violatedLessThanFive-Initial State-Any of: Summary.setFoo, Summary.setFooConditionally, Summary.unresolvedCall": "invariant assertion - SummaryDispatcher.spec line 37"
-	},
 	"rules": {
-		"violatedLessThanFive-Initial State": "SUCCESS",
-		"violatedLessThanFive-Initial State-Any of: Summary.setFoo, Summary.setFooConditionally, Summary.unresolvedCall": "FAIL"
+		"violatedLessThanFive": {
+			"Initial State": {
+				"violatedLessThanFive-Initial State-vacuity": "SUCCESS"
+			},
+			"Range 1": {
+				"FAIL": [
+					"violatedLessThanFive-Initial State-Any of: Summary.setFoo, Summary.setFooConditionally, Summary.unresolvedCall"
+				]
+			}
+		}
 	}
 }

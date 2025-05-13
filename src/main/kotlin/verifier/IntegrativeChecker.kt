@@ -125,6 +125,7 @@ object IntegrativeChecker {
         scene: IScene,
         assertions: ProverQuery.AssertionQuery,
         reporter: OutputReporter,
+        treeViewReporter: TreeViewReporter
     ): List<RuleCheckResult.Single> {
         if (assertions.contractsToCheckAssert.isNotEmpty()) {
             Logger.always("Has assertion checks.", respectQuiet = false)
@@ -216,7 +217,9 @@ object IntegrativeChecker {
             logger.info { "Processing for assertions:" }
 
             val startTime = System.currentTimeMillis()
-            val vcRes = checkVC(scene, codeToCheck, liveStatsReporter = DummyLiveStatsReporter, assertionCheck.rule)
+            treeViewReporter.addTopLevelRule(assertRule)
+            treeViewReporter.signalStart(assertRule)
+            val vcRes = checkVC(scene, codeToCheck, liveStatsReporter = DummyLiveStatsReporter, assertRule)
             val endTime = System.currentTimeMillis()
             val finalResult = vcRes.finalResult
             when (finalResult) {
@@ -247,7 +250,7 @@ object IntegrativeChecker {
                 SolverResult.SANITY_FAIL -> throw IllegalStateException("Unexpected solver result in assert mode: $finalResult")
             }
 
-            assertionResults.add(
+            val assertRuleResult =
                 if (finalResult != SolverResult.SAT) {
                     RuleCheckResult.Single.Basic(
                         rule = assertRule,
@@ -292,7 +295,8 @@ object IntegrativeChecker {
                         )
                     )
                 }
-            )
+            treeViewReporter.signalEnd(assertRule, assertRuleResult)
+            assertionResults.add(assertRuleResult)
         }
 
         reporter.feedReporter(assertionResults, scene)
@@ -768,6 +772,25 @@ object IntegrativeChecker {
         StatusReporter.freeze()
     }
 
+    private fun createTreeViewReporter(scene: IScene, query: ProverQuery): TreeViewReporter {
+        return when(query){
+            is ProverQuery.AssertionQuery ->
+                TreeViewReporter(
+                    null,
+                    "AssertContract",
+                    scene,
+                )
+            is ProverQuery.CVLQuery.Single -> query.cvl.let {
+                TreeViewReporter(
+                    it.getContractNameFromContractId(SolidityContract.Current),
+                    it.name,
+                    scene,
+                )
+            }
+            is ProverQuery.EquivalenceQuery -> `impossible!`
+        }
+    }
+
     /**
      * If [Config.SceneConstructionOnly] is disabled, returns the check results ([RuleCheckResult]s) of each rule ([IRule]) derived from the given [query];
      * otherwise, as the [query] is not being checked, returns the empty list.
@@ -778,6 +801,7 @@ object IntegrativeChecker {
         reporterContainer: ReporterContainer,
         extensionContractsMapping: ExtensionContractsMapping,
     ): List<RuleCheckResult> {
+        val treeView = createTreeViewReporter(scene, query)
         val result = if (!Config.SceneConstructionOnly.get()) { // works thanks to logSceneInfo above which triggers the lazy computation
             // run initial transformations, before checking specs or assertions
             if(query is ProverQuery.EquivalenceQuery) {
@@ -787,26 +811,24 @@ object IntegrativeChecker {
             }
             runInitialTransformations(scene, query, extensionContractsMapping)
             if(!Config.PreprocessOnly.get()) {
-
                 when (query) {
-                    is ProverQuery.AssertionQuery -> handleAssertions(
-                        scene.fork(IScene.ForkInfo.ASSERTION),
-                        query,
-                        reporterContainer,
-                    )
+                    is ProverQuery.AssertionQuery -> {
+                        handleAssertions(
+                            scene.fork(IScene.ForkInfo.ASSERTION),
+                            query,
+                            reporterContainer,
+                            treeView
+                        )
+                    }
 
-                    is ProverQuery.CVLQuery.Single -> handleCVLs(
-                        scene.fork(IScene.ForkInfo.CVL),
-                        query,
-                        reporterContainer,
-                        query.cvl.let {
-                            TreeViewReporter(
-                                it.getContractNameFromContractId(SolidityContract.Current),
-                                it.name,
-                                scene,
-                            )
-                        })
-
+                    is ProverQuery.CVLQuery.Single -> {
+                        handleCVLs(
+                            scene.fork(IScene.ForkInfo.CVL),
+                            query,
+                            reporterContainer,
+                            treeView
+                        )
+                    }
                     is ProverQuery.EquivalenceQuery -> `impossible!`
                 }
             } else {
@@ -822,6 +844,7 @@ object IntegrativeChecker {
         if(!Config.SceneConstructionOnly.get() && !Config.PreprocessOnly.get()) {
             reporterContainer.toFile(scene)
         }
+        treeView.writeOutputJson()
         return result
     }
 
@@ -841,7 +864,6 @@ object IntegrativeChecker {
 
         val reporterContainer = ReporterContainer(
             listOf(
-                JSONReporter(Config.OutputJSONFile),
                 CoinbaseFeaturesReporter(Config.FeaturesJSONFile),
                 ConsoleReporter,
                 HTMLReporter,

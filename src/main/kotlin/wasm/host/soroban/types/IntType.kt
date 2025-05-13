@@ -22,11 +22,10 @@ import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.host.soroban.*
-import wasm.tacutils.*
-import wasm.traps.*
 import java.math.BigInteger
 
 // Many int functions deal with "pieces" of the int, which are 64-bit chunks

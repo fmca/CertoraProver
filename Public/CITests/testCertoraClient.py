@@ -1479,13 +1479,13 @@ class TestClient(unittest.TestCase):
                                          run_flags=["--build_script", "./build_script.py",
                                                     "--cargo_features", "feature1",
                                                     "--cargo_tools_version", "v1.41"])
-        expected = ['./build_script.py', '--cargo_features', 'feature1', '--json', '-l']
+        expected = ['./build_script.py', '--json', '-l', '--cargo_features', 'feature1']
         assert result == expected, f"with --build_script: expected {expected}, got {result}"
 
         result = suite.expect_checkpoint(description="solana build with cargo flags",
                                          run_flags=["--cargo_features", "feature1",
                                                     "--cargo_tools_version", "v1.41"])
-        expected = ['cargo', 'certora-sbf', '--tools-version', 'v1.41', '--features', 'feature1', '--json', '-l']
+        expected = ['cargo', 'certora-sbf', '--json', '--tools-version', 'v1.41', '--features', 'feature1']
         assert result == expected, f"without  --build_script: expected {expected}, got {result}"
 
     def test_ranger(self) -> None:

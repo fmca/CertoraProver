@@ -46,7 +46,7 @@ class LooseDefAnalysisTest : CommandFinderMixin, MockStackVarMixin {
             L1020 = "L1023 + 0x3"
             exit()
         }
-        val du = LooseDefAnalysis(graph)
+        val du = graph.cache[LooseDefAnalysis]
         val final = TACMockUtils.commandWithTagOrFail(graph, "write")
         val res = du.defSitesOf(TACSymbol.Var("L1023", Tag.Bit256), final)
         Assertions.assertEquals(2, res.size)
@@ -63,7 +63,7 @@ class LooseDefAnalysisTest : CommandFinderMixin, MockStackVarMixin {
             tagNext("second")
             L1023 = 4
         }
-        val du = LooseDefAnalysis(graph)
+        val du = graph.cache[LooseDefAnalysis]
         val final = graph.findCommandOrFail("second")
         val defSites = du.defSitesOf(L1023, final)
         Assertions.assertEquals(1, defSites.size)
@@ -82,7 +82,7 @@ class LooseDefAnalysisTest : CommandFinderMixin, MockStackVarMixin {
                 L1024 = "L1023 - L1024"
             }
         }
-        val du = LooseDefAnalysis(graph)
+        val du = graph.cache[LooseDefAnalysis]
         val use = graph.findCommandOrFail("use")
         val defSites = du.defSitesOf(L1024, use)
         Assertions.assertEquals(2, defSites.size)
@@ -100,7 +100,7 @@ class LooseDefAnalysisTest : CommandFinderMixin, MockStackVarMixin {
             tagNext("firstUse")
             L1022 = L1024
         }
-        val du = LooseDefAnalysis(graph)
+        val du = graph.cache[LooseDefAnalysis]
         val use = graph.findCommandOrFail("firstUse")
         val defSites = du.defSitesOf(L1024, use)
         Assertions.assertEquals(1, defSites.size)
@@ -125,7 +125,7 @@ class LooseDefAnalysisTest : CommandFinderMixin, MockStackVarMixin {
             L1023 = "L1024 + 0x3"
             exit()
         }
-        val du = LooseDefAnalysis(graph)
+        val du = graph.cache[LooseDefAnalysis]
         val useSite = graph.findCommandOrFail("use")
         val defSites = du.defSitesOf(L1024, useSite)
         Assertions.assertEquals(2, defSites.size)

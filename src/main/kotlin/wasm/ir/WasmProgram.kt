@@ -395,11 +395,6 @@ data class WasmData(val name: WasmName, val offset: WasmInstruction, val content
         fun toByteData(stringData: String): List<UByte> =
             stringData.map { it.code.toUByte() }
     }
-
-    fun indexOfAddress(address: BigInteger): Int? = offsetConstVal
-        ?.let { address - it }
-        ?.toIntOrNull()
-        ?.takeIf { 0 <= it && it < content.size }
 }
 
 /* only allows function refs for now: https://www.w3.org/TR/wasm-core-1/#tables%E2%91%A0

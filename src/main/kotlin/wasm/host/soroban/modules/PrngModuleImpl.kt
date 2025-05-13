@@ -19,12 +19,11 @@ package wasm.host.soroban.modules
 
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import datastructures.stdcollections.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.host.soroban.*
 import wasm.host.soroban.types.*
-import wasm.tacutils.*
-import wasm.traps.*
 
 internal object PrngModuleImpl : ModuleImpl() {
     override fun getFuncImpl(funcName: String, args: List<TACSymbol>, retVar: TACSymbol.Var?) =

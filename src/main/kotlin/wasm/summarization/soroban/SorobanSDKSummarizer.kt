@@ -21,6 +21,7 @@ import datastructures.stdcollections.*
 import analysis.CommandWithRequiredDecls
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import analysis.CommandWithRequiredDecls.Companion.withDecls
+import tac.generation.*
 import tac.Tag
 import vc.data.*
 import vc.data.TACExprFactUntyped
@@ -33,8 +34,6 @@ import wasm.ir.WasmName
 import wasm.ir.WasmPrimitiveType
 import wasm.ir.WasmProgram.*
 import wasm.summarization.WasmCallSummarizer
-import wasm.tacutils.*
-import wasm.traps.Trap
 
 /**
  * A summarizer for Soroban SDK functions

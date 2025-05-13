@@ -26,7 +26,9 @@ import analysis.icfg.SummaryStack
 import datastructures.stdcollections.*
 import log.*
 import report.RuleAlertReport
+import rules.CompiledRule
 import spec.CVLCompiler
+import spec.cvlast.SpecType
 import tac.NBId
 import utils.*
 import vc.data.*
@@ -38,7 +40,15 @@ import vc.data.tacexprutil.isVar
  * Will generate a notification for each such require, generally at info level, but instead at warning level if we detect
  * that the require statement affects the possible values of an argument given to a solidity function call, except through summaries.
  */
-fun collectRequireWithoutReasonNotifications(tac: CoreTACProgram): List<RuleAlertReport.Single<*>> {
+fun collectRequireWithoutReasonNotifications(compiledRule: CompiledRule): List<RuleAlertReport.Single<*>> {
+    if (compiledRule.rule.ruleType is SpecType.Single.GeneratedFromBasicRule.SanityRule) {
+        /**
+         * We only show the notification for the actual rule, not all derived rules, i.e. rules that are generated in
+         * sanity mode ([config.Config.DoSanityChecksForRules]).
+         */
+        return emptyList()
+    }
+    val tac = compiledRule.tac
 
     val graph = tac.analysisCache.graph
     val inverseReachability = lazy { transitiveClosure(graph.blockPred, reflexive = true) }

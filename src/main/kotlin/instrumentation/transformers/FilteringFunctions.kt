@@ -63,7 +63,7 @@ interface FilteringFunctions {
     }
 
     class BMCPreserving(code: CoreTACProgram) : CallTracePreserving(code) {
-        override val protectedCmdMeta: List<MetaKey<*>> = super.protectedCmdMeta + TACMeta.LAST_STORAGE_UPDATE
+        override val protectedCmdMeta: List<MetaKey<*>> = super.protectedCmdMeta + TACMeta.LAST_STORAGE_UPDATE + TACMeta.GHOST_SUM_ASSIGNMENT
     }
 
     companion object {

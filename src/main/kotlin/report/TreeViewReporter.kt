@@ -16,6 +16,7 @@
  */
 
 package report
+
 import allocator.Allocator
 import bridge.Method
 import config.Config
@@ -56,7 +57,7 @@ private val logger = Logger(LoggerTypes.TREEVIEW_REPORTER)
 private val HOT_UPDATE_TIME_RATE: Duration
     get() = TreeViewReportUpdateInterval.get().seconds
 
-object SolverResultStatusToTreeViewStatusMapper{
+object SolverResultStatusToTreeViewStatusMapper {
     private fun getStatusForSatisfyRule(result: SolverResult): TreeViewReporter.TreeViewStatusEnum {
         return when (result) {
             SolverResult.SAT -> TreeViewReporter.TreeViewStatusEnum.VERIFIED
@@ -104,6 +105,7 @@ object SolverResultStatusToTreeViewStatusMapper{
             } else {
                 getStatusForRegularRule(solverResult)
             }
+
             is GroupRule -> error("Unexpected Behaviour: Tried to map the status for the rule ${rule}")
             is EcosystemAgnosticRule ->
                 if (rule.ruleType is SpecType.Single.GeneratedFromBasicRule.SanityRule.VacuityCheck) {
@@ -175,7 +177,9 @@ class TreeViewReporter(
     init {
         // set up the files we'll dump
         ArtifactManagerFactory().registerArtifact(versionedFIle, StaticArtifactLocation.TreeViewReports)
+        ArtifactManagerFactory().registerArtifact(Config.OutputJSONFile.get())
     }
+
     companion object {
         val ROOT_NODE_IDENTIFIER: RuleIdentifier = RuleIdentifier.freshIdentifier("TREE_VIEW_ROOT_NODE")
 
@@ -184,6 +188,7 @@ class TreeViewReporter(
          * unless it's been thought about well ...*/
         var instance: TreeViewReporter? = null
     }
+
     /**
      * An enum describing the status or the final result of a check of an [IRule].
      *
@@ -234,6 +239,14 @@ class TreeViewReporter(
             get() = name
 
         fun isRunning() = this == REGISTERED || this == SOLVING
+
+        fun toOutputJSONRep(): SolverResult.JSONRepresentation = when (this) {
+            VIOLATED -> SolverResult.JSONRepresentation.FAIL
+            VERIFIED -> SolverResult.JSONRepresentation.SUCCESS
+            SANITY_FAILED -> SolverResult.JSONRepresentation.SANITY_FAIL
+            TIMEOUT -> SolverResult.JSONRepresentation.TIMEOUT
+            else -> SolverResult.JSONRepresentation.UNKNOWN
+        }
     }
 
 
@@ -313,6 +326,8 @@ class TreeViewReporter(
         val ruleAlerts: List<RuleAlertReport.Single<*>> = listOf(),
         val location: TreeViewLocation? = null,
         val displayName: String,
+        val childrenTotalNum: Int? = null,
+        val childrenFinishedNum: Int? = null,
         /**
          *  The uuid is a unique Id for the node as Integer type. It's used in the rule report for tracking points
          *  and expanding the tree when switching between tabs or during polling.
@@ -342,6 +357,8 @@ class TreeViewReporter(
         val status: String,
         val duration: Long,
         val isRunning: Boolean,
+        val childrenTotalNum: Int?,
+        val childrenFinishedNum: Int?,
     ) : TreeViewReportable {
 
         override val treeViewRepBuilder = TreeViewRepJsonObjectBuilder {
@@ -364,6 +381,9 @@ class TreeViewReporter(
             put(TreeViewReportAttribute.DURATION(), duration)
 
             put(TreeViewReportAttribute.IS_RUNNING(), isRunning)
+
+            put(TreeViewReportAttribute.CHILDREN_TOTAL_NUM(), childrenTotalNum)
+            put(TreeViewReportAttribute.CHILDREN_FINISHED_NUM(), childrenFinishedNum)
         }
     }
 
@@ -397,6 +417,7 @@ class TreeViewReporter(
             parent: DisplayableIdentifier,
             nodeType: NodeType,
             rule: IRule?,
+            childrenTotalNum: Int? = null,
         ) {
             synchronized(this) {
                 identifierToNode[child] = TreeViewNodeResult(
@@ -405,6 +426,8 @@ class TreeViewReporter(
                     status = TreeViewStatusEnum.REGISTERED,
                     isRunning = false,
                     displayName = child.displayName,
+                    childrenTotalNum = childrenTotalNum,
+                    childrenFinishedNum = childrenTotalNum?.let { 0 },
                     uuid = Allocator.getFreshId(Allocator.Id.TREE_VIEW_NODE_ID)
                 )
                 val children = parentToChild[parent] ?: mutableSetOf()
@@ -440,18 +463,28 @@ class TreeViewReporter(
             updateStatus(node) { it.copy(displayName = displayName) }
         }
 
+        fun updateFinishedChildren(node: RuleIdentifier, numFinished: Int) {
+            updateStatus(node) {
+                check(it.childrenFinishedNum != null) { "can't update finished children" }
+                require(numFinished >= 0)
+                val newVal = it.childrenFinishedNum + numFinished
+                check(newVal <= it.childrenTotalNum!!) { "Range $node: can't have more children finished ($newVal) than the total num of children (${it.childrenTotalNum})" }
+                it.copy(childrenFinishedNum = newVal)
+            }
+        }
+
         fun signalStart(ruleId: RuleIdentifier) {
-            updateStatus(ruleId){ it.copy(status = TreeViewStatusEnum.SOLVING)}
+            updateStatus(ruleId) { it.copy(status = TreeViewStatusEnum.SOLVING) }
         }
 
         fun signalSkip(ruleId: RuleIdentifier) {
             Logger.always("received `signalSkip` for rule $ruleId", respectQuiet = false)
-            updateStatus(ruleId){ it.copy(status = TreeViewStatusEnum.BENIGN_SKIPPED)}
+            updateStatus(ruleId) { it.copy(status = TreeViewStatusEnum.BENIGN_SKIPPED) }
         }
 
         fun signalEnd(ruleId: RuleIdentifier, solverResult: RuleCheckResult.Leaf, ruleOutput: List<String>) {
             updateStatus(ruleId) { treeViewNodeResult ->
-                when(solverResult){
+                when (solverResult) {
                     is RuleCheckResult.Single ->
                         treeViewNodeResult.copy(
                             status = computeFinalStatus(solverResult.result, solverResult.rule),
@@ -461,11 +494,13 @@ class TreeViewReporter(
                         ).letIf(solverResult.result != SolverResult.TIMEOUT) {
                             it.copy(splitProgress = null) // should have been propagated at this point, but making sure
                         }
+
                     is RuleCheckResult.Error ->
                         treeViewNodeResult.copy(
                             status = TreeViewStatusEnum.ERROR,
                             ruleAlerts = solverResult.ruleAlerts.asList
                         )
+
                     is RuleCheckResult.Skipped ->
                         treeViewNodeResult.copy(
                             status = TreeViewStatusEnum.SKIPPED,
@@ -492,10 +527,10 @@ class TreeViewReporter(
 
         fun updateLiveCheckInfo(rule: RuleIdentifier, liveCheckFileName: String, splitProgressPercentage: Int?) {
             updateStatus(rule) {
-                 it.copy(
-                     liveCheckFileName = liveCheckFileName,
-                     splitProgress = splitProgressPercentage,
-                 )
+                it.copy(
+                    liveCheckFileName = liveCheckFileName,
+                    splitProgress = splitProgressPercentage,
+                )
             }
         }
 
@@ -505,10 +540,10 @@ class TreeViewReporter(
             sanityTraverse(ROOT_NODE_IDENTIFIER, traversed, stack)
 
             //Ensure all nodes are connected
-            if(!getAllNodes().containsAll(traversed.toSet())) {
+            if (!getAllNodes().containsAll(traversed.toSet())) {
                 logger.warn { "Found dangling tree nodes: Found more nodes while traversing tree, ${traversed.toSet().minus(getAllNodes())}" }
             }
-            if(!traversed.toSet().containsAll(getAllNodes())){
+            if (!traversed.toSet().containsAll(getAllNodes())) {
                 logger.warn { "Found dangling tree nodes: Not all nodes where traversed, ${getAllNodes().minus(traversed.toSet())}" }
             }
         }
@@ -522,7 +557,7 @@ class TreeViewReporter(
         private fun sanityTraverse(curr: DisplayableIdentifier, visited: MutableSet<DisplayableIdentifier>, stack: List<DisplayableIdentifier>) {
             visited.add(curr)
             if (stack.contains(curr)) {
-                logger.error("Tree contains a cycle, ${stack} - re-occurring node ${curr}", )
+                logger.error("Tree contains a cycle, ${stack} - re-occurring node ${curr}")
             } else {
                 parentToChild[curr]?.forEach {
                     sanityTraverse(it, visited, stack + curr)
@@ -586,6 +621,8 @@ class TreeViewReporter(
                 status = statusString,
                 duration = duration,
                 isRunning = isRunning,
+                childrenTotalNum = currTreeViewResult.childrenTotalNum,
+                childrenFinishedNum = currTreeViewResult.childrenFinishedNum,
             )
         }
 
@@ -620,11 +657,11 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
 
         fun checkAllLeavesAreTerminated() {
-            val runningNodes = identifierToNode.filter{
+            val runningNodes = identifierToNode.filter {
                 getChildren(it.key).isEmpty() && it.value.status == TreeViewStatusEnum.SOLVING
             }
-            if(runningNodes.isNotEmpty()) {
-                logger.error("There are still running nodes in the tree: ${runningNodes.keys }}}")
+            if (runningNodes.isNotEmpty()) {
+                logger.error("There are still running nodes in the tree: ${runningNodes.keys}}}")
             }
         }
 
@@ -655,16 +692,6 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 if (children.isEmpty()) {
                     updateStatus(di) { res -> res.copy(isRunning = res.status.isRunning()) }
                 } else if (childrenTreeViewResults.any { it.nodeType == NodeType.SANITY }) {
-                    checkWarn(childrenTreeViewResults
-                        // we might have a violated_assert child (the one that's added after the fact, on signalEnd)
-                        // -- in this case, the sanity children are still there, but are ignored (I assume..), so this
-                        //  filter avoids a false positive for this check in that case
-                        .filter { it.status != TreeViewStatusEnum.BENIGN_SKIPPED }
-                        .all { it.nodeType == NodeType.SANITY }
-                    ) {
-                        "if any child is a rule-sanity child, then all (non-skipped) children must be rule sanity " +
-                            "children; instead got these children: ${childrenTreeViewResults.map { it.rule?.ruleIdentifier to it.nodeType }}"
-                    }
                     val currTreeViewResult = getResultForNode(di)
                     val newStatus = (childrenTreeViewResults + currTreeViewResult).maxOf { it.status }
                     val newIsRunning = currTreeViewResult.status.isRunning() ||
@@ -678,7 +705,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                     val newStatus = childrenTreeViewResults.maxBy { it.status }.status
                     val newIsRunning = childrenTreeViewResults.any { it.isRunning }
                     val newVerifyTime =
-                            childrenTreeViewResults.map { it.verifyTime }.reduce { acc, y -> acc.join(y) }
+                        childrenTreeViewResults.map { it.verifyTime }.reduce { acc, y -> acc.join(y) }
 
                     updateStatus(di) { res -> res.copy(status = newStatus, isRunning = newIsRunning, verifyTime = newVerifyTime) }
                 }
@@ -696,18 +723,18 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
          * This check handles parametric methods. These will have additional rule generation meta.
          * This can be the case for [SpecType.Single.BuiltIn] sanity rules, parametric rules and invariants.
          */
-        if(child is CVLSingleRule && child.ruleGenerationMeta is SingleRuleGenerationMeta.WithMethodInstantiations){
+        if (child is CVLSingleRule && child.ruleGenerationMeta is SingleRuleGenerationMeta.WithMethodInstantiations) {
             /**
              *  Method instantiation rules further explode into sanity rules. So in case the rule is a sanity check,
              *  the node's type should be [NodeType.SANITY]
              */
-            return if(child.isSanityCheck()){
+            return if (child.isSanityCheck()) {
                 NodeType.SANITY
-            } else{
+            } else {
                 NodeType.METHOD_INSTANTIATION
             }
         }
-        return when(child.ruleType){
+        return when (child.ruleType) {
             //All these rules are top-level elements in the tree.
             SpecType.Group.StaticEnvFree,
             SpecType.Single.BMC.Invariant,
@@ -727,6 +754,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             is SpecType.Single.BMC.Sequence,
             is SpecType.Single.InvariantCheck.ExplicitPreservedInductionStep,
             is SpecType.Single.InvariantCheck.GenericPreservedInductionStep -> NodeType.INDUCTION_STEPS
+
             is SpecType.Group.InvariantCheck.CustomInductionSteps -> NodeType.CUSTOM_INDUCTION_STEP
 
 
@@ -737,13 +765,14 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             is SpecType.Single.EquivalenceCheck,
             SpecType.Single.InCodeAssertions,
             is SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule -> NodeType.ASSERT_SUBRULE_AUTO_GEN
+
             is SpecType.Single.GeneratedFromBasicRule.SanityRule -> NodeType.SANITY
         }
     }
 
-    fun registerSubruleOf(child: IRule, parent: IRule) {
+    fun registerSubruleOf(child: IRule, parent: IRule, childrenTotalNum: Int? = null) {
         synchronized(this) {
-            tree.addChildNode(child.ruleIdentifier, parent.ruleIdentifier, mapRuleToNodeType(child), child)
+            tree.addChildNode(child.ruleIdentifier, parent.ruleIdentifier, mapRuleToNodeType(child), child, childrenTotalNum)
         }
     }
 
@@ -762,6 +791,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             tree.signalStart(rule.ruleIdentifier)
         }
     }
+
     private fun writeToFile(jsond: String) {
         logger.info { "Writing version $fileVersion of treeView json" }
         ArtifactManagerFactory().useArtifact(versionedFIle, fileVersion) { handle ->
@@ -775,6 +805,10 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
 
     fun updateDisplayName(rule: IRule, displayName: String) {
         tree.updateDisplayName(rule.ruleIdentifier, displayName)
+    }
+
+    fun updateFinishedChildren(rule: IRule, numFinished: Int) {
+        tree.updateFinishedChildren(rule.ruleIdentifier, numFinished)
     }
 
     /**
@@ -834,7 +868,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         if (!Config.AvoidAnyOutput.get()) {
             synchronized(this) {
                 hotUpdateLiveCheckInfo()
-                if(logger.isDebugEnabled) {
+                if (logger.isDebugEnabled) {
                     logger.info { "Hot updating tree version ${fileVersion}: ${tree}" }
                 }
 
@@ -1026,10 +1060,12 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                     addTopLevelRule(parentRule)
                     registerSubruleOf(rule, parentRule)
                 }
+
                 else -> addTopLevelRule(rule)
             }
         }
     }
+
     /**
      * Returns a list of pairs consisting of the rule identifier, and a string (multiline) for detailed error-printing.
      */
@@ -1037,6 +1073,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         tree.getChildren(ROOT_NODE_IDENTIFIER)
             .filter { topLevelRule -> tree.getResultForNode(topLevelRule).isRunning }
             .map { rule -> rule to "${rule.displayName}:\n" + tree.getResultForNode(rule).printForErrorLog() + "\n" }
+
     /**
      * Returns a list of pairs consisting of the rule identifier, and a string (multiline) for detailed error-printing.
      */
@@ -1045,7 +1082,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             val res = tree.getResultForNode(topLevelRule)
             (res.status != TreeViewStatusEnum.VERIFIED &&
                 res.status != TreeViewStatusEnum.SKIPPED &&
-                    res.status != TreeViewStatusEnum.BENIGN_SKIPPED)
+                res.status != TreeViewStatusEnum.BENIGN_SKIPPED)
         }.map { rule ->
             rule to "${rule.displayName}:\n" + tree.getResultForNode(rule).printForErrorLog() + "\n"
         }
@@ -1068,10 +1105,12 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         rec(ROOT_NODE_IDENTIFIER, emptyList())
         return paths
     }
+
     @TestOnly
     fun nodes(): Set<DisplayableIdentifier> {
         return tree.getAllNodes().filterToSet { it != ROOT_NODE_IDENTIFIER }
     }
+
     /**
      * This invariant is violated if there is any adjacent pair `(parent, child)` on any path in the tree, going from
      * root to leaf, such that `parent.status < child.status` or `!parent.isRunning && child.isRunning`.
@@ -1085,7 +1124,132 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             val statuses = suffix.map { di -> tree.getResultForNode(di).status }
             val isRunnings = suffix.map { di -> tree.getResultForNode(di).isRunning }
             statuses.isNotDescending { curr, next -> curr < next } ||
-                isRunnings.isNotDescending { curr, next -> !curr && next } }
+                isRunnings.isNotDescending { curr, next -> !curr && next }
+        }
+    }
+
+    /**
+     * Merges [this] map with [other] - if both maps have the same keys, their values
+     * are put in an [JSONArray].
+     */
+    fun Map<String, JsonElement>.merge(other: Map<String, JsonElement>): Map<String, JsonElement> {
+        fun JsonArrayBuilder.addElement(el: JsonElement) {
+            if (el is JsonArray) {
+                el.forEach { this.add(it) }
+            } else {
+                this.add(el)
+            }
+        }
+
+        val thisVal = this;
+        return buildJsonObject {
+            thisVal.keys.forEach {
+                if (other.containsKey(it)) {
+                    val thisValue = thisVal[it]!!
+                    val otherValue = other[it]!!
+                    this.put(it, buildJsonArray {
+                        this.addElement(thisValue)
+                        this.addElement(otherValue)
+                    })
+                } else {
+                    this.put(it, thisVal[it]!!)
+                }
+            }
+            other.keys.forEach {
+                if (!thisVal.containsKey(it)) {
+                    this.put(it, other[it]!!)
+                }
+            }
+        }
+    }
+
+    fun writeOutputJson() {
+        /**
+         * The output.json groups nodes by their results, i.e. for invariants or parametric rules on method f
+         *
+         * SUCCESS: [
+         *   "foo()",
+         *   "bar()"
+         * ]
+         *
+         * while TreeView displays these nodes as
+         * foo() -> SUCCESS
+         * bar() -> SUCCESS
+         *
+         * This method swaps key / values and performs the grouping.
+         */
+        fun Map<String, JsonElement>.groupByStatus(): Map<String, JsonElement> {
+            val thisVal = this;
+            return buildMap {
+                thisVal.keys.forEach {
+                    val value = thisVal[it]!!
+                    if (value is JsonPrimitive) {
+                        val existing = this[value.content] ?: JsonArray(listOf())
+                        val new = JsonArray((existing as JsonArray).toList() + JsonPrimitive(it))
+                        this[value.content] = new
+                    } else {
+                        this[it] = value
+                    }
+                }
+            }
+        }
+
+        fun computeOutputJsonResult(node: DisplayableIdentifier): Map<String, JsonElement> {
+            val currRes = tree.getResultForNode(node)
+            val children = tree.getChildren(node).associateWith { tree.getResultForNode(it) }
+                // Filter out all children generated as of sanity and multi assert splitting
+                .filterValues { it.rule?.ruleType !is SpecType.Single.GeneratedFromBasicRule }
+                // Filter out expanded child for a failing assert
+                .filterValues { it.nodeType != NodeType.VIOLATED_ASSERT }
+            return if (children.isEmpty()) {
+                buildMap {
+                    if (currRes.status != TreeViewStatusEnum.SKIPPED) {
+                        val outputJsonKey = if(currRes.rule?.ruleType is SpecType.Single.BMC){
+                            // In BMC mode we use the full rule identifier to identify nodes as the
+                            // the rule identifier contains the entire sequence.
+                            node.toString()
+                        } else {
+                            node.displayName
+                        }
+                        this[outputJsonKey] = JsonPrimitive(currRes.status.toOutputJSONRep().name)
+                    }
+                }
+            } else {
+                val mergedChildren = children.map { computeOutputJsonResult(it.key) }.fold(mapOf<String, JsonElement>()) { acc, curr ->
+                    acc.merge(curr)
+                }
+                val grouped = if (children.any { it.value.rule is StaticRule || it.value.nodeType in listOf(NodeType.METHOD_INSTANTIATION, NodeType.INDUCTION_STEPS, NodeType.CUSTOM_INDUCTION_STEP) }) {
+                    mergedChildren.groupByStatus()
+                } else {
+                    mergedChildren
+                }
+
+                if (node == ROOT_NODE_IDENTIFIER || currRes.nodeType == NodeType.CONTRACT) {
+                    /**
+                     * For the case of currRes.nodeType == NodeType.CONTRACT the TreeView adds an extra nesting
+                     * by the contract name. This nesting doesn't appear in output.json, therefore skipping this level.
+                     */
+                    return grouped
+                } else {
+                    buildMap {
+                        this[node.displayName] = JsonObject(grouped)
+                    }
+                }
+            }
+
+        }
+
+        val outputJsonRes = buildJsonObject {
+            this.put("rules", JsonObject(computeOutputJsonResult(ROOT_NODE_IDENTIFIER)))
+        }
+        val prettyJson = Json {
+            prettyPrint = true
+        }
+        ArtifactManagerFactory().useArtifact(Config.OutputJSONFile.get()) { handle ->
+            ArtifactFileUtils.getWriterForFile(handle, overwrite = true).use { i ->
+                i.append(prettyJson.encodeToString(JsonElement.serializer(), outputJsonRes))
+            }
+        }
     }
 }
 

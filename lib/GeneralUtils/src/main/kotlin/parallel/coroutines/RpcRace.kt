@@ -72,7 +72,7 @@ suspend fun <T> ParallelPool.rpcRace(
     racers: Iterable<Racer<T>>
 ): Pair<Int, List<RacerResult<T>>> = coroutineScope {
 
-    val raceId = hash { it + TimeSinceStart.epoch.elapsedNow() + Thread.currentThread().threadId() }
+    val raceId = hash { it + TimeSinceStart.epoch.elapsedNow() + Thread.currentThread().id }
     fun log(msg: () -> String) = logger.debug { "[${raceId} ${TimeSinceStart.epoch.elapsedNow()}] ${msg()}" }
 
     // Mark the start of the first job

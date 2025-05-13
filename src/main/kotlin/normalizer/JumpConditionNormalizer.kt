@@ -85,7 +85,7 @@ object JumpConditionNormalizer {
     fun normalizeConditions(p: CoreTACProgram): CoreTACProgram {
         val g = p.analysisCache.graph
         val matcher = PatternMatcher.compilePattern(g, jumpPattern)
-        val use = OnDemandUseAnalysis(g)
+        val use = g.cache[OnDemandUseAnalysis]
         val blocks = g.blocks
         val d = blocks.mapNotNull { block ->
             block.commands.last().takeIf { it.cmd is TACCmd.Simple.JumpiCmd && it.cmd.cond is TACSymbol.Var }

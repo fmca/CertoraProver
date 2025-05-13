@@ -14,11 +14,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+@file:kotlinx.serialization.UseSerializers(utils.BigIntegerSerializer::class)
 
 package wasm.analysis.memory
 
+import analysis.*
+import analysis.CommandWithRequiredDecls.Companion.withDecls
+import com.certora.collect.*
+import kotlin.streams.toList
+import tac.*
 import utils.*
-import vc.data.CoreTACProgram
+import vc.data.*
 import wasm.analysis.memory.IMemoryPartitions.*
 import wasm.ir.WasmData
 import wasm.ir.WasmProgram
@@ -29,15 +35,35 @@ import java.math.BigInteger
  *
  * [ctp] should be the TAC representation of [program]
  */
-class StaticMemoryAnalysis(
-    val program: WasmProgram,
-    val ctp: CoreTACProgram,
-    private val permissions: IMemoryPartitions
-) {
+class StaticMemoryAnalysis private constructor(val graph: TACCommandGraph) {
+    companion object : AnalysisCache.Key<StaticMemoryAnalysis> {
+        override fun createCached(graph: TACCommandGraph) = StaticMemoryAnalysis(graph)
 
-    private val datas = program.fields.filterIsInstance<WasmData>()
+        @KSerializable
+        @Treapable
+        private data class StaticData(val offset: BigInteger, val content: List<UByte>) : AmbiSerializable
+        private val STATIC_DATA = MetaKey<StaticData>("wasm.static.data")
 
-    private fun dataForAddress(address: BigInteger, datas: List<WasmData>): Pair<WasmData, Int>? =
+        /**
+            Gets the static data annotations that should be embedded in the TAC for the given WasmProgram.
+         */
+        fun getStaticDataAnnotations(program: WasmProgram) =
+            program.fields.filterIsInstance<WasmData>().mapNotNull {
+                it.offsetConstVal?.let { offset -> StaticData(offset, it.content) }
+            }.map {
+                TACCmd.Simple.AnnotationCmd(STATIC_DATA, it)
+            }.withDecls()
+    }
+
+    private val permissions: IMemoryPartitions = graph.cache[MemoryPartitionAnalysis]
+
+    private val datas = graph.commands.parallelStream().mapNotNull { it.maybeAnnotation(STATIC_DATA) }.toList()
+
+
+    private fun StaticData.indexOfAddress(address: BigInteger): Int? =
+        (address - offset).toIntOrNull()?.takeIf { it in 0..<content.size }
+
+    private fun dataForAddress(address: BigInteger): Pair<StaticData, Int>? =
         datas.mapNotNull {
             it `to?` it.indexOfAddress(address)
         }.uniqueOrNull()
@@ -50,7 +76,7 @@ class StaticMemoryAnalysis(
             return null
         }
 
-        val (data, idx) = dataForAddress(address, datas) ?: return null
+        val (data, idx) = dataForAddress(address) ?: return null
 
         if (idx + size - 1 >= data.content.size) {
             return null

@@ -31,6 +31,7 @@ import spec.cvlast.CVLType
 import utils.*
 import vc.data.*
 import vc.gen.LExpVC
+import kotlin.streams.toList
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.measureTimedValue

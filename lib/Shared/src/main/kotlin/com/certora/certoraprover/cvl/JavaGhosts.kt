@@ -49,7 +49,8 @@ class GhostFunDecl @JvmOverloads constructor(
         val _paramTypes = paramTypes.map { it.toCVLType(resolver, scope) }.flatten()
         val _returnType = returnType.toCVLType(resolver, scope)
         val _axioms     = axioms.map { it.kotlinize(resolver, scope) }.flatten()
-        map(_paramTypes, _returnType, _axioms) { paramTypes, returnType, axioms ->
+        val _id = checkIdValidity(id, range, "ghost function")
+        map(_paramTypes, _returnType, _axioms, _id) { paramTypes, returnType, axioms, id ->
             CVLGhostDeclaration.Function(range, id, paramTypes, returnType, persistent, axioms, scope, false)
         }
     }
@@ -75,7 +76,8 @@ class GhostMapDecl @JvmOverloads constructor(
     override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLGhostDeclaration.Variable, CVLError> = collectingErrors {
         val _type = type.toCVLType(resolver, scope)
         val _axioms = axioms.map { it.kotlinize(resolver, scope) }.flatten()
-        map(_type, _axioms) { type, axioms -> CVLGhostDeclaration.Variable(range, type, id, persistent, axioms, scope, oldCopy = false) }
+        val _id = checkIdValidity(id, range, "ghost")
+        map(_type, _axioms, _id) { type, axioms, id -> CVLGhostDeclaration.Variable(range, type, id, persistent, axioms, scope, oldCopy = false) }
     }
 }
 

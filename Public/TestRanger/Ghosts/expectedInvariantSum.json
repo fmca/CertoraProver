@@ -1,0 +1,19 @@
+{
+	"rules": {
+		"checkSum": {
+			"Initial State": {
+				"checkSum-Initial State-vacuity": "SUCCESS"
+			},
+			"Range 1": {
+				"SUCCESS": [
+					"checkSum-Initial State-C.set_m"
+				]
+			},
+			"Range 2": {
+				"SUCCESS": [
+					"checkSum-Initial State-C.set_m(address,address,uint256)-C.set_m"
+				]
+			}
+		}
+	}
+}

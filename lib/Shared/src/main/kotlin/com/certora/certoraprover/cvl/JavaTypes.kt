@@ -49,8 +49,8 @@ sealed class TypeOrLhs(val range: Range) : Kotlinizable<CVLLhs> {
 }
 
 class IdLhs(range: Range, val id: String) : TypeOrLhs(range) {
-    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLLhs, CVLError>
-        = CVLLhs.Id(range, id, CVLExpTag(scope, range, false)).lift()
+    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLLhs, CVLError> =
+        checkIdValidity(id, range, "variable").map { id -> CVLLhs.Id(range, id, CVLExpTag(scope, range, false)) }
 
     override fun toCVLType(resolver: TypeResolver, scope: CVLScope): CollectingResult<PureCVLType, CVLError>
         = QualifiedTypeReference(null, id, range).toCVLType(resolver, scope)

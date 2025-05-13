@@ -19,6 +19,7 @@ package analysis.ip
 
 import allocator.Allocator
 import analysis.*
+import analysis.dataflow.VariableLookupComputation
 import analysis.ip.InternalFunctionHint.Companion.META_KEY
 import analysis.numeric.*
 import analysis.worklist.MonadicStatefulParallelWorklistIteration
@@ -1753,7 +1754,7 @@ object FunctionFlowAnnotator {
         val success : Boolean
         init {
             // Accessing this early prevents some problematic lazy initialization recursion; see Lazy.kt
-            val blockVars = g.cache.variableLookup
+            val blockVars = g.cache[VariableLookupComputation]
 
             val workItems = mutableListOf<WorkEdge>()
             seed.mapNotNull { (nb, e) ->

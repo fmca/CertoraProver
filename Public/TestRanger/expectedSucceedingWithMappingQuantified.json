@@ -1,9 +1,20 @@
 {
-	"assertMessages": {},
 	"rules": {
-		"succeedingWithMappingQuantified-Initial State": "SUCCESS",
-		"succeedingWithMappingQuantified-Initial State-Any of: WithMapping.setFoo, WithMapping.setFooConditionally": "SUCCESS",
-		"succeedingWithMappingQuantified-Initial State-WithMapping.setFoo()-WithMapping.setFooConditionally": "SUCCESS",
-		"succeedingWithMappingQuantified-Initial State-WithMapping.setFooConditionally(address)-WithMapping.setFoo": "SUCCESS"
+		"succeedingWithMappingQuantified": {
+			"Initial State": {
+				"succeedingWithMappingQuantified-Initial State-vacuity": "SUCCESS"
+			},
+			"Range 1": {
+				"SUCCESS": [
+					"succeedingWithMappingQuantified-Initial State-Any of: WithMapping.setFoo, WithMapping.setFooConditionally"
+				]
+			},
+			"Range 2": {
+				"SUCCESS": [
+					"succeedingWithMappingQuantified-Initial State-WithMapping.setFoo()-WithMapping.setFooConditionally",
+					"succeedingWithMappingQuantified-Initial State-WithMapping.setFooConditionally(address)-WithMapping.setFoo"
+				]
+			}
+		}
 	}
 }

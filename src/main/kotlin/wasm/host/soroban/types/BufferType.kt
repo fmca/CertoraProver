@@ -23,13 +23,11 @@ import analysis.CommandWithRequiredDecls.Companion.withDecls
 import compiler.applyKeccak
 import datastructures.stdcollections.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.analysis.memory.*
 import wasm.host.soroban.*
-import wasm.host.soroban.opt.LONG_COPY_STRIDE
-import wasm.tacutils.*
-import wasm.traps.*
 
 const val BYTE_BITS = 8
 const val BIT256_BITS = 256
@@ -107,9 +105,10 @@ abstract class BufferType : ArrayType() {
 
         protected override fun gen(
             simplifiedInputs: List<TACExpr>,
-            staticData: StaticMemoryAnalysis
+            analysisCache: AnalysisCache
         ) = simplifiedInputs.let { (pos, len) ->
             with(type) {
+                val staticData = analysisCache[StaticMemoryAnalysis]
                 val bytes = len.getAsConst()?.toIntOrNull()?.let { len ->
                     pos.getAsConst()?.let { pos ->
                         staticData.readBytes(pos, len)

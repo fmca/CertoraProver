@@ -23,7 +23,6 @@ import analysis.numeric.*
 import analysis.pta.LoopCopyAnalysis
 import analysis.worklist.IWorklistScheduler
 import analysis.worklist.MonadicStatefulParallelWorklistIteration
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.ParallelStepResult
 import com.certora.collect.*
 import log.Logger
@@ -142,7 +141,7 @@ object ScratchPointerAnalysis {
     ) : MonadicStatefulParallelWorklistIteration<NBId,Continuation, Result, AnalysisResult>(
       inheritPool = (Thread.currentThread() as? ParallelPool.ParallelPoolWorkerThread)?.parallelPool
     ) {
-        override val scheduler: IWorklistScheduler<NBId> = NaturalBlockScheduler(graph)
+        override val scheduler: IWorklistScheduler<NBId> = graph.cache.naturalBlockScheduler
 
         override fun commit(c: Continuation, nxt: MutableCollection<NBId>, res: MutableCollection<Result>) {
             c.invoke(nxt, res)

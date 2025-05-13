@@ -27,18 +27,16 @@ import log.*
 import optimizer.*
 import report.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import vc.data.TACExprFactUntyped as expr
 import vc.data.tacexprutil.*
 import verifier.*
 import wasm.impCfg.WasmImpCfgToTAC.MEMORY_INITIALIZATION
-import wasm.tacutils.*
 import java.util.concurrent.*
 
 private val logger = Logger(LoggerTypes.WASM)
-
-val LONG_COPY_STRIDE = MetaKey<Int>("wasm.soroban.long.copy.stride")
 
 /**
     Scalarizes memory accesses in the Soroban program.

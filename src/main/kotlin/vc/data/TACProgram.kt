@@ -18,9 +18,7 @@
 package vc.data
 
 import algorithms.findRoots
-import algorithms.SimpleDominanceAnalysis
 import algorithms.topologicalOrder
-import algorithms.transitiveClosure
 import allocator.Allocator
 import allocator.SuppressRemapWarning
 import analysis.*
@@ -29,7 +27,6 @@ import analysis.EthereumVariables.getStorageInternal
 import analysis.icfg.SummaryStack
 import analysis.ip.INTERNAL_FUNC_START
 import analysis.ip.InternalFuncExitAnnotation
-import analysis.worklist.NaturalBlockScheduler
 import analysis.worklist.StepResult
 import analysis.worklist.VisitingWorklistIteration
 import cache.utils.ObjectSerialization
@@ -168,7 +165,7 @@ abstract class TACProgram<T : TACCmd>(entry: NBId? = null) : NamedCode<ReportTyp
      */
     abstract val name: String
 
-    abstract val analysisCache: IAnalysisCache?
+    abstract val analysisCache: AnalysisCache?
 
     protected val entryBlockIdInternal: NBId? by lazy {
         entry ?: run {
@@ -565,7 +562,7 @@ data class CanonicalTACProgram<T : TACCmd.Spec, E : ShouldErase>(
     override val ufAxioms: UfAxioms
         get() = instrumentationTAC.ufAxioms
 
-    override val analysisCache: IAnalysisCache?
+    override val analysisCache: AnalysisCache?
         get() = null
 
     override fun myName(): String = name
@@ -732,7 +729,7 @@ data class EVMTACProgram(
 
     override fun myName(): String = name
 
-    override val analysisCache: IAnalysisCache?
+    override val analysisCache: AnalysisCache?
         get() = null
 
     override fun getNodeCode(n: NBId): List<TACCmd> {
@@ -805,7 +802,7 @@ data class CVLTACProgram(
         return f(this)
     }
 
-    override val analysisCache: IAnalysisCache?
+    override val analysisCache: AnalysisCache?
         get() = null
 
     override fun getNodeCode(n: NBId): List<TACCmd.Spec> {
@@ -1250,56 +1247,26 @@ class CoreTACProgram private constructor(
         }
     }
 
-    inner class AnalysisCache : IAnalysisCache {
-        override val graph: TACCommandGraph by lazy {
-            TACCommandGraph(
-                this@CoreTACProgram.blockgraph,
-                this@CoreTACProgram.code,
-                this@CoreTACProgram.symbolTable,
-                this,
-                name = this@CoreTACProgram.name
-            )
-        }
-
-        override val def: IDefAnalysis by lazy { LooseDefAnalysis.createForCache(graph) }
-
-        override val strictDef: StrictDefAnalysis by lazy { StrictDefAnalysis.createForCache(graph) }
-
-        override val use: IUseAnalysis by lazy { IUseAnalysis.UseAnalysis(graph) }
-
-        override val lva: LiveVariableAnalysis by lazy { LiveVariableAnalysis(graph) }
-
-        override val revertBlocks: Set<NBId> by lazy { RevertBlockAnalysis.findRevertBlocks(this.graph) }
-
-        override val domination by lazy { SimpleDominanceAnalysis(blockgraph) }
-
-        override val variableLookup: Map<NBId, Set<TACSymbol.Var>> by lazy(LazyThreadSafetyMode.PUBLICATION) {
-            VariableLookupComputation.compute(this@CoreTACProgram.ltacStream())
-        }
-
-        override val gvn: IGlobalValueNumbering by lazy { GlobalValueNumbering(graph) }
-
-        override val naturalBlockScheduler: NaturalBlockScheduler by lazy {
-            NaturalBlockScheduler.createForCache(graph)
-        }
-        override val reachability by lazy {
-            transitiveClosure(graph.blockSucc, reflexive = true)
-        }
-
-        init {
-            // optionally record some stats
-            if (Config.dumpCacheStatistics.get()) {
-                val key = name.toSDFeatureKey()
-                SDCollectorFactory.collector().collectFeature(GeneralKeyValueStats<Int>(key).addKeyValue("blocks", code.size))
-                SDCollectorFactory.collector().collectFeature(GeneralKeyValueStats<Int>(key).addKeyValue("commands", code.values.sumOf { it.size }))
-            }
-        }
-    }
-
-    override val analysisCache: IAnalysisCache
+    override val analysisCache: AnalysisCache
         get() {
             if (_analysisCache == null) {
-                _analysisCache = AnalysisCache()
+                _analysisCache = AnalysisCache(
+                    lazy {
+                        TACCommandGraph(
+                            blockgraph,
+                            code,
+                            symbolTable,
+                            _analysisCache,
+                            name = name
+                        )
+                    }
+                )
+                // optionally record some stats
+                if (Config.dumpCacheStatistics.get()) {
+                    val key = name.toSDFeatureKey()
+                    SDCollectorFactory.collector().collectFeature(GeneralKeyValueStats<Int>(key).addKeyValue("blocks", code.size))
+                    SDCollectorFactory.collector().collectFeature(GeneralKeyValueStats<Int>(key).addKeyValue("commands", code.values.sumOf { it.size }))
+                }
             }
             return _analysisCache!!
         }

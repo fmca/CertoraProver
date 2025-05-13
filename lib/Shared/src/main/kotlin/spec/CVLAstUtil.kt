@@ -439,7 +439,7 @@ class GenerateRulesForInvariantsAndEnvFree(
             it.value.singleOrNull()
         }.filter { preserved ->
             // If the user provided a method name on the command line, we can skip generating rules for all other methods.
-            importedFuncs.mapNotNull { it.evmExternalMethodInfo?.toExternalABINameWithContract() }
+            importedFuncs.filterNot { it.annotation.library }.mapNotNull { it.evmExternalMethodInfo?.toExternalABINameWithContract() }
                 .containsMethodFilteredByConfig(preserved.methodSignature.computeCanonicalSignatureWithContract(PrintingContext(false)), mainContract.name)
         }.forEach { preserved ->
             // Now we check to see if the user has provided duplicate wildcard blocks or duplicate explicitly named non-
@@ -596,7 +596,7 @@ class GenerateRulesForInvariantsAndEnvFree(
                         SingleRuleGenerationMeta.Empty,
                     )
                 }
-            }
+            } + listOfNotNull(preserveFallbackScenario(inv))
         }
     }
 
@@ -645,14 +645,16 @@ class GenerateRulesForInvariantsAndEnvFree(
                 CVLParam(EVMBuiltinTypes.env, instrumentedEnv.id, Range.Empty())
             )
 
+            val declId = CVLReservedVariables.certoraFallbackDisplayName
+
             CVLSingleRule(
-                inv.uniqueRuleIdentifier.freshDerivedIdentifier(CVLReservedVariables.certorafallback_0.name),
+                inv.uniqueRuleIdentifier.freshDerivedIdentifier(declId),
                 inv.range,
                 newParams,
                 "Invariant breached when calling the fallback function",
                 "Invariant preserved",
                 fallbackPreservedBlock + block,
-                SpecType.Single.InvariantCheck.GenericPreservedInductionStep(inv),
+                SpecType.Single.InvariantCheck.ExplicitPreservedInductionStep(inv, null),
                 ruleScope,
                 MethodParamFilters.noFilters(inv.range, ruleScope),
                 SingleRuleGenerationMeta.Empty
@@ -855,7 +857,6 @@ class GenerateRulesForInvariantsAndEnvFree(
                                 inv.range,
                                 listOfNotNull(
                                     invPreserve,
-                                    preserveFallbackScenario(inv),
                                     if (explicitPreservedRules.isNotEmpty()) {
                                         invScope.extendIn(CVLScope.Item::RuleScopeItem) { explicitPreservedScope ->
                                             val specificDeclId = "Using specific requirements"

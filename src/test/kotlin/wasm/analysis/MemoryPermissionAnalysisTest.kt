@@ -42,7 +42,7 @@ class MemoryPermissionAnalysisTest: WasmTestFixture() {
         })
         val tac = wasmToTAC(wasmFile.toFile(), setOf(entry), NullHost, optimize = false).single().code
 
-        return MemoryPartitionAnalysis(tac)
+        return tac.analysisCache[MemoryPartitionAnalysis]
     }
 
     private fun MemoryPartitionAnalysis.assertPerm(lo: Long, hi: Long, expect: Permission) =

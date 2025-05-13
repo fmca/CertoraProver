@@ -188,9 +188,8 @@ open class LooseDefAnalysis protected constructor(
     graph,
     initialUndefinedVars = treapSetOf()
 ), IDefAnalysis {
-    companion object {
-        operator fun invoke(graph: TACCommandGraph) = graph.cache.def
-        fun createForCache(graph: TACCommandGraph) = LooseDefAnalysis(graph)
+    companion object : AnalysisCache.Key<LooseDefAnalysis> {
+        override fun createCached(graph: TACCommandGraph) = LooseDefAnalysis(graph)
     }
 
     override protected fun TACCmd.getDefinedVar() = (this as? TACCmd.Simple.AssigningCmd)?.lhs
@@ -251,9 +250,8 @@ open class StrictDefAnalysis protected constructor(
         it.commands.flatMapToSet { it.cmd.freeVars() }.stream()
     }.collect(Collectors.toCollection { treapSetBuilderOf() }).build()
 ) {
-    companion object {
-        operator fun invoke(graph: TACCommandGraph) = graph.cache.strictDef
-        fun createForCache(graph: TACCommandGraph) = StrictDefAnalysis(graph)
+    companion object : AnalysisCache.Key<StrictDefAnalysis> {
+        override fun createCached(graph: TACCommandGraph) = StrictDefAnalysis(graph)
     }
 
     override protected fun TACCmd.getDefinedVar() = getModifiedVar()

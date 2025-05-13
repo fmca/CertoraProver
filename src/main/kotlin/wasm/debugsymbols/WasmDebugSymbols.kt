@@ -17,9 +17,9 @@
 
 package wasm.debugsymbols
 
-import com.dylibso.chicory.wasm.Module
 import com.dylibso.chicory.wasm.types.FunctionBody
 import com.dylibso.chicory.wasm.types.SectionId
+import com.dylibso.chicory.wasm.WasmModule
 import datastructures.stdcollections.*
 import dwarf.*
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -39,7 +39,7 @@ object WasmDebugSymbolLoader {
      * After calling the extension, this method then deserializes the JSON to the data structure [WasmDebugSymbols]
      */
     @OptIn(ExperimentalSerializationApi::class)
-    fun generate(wasmFile: File, module: Module, demangleNames: Boolean): WasmDebugSymbols? {
+    fun generate(wasmFile: File, module: WasmModule, demangleNames: Boolean): WasmDebugSymbols? {
         val codeSectionOffset = WasmSectionOffsets.getSectionOffsets(wasmFile.inputStream())[SectionId.CODE.toByte()]
 
         if (codeSectionOffset == null) {
@@ -74,7 +74,7 @@ object WasmDebugSymbolLoader {
 class WasmDebugSymbols(
     compilationUnits: List<CompilationUnit>,
     private val codeSectionOffset: Int,
-    val module: Module,
+    val module: WasmModule,
 ) : DebugSymbols(compilationUnits) {
 
     /**

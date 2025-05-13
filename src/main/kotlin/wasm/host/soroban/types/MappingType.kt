@@ -20,12 +20,12 @@ package wasm.host.soroban.types
 import analysis.CommandWithRequiredDecls
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import datastructures.stdcollections.*
+import tac.generation.*
 import tac.Tag
 import utils.*
 import vc.data.*
 import vc.data.tacexprutil.*
 import wasm.host.soroban.*
-import wasm.tacutils.*
 
 /**
     Base implementation of all types which map from keys to values.  Mappings are immutable.

@@ -550,6 +550,7 @@ suspend fun handleTACFlow(fileName: String) {
                 CoreTACProgram.fromStream(FileInputStream(fileName), ArtifactFileUtils.getBasenameOnly(fileName))
             }
             handleGenericFlow(scene, reporter, treeView, listOf(rule to parsedTACCode))
+            treeView.writeOutputJson()
         }
 
         ReportTypes.PRESIMPLIFIED_RULE -> TACVerifier.verify(scene, fileName, rule)
@@ -565,7 +566,6 @@ fun createSceneReporterAndTreeview(fileName: String): Triple<IScene, ReporterCon
     val scene = SceneFactory.getScene(DegenerateContractSource(fileName))
     val reporterContainer = ReporterContainer(
         listOf(
-            JSONReporter(Config.OutputJSONFile),
             ConsoleReporter,
             StatusReporter
         )
@@ -654,6 +654,7 @@ suspend fun handleSorobanFlow(fileName: String) {
         treeView,
         wasmRules.map { it.rule to it.code }
     )
+    treeView.writeOutputJson()
     reporterContainer.toFile(scene)
 }
 
@@ -666,6 +667,7 @@ suspend fun handleSolanaFlow(fileName: String): Pair<TreeViewReporter,List<RuleC
         treeView,
         solanaRules.map { it.rule to it.code }
     )
+    treeView.writeOutputJson()
     reporterContainer.toFile(scene)
     return treeView to result
 }

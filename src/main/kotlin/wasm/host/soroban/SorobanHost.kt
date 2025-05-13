@@ -24,6 +24,7 @@ import analysis.opt.*
 import config.ReportTypes
 import datastructures.stdcollections.*
 import tac.Tag
+import tac.generation.*
 import utils.*
 import vc.data.*
 import verifier.CoreToCoreTransformer
@@ -38,7 +39,6 @@ import wasm.ir.ImportFunc
 import wasm.ir.WasmImport
 import wasm.ir.WasmName
 import wasm.ir.WasmProgram
-import wasm.tacutils.*
 
 /** Provide implementation details of the Soroban host environment */
 object SorobanHost : WasmHost {

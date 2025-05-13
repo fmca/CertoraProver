@@ -291,6 +291,20 @@ sealed class SpecType: AmbiSerializable {
                         return copy(originalRule = newOriginalRule)
                     }
                 }
+
+                /**
+                 * A specific type that holds a rule that is split in method splitRuleOnAsserts
+                 * of [rules.RuleChecker]. This rule will contain all asserts of a rule while
+                 * each satisfy receives it's own program.
+                 */
+                @Serializable
+                data class AssertsOnly(
+                    override val originalRule: IRule
+                ) : MultiAssertSubRule() {
+                    override fun copyWithOriginalRule(newOriginalRule: IRule): AssertsOnly {
+                        return copy(originalRule = newOriginalRule)
+                    }
+                }
             }
         }
         @Serializable
@@ -309,7 +323,7 @@ sealed class SpecType: AmbiSerializable {
             @Serializable
             data class GenericPreservedInductionStep(override val originalInv: CVLInvariant) : InvariantCheck()
             @Serializable
-            data class ExplicitPreservedInductionStep(override val originalInv: CVLInvariant, val methodSignature: ExternalQualifiedMethodParameterSignature) : InvariantCheck()
+            data class ExplicitPreservedInductionStep(override val originalInv: CVLInvariant, val methodSignature: ExternalQualifiedMethodParameterSignature?) : InvariantCheck()
             @Serializable
             data class TransientStorageStep(override val originalInv: CVLInvariant) : InvariantCheck()
         }

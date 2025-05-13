@@ -35,7 +35,7 @@ class IncrementalUseTest : MockStackVarMixin, CommandFinderMixin {
             L1022 = L1023
         }
         val defSite = graph.findCommandOrFail("def")
-        val ua = OnDemandUseAnalysis(graph)
+        val ua = graph.cache[OnDemandUseAnalysis]
         val useSites = ua.useSitesAfter(L1023, defSite)
         Assertions.assertEquals(1, useSites.size)
         Assertions.assertEquals(setOf("defAndUse"), useSites.toTags(graph))
@@ -64,7 +64,7 @@ class IncrementalUseTest : MockStackVarMixin, CommandFinderMixin {
             exit()
         }
         val firstDef = graph.findCommandOrFail("firstDef")
-        val ua = OnDemandUseAnalysis(graph)
+        val ua = graph.cache[OnDemandUseAnalysis]
         val uses = ua.useSitesAfter(L1024, firstDef)
         Assertions.assertEquals(2, uses.size)
         Assertions.assertEquals(setOf("firstUse", "secondUse"), uses.toTags(graph))
@@ -91,7 +91,7 @@ class IncrementalUseTest : MockStackVarMixin, CommandFinderMixin {
             tagNext("finalUse")
             L1023 = "L1024 + 0x10"
         }
-        val ua = OnDemandUseAnalysis(graph)
+        val ua = graph.cache[OnDemandUseAnalysis]
         val firstDef = graph.findCommandOrFail("firstDef")
         val secondDef = graph.findCommandOrFail("secondDefAndUse")
 

@@ -21,13 +21,12 @@ import analysis.CommandWithRequiredDecls
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import analysis.CommandWithRequiredDecls.Companion.withDecls
 import datastructures.stdcollections.*
+import tac.generation.*
 import tac.MetaKey
 import tac.MetaMap
 import utils.*
 import utils.ModZm.Companion.to2s
 import vc.data.*
-import wasm.tacutils.*
-import wasm.traps.Trap
 import java.math.BigInteger
 import vc.data.TACExprFactUntyped as expr
 

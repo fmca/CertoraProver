@@ -80,8 +80,10 @@ class BlockCmd(_range: Range, val block: List<Cmd>) : Cmd(_range) {
 class DeclarationCmd(val type: TypeOrLhs, val id: String, idRange: Range) : Cmd(idRange) {
     override fun toString() = "Declaration($type $id)"
 
-    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLCmd, CVLError>
-        = type.toCVLType(resolver, scope).map { CVLCmd.Simple.Declaration(range, it, id, scope) }
+    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLCmd, CVLError> =
+        type.toCVLType(resolver, scope).map(checkIdValidity(id, range, "variable")) { type, name ->
+            CVLCmd.Simple.Declaration(range, type, name, scope)
+        }
 }
 
 

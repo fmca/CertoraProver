@@ -17,11 +17,8 @@
 
 package analysis
 
-import algorithms.SimpleDominanceAnalysis
 import algorithms.findRoots
-import algorithms.transitiveClosure
 import analysis.dataflow.*
-import analysis.worklist.NaturalBlockScheduler
 import annotations.PerformanceCriticalUsesOnly
 import com.certora.collect.*
 import datastructures.LinkedArrayHashMap
@@ -570,48 +567,13 @@ class TACCommandGraph(
     override val blockGraph: BlockGraph,
     override val code: BlockNodes<TACCmd.Simple>,
     override val symbolTable: TACSymbolTable,
-    cache: IAnalysisCache? = null,
+    cache: AnalysisCache? = null,
     val name: String
 ): GenericTACCommandGraph<TACCmd.Simple, LTACCmd, TACBlock>() {
 
     companion object {
         // If building a TACCommandGraph from a CoreTACProgram, just use the pre-cached object.
         operator fun invoke(program: CoreTACProgram) = program.analysisCache.graph
-    }
-
-    private inner class GraphCache : IAnalysisCache {
-        override val graph: TACCommandGraph
-            get() = this@TACCommandGraph
-        override val def: IDefAnalysis by lazy {
-            LooseDefAnalysis.createForCache(this@TACCommandGraph)
-        }
-        override val strictDef: StrictDefAnalysis by lazy {
-            StrictDefAnalysis.createForCache(this@TACCommandGraph)
-        }
-        override val use: IUseAnalysis by lazy {
-            IUseAnalysis.UseAnalysis(this@TACCommandGraph)
-        }
-        override val lva: LiveVariableAnalysis by lazy {
-            LiveVariableAnalysis(this@TACCommandGraph)
-        }
-        override val gvn: IGlobalValueNumbering by lazy {
-            GlobalValueNumbering(this@TACCommandGraph)
-        }
-        override val revertBlocks: Set<NBId> by lazy {
-            RevertBlockAnalysis.findRevertBlocks(this.graph)
-        }
-        override val domination by lazy {
-            SimpleDominanceAnalysis(toBlockGraph())
-        }
-        override val variableLookup: Map<NBId, Set<TACSymbol.Var>> by lazy(LazyThreadSafetyMode.PUBLICATION) {
-            VariableLookupComputation.compute(this@TACCommandGraph.blocks.stream().flatMap {
-                it.commands.stream()
-            })
-        }
-        override val naturalBlockScheduler: NaturalBlockScheduler by lazy(LazyThreadSafetyMode.PUBLICATION) {
-            NaturalBlockScheduler.createForCache(this@TACCommandGraph)
-        }
-        override val reachability = transitiveClosure(blockSucc, reflexive = true)
     }
 
     override val blocks: List<TACBlock> = code.keys.map {
@@ -676,7 +638,7 @@ class TACCommandGraph(
                     "path ${ep.path}")
     }
 
-    val cache: IAnalysisCache = cache ?: GraphCache()
+    val cache: AnalysisCache = cache ?: AnalysisCache(lazyOf(this))
 
     sealed class PathCondition : ToLExpression {
 

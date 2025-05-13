@@ -39,6 +39,7 @@ import vc.data.tacexprutil.getFreeVars
 import java.util.concurrent.atomic.AtomicInteger
 import vc.data.TACProgramCombiners.andThen
 import verifier.equivalence.CEXUtils.asEither
+import kotlin.streams.toList
 
 @Suppress("FunctionName")
 /**
@@ -631,7 +632,7 @@ class BufferTraceInstrumentation private constructor(
              */
             val idCounter = AtomicInteger(1)
 
-            val strictDefAnalysis = StrictDefAnalysis(graph = g)
+            val strictDefAnalysis = g.cache.strictDef
 
             fun isNullRead(len: TACSymbol, where: CmdPointer) = strictDefAnalysis.source(where, len) == StrictDefAnalysis.Source.Const(BigInteger.ZERO)
 
@@ -861,9 +862,7 @@ class BufferTraceInstrumentation private constructor(
             marker: TraceIndexMarker
         ) : Either<RawEventParams, String> {
             val g = vcProgram.analysisCache.graph
-            val sda = StrictDefAnalysis(
-                graph = g
-            )
+            val sda = g.cache.strictDef
             val defSite = when(val s = sda.source(where, marker.eventHash)) {
                 is StrictDefAnalysis.Source.Defs -> {
                     s.ptrs.singleOrNull {

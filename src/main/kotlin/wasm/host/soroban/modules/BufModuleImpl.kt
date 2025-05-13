@@ -18,12 +18,12 @@
 package wasm.host.soroban.modules
 
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
+import tac.generation.*
 import tac.Tag
 import utils.*
 import vc.data.*
 import wasm.host.soroban.*
 import wasm.host.soroban.types.*
-import wasm.tacutils.*
 
 internal object BufModuleImpl : ModuleImpl() {
     override fun getFuncImpl(funcName: String, args: List<TACSymbol>, retVar: TACSymbol.Var?) =

@@ -141,10 +141,13 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
 
         suspend fun toCheckResult(
             scene: ISceneIdentifiers,
-            compiledRule: CompiledRule
+            compiledRule: CompiledRule,
+            generateReport: Boolean = true,
         ): Result<RuleCheckResult.Single> = result.mapCatching { (res, time) ->
-            // output HTML files
-            res.reportOutput(compiledRule.rule)
+            if (generateReport) {
+                // output HTML files
+                res.reportOutput(compiledRule.rule)
+            }
             val isSolverResultFromCacheAlert = isSolverResultFromCache.toRuleAlertReportOrNull()
             val isEmptyCodeAlert = if (res.simpleSimpleSSATAC.isEmptyCode()) {
                 // there may be other criteria which are more precise, e.g. no assert commands
@@ -162,9 +165,9 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             } else {
                 null
             }
-            val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule.tac)
+            val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule)
             val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts)
-            if (!Config.CoinbaseFeaturesMode.get()) {
+            if (generateReport && !Config.CoinbaseFeaturesMode.get()) {
                 generateSingleResult(scene, compiledRule.rule, res, time, isOptimizedRuleFromCache, isSolverResultFromCache, alerts)
             } else {
                 val details = (res as? Verifier.JoinedResult.Success)?.details().orEmpty()

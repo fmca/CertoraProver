@@ -579,7 +579,7 @@ fun DependencyHandlerScope.applyCommon(projectName: String) {
 	implementation("com.github.ajalt:clikt-multiplatform:2.6.0")
 	implementation("org.apache.commons:commons-lang3:3.11")
 	implementation("com.github.certora.collections:collect:${property("certora.collect.version")}")
-	implementation("com.dylibso.chicory:wasm:0.0.12")
+	implementation("com.dylibso.chicory:runtime:1.3.0")
 	implementation("org.ow2.asm:asm:9.7.1")
 	implementation("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20240325.1")
 
@@ -589,7 +589,7 @@ fun DependencyHandlerScope.applyCommon(projectName: String) {
 
 	testImplementation("net.jqwik:jqwik:1.7.1")
 	testImplementation("net.jqwik:jqwik-kotlin:1.7.1")
-	testImplementation("io.mockk:mockk:1.14.2")
+	testImplementation("io.mockk:mockk:1.12.4")
 
 	testImplementation("org.jetbrains.kotlin:kotlin-reflect:${property("kotlin.version")}")
 

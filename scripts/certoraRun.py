@@ -32,7 +32,7 @@ from CertoraProver.certoraCollectRunMetadata import collect_run_metadata
 from CertoraProver.certoraCollectConfigurationLayout import collect_configuration_layout
 from Shared.certoraLogging import LoggingManager
 from CertoraProver.certoraBuild import build
-from CertoraProver.certoraBuildRust import build_rust_app
+from CertoraProver.certoraBuildRust import set_rust_build_directory
 import CertoraProver.certoraContext as Ctx
 
 from CertoraProver import certoraContextValidator as Cv
@@ -132,7 +132,7 @@ def run_certora(args: List[str], attrs_class: Optional[Type[AttrUtil.Attributes]
             raise Util.ExitException("Split rules failed", exit_code)
 
     if Attrs.is_rust_app():
-        build_rust_app(context)
+        set_rust_build_directory(context)
 
         if context.local:
             check_cmd = Ctx.get_local_run_cmd(context)

@@ -20,11 +20,10 @@ package wasm.host.soroban.types
 import datastructures.stdcollections.*
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import com.certora.collect.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.host.soroban.*
-import wasm.tacutils.*
-import wasm.traps.*
 
 @Treapable
 @KSerializable

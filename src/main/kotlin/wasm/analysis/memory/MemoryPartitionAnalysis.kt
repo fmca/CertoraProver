@@ -17,16 +17,13 @@
 
 package wasm.analysis.memory
 
-import analysis.LTACCmd
+import analysis.*
 import analysis.numeric.IntValue
 import datastructures.stdcollections.*
 import log.*
 import optimizer.isMemoryAccess
 import utils.*
-import vc.data.AssigningSummary
-import vc.data.CoreTACProgram
-import vc.data.TACCmd
-import vc.data.TACKeyword
+import vc.data.*
 import wasm.analysis.ConstArrayInitSummary
 import wasm.analysis.intervals.IntervalAnalysis
 import wasm.analysis.intervals.IntervalInterpreter
@@ -47,8 +44,11 @@ private val logger = Logger(LoggerTypes.WASM)
  * - if `permission(a)` is ReadWrite, then [ctp] *may* write the address `a`
  * - if `permission(a)` is ReadOnly, then [ctp] *must not* write the address `a`
  */
-class MemoryPartitionAnalysis(ctp: CoreTACProgram): IMemoryPartitions {
-    private val intervalAnalysis = IntervalAnalysis(ctp.analysisCache.graph)
+class MemoryPartitionAnalysis private constructor(graph: TACCommandGraph): IMemoryPartitions {
+    companion object : AnalysisCache.Key<MemoryPartitionAnalysis> {
+        override fun createCached(graph: TACCommandGraph) = MemoryPartitionAnalysis(graph)
+    }
+    private val intervalAnalysis = graph.cache[IntervalAnalysis]
 
     private val permissionMap: Map<IntValue, IMemoryPartitions.Permission>
 
@@ -131,7 +131,7 @@ class MemoryPartitionAnalysis(ctp: CoreTACProgram): IMemoryPartitions {
 
     init {
         // Collect the written memory addresses
-        val writes = ctp.parallelLtacStream()
+        val writes = graph.commands.parallelStream()
             .mapNotNull { lcmd -> lcmd.writeLocations()
                 ?.also {
                     if (it == IntValue.Nondet) {

@@ -17,10 +17,9 @@
 
 package wasm
 
-import com.dylibso.chicory.log.SystemLogger
-import com.dylibso.chicory.wasm.Module
 import com.dylibso.chicory.wasm.Parser
 import com.dylibso.chicory.wasm.types.*
+import com.dylibso.chicory.wasm.WasmModule
 import datastructures.stdcollections.*
 import log.*
 import wasm.debugsymbols.WasmDebugSymbolLoader
@@ -31,12 +30,14 @@ import wasm.ir.WasmInstruction.Parametric
 import wasm.tokens.WasmTokens
 import java.io.File
 import java.math.BigInteger
+import java.util.Optional
+import kotlin.streams.toList
 
 private val wasmLogger = Logger(LoggerTypes.WASM)
 
 class WasmLoader(wasmFile: File) {
 
-    val module: Module = Parser(SystemLogger()).parseModule(wasmFile.inputStream())
+    val module: WasmModule = Parser.parse(wasmFile)
     val debugSymbols = WasmDebugSymbolLoader.generate(wasmFile, module, true)
 
     private val I32_BOUND = BigInteger.TWO.pow(32);
@@ -174,6 +175,9 @@ class WasmLoader(wasmFile: File) {
         ;
     }
 
+    private fun <T : Section, R> checkSectionPresent(section: Optional<T>, block: (T) -> R): R? =
+        checkSectionNonNull(section.orElse(null), block)
+
 
     fun convert(): WasmProgram {
         return WasmProgram(
@@ -226,10 +230,10 @@ class WasmLoader(wasmFile: File) {
     private fun convertMemorySection(): List<WasmModuleField> {
         val res = mutableListOf<WasmMemory>()
         val memorySection = module.memorySection()
-        checkSectionNonNull(memorySection) { ms ->
+        checkSectionPresent(memorySection) { ms ->
             for (i in 0..<ms.memoryCount()) {
                 ms.getMemory(0)
-                    ?.let { m -> res.add(WasmMemory(WasmName(WasmTokens.MEMORY), m.memoryLimits().initialPages())) }
+                    ?.let { m -> res.add(WasmMemory(WasmName(WasmTokens.MEMORY), m.limits().initialPages())) }
             }
         }
         return res
@@ -368,7 +372,7 @@ class WasmLoader(wasmFile: File) {
                 when (x.importType()) {
                     ExternalType.FUNCTION -> {
                         WasmImport(
-                            x.moduleName(), x.name(), ImportFunc(
+                            x.module(), x.name(), ImportFunc(
                                 FunctionIndex(idx).toWasmName(),
                                 WasmTypeUse(convertFunctionTypeToWasmType(TypeIndex((x as FunctionImport).typeIndex())).name,
                                     listOf(), null
@@ -407,10 +411,11 @@ class WasmLoader(wasmFile: File) {
             ValueType.F64 -> WasmPrimitiveType.F64
             ValueType.I64 -> WasmPrimitiveType.I64
             ValueType.I32 -> WasmPrimitiveType.I32
-            ValueType.UNKNOWN -> error("Cannot convert ${value}")
-            ValueType.V128 -> error("Cannot convert ${value}")
-            ValueType.FuncRef -> error("Cannot convert ${value}")
-            ValueType.ExternRef -> error("Cannot convert ${value}")
+            ValueType.UNKNOWN,
+            ValueType.V128,
+            ValueType.FuncRef,
+            ValueType.ExternRef,
+            ValueType.ExnRef -> error("Cannot convert ${value}")
         }
     }
 
@@ -656,7 +661,7 @@ class WasmLoader(wasmFile: File) {
     }
 
     private fun convertInstructions(
-        pointer: Int, instructions: List<Instruction>
+        pointer: Int, instructions: List<AnnotatedInstruction>
     ): Pair<Int, List<WasmInstruction>> {
         val ins = instructions[pointer]
         val res = when (ins.opcode()) {
@@ -677,8 +682,8 @@ class WasmLoader(wasmFile: File) {
             }
 
             OpCode.IF -> {
-                val ifInstructions = convertInstructions(ins.labelTrue()!!, instructions)
-                val elseInstructions = convertInstructions(ins.labelFalse()!!, instructions)
+                val ifInstructions = convertInstructions(ins.labelTrue(), instructions)
+                val elseInstructions = convertInstructions(ins.labelFalse(), instructions)
                 val ifAndElse =
                     Control.IfElse(ifInstructions.second, elseInstructions.second, WasmLabelAnnotation(ins.depth()), WASMAddress(ins.address()))
                 //All instructions in the if and else branches have been transformed, keep converting at the maximum of both pointers.
