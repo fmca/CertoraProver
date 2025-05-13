@@ -1,0 +1,8 @@
+{
+	"assertMessages": {},
+	"rules": {
+		"checkSum-Initial State": "SUCCESS",
+		"checkSum-Initial State-C.set_m": "SUCCESS",
+		"checkSum-Initial State-C.set_m(address,address,uint256)-C.set_m": "SUCCESS"
+	}
+}

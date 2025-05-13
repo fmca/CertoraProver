@@ -278,6 +278,9 @@ object TACMeta {
     val SATISFY_ID : MetaKey<Int> = MetaKey<Int>("satisfy.id")
     // For ghosts: mark ghosts
     val CVL_GHOST = MetaKey.Nothing("cvl.ghost")
+
+    val GHOST_SUM_ASSIGNMENT = MetaKey.Nothing("ghost.sum.assignment")
+
     /** Marks symbols that contain the length of some dynamic CVL array (bytes, string, ..), the meta value contains the
      * display of that CVL array. */
     val CVL_LENGTH_OF = MetaKey<String>("cvl.lengthof")

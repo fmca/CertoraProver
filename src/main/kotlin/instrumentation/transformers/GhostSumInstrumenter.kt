@@ -21,6 +21,7 @@ import analysis.*
 import datastructures.stdcollections.*
 import spec.cvlast.CVLGhostDeclaration
 import spec.cvlast.CVLType
+import tac.MetaMap
 import tac.NBId
 import tac.Tag
 import utils.*
@@ -229,7 +230,8 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                                 v = Select(unaccessedGhostVar.asSym(), *usumhostIndices) intSub currVal.asSym()
                             )
                         }
-                    }
+                    },
+                    meta = MetaMap(TACMeta.GHOST_SUM_ASSIGNMENT)
                 ),
                 TACCmd.Simple.AssumeExpCmd(
                     TACExprFactUntyped { Select(unaccessedGhostVar.asSym(), *usumhostIndices) ge Zero }
@@ -404,7 +406,8 @@ class GhostSumInstrumenter(ghosts: List<CVLGhostDeclaration>) : CodeTransformer(
                                 locs = nonSummedLocs,
                                 newGhostValSym.asSym()
                             )
-                        }
+                        },
+                        meta = MetaMap(TACMeta.GHOST_SUM_ASSIGNMENT)
                     ),
                     SnippetCmd.CVLSnippetCmd.SumGhostUpdate(
                         newGhostValSym,

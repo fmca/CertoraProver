@@ -633,13 +633,14 @@ class BoundedModelChecker(
     private suspend fun checkProg(
         prog: CoreTACProgram,
         rule: CVLSingleRule,
+        generateReport: Boolean = true,
     ): RuleCheckResult.Leaf {
         StatusReporter.registerSubrule(rule)
         reporter.signalStart(rule)
         val compiledRule = CompiledRule.create(rule, prog.withCoiOptimizations(true), DummyLiveStatsReporter)
 
         val res = compiledRule.check(scene.toIdentifiers(), true)
-            .toCheckResult(scene, compiledRule)
+            .toCheckResult(scene, compiledRule, generateReport = generateReport)
             .getOrElse { RuleCheckResult.Error(compiledRule.rule, it) }
 
         reporter.addResults(res)
@@ -662,7 +663,11 @@ class BoundedModelChecker(
             treeViewReporter.registerSubruleOf(thisRule, rule)
             treeViewReporter.signalStart(thisRule)
         }
-        val res = checkProg(vacuityCheck, thisRule)
+        val res = checkProg(
+            vacuityCheck,
+            thisRule,
+            generateReport = registerTreeView // If we're not going to show the user that this rule even ran, don't bother generating the TAC dumps for it.
+        )
         if (registerTreeView) {
             treeViewReporter.signalEnd(thisRule, res)
         }
@@ -762,7 +767,6 @@ class BoundedModelChecker(
         ): TreapList<out RuleCheckResult> {
             if (failLimit > 0 && nSatResults.get() >= failLimit) {
                 // Hit the max number of errors that should be found. Bail out
-                treeViewReporter.signalSkip(parentRule)
                 return treapListOf()
             }
 
@@ -771,10 +775,6 @@ class BoundedModelChecker(
             }
 
             val lastFuncs = allLastFuncsToFailedFilters.filterValues { it == null }.keys.toList()
-            if (lastFuncs.isEmpty()) {
-                // nothing to run
-                return treapListOf()
-            }
 
             val sequenceLen = parentFuncs.size + 1
             val rangeRule = rangeRules.computeIfAbsent(sequenceLen) {
@@ -785,58 +785,61 @@ class BoundedModelChecker(
                     treeViewReporter.registerSubruleOf(it, invRule)
                 }
             }
+            val res = if (lastFuncs.isNotEmpty()) {
+                val seqRule = parentRule.copy(
+                    ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(lastFuncs.dispatchStr()),
+                    ruleType = SpecType.Single.BMC.Sequence(inv)
+                )
+                treeViewReporter.registerSubruleOf(seqRule, rangeRule)
 
-            val seqRule = parentRule.copy(
-                ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(lastFuncs.dispatchStr()),
-                ruleType = SpecType.Single.BMC.Sequence(inv)
-            )
-            treeViewReporter.registerSubruleOf(seqRule, rangeRule)
+                val prog = generateProgForSequence(
+                    parentFuncs.map { listOf(it) } + listOf(lastFuncs),
+                    invProgs
+                )
 
-            val prog = generateProgForSequence(
-                parentFuncs.map { listOf(it) } + listOf(lastFuncs),
-                invProgs
-            )
+                treeViewReporter.signalStart(seqRule)
+                val res = checkProg(prog, seqRule)
 
-            treeViewReporter.signalStart(seqRule)
-            val res = checkProg(prog, seqRule)
+                if (res is RuleCheckResult.Single.WithCounterExamples) {
+                    // The sequence failed. So we want to show the specific function (from the dispatch list in the last
+                    // step of the sequence) that caused the violation.
+                    // The way we do that is to find what sighash SMT chose for the selector variable, and then find the
+                    // function that matches that sighash.
+                    val sighash = res.ruleCheckInfo.examples.head.model.tacAssignments.findEntry { v, _ ->
+                        v.meta[TACMeta.CVL_DISPLAY_NAME] == selectorVarName(sequenceLen - 1)
+                    }?.second as? TACValue.PrimitiveValue.Integer
+                    val theFunc = lastFuncs.singleOrNull()
+                        ?: run {
+                            check(sighash != null) { "Expected to find an integer-typed selectorVar variable" }
+                            lastFuncs.find { it.sigHash == sighash.value }
+                                ?: error("the selectorVar's value should have been one of the last functions' sighash")
+                        }
 
-            if (res is RuleCheckResult.Single.WithCounterExamples) {
-                // The sequence failed. So we want to show the specific function (from the dispatch list in the last
-                // step of the sequence) that caused the violation.
-                // The way we do that is to find what sighash SMT chose for the selector variable, and then find the
-                // function that matches that sighash.
-                val sighash = res.ruleCheckInfo.examples.head.model.tacAssignments.findEntry { v, _ ->
-                    v.meta[TACMeta.CVL_DISPLAY_NAME] == selectorVarName(sequenceLen - 1)
-                }?.second as? TACValue.PrimitiveValue.Integer
-                val theFunc = lastFuncs.singleOrNull()
-                    ?: run {
-                        check(sighash != null) { "Expected to find an integer-typed selectorVar variable" }
-                        lastFuncs.find { it.sigHash == sighash.value }
-                            ?: error("the selectorVar's value should have been one of the last functions' sighash")
-                    }
+                    // Found it :) Now replace the dispatch list from the identifier of the rule with theFunc.
+                    treeViewReporter.updateDisplayName(seqRule, theFunc.abiWithContractStr())
+                }
 
-                // Found it :) Now replace the dispatch list from the identifier of the rule with theFunc.
-                treeViewReporter.updateDisplayName(seqRule, theFunc.abiWithContractStr())
-            }
+                treeViewReporter.signalEnd(seqRule, res)
 
-            treeViewReporter.signalEnd(seqRule, res)
+                nSequencesChecked.addAndGet(lastFuncs.size)
 
-            nSequencesChecked.addAndGet(lastFuncs.size)
-
-
-            if (res is RuleCheckResult.Single && res.result == SolverResult.SAT) {
-                nSatResults.getAndIncrement()
-                return treapListOf(res)
+                if (res is RuleCheckResult.Single && res.result == SolverResult.SAT) {
+                    nSatResults.getAndIncrement()
+                    return treapListOf(res)
+                }
+                res
+            } else {
+                null
             }
 
             if (parentFuncs.size == Config.BoundedModelChecking.get() - 1) {
                 // Recursion end condition
-                return treapListOf(res)
+                return listOfNotNull(res).toTreapList()
             }
 
             val childFuncs = allLastFuncsToFailedFilters.filterValues { it == null || !it.appliesToChildren }.keys
 
-            return childFuncs.parallelMapOrdered { _, func ->
+            return (listOfNotNull(res) + childFuncs.parallelMapOrdered { _, func ->
                 val funcs = parentFuncs + func
                 val childProg = generateProgForSequence(funcs.map { listOf(it) }, invProgs)
                 val childRule = parentRule.copy(ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(func.abiWithContractStr()))
@@ -846,7 +849,7 @@ class BoundedModelChecker(
                 } else {
                     checkRecursive(childRule, funcs)
                 }
-            }.flatten().toTreapList() + res
+            }.flatten()).toTreapList()
         }
 
         val constructorsRule = IRule.createDummyRule("").copy(ruleIdentifier = invRule.ruleIdentifier.freshDerivedIdentifier("Initial State"), ruleType = SpecType.Single.BMC.Range(0)).also {

@@ -439,7 +439,7 @@ class GenerateRulesForInvariantsAndEnvFree(
             it.value.singleOrNull()
         }.filter { preserved ->
             // If the user provided a method name on the command line, we can skip generating rules for all other methods.
-            importedFuncs.mapNotNull { it.evmExternalMethodInfo?.toExternalABINameWithContract() }
+            importedFuncs.filterNot { it.annotation.library }.mapNotNull { it.evmExternalMethodInfo?.toExternalABINameWithContract() }
                 .containsMethodFilteredByConfig(preserved.methodSignature.computeCanonicalSignatureWithContract(PrintingContext(false)), mainContract.name)
         }.forEach { preserved ->
             // Now we check to see if the user has provided duplicate wildcard blocks or duplicate explicitly named non-
