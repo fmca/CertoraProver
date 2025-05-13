@@ -17,8 +17,8 @@
 
 package wasm.debugsymbols
 
-import com.dylibso.chicory.wasm.Parser.readVarUInt32
-import com.dylibso.chicory.wasm.exceptions.MalformedException
+import com.dylibso.chicory.wasm.Encoding.readVarUInt32
+import com.dylibso.chicory.wasm.MalformedException
 import com.dylibso.chicory.wasm.types.SectionId
 import datastructures.stdcollections.*
 import java.io.IOException
