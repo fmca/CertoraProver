@@ -121,7 +121,9 @@ def get_local_run_cmd(context: CertoraContext) -> List[str]:
     run_args = []
 
     if Attrs.is_rust_app():
-        run_args.append(Path(context.files[0]).name)
+        # For local runs, we want path to be relative to cwd instead of zip root.
+        rust_rel_path = os.path.relpath(Path(context.files[0]), os.getcwd())
+        run_args.append(rust_rel_path)
     elif context.is_tac:
         # For Rust app we assume the files holds the executable for the prover, currently we support a single file
         try:
