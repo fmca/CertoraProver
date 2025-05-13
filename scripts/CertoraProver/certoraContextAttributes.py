@@ -1854,3 +1854,6 @@ def is_evm_app() -> bool:
 
 def is_ranger_app() -> bool:
     return get_attribute_class() == RangerAttributes
+
+def is_sophy_app() -> bool:
+    return False  # wait for the tool to be added
