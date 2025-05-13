@@ -10,7 +10,7 @@ parameters:
     default: "CertoraProver Sanity"
     type: string
   gambit_version:
-    default: "v1.0.5"
+    default: "v1.0.6"
     type: string
   release_prod_version:
     default: false
@@ -53,30 +53,57 @@ commands:
 
   run_evm_sanity:
     description: "Runs the EVM sanity tests"
+    parameters:
+      set_prover_version:
+        type: boolean
+        default: false
     steps:
       - run:
           name: Run EVM Sanity Tests
           command: |
             cd Public/TestEVM/CVLTypechecking/ArrayLiterals
-            certoraEVMProver Default.conf --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH} --wait_for_results "all"
+            if [[ "<< parameters.set_prover_version >>" == true ]]; then
+              echo "Using `--prover_version ${PUBLIC_CIRCLE_BRANCH}`"
+              certoraEVMProver Default.conf --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH} --wait_for_results "all"
+            else
+              certoraEVMProver Default.conf --server staging --wait_for_results "all"
+            fi
 
   run_solana_sanity:
     description: "Runs the Solana sanity tests"
+    parameters:
+      set_prover_version:
+        type: boolean
+        default: false
     steps:
       - run:
           name: Run Solana Sanity Tests
           command: |
             cd Public/TestSolana/SolanaFlowTest
-            certoraSolanaProver Default.conf --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH} --wait_for_results "all"
+            if [[ "<< parameters.set_prover_version >>" == true ]]; then
+              echo "Using `--prover_version ${PUBLIC_CIRCLE_BRANCH}`"
+              certoraSolanaProver Default.conf --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH} --wait_for_results "all"
+            else
+              certoraSolanaProver Default.conf --server staging --wait_for_results "all"
+            fi
 
   run_soroban_sanity:
     description: "Runs the Soroban sanity tests"
+    parameters:
+      set_prover_version:
+        type: boolean
+        default: false
     steps:
       - run:
           name: Run Soroban Sanity Tests
           command: |
             cd Public/TestSoroban/Meridian2024-workshop
-            certoraSorobanProver Default.conf --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH} --wait_for_results "all"
+            if [[ "<< parameters.set_prover_version >>" == true ]]; then
+              echo "Using `--prover_version ${PUBLIC_CIRCLE_BRANCH}`"
+              certoraSorobanProver Default.conf --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH} --wait_for_results "all"
+            else
+              certoraSorobanProver Default.conf --server staging --wait_for_results "all"
+            fi
 
   download_gambit:
     steps:
@@ -90,6 +117,10 @@ commands:
 
   run_mutation_sanity:
     description: "Runs the mutation tests"
+    parameters:
+      set_prover_version:
+        type: boolean
+        default: false
     steps:
       - download_gambit
       - run:
@@ -103,7 +134,12 @@ commands:
           name: Run Mutation Tests
           command: |
             cd Public/TestMutation/mulSolc8
-            certoraMutate --conf mul8_0.conf --sync --poll_timeout 8 --debug --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH}
+            if [[ "<< parameters.set_prover_version >>" == true ]]; then
+              echo "Using `--prover_version ${PUBLIC_CIRCLE_BRANCH}`"
+              certoraMutate --conf mul8_0.conf --sync --poll_timeout 8 --debug --server staging --prover_version ${PUBLIC_CIRCLE_BRANCH}
+            else
+              certoraMutate --conf mul8_0.conf --sync --poll_timeout 8 --debug --server staging
+            fi
 
   release_certora_cli:
     steps:
@@ -295,6 +331,10 @@ jobs:
       certora_cli_package:
         type: string
         default: "local"
+      parameters:
+        set_prover_version:
+          type: boolean
+          default: false
     docker:
       - image: *img
     working_directory: ~/repo
@@ -307,10 +347,14 @@ jobs:
           at: ~/
       - prepare_reg_test:
           certora_cli_package: << parameters.certora_cli_package >>
-      - run_evm_sanity
-#      - run_solana_sanity
-      - run_soroban_sanity
-      - run_mutation_sanity
+      - run_evm_sanity:
+          set_prover_version: << parameters.set_prover_version >>
+      - run_solana_sanity:
+          set_prover_version: << parameters.set_prover_version >>
+      - run_soroban_sanity:
+          set_prover_version: << parameters.set_prover_version >>
+      - run_mutation_sanity:
+          set_prover_version: << parameters.set_prover_version >>
 
   # Prod release certora-cli - tag based
   release_cli:
@@ -397,6 +441,7 @@ workflows:
               only:
                 - master
       - certora_prover_sanity:
+          set_prover_version: true
           requires:
             - jar_deploy
           filters:
