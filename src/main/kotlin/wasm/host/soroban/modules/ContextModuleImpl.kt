@@ -20,11 +20,10 @@ package wasm.host.soroban.modules
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import datastructures.stdcollections.*
 import tac.*
+import tac.generation.*
 import vc.data.*
 import wasm.host.soroban.*
 import wasm.host.soroban.types.*
-import wasm.tacutils.*
-import wasm.traps.*
 
 internal object ContextModuleImpl : ModuleImpl() {
     fun init() = mergeMany(

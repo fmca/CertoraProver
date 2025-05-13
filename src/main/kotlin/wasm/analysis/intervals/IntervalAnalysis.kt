@@ -28,14 +28,16 @@ import com.certora.collect.*
 import log.*
 import tac.NBId
 import utils.*
-import vc.data.TACCmd
-import vc.data.TACSymbol
+import vc.data.*
 import java.math.BigInteger
 
 private val logger = Logger(LoggerTypes.ABSTRACT_INTERPRETATION)
 
 /** A worklist-based interval analysis */
-class IntervalAnalysis(private val graph: TACCommandGraph) {
+class IntervalAnalysis private constructor(private val graph: TACCommandGraph) {
+    companion object : AnalysisCache.Key<IntervalAnalysis> {
+        override fun createCached(graph: TACCommandGraph) = IntervalAnalysis(graph)
+    }
 
     // Only store in/out states at the block level
     private val inState = mutableMapOf<NBId, State>()

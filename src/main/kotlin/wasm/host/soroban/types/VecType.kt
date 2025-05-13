@@ -23,13 +23,10 @@ import analysis.CommandWithRequiredDecls.Companion.withDecls
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
-import wasm.analysis.memory.StaticMemoryAnalysis
 import wasm.host.soroban.*
-import wasm.host.soroban.opt.LONG_COPY_STRIDE
-import wasm.tacutils.*
-import wasm.traps.*
 
 /**
     Vectors are [ArrayType]s whose values are arbitrary [Val]s.
@@ -52,18 +49,18 @@ object VecType : ArrayType() {
 
         override fun gen(
             simplifiedInputs: List<TACExpr>,
-            staticData: StaticMemoryAnalysis
+            analysisCache: AnalysisCache
         ): CommandWithRequiredDecls<TACCmd.Simple> = simplifiedInputs.let { (p, l) ->
-                l.evalAsConst()?.safeAsInt()?.let { lengthLiteral ->
-                    Val.setObjectDigest(tag, handle.asSym()) {
-                        (0 until lengthLiteral).map {
-                            Val.digest(
-                                select(TACKeyword.MEMORY.toVar().asSym(), p add (it.asTACExpr mul Val.sizeInBytes.asTACExpr))
-                            )
-                        }
+            l.evalAsConst()?.safeAsInt()?.let { lengthLiteral ->
+                Val.setObjectDigest(tag, handle.asSym()) {
+                    (0 until lengthLiteral).map {
+                        Val.digest(
+                            select(TACKeyword.MEMORY.toVar().asSym(), p add (it.asTACExpr mul Val.sizeInBytes.asTACExpr))
+                        )
                     }
-                } ?: CommandWithRequiredDecls()
-            }
+                }
+            } ?: CommandWithRequiredDecls()
+        }
 
         override val inputs: List<TACSymbol>
             get() = listOf(pos, len)

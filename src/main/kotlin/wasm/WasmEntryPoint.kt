@@ -36,6 +36,7 @@ import spec.cvlast.RuleIdentifier
 import spec.rules.EcosystemAgnosticRule
 import spec.cvlast.SpecType
 import tac.DumpTime
+import tac.generation.*
 import utils.*
 import vc.data.*
 import verifier.*
@@ -62,8 +63,6 @@ import wasm.summarization.summarizers
 import wasm.summarization.WasmBuiltinCallSummarizer
 import wasm.summarization.WasmHostCallSummarizer
 import wasm.summarization.soroban.SorobanSDKSummarizer
-import wasm.tacutils.*
-import wasm.traps.ConditionalTrapRevert
 import java.io.File
 import java.util.stream.Collectors
 import wasm.transform.BitopsRewriter
@@ -241,6 +240,7 @@ object WasmEntryPoint {
             wasmLogger.info { "Generating CoreTAC from WasmImpCfg" }
             val coreTac = WasmImpCfgToTAC.wasmImpCfgToCoreTac(
                 targetFuncName = ruleExportName,
+                wasmAST = wasmAST,
                 wasmTac = wtacWithGlobalsInitialized,
                 summarizer = summarizer,
                 hostInit = env.init()
@@ -261,7 +261,7 @@ object WasmEntryPoint {
                 .map(CoreToCoreTransformer(ReportTypes.UNROLL, CoreTACProgram::convertToLoopFreeCode))
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE, ConstantPropagator::propagateConstants))
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE, ConstantComputationInliner::rewriteConstantCalculations))
-                .map(CoreToCoreTransformer(ReportTypes.MATERIALIZE_POST_UNROLL_ASSIGNMENTS) { PostUnrollAssignmentSummary.materialize(wasmAST, it) })
+                .map(CoreToCoreTransformer(ReportTypes.MATERIALIZE_POST_UNROLL_ASSIGNMENTS) { PostUnrollAssignmentSummary.materialize(it) })
                 .map(CoreToCoreTransformer(ReportTypes.MATERIALIZE_CONDITIONAL_TRAPS, ConditionalTrapRevert::materialize))
                 .mapIf(isSatisfyRule, CoreToCoreTransformer(ReportTypes.REWRITE_ASSERTS, ::rewriteAsserts))
 

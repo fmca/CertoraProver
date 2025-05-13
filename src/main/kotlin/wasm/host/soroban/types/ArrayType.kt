@@ -20,11 +20,10 @@ package wasm.host.soroban.types
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import datastructures.stdcollections.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.host.soroban.*
-import wasm.tacutils.*
-import wasm.traps.*
 
 /**
     A [MappingType] whose keys are contiguous integers starting from 0

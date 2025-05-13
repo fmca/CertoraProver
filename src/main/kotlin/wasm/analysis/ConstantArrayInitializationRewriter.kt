@@ -22,10 +22,9 @@ import analysis.snarrowOrNull
 import datastructures.stdcollections.*
 import log.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
-import wasm.host.soroban.opt.LONG_COPY_STRIDE
-import wasm.tacutils.*
 import java.math.BigInteger
 import java.util.stream.Collectors
 

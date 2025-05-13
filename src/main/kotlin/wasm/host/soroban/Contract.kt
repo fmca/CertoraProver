@@ -20,12 +20,11 @@ package wasm.host.soroban
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import datastructures.stdcollections.*
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.host.soroban.*
 import wasm.host.soroban.types.*
-import wasm.tacutils.*
-import wasm.traps.*
 
 object Contract {
     val address = TACKeyword.SOROBAN_ADDRESS_CURRENT.toVar()

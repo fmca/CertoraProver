@@ -24,7 +24,9 @@ import log.*
 import tac.*
 import utils.*
 import vc.data.*
+import wasm.analysis.memory.StaticMemoryAnalysis
 import wasm.cfg.PC
+import wasm.ir.WasmProgram
 import wasm.summarization.WasmCallSummarizer
 import wasm.tokens.WasmTokens.ENTRYPOINT
 
@@ -35,6 +37,7 @@ object WasmImpCfgToTAC {
 
     fun wasmImpCfgToCoreTac(
         targetFuncName: String,
+        wasmAST: WasmProgram,
         wasmTac: WasmImpCfgProgram,
         summarizer: WasmCallSummarizer,
         hostInit: WasmToTacInfo
@@ -42,12 +45,15 @@ object WasmImpCfgToTAC {
         with(
             WasmImpCfgContext(summarizer)
         ) {
+            val staticDataAnnotations = StaticMemoryAnalysis.getStaticDataAnnotations(wasmAST)
+
             val symbols = mutableSetOf<TACSymbol>()
             val code: BlockNodes<TACCmd.Simple> = wasmTac.getNodes().entries.associate { (pc, wblock) ->
                 val init = if (pc == ENTRYPOINT) {
                     mergeMany(
                         initMemory(),
                         hostInit,
+                        staticDataAnnotations,
                     )
                 } else {
                     WasmToTacInfo()

@@ -15,18 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package wasm.tacutils
+package tac.generation
 
 import analysis.*
 import config.*
 import datastructures.stdcollections.*
 import instrumentation.transformers.TACDSA
 import kotlin.streams.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import verifier.*
-import wasm.analysis.memory.*
-import wasm.ir.*
 
 /**
     Base class for assigning summaries that run after unrolling.  We materialize all of these in [materialize].
@@ -40,11 +39,11 @@ public abstract class PostUnrollAssignmentSummary : AssignmentSummary() {
     /** Materialize this summary, given the simplified inputs. */
     abstract protected fun gen(
         simplifiedInputs: List<TACExpr>,
-        staticData: StaticMemoryAnalysis
+        analysisCache: AnalysisCache,
     ): CommandWithRequiredDecls<TACCmd.Simple>
 
     companion object {
-        fun materialize(wasm: WasmProgram, prog: CoreTACProgram) =
+        fun materialize(prog: CoreTACProgram) =
             prog.patching { patch ->
                 val constAnalysis = MustBeConstantAnalysis(
                     prog.analysisCache.graph,
@@ -53,14 +52,13 @@ public abstract class PostUnrollAssignmentSummary : AssignmentSummary() {
                 fun TACSymbol.simplifyAt(where: CmdPointer) =
                     constAnalysis.mustBeConstantAt(where, this)?.let { it.asTACExpr } ?: this.asSym()
 
-                val permissions = MemoryPartitionAnalysis(prog)
-                val staticData = StaticMemoryAnalysis(wasm, prog, permissions)
-
-                val replacements = prog.parallelLtacStream().mapNotNull { lcmd ->
+                // Note: it's important not to use a parallel stream here, as it can create recursion issues with the
+                // analysis cache.
+                val replacements = prog.ltacStream().mapNotNull { lcmd ->
                     lcmd.snarrowOrNull<PostUnrollAssignmentSummary>()?.let { op ->
                         lcmd.ptr to op.gen(
                             op.inputs.map { it.simplifyAt(lcmd.ptr) },
-                            staticData
+                            prog.analysisCache
                         )
                     }
                 }.asSequence()

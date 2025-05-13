@@ -38,10 +38,8 @@ class StaticMemoryAnalysisTest: WasmTestFixture() {
             memory("default", 65536)
             f()
         })
-        val wasmAST = WasmLoader(wasmFile.toFile()).convert()
         val tac = WasmEntryPoint.wasmToTAC(wasmFile.toFile(), setOf(entry), NullHost, optimize = false).single().code
-
-        return StaticMemoryAnalysis(wasmAST, tac, MemoryPartitionAnalysis(tac))
+        return tac.analysisCache[StaticMemoryAnalysis]
     }
 
     val data = "ABCDEFG\u0001\u0002\u0003\u0004HIJKLMNOP"

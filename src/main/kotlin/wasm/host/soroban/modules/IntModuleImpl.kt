@@ -18,11 +18,10 @@
 package wasm.host.soroban.modules
 
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
+import tac.generation.*
 import vc.data.*
 import wasm.host.soroban.*
 import wasm.host.soroban.types.*
-import wasm.tacutils.*
-import wasm.traps.*
 import java.math.BigInteger
 
 internal object IntModuleImpl : ModuleImpl() {

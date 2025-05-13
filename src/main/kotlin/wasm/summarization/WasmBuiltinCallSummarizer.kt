@@ -27,10 +27,10 @@ import report.CVTAlertReporter
 import report.CVTAlertSeverity
 import report.CVTAlertType
 import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import vc.data.TACExprFactUntyped as txf
-import wasm.host.soroban.opt.LONG_COPY_STRIDE
 import wasm.host.soroban.types.MapType
 import wasm.impCfg.*
 import wasm.ir.WasmData
@@ -38,9 +38,7 @@ import wasm.ir.WasmName
 import wasm.ir.WasmPrimitiveType
 import wasm.ir.WasmPrimitiveType.*
 import wasm.ir.WasmProgram
-import wasm.tacutils.*
 import wasm.tokens.WasmTokens
-import wasm.traps.Trap
 import java.math.BigInteger
 
 /**

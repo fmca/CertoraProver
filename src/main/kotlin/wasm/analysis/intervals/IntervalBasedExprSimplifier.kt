@@ -34,7 +34,7 @@ import java.util.stream.Collectors
  */
 object IntervalBasedExprSimplifier {
     fun analyze(core: CoreTACProgram): CoreTACProgram {
-        val analysis = IntervalAnalysis(core.analysisCache.graph)
+        val analysis = core.analysisCache[IntervalAnalysis]
 
         val toPatch = core.parallelLtacStream().mapNotNull { lcmd ->
             lcmd.maybeExpr<TACExpr>()?.let { assign ->

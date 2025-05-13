@@ -22,9 +22,8 @@ import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import analysis.CommandWithRequiredDecls.Companion.withDecls
 import datastructures.stdcollections.*
 import utils.Range
-import tac.MetaKey
-import tac.MetaMap
-import tac.Tag
+import tac.*
+import tac.generation.*
 import utils.*
 import vc.data.*
 import wasm.cfg.PC
@@ -34,10 +33,6 @@ import wasm.impCfg.WasmNumericExpr.reconstructExpr
 import wasm.impCfg.WasmNumericExpr.transformTmps
 import wasm.ir.*
 import wasm.summarization.WasmCallSummarizer
-import wasm.tacutils.assign
-import wasm.tacutils.assignHavoc
-import wasm.tacutils.assume
-import wasm.tacutils.withDecls
 import wasm.tokens.WasmTokens.GLOBAL
 import wasm.tokens.WasmTokens.HAVOC
 import wasm.tokens.WasmTokens.HAVOC_VAR_NM
@@ -52,7 +47,6 @@ import wasm.tokens.WasmTokens.WASMICFG_JUMP
 import wasm.tokens.WasmTokens.WASMICFG_RET
 import wasm.tokens.WasmTokens.WASMICFG_SWITCH
 import wasm.tokens.WasmTokens.WASMICFG_UNREACH
-import wasm.traps.Trap
 import java.math.BigInteger
 
 

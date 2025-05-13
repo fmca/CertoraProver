@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package wasm.tacutils
+package tac.generation
 
 import analysis.*
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
@@ -24,7 +24,6 @@ import datastructures.stdcollections.*
 import tac.*
 import vc.data.*
 import vc.data.tacexprutil.*
-import wasm.host.soroban.opt.LONG_COPY_STRIDE
 
 fun assignHavoc(dest: TACSymbol.Var, meta: MetaMap = MetaMap()) =
     listOf(TACCmd.Simple.AssigningCmd.AssignHavocCmd(dest, meta)).withDecls(dest)
@@ -97,6 +96,8 @@ fun defineMap(
         )
     }
 }
+
+val LONG_COPY_STRIDE = MetaKey<Int>("tac.generation.long.copy.stride")
 
 /** Copies from a ByteMap into a temporary map, and calls [f] with the temporary map var. */
 fun letBuf(

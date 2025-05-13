@@ -18,11 +18,11 @@
 package wasm.transform
 
 import datastructures.stdcollections.*
-import wasm.tacutils.*
 import analysis.*
 import analysis.PatternDSL.invoke
 import analysis.PatternMatcher.Pattern.Companion.toBuildable
 import evm.MASK_SIZE
+import tac.generation.*
 import utils.*
 import vc.data.*
 import java.math.BigInteger

@@ -21,13 +21,12 @@ import analysis.CommandWithRequiredDecls
 import analysis.CommandWithRequiredDecls.Companion.mergeMany
 import com.certora.collect.*
 import datastructures.stdcollections.*
+import tac.generation.*
 import tac.Tag
 import utils.*
 import vc.data.*
 import wasm.analysis.memory.StaticMemoryAnalysis
 import wasm.host.soroban.*
-import wasm.tacutils.*
-import wasm.traps.Trap
 
 /** Soroban symbol objects are buffers holding at most 32 characters in [a-zA-Z0-9_] */
 @KSerializable
@@ -162,8 +161,9 @@ object SymbolType : BufferType() {
 
         override fun gen(
             simplifiedInputs: List<TACExpr>,
-            staticData: StaticMemoryAnalysis
+            analysisCache: AnalysisCache
         ): CommandWithRequiredDecls<TACCmd.Simple> = simplifiedInputs.let { (sym, slices, len) ->
+            val staticData = analysisCache[StaticMemoryAnalysis]
             val havoc by lazy {
                 assign(retIndex) { Unconstrained(Tag.Bit256) }
             }
@@ -240,8 +240,9 @@ object SymbolType : BufferType() {
 
         override fun gen(
             simplifiedInputs: List<TACExpr>,
-            staticData: StaticMemoryAnalysis
+            analysisCache: AnalysisCache
         ): CommandWithRequiredDecls<TACCmd.Simple> = simplifiedInputs.let { (ptr, len) ->
+            val staticData = analysisCache[StaticMemoryAnalysis]
 
             val nondet by lazy { newNondetSymbol(newHandle) }
             val literalPointer = ptr.evalAsConst() ?: return nondet
