@@ -62,7 +62,8 @@ object AbortFunction {
         "core::panicking::panic_bounds_check",
         "core::panicking::panic_misaligned_pointer_dereference",
         "core::panicking::panic_fmt",
-        "core::panicking::panic"
+        "core::panicking::panic",
+        "core::panicking::panic_explicit"
     )
 
     fun addSummaries(memSummaries: MemorySummaries) {
