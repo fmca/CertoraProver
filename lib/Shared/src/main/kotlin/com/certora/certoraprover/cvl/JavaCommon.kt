@@ -25,8 +25,11 @@ import spec.cvlast.CVLParam
 import spec.cvlast.MethodParamFilters.Companion.noFilters
 import spec.cvlast.VMParam.Unnamed
 import spec.cvlast.typechecker.CVLError
+import spec.cvlast.typechecker.InvalidIdentifier
 import spec.cvlast.typedescriptors.PrintingContext
+import tac.TACIdentifiers
 import utils.CollectingResult
+import utils.CollectingResult.Companion.asError
 import utils.CollectingResult.Companion.flatten
 import utils.CollectingResult.Companion.lift
 import utils.CollectingResult.Companion.map
@@ -68,11 +71,12 @@ class NamedVMParam(type: TypeOrLhs, loc: String?, val id: String, range: Range) 
 }
 
 
-class CVLParam(val type: TypeOrLhs, val id: String, val range: Range) : Kotlinizable<spec.cvlast.CVLParam> {
+class CVLParam(val type: TypeOrLhs, val id: String, val range: Range) : Kotlinizable<CVLParam> {
     override fun toString() = "CVLParam($type,$id)"
 
-    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<spec.cvlast.CVLParam, CVLError>
-        = type.toCVLType(resolver, scope).map { CVLParam(it, id, range) }
+    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLParam, CVLError> =
+        type.toCVLType(resolver, scope)
+            .map(checkIdValidity(id, range, "CVL parameter")) { type, id -> CVLParam(type, id, range) }
 }
 
 class LocatedToken internal constructor(val range: Range, val value: String) {
@@ -172,3 +176,10 @@ class MethodSig @JvmOverloads constructor(
 
     fun kotlinizeTarget(resolver: TypeResolver): MethodEntryTargetContract = id.kotlinizeTarget(resolver)
 }
+
+fun checkIdValidity(id: String, location: Range, construct: String): CollectingResult<String, CVLError> =
+    if (TACIdentifiers.valid(id)) {
+        id.lift()
+    } else {
+        InvalidIdentifier(location, id, construct).asError()
+    }

@@ -259,8 +259,10 @@ class MacroDefinition(val range: Range, val id: String, val param: List<CVLParam
 class ImportedContract(override val alias: String, override val contractName: String, override val range: Range) : Kotlinizable<CVLImportedContract>, ContractAliasDefinition {
     override fun toString() = "ImportedContract($alias,$contractName)"
 
-    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLImportedContract, CVLError>
-        = CVLImportedContract(alias, SolidityContract(resolver.resolveContractName(contractName)), range).lift()
+    override fun kotlinize(resolver: TypeResolver, scope: CVLScope): CollectingResult<CVLImportedContract, CVLError> =
+        checkIdValidity(alias, range, "contract alias").map { alias ->
+            CVLImportedContract(alias, SolidityContract(resolver.resolveContractName(contractName)), range)
+        }
 
     override fun hashCode() : Int = hash { it + alias + contractName }
     override fun equals(other : Any?) : Boolean = other is ImportedContract && other.alias == alias && other.contractName == contractName

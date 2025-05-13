@@ -130,6 +130,73 @@ class LhsIsMapping private constructor(override val location: Range, override va
     constructor(e: com.certora.certoraprover.cvl.MappingType) : this(e.range, "`$e` is not a valid left-hand side.")
 }
 
+// InvalidIdentifier ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Unfortunately, escaping dollars in kotlin is not very elegant,
+// and we need to double escape them in the examples so that they're still escaped in the generated test code
+private const val dollar = "\${'\$'}"
+
+@KSerializable
+@CVLErrorType(
+    category = CVLErrorCategory.SYNTAX,
+    description =
+        """
+        Invalid name given for a CVL declaration.
+        """,
+)
+@CVLErrorExample(
+    exampleCVLWithRange = """
+             rule example {
+                 #int ${dollar}x# = 3;
+             }
+             """,
+    exampleMessage = "${dollar}x is not a valid name for a variable. " +
+        "Names must start with a letter or underscore and may only contain letters, numbers, underscores and dollar signs.",
+)
+@CVLErrorExample(
+    exampleCVLWithRange = """
+             rule example {
+                 #int ${dollar}x;#
+             }
+             """,
+    exampleMessage = "${dollar}x is not a valid name for a variable. " +
+        "Names must start with a letter or underscore and may only contain letters, numbers, underscores and dollar signs.",
+)
+@CVLErrorExample(
+    exampleCVLWithRange = """
+                 #ghost int ${dollar}x#;
+             """,
+    exampleMessage = "${dollar}x is not a valid name for a ghost. " +
+        "Names must start with a letter or underscore and may only contain letters, numbers, underscores and dollar signs.",
+)
+@CVLErrorExample(
+    exampleCVLWithRange = """
+                 #ghost ${dollar}x() returns bool#;
+             """,
+    exampleMessage = "${dollar}x is not a valid name for a ghost function. " +
+        "Names must start with a letter or underscore and may only contain letters, numbers, underscores and dollar signs.",
+)
+@CVLErrorExample(
+    exampleCVLWithRange = """
+                 #using PrimaryContract as ${dollar}c#;
+             """,
+    exampleMessage = "${dollar}c is not a valid name for a contract alias. " +
+        "Names must start with a letter or underscore and may only contain letters, numbers, underscores and dollar signs.",
+)
+@CVLErrorExample(
+    exampleCVLWithRange = """
+                 invariant foo(#int ${dollar}x#) true;
+             """,
+    exampleMessage = "${dollar}x is not a valid name for a CVL parameter. " +
+        "Names must start with a letter or underscore and may only contain letters, numbers, underscores and dollar signs.",
+)
+class InvalidIdentifier private constructor(override val location: Range, override val message: String) : CVLError() {
+    constructor(location: Range, id: String, construct: String) : this(
+        location, "$id is not a valid name for a $construct. " +
+            "Names must start with a letter or underscore and may only contain letters, numbers, underscores and dollar signs."
+    )
+}
+
 // SyntaxError /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
