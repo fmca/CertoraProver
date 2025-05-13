@@ -236,6 +236,7 @@ class BoundedModelChecker(
         private fun Collection<Collection<ContractFunction>>.sequenceStr() = this.joinToString(" -> ") { it.dispatchStr() }
     }
 
+    private val maxSequenceLen = Config.BoundedModelChecking.get()
     private val cvl = cvl.copy(ghosts = cvl.ghosts + CVLGhostDeclaration.Variable(Range.Empty(), CVLType.PureCVLType.Primitive.Mathint, INV_N, true, listOf(), CVLScope.AstScope))
     private val invariants = Config.getRuleChoices(cvl.invariants.mapToSet { it.id }).let { chosenInvs ->
         cvl.invariants
@@ -755,6 +756,19 @@ class BoundedModelChecker(
         }
 
         val rangeRules = ConcurrentHashMap<Int, CVLSingleRule>()
+        fun getRangeRule(len: Int) =
+            rangeRules.computeIfAbsent(len) {
+                invRule.copy(
+                    ruleIdentifier = invRule.ruleIdentifier.freshDerivedIdentifier("Range $len"),
+                    ruleType = SpecType.Single.BMC.Range(len)
+                ).also {
+                    treeViewReporter.registerSubruleOf(
+                        it,
+                        invRule,
+                        funcsForThisInvariant.size.toBigInteger().pow(len).toInt() // Total theoretical number of sequences of this length
+                    )
+                }
+            }
 
         /**
          * Given the [parentFuncs] list, will find all functions `f` such that `parentFuncs + f` is a valid sequence
@@ -774,17 +788,14 @@ class BoundedModelChecker(
                 BoundedModelCheckerFilters.filter(parentFuncs + func, inv, funcReads, funcWrites)
             }
 
+            val sequenceLen = parentFuncs.size + 1
+            val rangeRule = getRangeRule(sequenceLen)
             val lastFuncs = allLastFuncsToFailedFilters.filterValues { it == null }.keys.toList()
 
-            val sequenceLen = parentFuncs.size + 1
-            val rangeRule = rangeRules.computeIfAbsent(sequenceLen) {
-                invRule.copy(
-                    ruleIdentifier = invRule.ruleIdentifier.freshDerivedIdentifier("Range $sequenceLen"),
-                    ruleType = SpecType.Single.BMC.Range(sequenceLen)
-                ).also {
-                    treeViewReporter.registerSubruleOf(it, invRule)
-                }
-            }
+            // The last element of the sequence will be a dispatch on the functions in lastFuncs, so the functions that
+            // got filtered out correspond to sequences that are skipped, so count them as done.
+            treeViewReporter.updateFinishedChildren(rangeRule, funcsForThisInvariant.size - lastFuncs.size)
+
             val res = if (lastFuncs.isNotEmpty()) {
                 val seqRule = parentRule.copy(
                     ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(lastFuncs.dispatchStr()),
@@ -821,6 +832,9 @@ class BoundedModelChecker(
 
                 treeViewReporter.signalEnd(seqRule, res)
 
+                // This seqRule accounted for lastFuncs.size sequences, update the finished children with this info
+                treeViewReporter.updateFinishedChildren(rangeRule, lastFuncs.size)
+
                 nSequencesChecked.addAndGet(lastFuncs.size)
 
                 if (res is RuleCheckResult.Single && res.result == SolverResult.SAT) {
@@ -832,12 +846,24 @@ class BoundedModelChecker(
                 null
             }
 
-            if (parentFuncs.size == Config.BoundedModelChecking.get() - 1) {
+            if (sequenceLen == maxSequenceLen) {
                 // Recursion end condition
                 return listOfNotNull(res).toTreapList()
             }
 
             val childFuncs = allLastFuncsToFailedFilters.filterValues { it == null || !it.appliesToChildren }.keys
+
+            // OK, this is a little confusing.
+            // We want to count how many sequences are going to be skipped for each range due to us not calling checkRecursive
+            // on the sequence parentFuncs + child.
+            // So for each range r larger than the one we're currently checking (which we already updated before) we will skip
+            // funcs^(r-seqLen) for each of the children we aren't calling the recursive function on.
+            for (r in sequenceLen+1..maxSequenceLen) {
+                treeViewReporter.updateFinishedChildren(
+                    getRangeRule(r),
+                    (funcsForThisInvariant.size - childFuncs.size) * funcsForThisInvariant.size.toBigInteger().pow(r - sequenceLen).toInt()
+                )
+            }
 
             return (listOfNotNull(res) + childFuncs.parallelMapOrdered { _, func ->
                 val funcs = parentFuncs + func
@@ -845,6 +871,13 @@ class BoundedModelChecker(
                 val childRule = parentRule.copy(ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(func.abiWithContractStr()))
 
                 if (isVacuous(childProg, childRule)) {
+                    // similar to the logic in the previous call to updateFinishedChildren, just we're only talking about one child here.
+                    for (r in sequenceLen+1..maxSequenceLen) {
+                        treeViewReporter.updateFinishedChildren(
+                            getRangeRule(r),
+                            funcsForThisInvariant.size.toBigInteger().pow(r - sequenceLen).toInt()
+                        )
+                    }
                     treapListOf()
                 } else {
                     checkRecursive(childRule, funcs)
@@ -867,7 +900,7 @@ class BoundedModelChecker(
                 nSatResults.getAndIncrement()
             }
 
-            listOf(constructorRes) + if (Config.BoundedModelChecking.get() > 0) {
+            listOf(constructorRes) + if (maxSequenceLen > 0) {
                 checkRecursive(constructorsRule, treapListOf())
             } else {
                 listOf()

@@ -46,6 +46,8 @@ enum class TreeViewReportAttribute(private val repString: String) {
     HSEV("hSev"), // "heuristical severity" -- not extremely happy with the name, but we'll see ..
     LINK("link"),
     LIVE_CHECK_INFO("LiveCheckInfo"),
+    CHILDREN_TOTAL_NUM("childrenTotalNum"),
+    CHILDREN_FINISHED_NUM("childrenFinishedNum")
     ;
 
     operator fun invoke(): String = repString
