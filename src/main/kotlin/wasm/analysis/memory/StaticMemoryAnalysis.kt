@@ -21,6 +21,7 @@ package wasm.analysis.memory
 import analysis.*
 import analysis.CommandWithRequiredDecls.Companion.withDecls
 import com.certora.collect.*
+import kotlin.streams.toList
 import tac.*
 import utils.*
 import vc.data.*

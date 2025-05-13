@@ -31,6 +31,7 @@ import wasm.tokens.WasmTokens
 import java.io.File
 import java.math.BigInteger
 import java.util.Optional
+import kotlin.streams.toList
 
 private val wasmLogger = Logger(LoggerTypes.WASM)
 

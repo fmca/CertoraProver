@@ -54,6 +54,7 @@ import verifier.ContractUtils.transformMethod
 import java.math.BigInteger
 import java.util.stream.Collectors
 import java.util.stream.Stream
+import kotlin.streams.toList
 
 private val logger = Logger(LoggerTypes.ALIAS_ANALYSIS)
 
