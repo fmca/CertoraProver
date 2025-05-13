@@ -331,10 +331,9 @@ jobs:
       certora_cli_package:
         type: string
         default: "local"
-      parameters:
-        set_prover_version:
-          type: boolean
-          default: false
+      set_prover_version:
+        type: boolean
+        default: false
     docker:
       - image: *img
     working_directory: ~/repo
