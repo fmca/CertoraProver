@@ -154,6 +154,14 @@ class CertoraContextValidator:
         elif value not in [True, False]:
             raise Util.CertoraUserInputError(f"value of {conf_key} {value} is not a boolean (true/false)")
 
+    def check_rust_args_post_argparse(self) -> None:
+        context = self.context
+        if context.files:
+            if context.build_script:
+                raise Util.CertoraUserInputError("'files' and 'build_script' cannot be both set for Rust projects")
+            if len(context.files) > 1:
+                raise Util.CertoraUserInputError("Rust projects must specify exactly one executable in 'files'.")
+
     def check_args_post_argparse(self) -> None:
         """
         Performs checks over the arguments after basic argparse parsing

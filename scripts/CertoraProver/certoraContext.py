@@ -278,6 +278,8 @@ def get_args(args_list: Optional[List[str]] = None) -> CertoraContext:
     if Attrs.is_evm_app():
         validator.check_args_post_argparse()
         setup_cache(context)  # Here context.cache, context.user_defined_cache are set
+    if Attrs.is_rust_app():
+        validator.check_rust_args_post_argparse()
 
     attrs_to_relative(context)
     # Setup defaults (defaults are not recorded in conf file)
