@@ -380,7 +380,7 @@ class RuleChecker(
                     compiledSubRule,
                     initPatchingProgram().toCode(tacProg),
                     ruleName,
-                    compiledSubRule.rule.ruleType,
+                    SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule.AssertsOnly(compiledSubRule.rule),
                     false,
                     treeViewReporter,
                     Range.Empty()

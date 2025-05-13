@@ -55,7 +55,7 @@ enum class CVLReservedVariables {
     companion object {
         const val prefix = "certora_"
         fun getWithReservedPrefix(name: String): String = "$prefix$name"
-        const val certoraFallbackDisplayName: String = "<receiveOrFallback>"
+        const val certoraFallbackDisplayName: String = "<receiveOrFallback>()"
     }
 
 }

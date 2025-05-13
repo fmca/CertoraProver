@@ -24,7 +24,6 @@ import analysis.icfg.Inliner
 import analysis.icfg.Summarizer
 import analysis.narrow
 import com.certora.collect.*
-import config.Config
 import config.Config.containsMethodFilteredByConfig
 import config.ReportTypes
 import datastructures.stdcollections.*
@@ -60,7 +59,7 @@ private val logger = Logger(LoggerTypes.COMMON)
 private val loggerTimes = Logger(LoggerTypes.TIMES)
 
 open class SolidityVerifier(val scene: IScene) : Verifier() {
-    val reporters = listOf(JSONReporter(Config.OutputJSONFile), HTMLReporter)
+    val reporters = listOf(HTMLReporter)
 
     private var _lastTime: Long? = null
 

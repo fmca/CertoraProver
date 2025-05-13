@@ -112,7 +112,7 @@ data class EVMExternalMethodInfo(
     fun getPrettyName(): String = Method.toSignatureName(name, argTypes.map { it.prettyPrint() })
 
     fun toExternalABIName(): String {
-        if (isFallback) { return "${CVLReservedVariables.certoraFallbackDisplayName}()" }
+        if (isFallback) { return CVLReservedVariables.certoraFallbackDisplayName }
         return wrappedParameterSignature.computeCanonicalSignature(PrintingContext(this.isLibrary))
     }
 
