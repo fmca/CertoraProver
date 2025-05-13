@@ -692,16 +692,6 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 if (children.isEmpty()) {
                     updateStatus(di) { res -> res.copy(isRunning = res.status.isRunning()) }
                 } else if (childrenTreeViewResults.any { it.nodeType == NodeType.SANITY }) {
-                    checkWarn(childrenTreeViewResults
-                        // we might have a violated_assert child (the one that's added after the fact, on signalEnd)
-                        // -- in this case, the sanity children are still there, but are ignored (I assume..), so this
-                        //  filter avoids a false positive for this check in that case
-                        .filter { it.status != TreeViewStatusEnum.BENIGN_SKIPPED }
-                        .all { it.nodeType == NodeType.SANITY }
-                    ) {
-                        "if any child is a rule-sanity child, then all (non-skipped) children must be rule sanity " +
-                            "children; instead got these children: ${childrenTreeViewResults.map { it.rule?.ruleIdentifier to it.nodeType }}"
-                    }
                     val currTreeViewResult = getResultForNode(di)
                     val newStatus = (childrenTreeViewResults + currTreeViewResult).maxOf { it.status }
                     val newIsRunning = currTreeViewResult.status.isRunning() ||

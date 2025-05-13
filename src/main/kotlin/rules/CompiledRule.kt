@@ -165,7 +165,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             } else {
                 null
             }
-            val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule.tac)
+            val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule)
             val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts)
             if (generateReport && !Config.CoinbaseFeaturesMode.get()) {
                 generateSingleResult(scene, compiledRule.rule, res, time, isOptimizedRuleFromCache, isSolverResultFromCache, alerts)
