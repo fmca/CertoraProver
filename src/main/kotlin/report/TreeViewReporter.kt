@@ -1206,13 +1206,13 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
 
         fun computeOutputJsonResult(node: DisplayableIdentifier): SortedMap<String, JsonElement> {
-            val currRes = tree.getResultForNode(node)
             val children = tree.getChildren(node).associateWith { tree.getResultForNode(it) }
                 // Filter out all children generated as of sanity and multi assert splitting
                 .filterValues { it.rule?.ruleType !is SpecType.Single.GeneratedFromBasicRule }
                 // Filter out expanded child for a failing assert
                 .filterValues { it.nodeType != NodeType.VIOLATED_ASSERT }
             return if (children.isEmpty()) {
+                val currRes = tree.getResultForNode(node)
                 buildSortedMap {
                     if (currRes.status != TreeViewStatusEnum.SKIPPED) {
                         val outputJsonKey = if(currRes.rule?.ruleType is SpecType.Single.BMC){
@@ -1235,7 +1235,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                     mergedChildren
                 }
 
-                if (node == ROOT_NODE_IDENTIFIER || currRes.nodeType == NodeType.CONTRACT) {
+                if (node == ROOT_NODE_IDENTIFIER || tree.getResultForNode(node).nodeType == NodeType.CONTRACT) {
                     /**
                      * For the case of currRes.nodeType == NodeType.CONTRACT the TreeView adds an extra nesting
                      * by the contract name. This nesting doesn't appear in output.json, therefore skipping this level.

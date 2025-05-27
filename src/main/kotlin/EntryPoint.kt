@@ -562,8 +562,7 @@ fun createSceneReporterAndTreeview(fileName: String, contractName: String): Trip
     val scene = SceneFactory.getScene(DegenerateContractSource(fileName))
     val reporterContainer = ReporterContainer(
         listOf(
-            ConsoleReporter,
-            StatusReporter
+            ConsoleReporter
         )
     )
 
