@@ -338,7 +338,6 @@ sealed class TACSymbol : ITACSymbol, Tagged, Comparable<TACSymbol>, /* CER-1455 
         }
 
         @KSerializable
-        @Treapable
         data class Annotation(val v: Var?): TransformableVarEntityWithSupport<Annotation>, HasKSerializable {
             override val support: Set<Var>
                 get() = setOfNotNull(v)

@@ -65,7 +65,7 @@ internal fun <T: Serializable> CoreTACProgram.getMetaValue(k: MetaKey<T>) =
     (getMetaCommand(k)?.cmd as? TACCmd.Simple.AnnotationCmd)?.annot?.v?.uncheckedAs<T>()
 
 /** Sets meta info [k] to [v] and returns the new [CoreTACProgram]. */
-internal fun <@Treapable T: Serializable> CoreTACProgram.withMetaValue(k: MetaKey<T>, v: T): CoreTACProgram =
+internal fun <T: Serializable> CoreTACProgram.withMetaValue(k: MetaKey<T>, v: T): CoreTACProgram =
     patching { patcher ->
         val newcmd = TACCmd.Simple.AnnotationCmd(k, v)
         val cmd = getMetaCommand(k)

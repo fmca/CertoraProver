@@ -146,6 +146,7 @@ object AllocationAnalysis {
     // writeIdx: the increment of the index that follows this read
     // [sort]: The kind of allocation, either DynamicBlock (array) or ConstBlock (struct)
     @KSerializable
+    @Treapable
     data class AbstractLocation(val prevFPWriteIdx: Int, val nextFPWriteCmd: CmdPointer, val sort: Alloc) :
         AmbiSerializable, TransformableVarEntity<AbstractLocation> {
         override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): AbstractLocation =

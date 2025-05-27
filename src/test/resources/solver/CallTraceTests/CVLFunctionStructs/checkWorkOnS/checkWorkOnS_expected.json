@@ -45,9 +45,9 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "true",
+                                                "value": "false",
                                                 "values": [
-                                                    "true"
+                                                    "false"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": false
@@ -127,11 +127,11 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "0x9",
+                                                "value": "0x8",
                                                 "values": [
-                                                    "0x9",
-                                                    "9",
-                                                    "0x9"
+                                                    "0x8",
+                                                    "8",
+                                                    "0x8"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": true
@@ -170,11 +170,11 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "0x6",
+                                                "value": "0x5",
                                                 "values": [
-                                                    "0x6",
-                                                    "6",
-                                                    "0x6"
+                                                    "0x5",
+                                                    "5",
+                                                    "0x5"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": true
@@ -256,11 +256,11 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "0x8",
+                                                "value": "0x7",
                                                 "values": [
-                                                    "0x8",
-                                                    "8",
-                                                    "0x8"
+                                                    "0x7",
+                                                    "7",
+                                                    "0x7"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": true
@@ -299,11 +299,11 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "0x7",
+                                                "value": "0x6",
                                                 "values": [
-                                                    "0x7",
-                                                    "7",
-                                                    "0x7"
+                                                    "0x6",
+                                                    "6",
+                                                    "0x6"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": true
@@ -345,7 +345,7 @@
                     "childrenList": [
                         {
                             "message": {
-                                "text": "0x2710.balance: '{0}'",
+                                "text": "0x2715.balance: '{0}'",
                                 "arguments": [
                                     {
                                         "value": "0x0",
@@ -664,11 +664,11 @@
                                 "text": "sender: '{0}'; receiver: '{1}'; transferred amount: '{2}'",
                                 "arguments": [
                                     {
-                                        "value": "0x2710",
+                                        "value": "0x2715",
                                         "values": [
-                                            "0x2710",
-                                            "0x2710",
-                                            "0x2710"
+                                            "0x2715",
+                                            "0x2715",
+                                            "0x2715"
                                         ],
                                         "tooltip": "address of sender",
                                         "truncatable": true
@@ -678,7 +678,7 @@
                                         "values": [
                                             "TestContract",
                                             "TestContract",
-                                            "0x5"
+                                            "0xf"
                                         ],
                                         "tooltip": "address of receiver",
                                         "truncatable": false
@@ -793,7 +793,7 @@
                                         "values": [
                                             "TestContract",
                                             "TestContract",
-                                            "0x5"
+                                            "0xf"
                                         ],
                                         "tooltip": "address",
                                         "truncatable": false
@@ -872,11 +872,11 @@
                                         "truncatable": true
                                     },
                                     {
-                                        "value": "0x9",
+                                        "value": "0x8",
                                         "values": [
-                                            "0x9",
-                                            "9",
-                                            "0x9"
+                                            "0x8",
+                                            "8",
+                                            "0x8"
                                         ],
                                         "tooltip": "storage value",
                                         "truncatable": true
@@ -954,11 +954,11 @@
                                         "truncatable": true
                                     },
                                     {
-                                        "value": "0x8",
+                                        "value": "0x7",
                                         "values": [
-                                            "0x8",
-                                            "8",
-                                            "0x8"
+                                            "0x7",
+                                            "7",
+                                            "0x7"
                                         ],
                                         "tooltip": "storage value",
                                         "truncatable": true
@@ -995,11 +995,11 @@
                                         "truncatable": true
                                     },
                                     {
-                                        "value": "0x7",
+                                        "value": "0x6",
                                         "values": [
-                                            "0x7",
-                                            "7",
-                                            "0x7"
+                                            "0x6",
+                                            "6",
+                                            "0x6"
                                         ],
                                         "tooltip": "storage value",
                                         "truncatable": true
@@ -1036,9 +1036,9 @@
                                         "truncatable": true
                                     },
                                     {
-                                        "value": "true",
+                                        "value": "false",
                                         "values": [
-                                            "true"
+                                            "false"
                                         ],
                                         "tooltip": "storage value",
                                         "truncatable": false
@@ -1075,11 +1075,11 @@
                                         "truncatable": true
                                     },
                                     {
-                                        "value": "0x6",
+                                        "value": "0x5",
                                         "values": [
-                                            "0x6",
-                                            "6",
-                                            "0x6"
+                                            "0x5",
+                                            "5",
+                                            "0x5"
                                         ],
                                         "tooltip": "storage value",
                                         "truncatable": true
@@ -1149,7 +1149,7 @@
                                         "values": [
                                             "TestContract",
                                             "TestContract",
-                                            "0x5"
+                                            "0xf"
                                         ],
                                         "tooltip": "address",
                                         "truncatable": false
@@ -1225,11 +1225,11 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "0x9",
+                                                "value": "0x8",
                                                 "values": [
-                                                    "0x9",
-                                                    "9",
-                                                    "0x9"
+                                                    "0x8",
+                                                    "8",
+                                                    "0x8"
                                                 ],
                                                 "tooltip": "value at x",
                                                 "truncatable": true
@@ -1245,32 +1245,14 @@
                                                 "truncatable": true
                                             },
                                             {
-                                                "value": "0x8",
-                                                "values": [
-                                                    "0x8",
-                                                    "8",
-                                                    "0x8"
-                                                ],
-                                                "tooltip": "value at z1",
-                                                "truncatable": true
-                                            },
-                                            {
                                                 "value": "0x7",
                                                 "values": [
                                                     "0x7",
                                                     "7",
                                                     "0x7"
                                                 ],
-                                                "tooltip": "value at z2",
+                                                "tooltip": "value at z1",
                                                 "truncatable": true
-                                            },
-                                            {
-                                                "value": "true",
-                                                "values": [
-                                                    "true"
-                                                ],
-                                                "tooltip": "value at b1",
-                                                "truncatable": false
                                             },
                                             {
                                                 "value": "0x6",
@@ -1278,6 +1260,24 @@
                                                     "0x6",
                                                     "6",
                                                     "0x6"
+                                                ],
+                                                "tooltip": "value at z2",
+                                                "truncatable": true
+                                            },
+                                            {
+                                                "value": "false",
+                                                "values": [
+                                                    "false"
+                                                ],
+                                                "tooltip": "value at b1",
+                                                "truncatable": false
+                                            },
+                                            {
+                                                "value": "0x5",
+                                                "values": [
+                                                    "0x5",
+                                                    "5",
+                                                    "0x5"
                                                 ],
                                                 "tooltip": "value at x2",
                                                 "truncatable": true
@@ -1676,11 +1676,11 @@
                                                         "truncatable": true
                                                     },
                                                     {
-                                                        "value": "0x9",
+                                                        "value": "0x8",
                                                         "values": [
-                                                            "0x9",
-                                                            "9",
-                                                            "0x9"
+                                                            "0x8",
+                                                            "8",
+                                                            "0x8"
                                                         ],
                                                         "tooltip": "storage value",
                                                         "truncatable": true
@@ -1719,11 +1719,11 @@
                                                         "truncatable": true
                                                     },
                                                     {
-                                                        "value": "0x6",
+                                                        "value": "0x5",
                                                         "values": [
-                                                            "0x6",
-                                                            "6",
-                                                            "0x6"
+                                                            "0x5",
+                                                            "5",
+                                                            "0x5"
                                                         ],
                                                         "tooltip": "storage value",
                                                         "truncatable": true
@@ -1805,11 +1805,11 @@
                                                         "truncatable": true
                                                     },
                                                     {
-                                                        "value": "0x8",
+                                                        "value": "0x7",
                                                         "values": [
-                                                            "0x8",
-                                                            "8",
-                                                            "0x8"
+                                                            "0x7",
+                                                            "7",
+                                                            "0x7"
                                                         ],
                                                         "tooltip": "storage value",
                                                         "truncatable": true
@@ -1848,11 +1848,11 @@
                                                         "truncatable": true
                                                     },
                                                     {
-                                                        "value": "0x7",
+                                                        "value": "0x6",
                                                         "values": [
-                                                            "0x7",
-                                                            "7",
-                                                            "0x7"
+                                                            "0x6",
+                                                            "6",
+                                                            "0x6"
                                                         ],
                                                         "tooltip": "storage value",
                                                         "truncatable": true
@@ -1894,7 +1894,7 @@
                             "childrenList": [
                                 {
                                     "message": {
-                                        "text": "0x2710.balance: '{0}'",
+                                        "text": "0x2715.balance: '{0}'",
                                         "arguments": [
                                             {
                                                 "value": "0x0",

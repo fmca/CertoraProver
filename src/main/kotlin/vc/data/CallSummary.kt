@@ -53,11 +53,6 @@ data class CallSummary(
     val cannotBeInlined: Inliner.IllegalInliningReason?,
 ) : TACSummary, ICallCoreSummary, RemapperEntity<CallSummary> {
 
-    override fun hashCode() = hash {
-        it + toVar + valueVar + gasVar + inOffset + inSize + inBase + outOffset + outSize + outBase + callType +
-        callTarget + sigResolution + callConvention + origCallcore + summaryId + cannotBeInlined
-    }
-
     init {
         if (inSize == TACSymbol.Zero) {
             check(sigResolution.size == 1 && sigResolution.single() == null) {

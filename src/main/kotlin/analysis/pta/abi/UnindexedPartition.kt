@@ -20,12 +20,14 @@ package analysis.pta.abi
 import allocator.Allocator
 import allocator.GenerateRemapper
 import allocator.GeneratedBy
+import com.certora.collect.*
 import tac.CallId
 import utils.*
 import vc.data.RemapperEntity
 
 @KSerializable
 @GenerateRemapper
+@Treapable
 data class UnindexedPartition(
     @GeneratedBy(Allocator.Id.MEMORY_PARTITION)
     val id: Int,

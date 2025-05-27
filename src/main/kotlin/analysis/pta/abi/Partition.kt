@@ -20,10 +20,12 @@ package analysis.pta.abi
 import allocator.Allocator
 import allocator.GenerateRemapper
 import allocator.GeneratedBy
+import com.certora.collect.*
 import tac.CallId
 import vc.data.RemapperEntity
 
 @GenerateRemapper
+@Treapable
 data class Partition(
     @GeneratedBy(Allocator.Id.MEMORY_PARTITION)
     val id: Int,

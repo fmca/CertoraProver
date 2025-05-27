@@ -71,7 +71,6 @@ interface PatchableProgram {
     fun toCode(base: ICoreTACProgram): ICoreTACProgram
 }
 
-@Treapable
 interface ITACMethod : IFreeTACMethod, NamedCode<ReportTypes> {
     override var code: ICoreTACProgram
     fun getContainingContract(): IContractClass

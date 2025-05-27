@@ -42,10 +42,6 @@ class TACMethod(
     override val calldataEncoding : ICalldataEncoding
 ) : ITACMethod {
 
-    override fun hashCode() = hash {
-        it + meta + attribute + evmExternalMethodInfo + sigHash + name + soliditySignature + calldataEncoding
-    }
-
     constructor(
         _code: CoreTACProgram,
         _containingContract: IContractClass,

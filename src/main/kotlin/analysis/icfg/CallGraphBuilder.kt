@@ -99,6 +99,7 @@ object CallGraphBuilder {
      * [FullyResolved]
      */
     @KSerializable
+    @Treapable
     sealed class CalledContract : AmbiSerializable, TransformableVarEntity<CalledContract>, UniqueIdEntity<CalledContract> {
 
         interface WithStorageReadId {

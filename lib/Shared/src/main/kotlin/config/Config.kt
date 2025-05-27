@@ -3240,7 +3240,6 @@ object Config {
 
     fun isEnabledReport(reportName: ReportTypes) = System.getProperty(reportName.withPrefix("report")) != null
 
-    @Suppress("HashCodeStability")
     fun isEnabledReport(reportName: String): Boolean {
         val onByDefault = if (BoundedModelChecking.getOrNull() == null) {
             setOf(

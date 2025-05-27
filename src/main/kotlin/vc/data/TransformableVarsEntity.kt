@@ -73,7 +73,6 @@ class Foo(val other: Bar, ...): TransformableSymAndVarEntity {
  * Entity transformer, which using [transformSymbols] as a mapper
  * over the symbols inside the entity.
  */
-@Treapable
 interface TransformableEntity<S: TACSymbol, out T: TransformableEntity<S,T>> : Serializable {
     fun transformSymbols(f: (S) -> S): T
 }

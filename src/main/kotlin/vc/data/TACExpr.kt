@@ -2351,9 +2351,11 @@ sealed class TACExpr : AmbiSerializable, ToLExpression, ToTACExpr {
     }
 
     @KSerializable
-    data class AnnotationExp<@Treapable T : Serializable>(val o : TACExpr, val annot: Annotation<T>) : TACExpr() {
+    data class AnnotationExp<T : Serializable>(val o : TACExpr, val annot: Annotation<T>) : TACExpr() {
 
         constructor(o : TACExpr, k : MetaKey<T>, v : T) : this(o, Annotation(k, v))
+
+        override fun hashCode() = o.hashCode() // deliberately excluding annot; it's not treapable.
 
         override fun eval(cs: List<BigInteger>) : BigInteger {
             require(cs.size == 1)

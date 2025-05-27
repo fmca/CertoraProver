@@ -199,6 +199,7 @@ sealed class InternalFuncValueLocation : AmbiSerializable, TransformableVarEntit
      * the layout info for its fields.
      */
     @KSerializable
+    @Treapable
     sealed interface PointerLayoutInfo : TransformableVarEntityWithSupport<PointerLayoutInfo>, HasKSerializable {
         val partitionVariable: TACSymbol.Var
     }

@@ -86,7 +86,7 @@ class MetaKey<T : Serializable> private constructor(
          * @param [erased] should the corresponding meta-values be erased (i.e. ignored) when converting a TAC to its canonical representation,
          * defaults to [restore] since there if a meta-values needs restoration, its is not canonical - i.e. should be erased
          **/
-        inline operator fun <@Treapable reified T : Serializable> invoke(
+        inline operator fun <reified T : Serializable> invoke(
                 name: String,
                 restore: Boolean = false,
                 erased: Boolean = restore
@@ -124,7 +124,6 @@ class MetaKey<T : Serializable> private constructor(
             encoder.encodeSerializableValue(SerializationSurrogate.serializer(), surrogate)
         }
 
-        @Suppress("HashCodeStability")
         override fun deserialize(decoder: Decoder): MetaKey<*> {
             val surrogate = decoder.decodeSerializableValue(SerializationSurrogate.serializer())
             return MetaKey<Serializable>(
@@ -149,9 +148,7 @@ private typealias MetaMapEntry<T> = Pair<MetaKey<T>, T>
  */
 @JvmInline
 @KSerializable(with = MetaMap.Serializer::class)
-@Treapable
 value class MetaMap private constructor(
-    @Suppress("HashCodeStability") // We enforce hash code stability through MetaKey
     val map: TreapMap<MetaKey<*>, Serializable>
 ) : Serializable {
 
@@ -209,10 +206,8 @@ value class MetaMap private constructor(
         // Dummy value to associate with MetaKey<Nothing>.  Don't use this directly.  In particular, never
         // create a MetaKey<NothingValue>; use MetaKey.Nothing instead!
         @KSerializable
-        @Treapable
         @Deprecated("Use MetaKey.Nothing instead") // this has to be public for serialization to work
         object NothingValue : AmbiSerializable {
-            override fun hashCode() = hashObject(this)
             @Suppress("deprecation")
             private fun readResolve(): Any = NothingValue
 
