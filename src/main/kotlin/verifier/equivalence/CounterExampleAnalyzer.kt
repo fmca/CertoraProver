@@ -21,6 +21,7 @@ import analysis.*
 import datastructures.stdcollections.*
 import evm.DEFAULT_SIGHASH_SIZE
 import instrumentation.transformers.tracing.BufferTraceInstrumentation
+import kotlin.streams.toList
 import log.*
 import report.calltrace.CallInputsAndOutputs
 import report.calltrace.calldataMovement

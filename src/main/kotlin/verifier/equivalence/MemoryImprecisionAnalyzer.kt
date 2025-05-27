@@ -20,6 +20,7 @@ import analysis.CmdPointer
 import analysis.icfg.CallGraphBuilder.ByteRange.Companion.withLength
 import analysis.maybeExpr
 import evm.EVM_WORD_SIZE
+import kotlin.streams.toList
 import log.*
 import solver.CounterexampleModel
 import utils.*

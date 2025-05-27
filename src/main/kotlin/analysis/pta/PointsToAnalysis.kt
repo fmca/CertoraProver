@@ -1651,7 +1651,7 @@ class PointsToAnalysis(
             /**
              * Finalize the unification in the concrete allocation manager
              */
-            pointerAnalysis.finalizeAnalysis()
+            pointerAnalysis.finalize()
         }
 
         this.results = results

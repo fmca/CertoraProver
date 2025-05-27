@@ -1,9 +1,0 @@
-{
-    "rules": {
-        "trivial": {
-            "SUCCESS": [
-                "doMcopy(uint256,uint256[],bytes[])"
-            ]
-        }
-    }
-}

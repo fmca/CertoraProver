@@ -120,7 +120,7 @@ def collect_files_from_rust_sources(context: CertoraContext, sources: Set[Path])
                     sources.add(file_path)
 
         sources.add(project_directory.absolute())
-        if Path(context.build_script).exists():
+        if context.build_script:
             sources.add(Path(context.build_script).resolve())
     if getattr(context, 'conf_file', None) and Path(context.conf_file).exists():
         sources.add(Path(context.conf_file).absolute())

@@ -49,6 +49,7 @@ import utils.*
 import vc.data.*
 import java.math.BigInteger
 import java.util.stream.Collectors
+import kotlin.streams.toList
 
 private val logger = Logger(LoggerTypes.POINTS_TO)
 
