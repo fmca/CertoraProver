@@ -41,6 +41,7 @@ import vc.data.TACProgramCombiners.andThen
 import verifier.equivalence.CEXUtils.asEither
 import kotlin.streams.toList
 import verifier.equivalence.DefiniteBufferConstructionAnalysis
+import verifier.equivalence.summarization.CommonPureInternalFunction
 
 @Suppress("FunctionName")
 /**
@@ -127,13 +128,17 @@ class BufferTraceInstrumentation private constructor(
     }
 
     /**
-     * Gets the "buffer identity", which is `r.hash` or the native hash, depending on alignment, from [sourceOffset] and [sourceLength].
+     * Gets the "buffer identity", which is `r.hash` or the native hash, depending on alignment, from [longRead].
      */
     private fun getBufferIdentity(
-        sourceInstrumentation: LongReadInstrumentation,
-        sourceOffset: TACSymbol,
-        sourceLength: TACSymbol
+        longRead: LongRead
     ) : TACExprWithRequiredCmdsAndDecls<TACCmd.Simple> {
+        val sourceInstrumentation = longRead.instrumentationInfo()
+        val sourceOffset = longRead.loc
+        val sourceLength = longRead.length
+        if(longRead.isNullRead) {
+            return sourceInstrumentation.hashVar.lift()
+        }
         val bufferHash = TACKeyword.TMP(Tag.Bit256, "!bufferHash")
         val useAligned = TACKeyword.TMP(Tag.Bool, "!useAligned")
         val nativeLength = TACKeyword.TMP(Tag.Bit256,"nativeHashLen")
@@ -154,7 +159,7 @@ class BufferTraceInstrumentation private constructor(
                 rhs = TXF {
                     sourceInstrumentation.allAlignedVar and (sourceOffset eq sourceInstrumentation.baseProphecy) and
                         (sourceLength eq sourceInstrumentation.lengthProphecy) and
-                        ((sourceInstrumentation.lengthProphecy mod EVM_WORD_SIZE.asTACExpr) eq TACSymbol.Zero)
+                        ((sourceInstrumentation.lengthProphecy mod EVM_WORD_SIZE) eq 0)
                 }
             ),
             /*
@@ -647,6 +652,30 @@ class BufferTraceInstrumentation private constructor(
                 it.ptr.block !in loopWrites
             }.mapNotNull {
                 if(it.cmd is TACCmd.Simple.SummaryCmd) {
+                    if(it.cmd.summ is CommonPureInternalFunction) {
+                        /**
+                         * Include summaries of pure internal functions into the call trace by pretending
+                         * all internal functions summaries consume a null buffer.
+                         *
+                         * This is an instance of faking arguments to get existing APIs to work; internal function calls
+                         * do not consume buffers at all. HOWEVER, I originally tried to implement this properly, and it was
+                         * a *nightmare*; this is by far the lesser of two evils. Because the hashes of a null
+                         * buffer are deterministic (they are always 0), the inclusion of this hash is *fine* and doesn't effect
+                         * soundness.
+                         */
+                        return@mapNotNull EventLongRead(
+                            where = it.ptr,
+                            length = TACSymbol.Zero,
+                            loc = TACSymbol.Zero,
+                            id = idCounter.incrementAndGet(),
+                            isNullRead = true,
+                            explicitReadId = null,
+                            traceEventInfo = TraceEventWithContext(
+                                TraceEventSort.INTERNAL_SUMMARY_CALL,
+                                context = it.cmd.summ.argSymbols.toTreapList()
+                            )
+                        )
+                    }
                     if(it.cmd.summ !is LoopCopyAnalysis.LoopCopySummary) {
                         return@mapNotNull null
                     }
@@ -724,7 +753,7 @@ class BufferTraceInstrumentation private constructor(
                             patternMatcher.queryFrom(it)
                         } is PatternMatcher.ConstLattice.Match
                     } == true
-                } && (longSource as? EventLongRead)?.explicitReadId == null
+                } && (longSource as? EventLongRead)?.explicitReadId == null && !longSource.isNullRead
             }.toSet()
 
             /**
@@ -1508,7 +1537,7 @@ class BufferTraceInstrumentation private constructor(
      */
     private inner class UntilNumberedEntryManager(
         reads: Set<LongRead>,
-        code: CoreTACProgram,
+        val code: CoreTACProgram,
         val target: TraceInclusionMode.Until,
         logLevel: TraceTargets,
         overrides: Map<CmdPointer, TraceOverrideSpec>
@@ -1558,13 +1587,21 @@ class BufferTraceInstrumentation private constructor(
                 eventNumberAbstraction.lb <= idxAsBig && eventNumberAbstraction.ub >= idxAsBig
             }
 
+            val nonNullReads = sources.mapNotNullToSet { src ->
+                if(src.isNullRead) {
+                    null
+                } else {
+                    src.where
+                }
+            }
+
             /**
              * Finally, record that we only care about the above event long reads or non-event long reads that
              * might reach these events (so we include relevant sha3, loop copies, etc.)
              */
             relevantLongReads = reads.filter { ls ->
                 ls.where in eventsToInclude || (ls.traceEventInfo == null && eventsToInclude.any { candEvent ->
-                    reach.canReach(ls.where, candEvent)
+                    reach.canReach(ls.where, candEvent) && candEvent in nonNullReads
                 })
             }.mapToSet { it.where }
 
@@ -1576,7 +1613,7 @@ class BufferTraceInstrumentation private constructor(
          * Get the static inclusion status of the event
          */
         private fun classifyTraceInclusion(ls: EventLongRead) : IncludedInTrace {
-            val x = traceNumbering[ls.where] ?: error("Couldn't find numbering")
+            val x = traceNumbering[ls.where] ?: error("Couldn't find numbering for ${code.analysisCache.graph.elab(ls.where)}")
             /*
                four cases to cover
                1. definitely before the case in question -> keep going
@@ -1666,6 +1703,7 @@ class BufferTraceInstrumentation private constructor(
                         TraceEventSort.RETURN -> {
                             `impossible!`
                         }
+                        TraceEventSort.INTERNAL_SUMMARY_CALL,
                         TraceEventSort.LOG,
                         TraceEventSort.EXTERNAL_CALL -> {
                             val countVar = when(eventInfo.eventSort) {
@@ -1674,6 +1712,7 @@ class BufferTraceInstrumentation private constructor(
                                 TraceEventSort.RETURN -> `impossible!`
                                 TraceEventSort.LOG -> logTraceLog.itemCountVar
                                 TraceEventSort.EXTERNAL_CALL -> callTraceLog.itemCountVar
+                                TraceEventSort.INTERNAL_SUMMARY_CALL -> callTraceLog.itemCountVar
                             }
                             val succBlock = patcher.splitBlockAfter(ls.where)
                             val newBlock = patcher.addBlock(ls.where.block, listOf(TACCmd.Simple.LabelCmd("Early return site for trace event $target")))
@@ -1703,13 +1742,19 @@ class BufferTraceInstrumentation private constructor(
          * Indicates whether [ls] was included in the above logic, used for deciding when the tiered checking mode is complete
          */
         override fun getTraceSiteReport(ls: EventLongRead): TraceSiteReport {
+            if(ls.traceEventInfo.eventSort.includeIn != targetEvents) {
+                return TraceSiteReport(
+                    heuristicDifficulty = 0,
+                    traceInclusion = InclusionSort.DEFINITELY_EXCLUDED
+                )
+            }
             return TraceSiteReport(
                 heuristicDifficulty = ls.traceEventInfo.eventSort.ordinal,
                 traceInclusion = when(classifyTraceInclusion(ls)) {
                     IncludedInTrace.DEFINITELY_BEFORE,
                     IncludedInTrace.DEFINITELY_AFTER -> InclusionSort.DEFINITELY_EXCLUDED
-                    IncludedInTrace.MAYBE_INCLUDED,
-                    IncludedInTrace.DEFINITELY_INCLUDED -> InclusionSort.MAYBE_INCLUDED
+                    IncludedInTrace.MAYBE_INCLUDED -> InclusionSort.MAYBE_INCLUDED
+                    IncludedInTrace.DEFINITELY_INCLUDED -> InclusionSort.DEFINITELY_INCLUDED
                 }
             )
         }
@@ -1850,6 +1895,7 @@ class BufferTraceInstrumentation private constructor(
                                 TraceEventSort.RETURN -> {
                                     CommandWithRequiredDecls(listOf(TACCmd.Simple.NopCmd))
                                 }
+                                TraceEventSort.INTERNAL_SUMMARY_CALL,
                                 TraceEventSort.EXTERNAL_CALL,
                                 TraceEventSort.LOG -> {
                                     return patcher.earlyReturnAt(ls.where)
@@ -1890,6 +1936,7 @@ class BufferTraceInstrumentation private constructor(
      * access to the [BufferTraceInstrumentation] state variables.
      */
     private val TraceEventWithContext.dynamicContext : TACExprWithRequiredCmdsAndDecls<TACCmd.Simple>? get() = when(this.eventSort) {
+        TraceEventSort.INTERNAL_SUMMARY_CALL,
         TraceEventSort.REVERT,
         TraceEventSort.RETURN,
         TraceEventSort.LOG -> null
@@ -1983,7 +2030,7 @@ class BufferTraceInstrumentation private constructor(
             /**
              * Replace the sha3 command with the sounder model.
              */
-            val read = getBufferIdentity(sourceInfo, s.loc, s.length)
+            val read = getBufferIdentity(s)
             read.toCRD() andThen CommandWithRequiredDecls(
                 listOf(
                     TACCmd.Simple.AssigningCmd.AssignExpCmd(
@@ -2262,11 +2309,11 @@ class BufferTraceInstrumentation private constructor(
 
         val bufferSig = when(val override = options.eventSiteOverride[ls.where]) {
             null -> {
-                getBufferIdentity(ls.instrumentationInfo(), ls.loc, ls.length)
+                getBufferIdentity(ls)
             }
             is TraceOverrideSpec.CompleteOverride -> override.overridingValue.lift()
             is TraceOverrideSpec.ConditionalOverrides -> {
-                val buff = getBufferIdentity(ls.instrumentationInfo(), ls.loc, ls.length)
+                val buff = getBufferIdentity(ls)
                 buff.toCRD() andThen override.gates.foldRight(buff.exp) { gate, acc ->
                     TACExprFactoryExtensions.run {
                         ite(gate.first, gate.second, acc)
@@ -2586,12 +2633,17 @@ class BufferTraceInstrumentation private constructor(
                 get() = TraceEventSort.LOG
         }
 
-        data class CallParams(
+        data class ExternalCallParams(
             val callee: Either<BigInteger, String>,
             val value: Either<BigInteger, String>
         ) : RawEventParams {
             override val sort: TraceEventSort
                 get() = TraceEventSort.EXTERNAL_CALL
+        }
+
+        data class InternalSummaryParams(val scalarArgs: List<Either<BigInteger, String>>) : RawEventParams {
+            override val sort: TraceEventSort
+                get() = TraceEventSort.INTERNAL_SUMMARY_CALL
         }
     }
 
@@ -2617,9 +2669,16 @@ class BufferTraceInstrumentation private constructor(
             })
         }),
         EXTERNAL_CALL(TraceTargets.Calls, IParamExtractor { args, theModel ->
-            RawEventParams.CallParams(
+            RawEventParams.ExternalCallParams(
                 callee = theModel.evalExprByRhs(args[0]).asEither("Failed getting the callee of the call"),
                 value = theModel.evalExprByRhs(args[1]).asEither("Failed getting value of call")
+            )
+        }),
+        INTERNAL_SUMMARY_CALL(TraceTargets.Calls, IParamExtractor { args, theModel ->
+            RawEventParams.InternalSummaryParams(
+                scalarArgs = args.mapIndexed { index, arg ->
+                    theModel.evalExprByRhs(arg).asEither("Failed getting the value of argument $index")
+                }
             )
         })
     }

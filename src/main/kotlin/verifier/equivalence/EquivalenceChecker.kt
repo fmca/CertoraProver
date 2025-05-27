@@ -45,7 +45,10 @@ import verifier.*
 import java.math.BigInteger
 import java.util.concurrent.atomic.AtomicInteger
 import log.*
+import spec.cvlast.QualifiedMethodSignature
 import spec.rules.EquivalenceRule
+import verifier.equivalence.summarization.PureFunctionExtraction
+import verifier.equivalence.summarization.SharedPureSummarization
 import java.io.File
 import kotlin.math.max
 import kotlin.streams.toList
@@ -86,7 +89,6 @@ class EquivalenceChecker private constructor(
         LOG_TOPIC4("Topic 4", "The fourth log topic (the third indexed event parameter)")
     }
 
-
     companion object {
         fun List<UByte>.asBufferRepr(emptyRepr: String): String {
             if(isEmpty()) {
@@ -117,6 +119,79 @@ class EquivalenceChecker private constructor(
         val TRACE_EQUIVALENCE_ASSERTION = MetaKey<Int>("equivalence.trace.assertion")
         val STORAGE_EQUIVALENCE_ASSERTION = MetaKey.Nothing("equivalence.storage.assertion")
 
+        private fun trySummarize(
+            sharedSigs: Collection<QualifiedMethodSignature>,
+            methodA: TACMethod,
+            methodB: TACMethod
+        ) : Pair<CoreTACProgram, CoreTACProgram> {
+            val sigs = sharedSigs.toList().mapIndexed { index, q ->
+                q to index
+            }
+            val summarizer = SharedPureSummarization(sigs)
+            try {
+                logger.info {
+                    "Trying to batch summarize common pure functions"
+                }
+                val codeA = summarizer.summarize(methodA.code as CoreTACProgram)
+                val codeB = summarizer.summarize(methodB.code as CoreTACProgram)
+                return codeA to codeB
+            } catch(@Suppress("TooGenericExceptionCaught") e: Exception) {
+                when(e) {
+                    is TACStructureException, is SharedPureSummarization.SummaryApplicationError -> {
+                        logger.warn(e) {
+                            "Failed to summarize batch, falling back on sequential"
+                        }
+                    }
+                    else -> throw e
+                }
+            }
+            var codeAIt = methodA.code as CoreTACProgram
+            var codeBIt = methodB.code as CoreTACProgram
+            for(s in sigs) {
+                logger.info {
+                    "Trying to summarize ${s.first.prettyPrintFullyQualifiedName()}"
+                }
+                try {
+                    val nextA = SharedPureSummarization(listOf(s)).summarize(codeAIt)
+                    val nextB = SharedPureSummarization(listOf(s)).summarize(codeBIt)
+                    codeAIt = nextA
+                    codeBIt = nextB
+                } catch(@Suppress("TooGenericExceptionCaught") e: Exception) {
+                    when(e) {
+                        is TACStructureException, is SharedPureSummarization.SummaryApplicationError -> {
+                            logger.warn(e) {
+                                "Failed to summarize ${s.first.prettyPrintFullyQualifiedName()}, skipping"
+                            }
+                        }
+                        else -> throw e
+                    }
+                }
+            }
+            return codeAIt to codeBIt
+        }
+
+        private fun IScene.resolve(query: ProverQuery.EquivalenceQuery) : Pair<TACMethod, TACMethod> {
+            val methodChoice = Config.MethodChoices.orEmpty().singleOrNull() ?: throw CertoraException(
+                CertoraErrorType.BAD_CONFIG,
+                "Missing single method choice"
+            )
+            val contractA = this.getContract(query.contractA)
+            val contractB = this.getContract(query.contractB)
+
+
+            val methodA = contractA.getMethods().find {
+                val m = it as TACMethod
+                m.evmExternalMethodInfo?.toExternalABIName() == methodChoice
+            } ?: throw CertoraException(
+                CertoraErrorType.NO_MATCHING_METHOD,
+                "No method $methodChoice found in equivalence contract ${contractA.name}"
+            )
+
+            val methodSighash = methodA.sigHash!!
+
+            val methodB = contractB.getMethodBySigHash(methodSighash.n)!!
+            return (methodA as TACMethod) to (methodB as TACMethod)
+        }
 
         suspend fun handleEquivalence(query: ProverQuery.EquivalenceQuery, scene: IScene, outputReporter: OutputReporter) : List<RuleCheckResult> {
             if(!Config.EquivalenceCheck.get()) {
@@ -130,13 +205,54 @@ class EquivalenceChecker private constructor(
                 "Missing single method choice"
             )
 
+            val (methodAForAnalysis, methodBForAnalysis) = scene.resolve(query)
+
+            val methodBPure = PureFunctionExtraction.canonicalPureFunctionsIn(methodBForAnalysis)
+            val methodAPure = PureFunctionExtraction.canonicalPureFunctionsIn(methodAForAnalysis)
+
+            val shared = methodBPure.filter { (qB, progA) ->
+                methodAPure.any { (qA, progB) ->
+                    qA.matchesNameAndParams(qB) && progA == progB
+                }
+            }
+            logger.info {
+                "The following pure functions were found in common:"
+            }
+            if(logger.isInfoEnabled) {
+                for((q, _) in shared) {
+                    logger.info {
+                        "\t* ${q.toNamedDecSignature()}"
+                    }
+                }
+            }
+
+            val (coreA, coreB) = trySummarize(
+                methodA = methodAForAnalysis,
+                methodB = methodBForAnalysis,
+                sharedSigs = shared.map { it.sig }
+            )
+
+            fun ITACMethod.earlySummaryUpdate(newCore: CoreTACProgram) = ContractUtils.transformMethodInPlace(this, ChainedMethodTransformers(listOf(
+                CoreToCoreTransformer(ReportTypes.EARLY_SUMMARIZATION) { _ ->
+                    newCore
+                }.lift()
+            )))
+
+            scene.mapContractMethodsInPlace("equiv_summarization") { _, method ->
+                if(method.sigHash == methodAForAnalysis.sigHash && method.getContainingContract().instanceId == methodAForAnalysis.getContainingContract().instanceId) {
+                    method.earlySummaryUpdate(coreA)
+                } else if(method.sigHash == methodBForAnalysis.sigHash && method.getContainingContract().instanceId == methodBForAnalysis.getContainingContract().instanceId) {
+                    method.earlySummaryUpdate(coreB)
+                }
+            }
+
             /**
              * Adds some equivalence checker specific normalizations. These aren't useless for the "regular" flow
              */
             scene.mapContractMethodsInPlace("equiv_normalization") { _, method ->
                 ContractUtils.transformMethodInPlace(method, ChainedMethodTransformers(listOf(
                     CoreToCoreTransformer(ReportTypes.SIGHASH_PACKING_NORMALIZER, SighashPackingNormalizer::doWork).lift(),
-                    CoreToCoreTransformer(ReportTypes.SIGHASH_READ_NORMALIZER, SighashReadNormalizer::doWork).lift()
+                    CoreToCoreTransformer(ReportTypes.SIGHASH_READ_NORMALIZER, SighashReadNormalizer::doWork).lift(),
                 )))
             }
 
@@ -166,25 +282,13 @@ class EquivalenceChecker private constructor(
 
             StatusReporter.registerSubrule(equivalenceRule)
 
-            val contractA = scene.getContract(query.contractA)
-            val contractB = scene.getContract(query.contractB)
+            val (methodA, methodB) = scene.resolve(query)
 
-            val methodA = contractA.getMethods().find {
-                val m = it as TACMethod
-                m.evmExternalMethodInfo?.toExternalABIName() == methodChoice
-            } ?: throw CertoraException(
-                CertoraErrorType.NO_MATCHING_METHOD,
-                "No method $methodChoice found in equivalence contract ${contractA.name}"
-            )
-
-            val methodSighash = methodA.sigHash!!
-
-            val methodB = contractB.getMethodBySigHash(methodSighash.n)!!
             val r = EquivalenceChecker(
                 QueryContext(
                     scene = scene,
-                    methodA = methodA as TACMethod,
-                    methodB = methodB as TACMethod
+                    methodA = methodA,
+                    methodB = methodB
                 ),
                 equivalenceRule = equivalenceRule,
             ).handleEquivalence()
@@ -400,6 +504,7 @@ class EquivalenceChecker private constructor(
                 BufferTraceInstrumentation.TraceEventSort.RETURN -> "! The call returned"
                 BufferTraceInstrumentation.TraceEventSort.LOG -> "! A log was emitted"
                 BufferTraceInstrumentation.TraceEventSort.EXTERNAL_CALL -> "! An external call was made"
+                BufferTraceInstrumentation.TraceEventSort.INTERNAL_SUMMARY_CALL -> "! An internal call was made"
             }
             val bufferDescription = bufferRepr?.let { bufferMap ->
                 bufferMap.joinToString("") {
@@ -951,6 +1056,7 @@ class EquivalenceChecker private constructor(
                                 BufferTraceInstrumentation.TraceEventSort.RETURN -> "Function Return"
                                 BufferTraceInstrumentation.TraceEventSort.LOG -> "Log Emit"
                                 BufferTraceInstrumentation.TraceEventSort.EXTERNAL_CALL -> "External Call"
+                                BufferTraceInstrumentation.TraceEventSort.INTERNAL_SUMMARY_CALL -> "Internal Call"
                             })
                             val r = bufferRepr?.asBufferRepr("")
                             put("rawBuffer", r)
@@ -1345,7 +1451,7 @@ class EquivalenceChecker private constructor(
             equivalenceLoop(
                 Explorer(
                     InstrumentationLevels(
-                        inclusion = BufferTraceInstrumentation.TraceInclusionMode.Unified,
+                        inclusion = BufferTraceInstrumentation.TraceInclusionMode.Until(0),
                         traceLevel = BufferTraceInstrumentation.TraceTargets.Calls,
                     ),
                     QueryContext(methodA, methodB, scene)

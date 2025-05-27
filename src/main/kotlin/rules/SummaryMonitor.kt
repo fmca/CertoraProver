@@ -17,7 +17,7 @@
 
 package rules
 
-import analysis.icfg.InternalSummarizer
+import analysis.icfg.InternalCVLSummarizer
 import analysis.icfg.Summarization
 import config.Config
 import config.HardFailMode
@@ -184,7 +184,7 @@ object AutosummarizedMonitor {
     fun hasAutosummary(appliedSummary: Summarization.AppliedSummary.MethodsBlock) =
         autoInternalSummaries.computeIfPresent(appliedSummary.toSummaryMonitorKey().getSummaryMonitorKeyForAutosummarizer()) { _, it -> it } != null
 
-    fun addAutosummarizedMethods(autosummarizedMethods: Map<out CVL.InternalExact, InternalSummarizer.AutosummaryWithDifficulty>) {
+    fun addAutosummarizedMethods(autosummarizedMethods: Map<out CVL.InternalExact, InternalCVLSummarizer.EarlySummarization.AutosummaryWithDifficulty>) {
         autosummarizedMethods.forEachEntry { autosummarizedMethodPair ->
             // the summary itself is necessary to get the summary-monitor key
             val summaryMonitorKey: SummaryMonitorKey = (autosummarizedMethodPair.key to autosummarizedMethodPair.value.summaryToApply).toSummaryMonitorKey()

@@ -29,6 +29,7 @@ import spec.CVLCompiler
 import spec.RETURN_VALUE
 import tac.DumpTime
 import tac.NBId
+import tac.StartBlock
 import utils.*
 
 /**
@@ -116,6 +117,12 @@ object TACProgramCombiners {
         exp = other.exp,
         cmdsToAdd = this.cmds + other.cmdsToAdd,
         declsToAdd = this.varDecls + other.declsToAdd
+    )
+
+    fun <T: TACCmd.Simple> CommandWithRequiredDecls<T>.toCore(name: String, rootId: NBId = StartBlock) = codeFromCommandWithVarDecls(
+        name = name,
+        rootId = rootId,
+        cmdsWithDecls = this
     )
 }
 

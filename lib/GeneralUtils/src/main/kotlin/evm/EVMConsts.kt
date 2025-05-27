@@ -73,6 +73,8 @@ val ABI_SIZE_BOUND = BigInteger.TWO.pow(64)
 val BigInteger.inEVMRange: Boolean
         get() = this in BigInteger.ZERO..MAX_EVM_UINT256
 
+fun MOD_MASK_SIZE(n: Int) = BigInteger.TWO.pow(n)
+
 // return 2^n - 1, where n is number of bits in the mask
 fun MASK_SIZE(n: Int) = BigInteger.TWO.pow(n).minus(BigInteger.ONE)
 // The way Python allocates addresses is by starting at address 0xce4604a aka Certora (12, 14, 04, 06, 00, 04, 10)

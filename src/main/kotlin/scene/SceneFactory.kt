@@ -17,7 +17,7 @@
 
 package scene
 
-import analysis.icfg.InternalSummarizer
+import analysis.icfg.InternalCVLSummarizer
 import bridge.ContractInstanceInSDC
 import cache.CacheManager
 import cache.CachePolicy
@@ -76,12 +76,12 @@ private fun IContractSource.withQuery(cvl: CVL?): IContractSource {
     } else if(this is IContractSourceFull) {
         object : IContractSourceFull by this@withQuery, ICacheAwareSource {
             override val baseCacheKey: BigInteger
-                get() = InternalSummarizer.EarlySummarization.computeSummaryDigest(cvl)
+                get() = InternalCVLSummarizer.EarlySummarization.computeSummaryDigest(cvl)
         }
     } else {
         object : ICacheAwareSource, IContractSource by this@withQuery {
             override val baseCacheKey: BigInteger
-                get() = InternalSummarizer.EarlySummarization.computeSummaryDigest(cvl)
+                get() = InternalCVLSummarizer.EarlySummarization.computeSummaryDigest(cvl)
 
         }
     }

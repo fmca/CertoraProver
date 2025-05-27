@@ -131,6 +131,13 @@ data class LTACSymbol(val ptr: CmdPointer, val symbol: TACSymbol) : Serializable
 @Treapable
 data class LTACVar(val ptr: CmdPointer, val v: TACSymbol.Var) : Serializable
 
+data class LTACAnnotation<T: Serializable>(
+    val annotation: T,
+    val cmd: LTACCmdView<TACCmd.Simple.AnnotationCmd>
+) {
+    val ptr: CmdPointer get() = cmd.ptr
+}
+
 data class LTACExp(val ptr: ExpPointer, val exp: TACExpr) : Serializable
 
 inline fun <reified T : TACCmd> LTACCmd.narrow(): LTACCmdView<T> {
@@ -183,6 +190,12 @@ fun <T : Serializable> LTACCmd.annotation(k: MetaKey<T>) : T? = this.narrow<TACC
 
 fun <T : Serializable> LTACCmd.maybeAnnotation(k: MetaKey<T>) : T? = this.maybeNarrow<TACCmd.Simple.AnnotationCmd>()?.cmd?.maybeAnnotation(k)
 fun LTACCmd.maybeAnnotation(k: MetaKey<Nothing>) : Boolean = this.maybeNarrow<TACCmd.Simple.AnnotationCmd>()?.cmd?.maybeAnnotation(k) == true
+
+inline fun <reified T: Serializable> LTACCmd.annotationView(k: MetaKey<T>) = this.maybeNarrow<TACCmd.Simple.AnnotationCmd>()?.annotationView(k)
+
+inline fun <reified T: Serializable> LTACCmdView<TACCmd.Simple.AnnotationCmd>.annotationView(k: MetaKey<T>) = this.cmd.maybeAnnotation(k)?.let { payload ->
+    LTACAnnotation(payload, this)
+}
 
 fun LTACCmd.asSnippetCmd(): SnippetCmd? = maybeAnnotation(TACMeta.SNIPPET)
 

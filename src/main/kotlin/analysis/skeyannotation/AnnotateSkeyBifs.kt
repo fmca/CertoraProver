@@ -304,7 +304,7 @@ object AnnotateSkeyBifs {
                                     }
                                     opsTransformed()
                                 }
-
+                                is TACBuiltInFunction.NondetFunction,
                                 is TACBuiltInFunction.TwosComplement.Unwrap,
                                 is TACBuiltInFunction.TwosComplement.Wrap,
 

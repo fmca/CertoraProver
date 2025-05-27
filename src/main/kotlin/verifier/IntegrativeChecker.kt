@@ -801,7 +801,7 @@ object IntegrativeChecker {
         reporterContainer: ReporterContainer,
         extensionContractsMapping: ExtensionContractsMapping,
     ): List<RuleCheckResult> {
-        val treeView = createTreeViewReporter(scene, query)
+        val treeView by lazy { createTreeViewReporter(scene, query) }
         val result = if (!Config.SceneConstructionOnly.get()) { // works thanks to logSceneInfo above which triggers the lazy computation
             // run initial transformations, before checking specs or assertions
             if(query is ProverQuery.EquivalenceQuery) {

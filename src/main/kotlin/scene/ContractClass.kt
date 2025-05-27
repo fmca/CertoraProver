@@ -20,7 +20,7 @@ package scene
 import analysis.EthereumVariables
 import analysis.ExternalMapGetterSummarization
 import analysis.alloc.*
-import analysis.icfg.InternalSummarizer
+import analysis.icfg.InternalCVLSummarizer
 import analysis.icfg.Summarizer
 import analysis.icfg.Summarizer.resolveCandidates
 import analysis.ip.InternalFunctionHint
@@ -62,8 +62,7 @@ import spec.CVL
 import spec.CVLReservedVariables
 import spec.cvlast.SpecCallSummary
 import tac.*
-import utils.letIf
-import utils.mapNotNull
+import utils.*
 import vc.data.*
 import verifier.*
 import verifier.ContractUtils.computeMethodsInCode
@@ -224,7 +223,7 @@ class ContractClass(
             if(internalSummaries != null) {
                 // if we have internal summaries, let's apply those early on and save time
                 transforms.add(ReportTypes.EARLY_SUMMARIZATION) { c: CoreTACProgram ->
-                    InternalSummarizer.EarlySummarization.applyEarlyInternalSummarization(c, cvl)
+                    InternalCVLSummarizer.EarlySummarization.applyEarlyInternalSummarization(c, cvl)
                 }
             }
 

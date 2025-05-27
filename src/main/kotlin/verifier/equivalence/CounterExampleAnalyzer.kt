@@ -702,7 +702,7 @@ internal class CounterExampleAnalyzer(
         ).leftOr { return it }
         val sort = event.sort
         val params = when(event) {
-            is BufferTraceInstrumentation.RawEventParams.CallParams -> {
+            is BufferTraceInstrumentation.RawEventParams.ExternalCallParams -> {
                 listOf(
                     EquivalenceChecker.ExternalEventParam(
                         label = EquivalenceChecker.ContextLabel.CALLEE,
@@ -718,6 +718,7 @@ internal class CounterExampleAnalyzer(
                     )
                 )
             }
+            is BufferTraceInstrumentation.RawEventParams.InternalSummaryParams -> listOf()
             is BufferTraceInstrumentation.RawEventParams.ExitParams -> listOf()
             is BufferTraceInstrumentation.RawEventParams.LogTopics -> {
                 event.params.mapIndexed { ind, either ->
