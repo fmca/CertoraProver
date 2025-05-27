@@ -108,4 +108,50 @@ class TestCVLHooks : AbstractCVLTest() {
         testNoErrors(CVLFlow().getProverQuery(confPath, cvlText, primaryContractName))
     }
 
+    @Test
+    fun testHookMappingArrayConfusion1() {
+        val confPath = Path("lib/Shared/src/test/resources/HashBlob/HookWithUintType.conf")
+        val primaryContractName = "HookWithUintType"
+        val cvlText = """
+            hook Sload uint v currentContract.blerp[INDEX uint256 whatever] {
+                assert whatever == 3;
+            }
+
+        """.trimIndent()
+        testFlowWithPredicatesCVLError(
+            CVLFlow().getProverQuery(confPath, cvlText, primaryContractName),
+            listOf(
+                GeneralType(
+                    "Test CVL",
+                    0,
+                    2,
+                    "Expected an array-like object at HookWithUintType.blerp, found mapping (uint256 => uint256). Did you mean to use KEY instead of INDEX?"
+                )
+            )
+        )
+    }
+
+    @Test
+    fun testHookMappingArrayConfusion2() {
+        val confPath = Path("lib/Shared/src/test/resources/HashBlob/HookWithUintType.conf")
+        val primaryContractName = "HookWithUintType"
+        val cvlText = """
+            hook Sload uint v currentContract.arr[KEY uint256 whatever] {
+                assert whatever == 3;
+            }
+
+        """.trimIndent()
+        testFlowWithPredicatesCVLError(
+            CVLFlow().getProverQuery(confPath, cvlText, primaryContractName),
+            listOf(
+                GeneralType(
+                    "Test CVL",
+                    0,
+                    2,
+                    "Expected mapping type at HookWithUintType.arr, found uint256[]. Did you mean to use INDEX instead of KEY?"
+                )
+            )
+        )
+    }
+
 }
