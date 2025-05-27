@@ -17,24 +17,14 @@
 
 using C as c;
 
-methods {
-    function getN() external returns (int8) envfree;
+rule parametric(method f) {
+    env e;
+    calldataarg args;
+
+    f(e, args);
+    assert c.n < 6;
 }
 
-invariant nNonNegative() getN() >= 0;
-
-rule nNonNegativeRule {
-    assert c.n >= 0;
-}
-
-invariant mCurrentContractNonNegative() c.m[currentContract] >= 0 {
-    preserved setM1(address a) with (env e) {
-        require a != currentContract;
-    }
-}
-
-invariant mInvariantParamInPreserved(address b) c.m[b] >= 0 {
-    preserved addM1(address a) with (env e) {
-        require getM(e, b) >= 0;
-    }
+rule regular {
+    assert c.n < 6;
 }

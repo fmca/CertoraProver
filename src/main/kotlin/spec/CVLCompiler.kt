@@ -2391,7 +2391,11 @@ class CVLCompiler(
      *   (We currently assume call expressions do not appear in internal nodes of the Expression AST.)
      * If statements are converted to TAC code computing the condition expression, ending with jumpi to TAC codes of then/else.
      * */
-    fun compileRule(rule: CVLSingleRule, ruleCompilationMethodFilter: RuleCompilationMethodFilter): ParametricInstantiation<CVLTACProgram> {
+    fun compileRule(
+        rule: CVLSingleRule,
+        ruleCompilationMethodFilter: RuleCompilationMethodFilter,
+        generateSetupCode: Boolean = true
+    ): ParametricInstantiation<CVLTACProgram> {
         val allocatedTACSymbols = this.allocatedTACSymbols.nestedScope()
         val ruleStatsRecorder =
             ElapsedTimeStats().startMeasuringTimeOf(ruleCompilationTag)
@@ -2420,12 +2424,16 @@ class CVLCompiler(
 
         val env = CompilationEnvironment(methodInstantiations = inst) // TODO(jtoman): maybe stuff the allocated tac in here?
 
-        val startBlockNormalizedTACCode = generateRuleSetupCode().prependToBlock0(
+        val startBlockNormalizedTACCode = if (generateSetupCode) {
+            generateRuleSetupCode()
+        } else {
+            CommandWithRequiredDecls(TACCmd.Simple.NopCmd).toProg("dummy", env)
+        }.prependToBlock0(
             // assume types for rule parameters and havoc them
             wrapWithCVL(ruleParamSetup(rule.params, allocatedTACSymbols), "rule parameters setup")
         )
-        val startBlockNormalizedTACCodeWithOpts =
-            ParametricInstantiation.getSimple(startBlockNormalizedTACCode)
+
+        val startBlockNormalizedTACCodeWithOpts = getSimple(startBlockNormalizedTACCode)
 
         // wrap each command
         val ruleCommands = wrapCmdWithLabels(CVLCmd.Composite.Block(rule.range, rule.block, rule.scope))

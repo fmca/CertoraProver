@@ -18,6 +18,7 @@
 package vc.data
 
 import bridge.EVMExternalMethodInfo
+import config.OUTPUT_NAME_DELIMITER
 import log.*
 import utils.Range
 import utils.sameValueOrNull
@@ -61,5 +62,24 @@ class MethodParameterInstantiation(private val paramNameToEVMMethodInstance: Map
             }
             Range.Empty()
         }
+    }
+
+    /**
+    * Returns a pair, containing a list of the chosen instantiations,
+    * and a declaration-id for the corresponding rule, which is a concatenation of the chosen
+    * instantiations, separated by [OUTPUT_NAME_DELIMITER].
+    */
+    fun toRuleName(hasMethodInstFromNonPrimaryContract: Boolean): Pair<List<String>, String> {
+        val sortedMethodMatch = this.toSortedMap()
+        val methodInstsNames = sortedMethodMatch.map { (_, methodInfo) ->
+            if (hasMethodInstFromNonPrimaryContract) {
+                "${methodInfo.contractName}.${methodInfo}"
+            } else {
+                methodInfo.toString()
+            }
+        }
+        val declarationId = methodInstsNames.joinToString(separator = OUTPUT_NAME_DELIMITER)
+
+        return methodInstsNames to declarationId
     }
 }

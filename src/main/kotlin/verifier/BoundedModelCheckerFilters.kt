@@ -34,6 +34,7 @@ import spec.CVL
 import spec.CVLCompiler
 import spec.CVLKeywords
 import spec.cvlast.*
+import spec.rules.CVLSingleRule
 import spec.rules.IRule
 import tac.CallId
 import utils.Range
@@ -66,9 +67,9 @@ enum class BoundedModelCheckerFilters(private val filter: BoundedModelCheckerFil
             compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
             funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
             funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-            invAssertProgs: Map<CVLInvariant, CoreTACProgram>
+            testProgs: Map<CVLSingleRule, CoreTACProgram>
         ) {
-            entries.forEach { it.filter.init(cvl, scene, compiler, compiledFuncs, funcReads, funcWrites, invAssertProgs) }
+            entries.forEach { it.filter.init(cvl, scene, compiler, compiledFuncs, funcReads, funcWrites, testProgs) }
         }
 
         /**
@@ -77,12 +78,12 @@ enum class BoundedModelCheckerFilters(private val filter: BoundedModelCheckerFil
          */
         suspend fun filter(
             sequence: List<ContractFunction>,
-            inv: CVLInvariant,
+            testRule: CVLSingleRule,
             funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
             funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
         ): BoundedModelCheckerFilters? {
             require(sequence.isNotEmpty())
-            return entries.firstOrNull { !it.filter.filter(sequence, inv, funcReads, funcWrites) }
+            return entries.firstOrNull { !it.filter.filter(sequence, testRule, funcReads, funcWrites) }
         }
     }
 }
@@ -95,12 +96,12 @@ private sealed interface BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
+        testProgs: Map<CVLSingleRule, CoreTACProgram>
     )
 
     suspend fun filter(
         sequence: List<ContractFunction>,
-        inv: CVLInvariant,
+        testRule: CVLSingleRule,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
     ): Boolean
@@ -126,7 +127,7 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
+        testProgs: Map<CVLSingleRule, CoreTACProgram>
     ) {
         val res = mutableSetOf<Pair<ContractFunction, ContractFunction>>()
         val ent = compiledFuncs.keys
@@ -163,7 +164,7 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
 
     override suspend fun filter(
         sequence: List<ContractFunction>,
-        inv: CVLInvariant,
+        testRule: CVLSingleRule,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
     ): Boolean {
@@ -232,7 +233,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
+        testProgs: Map<CVLSingleRule, CoreTACProgram>
     ) {
         if (Config.BoundedModelChecking.get() < 2) {
             // There will be no sequences where this check is relevant
@@ -341,7 +342,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
 
     override suspend fun filter(
         sequence: List<ContractFunction>,
-        inv: CVLInvariant,
+        testRule: CVLSingleRule,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
     ): Boolean = coroutineScope {
@@ -362,7 +363,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
  */
 private data object FunctionNonModifyingFilter : BoundedModelCheckerFilter {
     /** Mapping of whether a given invariant assertion program and contract function have "interacting" storage or ghosts */
-    private lateinit var invAndFuncInteract: Map<Pair<CVLInvariant, ContractFunction>, Boolean>
+    private lateinit var testProgAndFuncInteract: Map<Pair<CVLSingleRule, ContractFunction>, Boolean>
 
     private val secondReadsFromFirst = ConcurrentHashMap<Pair<ContractFunction, ContractFunction>, Boolean>()
 
@@ -373,39 +374,39 @@ private data object FunctionNonModifyingFilter : BoundedModelCheckerFilter {
         compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
-        invAssertProgs: Map<CVLInvariant, CoreTACProgram>
+        testProgs: Map<CVLSingleRule, CoreTACProgram>
     ) {
-        val invAccesses = invAssertProgs.mapValues { (_, assertProg) ->
-            val (writes, reads) = BoundedModelChecker.getAllWritesAndReads(assertProg, null)
+        val testAccesses = testProgs.mapValues { (_, testProg) ->
+            val (writes, reads) = BoundedModelChecker.getAllWritesAndReads(testProg, null)
             writes?.plus(reads)
         }
 
-        invAndFuncInteract = invAccesses.flatMap { (inv, invAccess) ->
+        testProgAndFuncInteract = testAccesses.flatMap { (testRule, testAccess) ->
             compiledFuncs.map { (func, _) ->
-                if (invAccess == null) {
-                    return@map (inv to func) to true
+                if (testAccess == null) {
+                    return@map (testRule to func) to true
                 }
-                val fWrites = funcWrites[func] ?: return@map (inv to func) to true
+                val fWrites = funcWrites[func] ?: return@map (testRule to func) to true
 
-                val res = invAccess.overlaps(fWrites)
+                val res = testAccess.overlaps(fWrites)
                 if (!res) {
-                    val msg = "The function $func doesn't modify the storage accessed by the condition of ${inv.id}"
+                    val msg = "The function $func doesn't modify the storage accessed by the condition of ${testRule.declarationId}"
                     logger.info { msg }
                 }
-                (inv to func) to res
+                (testRule to func) to res
             }
         }.toMap()
     }
 
     override suspend fun filter(
         sequence: List<ContractFunction>,
-        inv: CVLInvariant,
+        testRule: CVLSingleRule,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>
     ): Boolean {
         for (i in sequence.indices.reversed()) {
             val g = sequence[i]
-            if (invAndFuncInteract[inv to g]!!) {
+            if (testProgAndFuncInteract[testRule to g]!!) {
                 continue
             }
             if (i == sequence.lastIndex) {

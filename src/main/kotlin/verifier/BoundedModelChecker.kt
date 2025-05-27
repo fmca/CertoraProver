@@ -51,6 +51,7 @@ import utils.CollectingResult.Companion.flatten
 import utils.CollectingResult.Companion.map
 import utils.CollectingResult.Companion.safeForce
 import vc.data.*
+import vc.data.ParametricMethodInstantiatedCode.toCheckableTACs
 import vc.data.TACProgramCombiners.andThen
 import vc.data.state.TACValue
 import java.util.*
@@ -242,12 +243,20 @@ class BoundedModelChecker(
     }
 
     private val maxSequenceLen = Config.BoundedModelChecking.get()
+    private val failLimit = Config.BoundedModelCheckingFailureLimit.get()
+
     private val invariants = Config.getRuleChoices(cvl.invariants.mapToSet { it.id }).let { chosenInvs ->
         cvl.invariants
             .filter { inv ->
                 inv.id in chosenInvs
             }
-            .mapIndexed { index, cvlInvariant -> cvlInvariant to index }.toMap()
+    }
+    private val rules = Config.getRuleChoices(cvl.rules.mapToSet { it.declarationId }).let { chosenRules ->
+        cvl.rules
+            .filter { rule ->
+                rule.declarationId in chosenRules
+            }
+            .filterIsInstance<CVLSingleRule>()
     }
 
     /**
@@ -283,7 +292,10 @@ class BoundedModelChecker(
      */
     private val compiledFuncs: SortedMap<ContractFunction, FuncData>
 
-    private val invProgs: Map<CVLInvariant, InvariantPrograms>
+    private val invToRule: Map<CVLInvariant, CVLSingleRule>
+    private val invProgs: Map<CVLSingleRule, CVLPrograms>
+
+    private val ruleProgs: Map<CVLSingleRule, CVLPrograms>
 
     private val funcReads: Map<ContractFunction, StateModificationFootprint?>
     private val funcWrites: Map<ContractFunction, StateModificationFootprint?>
@@ -418,12 +430,6 @@ class BoundedModelChecker(
             .filter { func ->
                 Config.contractChoice.get().let { it.isEmpty() || func.methodSignature.qualifiedMethodName.host.name in it }
             }
-            .filter { func ->
-                this.cvl.importedFuncs.values.flatten().map { it.abiWithContractStr() }.containsMethodFilteredByConfig(
-                    func.methodSignature.computeCanonicalSignatureWithContract(PrintingContext(false)),
-                    mainContract.name
-                )
-            }
             .map { contractFunc ->
                 contractFunc to compileFunction(contractFunc)
             }
@@ -459,9 +465,38 @@ class BoundedModelChecker(
 
         funcReads = funcWritesAndReads.mapValues { (_, writesAndReads) -> writesAndReads.second }
 
-        invProgs = invariants.mapValues { (inv, _) ->
-            InvariantPrograms(inv, compiler) { this.applySummaries() }
-        }
+        invToRule = invariants.map { inv ->
+            inv to IRule.createDummyRule(inv.id).copy(
+                ruleType = SpecType.Single.BMC.Invariant,
+                range = inv.range,
+                methodParamFilters = inv.methodParamFilters
+            ).also {
+                treeViewReporter.addTopLevelRule(it)
+            }
+        }.toMap()
+
+        invProgs = invariants.map { inv ->
+            invToRule[inv]!! to CVLPrograms(inv, compiler) { this.applySummaries() }
+        }.toMap()
+
+        ruleProgs = rules.flatMap { rule ->
+            treeViewReporter.addTopLevelRule(rule)
+            val allProgs = generateRuleProgs(rule, compiler) { this.applySummaries() }
+            if (allProgs.size == 1) {
+                // This is a non-parametric rule, just take it.
+                allProgs.single().second.let { listOf(rule to it) }
+            } else {
+                // This is a parametric rule, so for each instantiation register it as a subrule of [rule] and add it to
+                // the list of ruleProgs.
+                // This way the rest of the BMC code can handle parametric rules as if they we just a list of simple
+                // rules, and in the tree-view they will all show as subrules of [rule].
+                allProgs.map { (instName, cvlProgs) ->
+                    val instRule = rule.copy(ruleIdentifier = rule.ruleIdentifier.freshDerivedIdentifier(instName))
+                    treeViewReporter.registerSubruleOf(instRule, rule)
+                    instRule to cvlProgs
+                }
+            }
+        }.toMap()
 
         BoundedModelCheckerFilters.init(
             cvl,
@@ -470,7 +505,7 @@ class BoundedModelChecker(
             compiledFuncs,
             funcReads,
             funcWrites,
-            invProgs.mapValues { (_, progs) -> progs.assert }
+            (invProgs + ruleProgs).mapValues { (_, progs) -> progs.assert }
         )
     }
 
@@ -480,22 +515,27 @@ class BoundedModelChecker(
      * In words, for each index `0<=k<=funcsList.size` create a "dispatch" on the functions in `funcsList[k]`, and then
      * call these dispatchers one after the other.
      *
-     * In order to help the solvers, before each such dispatch we insert an `assume` of the invariant ([InvariantPrograms.assume]).
+     * In order to help the solvers, before each such dispatch we insert an `assume` of the invariant ([CVLPrograms.assume]).
      *
-     * At the end of the sequence we postpend an assertion of the invariant ([InvariantPrograms.assert]).
+     * At the end of the sequence we postpend an assertion of the invariant ([CVLPrograms.assert]).
      */
     private fun generateProgForSequence(
         funcsList: List<List<ContractFunction>>,
-        invProgs: InvariantPrograms
+        progs: CVLPrograms,
+        includeAssertion: Boolean = true
     ): CoreTACProgram {
         if (funcsList.isEmpty()) {
             // Constructor only case
-            val prog = initializationProg andThen setupFunctionProg andThen invProgs.params andThen invProgs.assert
-            return prog
+            val prog = initializationProg andThen setupFunctionProg andThen progs.params
+            return if (includeAssertion) {
+                prog andThen progs.assert
+            } else {
+                prog
+            }
         }
 
         val functionCallsProg = funcsList.foldIndexed(
-            initializationProg andThen setupFunctionProg andThen invProgs.params
+            initializationProg andThen setupFunctionProg andThen progs.params
         ) { idx, outerAcc, contractFunctions ->
             if (contractFunctions.isEmpty()) {
                 // the constructor only case
@@ -521,7 +561,7 @@ class BoundedModelChecker(
                  * same function in a given sequence will be independent.
                  */
                 val funcData = compiledFuncs[contractFunction]!!
-                val preserved = invProgs.preserveds[contractFunction] ?: CoreTACProgram.empty("no preserved")
+                val preserved = progs.preserveds[contractFunction] ?: CoreTACProgram.empty("no preserved")
                 val funcProg = (funcData.paramsProg andThen preserved andThen funcData.funcProg).copyFunction(addCallId0Sink = true)
 
                 val jumpiCmd = TACCmd.Simple.JumpiCmd(
@@ -536,12 +576,21 @@ class BoundedModelChecker(
                     acc
                 )
             }
-            val assumeInvProg = (invProgs.params andThen invProgs.assume).copyFunction()
-            outerAcc andThen assumeInvProg andThen newDispatch
+
+            // In case of invariants we want to assume the invariant before each step of the sequence. In the rule case
+            // this will be empty code.
+            val assumeProg = (progs.params andThen progs.assume).let {
+                it.letIf(!it.isEmptyCode()) { it.copyFunction() }
+            }
+            outerAcc andThen assumeProg andThen newDispatch
         }
 
-        return (functionCallsProg andThen invProgs.assert).copy(
-            name = "${invProgs.id}: " + funcsList.sequenceStr()
+        return if (includeAssertion) {
+            functionCallsProg andThen progs.assert
+        } else {
+            functionCallsProg
+        }.copy(
+            name = "${progs.id}: " + funcsList.sequenceStr()
         )
     }
 
@@ -589,7 +638,7 @@ class BoundedModelChecker(
         return res is RuleCheckResult.Single && res.result == SolverResult.UNSAT
     }
 
-    inner class InvariantPrograms private constructor(
+    inner class CVLPrograms(
         val id: String,
         val params: CoreTACProgram,
         val assume: CoreTACProgram,
@@ -682,40 +731,90 @@ class BoundedModelChecker(
         )
     }
 
-    private suspend fun checkInv(inv: CVLInvariant, invProgs: InvariantPrograms): List<RuleCheckResult> {
-        val funcsForThisInvariant = CalculateMethodParamFilters(mainContract, cvl.importedFuncs.keys.toList(), cvl.symbolTable)
-            .calculate(listOf(IRule.createDummyRule("dummy").copy(methodParamFilters = inv.methodParamFilters)))
-            .resultOrThrow { errors ->
-                errors.forEach { error ->
-                    CVTAlertReporter.reportAlert(CVTAlertType.CVL, CVTAlertSeverity.ERROR, error.location as? TreeViewLocation, error.message, null)
-                }
-                IllegalArgumentException("Calculating the method param filters failed")
+    private fun generateRuleProgs(
+        rule: CVLSingleRule,
+        compiler: CVLCompiler,
+        summaryApplier: CoreTACProgram.() -> CoreTACProgram
+    ): List<Pair<String, CVLPrograms>> {
+        val checkableTACs = compiler
+            .compileRule(rule, compiler.CVLBasedFilter(rule.ruleIdentifier), generateSetupCode = false)
+            .toCheckableTACs(scene, rule).map {
+                it.copy(tac = it.tac.summaryApplier().optimize(scene))
             }
-            .second.values.single().values.singleOrNull()
-            ?.map { method ->
-                compiledFuncs.findEntry { func, _ -> method.getABIString() == func.methodSignature.computeCanonicalSignature(PrintingContext(false)) }
-                    ?: error("Couldn't find $method in the compiled funcs")
-            }?.map { it.first } ?: compiledFuncs.keys.toList()
+
+        val hasMethodInstFromNonPrimaryContract = checkableTACs.any { it.methodParameterInstantiation.values.any { it.contractName != mainContract.name} }
+        return checkableTACs.map { checkableTAC ->
+            val instName = checkableTAC.methodParameterInstantiation.toRuleName(hasMethodInstFromNonPrimaryContract).second
+            instName to CVLPrograms(
+                id = rule.declarationId,
+                params = CoreTACProgram.empty("params are declared as part of the rule"),
+                assume = CoreTACProgram.empty("no assume for rules"),
+                assert = checkableTAC.tac,
+                preserveds = mapOf()
+            )
+        }
+    }
+
+    private suspend fun runAllSequences(baseRule: CVLSingleRule, progs: CVLPrograms): List<RuleCheckResult> {
+        val allFuncs =
+            CalculateMethodParamFilters(mainContract, cvl.importedFuncs.keys.toList(), cvl.symbolTable)
+                .calculate(listOf(IRule.createDummyRule("dummy").copy(methodParamFilters = baseRule.methodParamFilters)))
+                .resultOrThrow { errors ->
+                    errors.forEach { error ->
+                        CVTAlertReporter.reportAlert(
+                            CVTAlertType.CVL,
+                            CVTAlertSeverity.ERROR,
+                            error.location as? TreeViewLocation,
+                            error.message,
+                            null
+                        )
+                    }
+                    IllegalArgumentException("Calculating the method param filters failed")
+                }
+                .second.values.single().values.singleOrNull()
+                ?.map { method ->
+                    compiledFuncs.findEntry { func, _ ->
+                        method.getABIString() == func.methodSignature.computeCanonicalSignature(
+                            PrintingContext(false)
+                        )
+                    }
+                        ?: error("Couldn't find $method in the compiled funcs")
+                }?.map { it.first } ?: compiledFuncs.keys.toList()
+        val allFuncsForLastStep = allFuncs
+            .filter { func ->
+                if (baseRule.ruleType is SpecType.Single.BMC.Invariant) {
+                    // In regular prover mode (non-bmc) invariants start at an arbitrary state, and then the invariant
+                    // is checked against all functions specified by the `--method` flag.
+                    // In BMC mode we can think of a range of length N as N-1 steps to reach some (non-arbitrary) state,
+                    // and then the invariant checks the final function of the sequence. Looking at things this way, it
+                    // makes sense that the `--method` flag will determine the set of possible last functions in a
+                    // sequence.
+                    this.cvl.importedFuncs.values.flatten().map { it.abiWithContractStr() }
+                        .containsMethodFilteredByConfig(
+                            func.methodSignature.computeCanonicalSignatureWithContract(PrintingContext(false)),
+                            mainContract.name
+                        )
+                } else {
+                    // In rule mode, the `--method` flag filters parametric methods within the rule, and have nothing to
+                    // do with the sequence coming before the rule is called.
+                    true
+                }
+            }
 
         val nSatResults = AtomicInteger(0)
         val nSequencesChecked = AtomicInteger(0)
-        val failLimit = Config.BoundedModelCheckingFailureLimit.get()
-
-        val invRule = IRule.createDummyRule(inv.id).copy(ruleType = SpecType.Single.BMC.Invariant, range = inv.range).also {
-            treeViewReporter.addTopLevelRule(it)
-        }
 
         val rangeRules = ConcurrentHashMap<Int, CVLSingleRule>()
         fun getRangeRule(len: Int) =
             rangeRules.computeIfAbsent(len) {
-                invRule.copy(
-                    ruleIdentifier = invRule.ruleIdentifier.freshDerivedIdentifier("Range $len"),
+                baseRule.copy(
+                    ruleIdentifier = baseRule.ruleIdentifier.freshDerivedIdentifier("Range $len"),
                     ruleType = SpecType.Single.BMC.Range(len)
                 ).also {
                     treeViewReporter.registerSubruleOf(
                         it,
-                        invRule,
-                        funcsForThisInvariant.size.toBigInteger().pow(len).toInt() // Total theoretical number of sequences of this length
+                        baseRule,
+                        allFuncs.size.toBigInteger().pow(len).toInt() // Total theoretical number of sequences of this length
                     )
                 }
             }
@@ -734,8 +833,8 @@ class BoundedModelChecker(
                 return treapListOf()
             }
 
-            val allLastFuncsToFailedFilters = funcsForThisInvariant.associateWith { func ->
-                BoundedModelCheckerFilters.filter(parentFuncs + func, inv, funcReads, funcWrites)
+            val allLastFuncsToFailedFilters = allFuncsForLastStep.associateWith { func ->
+                BoundedModelCheckerFilters.filter(parentFuncs + func, baseRule, funcReads, funcWrites)
             }
 
             val sequenceLen = parentFuncs.size + 1
@@ -744,18 +843,18 @@ class BoundedModelChecker(
 
             // The last element of the sequence will be a dispatch on the functions in lastFuncs, so the functions that
             // got filtered out correspond to sequences that are skipped, so count them as done.
-            treeViewReporter.updateFinishedChildren(rangeRule, funcsForThisInvariant.size - lastFuncs.size)
+            treeViewReporter.updateFinishedChildren(rangeRule, allFuncs.size - lastFuncs.size)
 
             val res = if (lastFuncs.isNotEmpty()) {
                 val seqRule = parentRule.copy(
                     ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(lastFuncs.dispatchStr()),
-                    ruleType = SpecType.Single.BMC.Sequence(inv)
+                    ruleType = SpecType.Single.BMC.Sequence(baseRule)
                 )
                 treeViewReporter.registerSubruleOf(seqRule, rangeRule)
 
                 val prog = generateProgForSequence(
                     parentFuncs.map { listOf(it) } + listOf(lastFuncs),
-                    invProgs
+                    progs
                 )
 
                 treeViewReporter.signalStart(seqRule)
@@ -811,21 +910,21 @@ class BoundedModelChecker(
             for (r in sequenceLen+1..maxSequenceLen) {
                 treeViewReporter.updateFinishedChildren(
                     getRangeRule(r),
-                    (funcsForThisInvariant.size - childFuncs.size) * funcsForThisInvariant.size.toBigInteger().pow(r - sequenceLen).toInt()
+                    (allFuncs.size - childFuncs.size) * allFuncs.size.toBigInteger().pow(r - sequenceLen).toInt()
                 )
             }
 
             return (listOfNotNull(res) + childFuncs.parallelMapOrdered { _, func ->
                 val funcs = parentFuncs + func
-                val childProg = generateProgForSequence(funcs.map { listOf(it) }, invProgs)
+                val childVacuityProg = generateProgForSequence(funcs.map { listOf(it) }, progs, includeAssertion = false)
                 val childRule = parentRule.copy(ruleIdentifier = parentRule.ruleIdentifier.freshDerivedIdentifier(func.abiWithContractStr()))
 
-                if (isVacuous(childProg, childRule)) {
+                if (isVacuous(childVacuityProg, childRule)) {
                     // similar to the logic in the previous call to updateFinishedChildren, just we're only talking about one child here.
                     for (r in sequenceLen+1..maxSequenceLen) {
                         treeViewReporter.updateFinishedChildren(
                             getRangeRule(r),
-                            funcsForThisInvariant.size.toBigInteger().pow(r - sequenceLen).toInt()
+                            allFuncs.size.toBigInteger().pow(r - sequenceLen).toInt()
                         )
                     }
                     treapListOf()
@@ -835,13 +934,14 @@ class BoundedModelChecker(
             }.flatten()).toTreapList()
         }
 
-        val constructorsRule = IRule.createDummyRule("").copy(ruleIdentifier = invRule.ruleIdentifier.freshDerivedIdentifier("Initial State"), ruleType = SpecType.Single.BMC.Range(0)).also {
-            treeViewReporter.registerSubruleOf(it, invRule)
+        val constructorsRule = IRule.createDummyRule("").copy(ruleIdentifier = baseRule.ruleIdentifier.freshDerivedIdentifier("Initial State"), ruleType = SpecType.Single.BMC.Range(0)).also {
+            treeViewReporter.registerSubruleOf(it, baseRule)
         }
 
-        val constructorProg = generateProgForSequence(listOf(), invProgs)
+        val constructorVacuityProg = generateProgForSequence(listOf(), progs, includeAssertion = false)
 
-        val allResults = if (!isVacuous(constructorProg, constructorsRule, registerTreeView = true)) {
+        val allResults = if (!isVacuous(constructorVacuityProg, constructorsRule, registerTreeView = true)) {
+            val constructorProg = generateProgForSequence(listOf(), progs)
             treeViewReporter.signalStart(constructorsRule)
             val constructorRes = checkProg(constructorProg, constructorsRule)
             treeViewReporter.signalEnd(constructorsRule, constructorRes)
@@ -856,28 +956,27 @@ class BoundedModelChecker(
                 listOf()
             }
         } else {
-            logger.warn { "The invariant ${inv.id} is vacuous even when running only on the constructors!" }
+            logger.warn { "${baseRule.declarationId} is vacuous even when running only on the constructors!" }
             listOf()
         }
 
         treeViewReporter.hotUpdate()
-        logger.info { "Invariant ${inv.id}: Ran a total of $nSequencesChecked sequences" }
+        logger.info { "${baseRule.declarationId}: Ran a total of $nSequencesChecked sequences" }
 
         return allResults
     }
 
-    suspend fun checkAllInvariants(): List<RuleCheckResult> {
+    suspend fun checkAll(): List<RuleCheckResult> {
         StatusReporter.freeze()
         val reportingJob = treeViewReporter.startAutoHotUpdate()
         try {
-            return invariants.keys
-                .parallelMapOrdered { _, inv ->
-                    checkInv(inv, invProgs[inv]!!)
-                }
-                .flatten()
-                .also {
-                    reporter.hotUpdate(scene)
-                }
+            val allToRun = invProgs + ruleProgs
+
+            return allToRun.toList().parallelMapOrdered { _, (baseRule, data) ->
+                runAllSequences(baseRule, data)
+            }.flatten().also {
+                reporter.hotUpdate(scene)
+            }
         } finally {
             treeViewReporter.stopAutoHotUpdate(reportingJob)
         }

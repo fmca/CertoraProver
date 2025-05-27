@@ -674,31 +674,6 @@ class RuleChecker(
             // a mutable list of sanity-rules' checkableTACs extracted out of [CheckableTACWithSanity]s
             val sanityCheckableTACs = mutableListOf<CheckableTAC>()
 
-            /**
-             * Given [methodMatch], returns a pair, containing a list of the chosen instantiations,
-             * and a declaration-id for the corresponding rule, which is a concatenation of the chosen
-             * instantiations, separated by [OUTPUT_NAME_DELIMITER].
-             */
-            fun methodMatchToRuleName(methodMatch: MethodParameterInstantiation): Pair<List<String>, String> {
-                val sortedMethodMatch = methodMatch.toSortedMap()
-                val methodInstsNames = sortedMethodMatch.map { (_, methodInfo) ->
-                    if (hasMethodInstFromNonPrimaryContract) {
-                        "${methodInfo.contractName}.${methodInfo}"
-                    } else {
-                        methodInfo.toString()
-                    }
-                }
-                val declarationId = methodInstsNames.joinToString(separator = OUTPUT_NAME_DELIMITER)
-                logger.info {
-                    "Sorted method match for rule ${rule.declarationId} instance: ${
-                        sortedMethodMatch.mapValues {
-                            it.value.toString()
-                        }
-                    }"
-                }
-                return methodInstsNames to declarationId
-            }
-
             fun createCompiledRule(
                 newSingleRule: CVLSingleRule,
                 subCode: CoreTACProgram
@@ -718,7 +693,7 @@ class RuleChecker(
 
                 val newSingleRule = if (methodMatch.isNotEmpty()) {
                     val sanity = currRule.ruleGenerationMeta.sanity
-                    val (methodInstsNames, declarationId) = methodMatchToRuleName(methodMatch)
+                    val (methodInstsNames, declarationId) = methodMatch.toRuleName(hasMethodInstFromNonPrimaryContract)
                     val parentRule = if (hasMethodInstFromNonPrimaryContract) {
                         methodMatchToContractRule[methodMatch] ?: throw IllegalStateException("no $methodMatch in $methodMatchToContractRule")
                     } else {
@@ -776,7 +751,7 @@ class RuleChecker(
                 val sanityRuleIdentifier = matchingOrigRes!!.ruleIdentifier.freshDerivedIdentifier(ruleName)
 
                 val newSingleSanityRule = if (methodMatch.isNotEmpty()) {
-                    val (methodInstsNames, _) = methodMatchToRuleName(methodMatch)
+                    val (methodInstsNames, _) = methodMatch.toRuleName(hasMethodInstFromNonPrimaryContract)
                     currRule.copy(
                         ruleGenerationMeta = SingleRuleGenerationMeta.WithMethodInstantiations(
                             currRule.ruleGenerationMeta.sanity,

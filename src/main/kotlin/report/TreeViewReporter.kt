@@ -579,16 +579,20 @@ class TreeViewReporter(
                 getChildren(curr)
                     .map { childDI -> childDI to getResultForNode(childDI) }
                     .filter { (_, treeViewResult) -> treeViewResult.status != TreeViewStatusEnum.BENIGN_SKIPPED }
-                    .filter { (_, treeViewResult) ->
+                    .filter { (childDI, treeViewResult) ->
                         // In BMC mode we want to show only:
                         // * The "initial state rule" (has type SpecType.Single.BMC.Range(0))
                         // * The vacuity of the initial state rule if it's vacuous (has the same type but is marked as a sanity check)
-                        // * All the Range N rules
+                        // * All the Range N rules that already have some child
                         // * Sequences that failed in some way
                         treeViewResult.rule?.let { rule ->
                             when (val type = rule.ruleType) {
                                 is SpecType.Single.BMC.Sequence -> !treeViewResult.status.isRunning() && treeViewResult.status != TreeViewStatusEnum.VERIFIED
-                                is SpecType.Single.BMC.Range -> type.len != 0 || !(rule as CVLSingleRule).isSanityCheck() || treeViewResult.status != TreeViewStatusEnum.VERIFIED
+                                is SpecType.Single.BMC.Range ->
+                                    when (type.len) {
+                                        0 -> !(rule as CVLSingleRule).isSanityCheck() || treeViewResult.status != TreeViewStatusEnum.VERIFIED
+                                        else -> getChildren(childDI).isNotEmpty()
+                                    }
                                 else -> true
                             }
                         } ?: true
@@ -602,8 +606,8 @@ class TreeViewReporter(
             val duration = currTreeViewResult.verifyTime.timeSeconds
             val isRunning = currTreeViewResult.isRunning
 
-            val displayName = (getResultForNode(curr).rule?.ruleType as? SpecType.Single.BMC.Sequence)?.inv?.let { inv ->
-                val count = bmcDisplayedSequencesCounter.compute(inv.id) { _, m ->
+            val displayName = (getResultForNode(curr).rule?.ruleType as? SpecType.Single.BMC.Sequence)?.baseRule?.let { baseRule ->
+                val count = bmcDisplayedSequencesCounter.compute(baseRule.declarationId) { _, m ->
                     val mapping = m ?: mapOf()
                     mapping.update(curr, mapping.size + 1) { it }
                 }!![curr]!!

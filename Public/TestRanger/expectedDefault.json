@@ -65,6 +65,28 @@
 					"nNonNegative-Initial State-C.setM1(address)-C.addNandM1"
 				]
 			}
+		},
+		"nNonNegativeRule": {
+			"Initial State": {
+				"nNonNegativeRule-Initial State-vacuity": "SUCCESS"
+			},
+			"Range 1": {
+				"SUCCESS": [
+					"nNonNegativeRule-Initial State-Any of: C.addN1, C.addNandM1, C.setN1, C.setNandM1, C.subN2"
+				]
+			},
+			"Range 2": {
+				"FAIL": [
+					"nNonNegativeRule-Initial State-C.addN1()-Any of: C.addN1, C.addNandM1, C.setN1, C.setNandM1, C.subN2",
+					"nNonNegativeRule-Initial State-C.addNandM1(address)-Any of: C.addN1, C.addNandM1, C.setN1, C.setNandM1, C.subN2",
+					"nNonNegativeRule-Initial State-C.setN1()-Any of: C.addN1, C.addNandM1, C.setNandM1, C.subN2",
+					"nNonNegativeRule-Initial State-C.setNandM1(address)-Any of: C.addN1, C.addNandM1, C.setN1, C.setNandM1, C.subN2"
+				],
+				"SUCCESS": [
+					"nNonNegativeRule-Initial State-C.addM1(address)-C.addNandM1",
+					"nNonNegativeRule-Initial State-C.setM1(address)-C.addNandM1"
+				]
+			}
 		}
 	}
 }

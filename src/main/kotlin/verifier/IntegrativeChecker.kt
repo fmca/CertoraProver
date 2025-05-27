@@ -347,7 +347,7 @@ object IntegrativeChecker {
         AutosummarizedMonitor.reportSummarizedMethods(cvl)
 
         if (Config.BoundedModelChecking.getOrNull() != null) {
-            return BoundedModelChecker(cvl, scene, contract, treeViewReporter, reporter).checkAllInvariants()
+            return BoundedModelChecker(cvl, scene, contract, treeViewReporter, reporter).checkAll()
         }
 
         HTMLReporter.expectedNumberOfRules = cvl.rules.flatMap { it.getAllSingleRules() }.size

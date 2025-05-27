@@ -1,0 +1,91 @@
+{
+	"rules": {
+		"parametric": {
+			"bar()": {
+				"Initial State": {
+					"parametric-bar()-Initial State-vacuity": "SUCCESS"
+				},
+				"Range 1": {
+					"SUCCESS": [
+						"parametric-bar()-Initial State-Any of: C.bar, C.baz, C.foo"
+					]
+				},
+				"Range 2": {
+					"FAIL": [
+						"parametric-bar()-Initial State-C.bar()-Any of: C.bar, C.baz, C.foo",
+						"parametric-bar()-Initial State-C.baz()-Any of: C.bar, C.baz, C.foo",
+						"parametric-bar()-Initial State-C.foo()-Any of: C.bar, C.baz, C.foo"
+					]
+				},
+				"parametric-bar()-Range 3": "UNKNOWN"
+			},
+			"baz()": {
+				"Initial State": {
+					"parametric-baz()-Initial State-vacuity": "SUCCESS"
+				},
+				"Range 1": {
+					"FAIL": [
+						"parametric-baz()-Initial State-Any of: C.bar, C.baz, C.foo"
+					]
+				}
+			},
+			"foo()": {
+				"Initial State": {
+					"parametric-foo()-Initial State-vacuity": "SUCCESS"
+				},
+				"Range 1": {
+					"SUCCESS": [
+						"parametric-foo()-Initial State-Any of: C.bar, C.baz, C.foo"
+					]
+				},
+				"Range 2": {
+					"FAIL": [
+						"parametric-foo()-Initial State-C.bar()-Any of: C.bar, C.baz, C.foo",
+						"parametric-foo()-Initial State-C.baz()-Any of: C.bar, C.baz, C.foo"
+					],
+					"SUCCESS": [
+						"parametric-foo()-Initial State-C.foo()-Any of: C.bar, C.baz, C.foo"
+					]
+				},
+				"Range 3": {
+					"FAIL": [
+						"parametric-foo()-Initial State-C.foo()-C.bar()-Any of: C.bar, C.baz, C.foo",
+						"parametric-foo()-Initial State-C.foo()-C.baz()-Any of: C.bar, C.baz, C.foo",
+						"parametric-foo()-Initial State-C.foo()-C.foo()-Any of: C.bar, C.baz, C.foo"
+					]
+				}
+			}
+		},
+		"regular": {
+			"Initial State": {
+				"regular-Initial State-vacuity": "SUCCESS"
+			},
+			"Range 1": {
+				"SUCCESS": [
+					"regular-Initial State-Any of: C.bar, C.baz, C.foo"
+				]
+			},
+			"Range 2": {
+				"FAIL": [
+					"regular-Initial State-C.baz()-Any of: C.bar, C.baz, C.foo"
+				],
+				"SUCCESS": [
+					"regular-Initial State-C.bar()-Any of: C.bar, C.baz, C.foo",
+					"regular-Initial State-C.foo()-Any of: C.bar, C.baz, C.foo"
+				]
+			},
+			"Range 3": {
+				"FAIL": [
+					"regular-Initial State-C.bar()-C.bar()-Any of: C.bar, C.baz, C.foo",
+					"regular-Initial State-C.bar()-C.baz()-Any of: C.bar, C.baz, C.foo",
+					"regular-Initial State-C.bar()-C.foo()-Any of: C.bar, C.baz, C.foo",
+					"regular-Initial State-C.foo()-C.bar()-Any of: C.bar, C.baz, C.foo",
+					"regular-Initial State-C.foo()-C.baz()-Any of: C.bar, C.baz, C.foo"
+				],
+				"SUCCESS": [
+					"regular-Initial State-C.foo()-C.foo()-Any of: C.bar, C.baz, C.foo"
+				]
+			}
+		}
+	}
+}
