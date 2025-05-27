@@ -446,7 +446,7 @@ class ContractClass(
                         perContract.load(ContractLoad.Component.MethodLoad(entry.key.name, entry.key.sigHash)) {
                             val contract = this@ContractClass
                             TACMethod(
-                                entry.value.copy(procedures = setOf(Procedure(0, contract, entry.key.name))),
+                                entry.value.copy(procedures = setOf(Procedure(0, contract, entry.key.name, entry.key.sourceSegment?.range))),
                                 contract,
                                 MetaMap(),
                                 if (entry.key.isFallback) {

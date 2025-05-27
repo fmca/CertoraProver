@@ -60,12 +60,12 @@ data class Procedure(@GeneratedBy(Allocator.Id.CALL_ID) val callId: CallId, val 
     )
 
     constructor(_callId: CallId, _method: ITACMethod, _name: String) : this(
-        _callId, _method.getContainingContract(), _name
+        _callId, _method.getContainingContract(), _name, _method.evmExternalMethodInfo?.sourceSegment?.range
     )
 
-    constructor(_callId: CallId, _contract: IContractClass, _name: String) : this(
+    constructor(_callId: CallId, _contract: IContractClass, _name: String, range: Range.Range?) : this(
         _callId,
-        ProcedureId.Standard(_contract, _name)
+        ProcedureId.Standard(_contract, _name, range)
     )
 
     constructor(_callId: CallId, _summary: SpecCallSummary) : this(
@@ -140,7 +140,7 @@ sealed class ProcedureId : AmbiSerializable {
         override val address: ContractOfProcedure,
         val contract: NamedContractIdentifier,
         val procedureName: String,
-        override val range: Range.Range? = null
+        override val range: Range.Range?
     ) : ProcedureId() {
 
         constructor(m: ITACMethod) : this(
@@ -150,10 +150,11 @@ sealed class ProcedureId : AmbiSerializable {
             m.evmExternalMethodInfo?.sourceSegment?.range
         )
 
-        constructor(contract: IContractClass, name: String) : this(
+        constructor(contract: IContractClass, name: String, range: Range.Range?) : this(
             ContractOfProcedure.withContractId(contract.instanceId),
             SolidityContract(contract.name),
-            name
+            name,
+            range
         )
 
         override fun toString(): String =
@@ -179,7 +180,7 @@ sealed class ProcedureId : AmbiSerializable {
     data class Constructor(
             override val address: ContractOfProcedure,
             val contract: ContractIdentifier,
-            override val range: Range.Range? = null
+            override val range: Range.Range?
     ) : ProcedureId() {
         constructor(m: ITACMethod) : this(
             ContractOfProcedure.withContractId(m.getContainingContract().instanceId),
