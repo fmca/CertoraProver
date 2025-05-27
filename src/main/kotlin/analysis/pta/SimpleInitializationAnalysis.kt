@@ -1207,7 +1207,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                                 it is LVar.PVar && state.num[it.v]?.qual.orEmpty().contains(Roles.LENGTH)
                             } - v("over-write") { ow ->
                                 /**
-                                 * Is this a round up?
+                                 * Is this a round up? Either check whether ow.v is itself a rounded up length (the first
+                                 * disjunct) OR there is some variable y st ow.v = y and where y is a rounded up length.
                                  */
                                 ow is LVar.PVar && (roundedUpLength(ow.v) || sat.containsAny { saturatingEq ->
                                     if(!saturatingEq.relates(ow.v) || saturatingEq.k != BigInteger.ZERO || saturatingEq.term.size != 2) {
@@ -1223,6 +1224,11 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                                     if(other.value != scale.negate()) {
                                         return@containsAny false
                                     }
+                                    /**
+                                     * We thus have that [saturatingEq] represents k1 * ow.v + k2 * other = 0,
+                                     * where |k1| = 1 and k1 = -k2. We thus have that ow.v = other, and thus if other is
+                                     * a rounded up length, then ow.v is too.
+                                     */
                                     roundedUpLength((other.key as LVar.PVar).v)
                                 })
                             } `=` END_BLOCK
