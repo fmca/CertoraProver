@@ -2678,7 +2678,8 @@ class CertoraBuildGenerator:
         self.handle_links()
         self.handle_struct_links()
         self.handle_contract_extensions()
-        self.handle_erc7201_annotations()
+        if self.context.storage_extension_annotation:
+            self.handle_erc7201_annotations()
         self.handle_storage_extension_harnesses()
 
     def extract_slayout(self, original_file: str, ns_storage: Set[NameSpacedStorage]) -> NewStorageInfo:
@@ -2710,6 +2711,14 @@ class CertoraBuildGenerator:
             # Write the harness contract with dummy fields for each namespaced storage
             var_to_slot = storageExtension.write_harness_contract(tmp_file, harness_name, ns_storage)
             tmp_file.flush()
+
+            if self.context.extract_storage_extension_annotation:
+                # If the flag is set, save the storage extension contract
+                build_dir = Util.get_build_dir()
+                shutil.copyfile(
+                    Path(tmp_file.name),
+                    build_dir / f"{Path(original_file).stem}_storage_extension.sol"
+                )
 
             # Add harness to compiler map
             storageExtension.add_harness_to_compiler_map(
