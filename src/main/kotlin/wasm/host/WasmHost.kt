@@ -18,7 +18,6 @@
 package wasm.host
 
 import analysis.CommandWithRequiredDecls
-import datastructures.stdcollections.*
 import vc.data.*
 import wasm.ir.*
 

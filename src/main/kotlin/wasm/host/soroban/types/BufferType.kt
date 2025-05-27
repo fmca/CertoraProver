@@ -26,6 +26,8 @@ import tac.*
 import tac.generation.*
 import utils.*
 import vc.data.*
+import wasm.WasmPipelinePhase
+import wasm.WasmPostUnrollSummary
 import wasm.analysis.memory.*
 import wasm.host.soroban.*
 
@@ -92,7 +94,7 @@ abstract class BufferType : ArrayType() {
         val newHandle: TACSymbol.Var,
         val pos: TACSymbol,
         val len: TACSymbol
-    ) : PostUnrollAssignmentSummary() {
+    ) : WasmPostUnrollSummary(WasmPipelinePhase.PreOptimization) {
         override val inputs get() = listOf(pos, len, TACKeyword.MEMORY.toVar())
         override val mustWriteVars get() = listOf(newHandle, TACKeyword.SOROBAN_OBJECT_DIGEST.toVar())
 

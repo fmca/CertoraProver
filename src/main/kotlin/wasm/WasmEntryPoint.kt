@@ -80,6 +80,25 @@ data class CompiledWasmRule(
     val rule: EcosystemAgnosticRule,
 )
 
+
+@KSerializable
+sealed class WasmPipelinePhase : MaterializePhase<WasmPipelinePhase>, HasKSerializable {
+    @KSerializable
+    object PreOptimization : WasmPipelinePhase()
+
+    @KSerializable
+    object PostOptimization : WasmPipelinePhase()
+
+    override fun validNextPhase(next: WasmPipelinePhase): Boolean =
+        when(this) {
+            PostOptimization -> false
+            PreOptimization -> next is PostOptimization
+        }
+}
+
+@KSerializable
+abstract class WasmPostUnrollSummary(override val phase: WasmPipelinePhase): PostUnrollAssignmentSummary<WasmPipelinePhase>()
+
 object WasmEntryPoint {
 
     /**
@@ -261,7 +280,9 @@ object WasmEntryPoint {
                 .map(CoreToCoreTransformer(ReportTypes.UNROLL, CoreTACProgram::convertToLoopFreeCode))
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE, ConstantPropagator::propagateConstants))
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE, ConstantComputationInliner::rewriteConstantCalculations))
-                .map(CoreToCoreTransformer(ReportTypes.MATERIALIZE_POST_UNROLL_ASSIGNMENTS) { PostUnrollAssignmentSummary.materialize(it) })
+                .map(CoreToCoreTransformer(ReportTypes.MATERIALIZE_SUMMARIES_PRE_OPTIMIZAITON) {
+                    PostUnrollAssignmentSummary.materialize(it, WasmPipelinePhase.PreOptimization)
+                })
                 .map(CoreToCoreTransformer(ReportTypes.MATERIALIZE_CONDITIONAL_TRAPS, ConditionalTrapRevert::materialize))
                 .mapIf(isSatisfyRule, CoreToCoreTransformer(ReportTypes.REWRITE_ASSERTS, ::rewriteAsserts))
 
@@ -271,8 +292,10 @@ object WasmEntryPoint {
                 // constructor is constant. This in turn can simplify the job for the soroban memory optimization
                 .map(CoreToCoreTransformer(ReportTypes.OPTIMIZE, GlobalInliner::inlineAll))
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.PATH_OPTIMIZE1) { Pruner(it).prune() })
-
                 .let { env.applyOptimizations(it, wasmAST) }
+                .map(CoreToCoreTransformer(ReportTypes.MATERIALIZE_SUMMARIES_POST_OPTIMIZAITON) {
+                    PostUnrollAssignmentSummary.materialize(it,WasmPipelinePhase.PostOptimization)
+                })
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.PROPAGATOR_SIMPLIFIER) { ConstantPropagatorAndSimplifier(it).rewrite() })
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.OPTIMIZE_BOOL_VARIABLES) { BoolOptimizer(it).go() })
                 .mapIfAllowed(CoreToCoreTransformer(ReportTypes.PROPAGATOR_SIMPLIFIER) { ConstantPropagatorAndSimplifier(it).rewrite() })

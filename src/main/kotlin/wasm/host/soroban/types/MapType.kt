@@ -25,6 +25,8 @@ import tac.*
 import tac.generation.*
 import utils.*
 import vc.data.*
+import wasm.WasmPipelinePhase
+import wasm.WasmPostUnrollSummary
 import wasm.analysis.memory.*
 import wasm.host.soroban.*
 
@@ -317,7 +319,7 @@ object MapType : MappingType() {
         val keysPos: TACSymbol,
         val valsPos: TACSymbol,
         val length: TACSymbol,
-    ) : PostUnrollAssignmentSummary() {
+    ): WasmPostUnrollSummary(phase = WasmPipelinePhase.PreOptimization) {
         override val inputs get() = listOf(keysPos, valsPos, length, TACKeyword.MEMORY.toVar())
         override val mustWriteVars get() = listOf(newHandle, mappings, sizes, keys, keyDigests)
 
@@ -403,7 +405,7 @@ object MapType : MappingType() {
         val keysPos: TACSymbol,
         val valsPos: TACSymbol,
         val length: TACSymbol
-    ) : PostUnrollAssignmentSummary() {
+    ) : WasmPostUnrollSummary(phase = WasmPipelinePhase.PreOptimization) {
         override val inputs get() = listOf(handle, keysPos, valsPos, length, TACKeyword.MEMORY.toVar())
         override val mustWriteVars get() = listOf(TACKeyword.MEMORY.toVar())
 
