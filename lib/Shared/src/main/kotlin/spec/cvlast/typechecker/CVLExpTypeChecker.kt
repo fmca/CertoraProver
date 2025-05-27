@@ -1473,7 +1473,9 @@ class CVLExpTypeCheckerWithContext(
                     exp.arg.getOrInferPureCVLTypeDefaultError().bind { fromPureType ->
                         if (fromPureType.isSubtypeOf(CVLType.PureCVLType.Primitive.Mathint) ||
                             fromPureType.isSubtypeOf(CVLType.PureCVLType.Primitive.AccountIdentifier) ||
-                            fromPureType is CVLType.PureCVLType.Enum
+                            fromPureType is CVLType.PureCVLType.Enum ||
+                            (fromPureType is CVLType.PureCVLType.Primitive.BytesK && fromPureType.k == 32
+                                && exp.toCastType is CVLType.PureCVLType.Primitive.UIntK && exp.toCastType.k == 256)
                         ) {
                             exp.lift()
                         } else {
