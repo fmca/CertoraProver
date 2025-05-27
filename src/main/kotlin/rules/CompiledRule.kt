@@ -89,19 +89,16 @@ val json = Json { allowStructuredMapKeys = true; prettyPrint = true; serializers
 sealed interface ICheckableTAC {
     val tac: CoreTACProgram
     val methodParameterInstantiation: MethodParameterInstantiation
-    val sanity: SingleRuleGenerationMeta.Sanity
     val subRule: CVLSingleRule
 
     operator fun component1() = tac
     operator fun component2() = methodParameterInstantiation
-    operator fun component3() = sanity
-    operator fun component4() = subRule
+    operator fun component3() = subRule
 }
 
 data class CheckableTAC(
     override val tac: CoreTACProgram,
     override val methodParameterInstantiation: MethodParameterInstantiation,
-    override val sanity: SingleRuleGenerationMeta.Sanity,
     override val subRule: CVLSingleRule
 ) : ICheckableTAC
 
@@ -111,7 +108,6 @@ data class CheckableTAC(
 data class CheckableTACWithSanity(
     override val tac: CoreTACProgram,
     override val methodParameterInstantiation: MethodParameterInstantiation,
-    override val sanity: SingleRuleGenerationMeta.Sanity,
     override val subRule: CVLSingleRule,
     val sanityChecks: NonEmptyList<CheckableTAC>
 ) : ICheckableTAC
@@ -120,7 +116,6 @@ fun ICheckableTAC.withSanity(sanityChecks: NonEmptyList<CheckableTAC>): Checkabl
     CheckableTACWithSanity(
         this.tac,
         this.methodParameterInstantiation,
-        this.sanity,
         this.subRule,
         sanityChecks
     )
@@ -489,7 +484,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                 _rule,
                 c.CVLBasedFilter(_rule.ruleIdentifier)
             )
-                .toCheckableTACs(_scene, sanity, _rule)
+                .toCheckableTACs(_scene, _rule.copy(ruleGenerationMeta = _rule.ruleGenerationMeta.updateSanity(sanity)))
         }.transformError(_rule)
 
         /**
@@ -531,8 +526,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                         )
                             .toCheckableTACs(
                                 _scene,
-                                SingleRuleGenerationMeta.Sanity.BASIC_SANITY,
-                                sanityRule
+                                sanityRule.copy(ruleGenerationMeta = sanityRule.ruleGenerationMeta.updateSanity(SingleRuleGenerationMeta.Sanity.BASIC_SANITY))
                             )
                     }
                     baseRuleCheckableTAC.withSanity(

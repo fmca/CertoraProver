@@ -182,7 +182,11 @@ sealed class SingleRuleGenerationMeta : AmbiSerializable {
     object Empty : SingleRuleGenerationMeta() {
         override val sanity: Sanity = Sanity.DISABLED_SANITY_CHECK
         override fun updateSanity(newSanity: Sanity): SingleRuleGenerationMeta {
-            throw UnsupportedOperationException("Must not call updateSanity on $this")
+            return if (newSanity == Sanity.DISABLED_SANITY_CHECK) {
+                Empty
+            } else {
+                WithSanity(newSanity)
+            }
         }
 
         private fun readResolve(): Any = Empty

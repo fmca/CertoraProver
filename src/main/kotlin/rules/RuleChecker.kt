@@ -640,7 +640,7 @@ class RuleChecker(
 
             // If this multi-rule has instantiations of methods from non-primary-contract contracts, we want to prepend
             // the contract name to the rule. Check whether this is the case.
-            val hasMethodInstFromNonPrimaryContract = codesToCheck.any { (_, methodMatch, _, _) ->
+            val hasMethodInstFromNonPrimaryContract = codesToCheck.any { (_, methodMatch, _) ->
                 methodMatch.values.any { it.contractName != contractName.name }
             }
 
@@ -710,27 +710,14 @@ class RuleChecker(
                 )
             }
 
-            fun ruleWithExpectedSanityGenerationMeta(
-                rule: CVLSingleRule,
-                sanity: SingleRuleGenerationMeta.Sanity,
-                expectedSanity: SingleRuleGenerationMeta.Sanity
-            ): CVLSingleRule {
-                require(sanity == expectedSanity) {
-                    "Expected the SingleRuleGenerationMeta.Sanity of rule ${rule.declarationId} to be [$expectedSanity], got [$sanity]"
-                }
-                return rule.copy(
-                    ruleGenerationMeta = SingleRuleGenerationMeta.WithSanity(sanity)
-                )
-            }
-
             // create a map of compiled rules for sanity rules
             val compiledBaseSubRules = codesToCheck.map { checkableTAC ->
                 val subCode = checkableTAC.tac
                 val methodMatch = checkableTAC.methodParameterInstantiation
-                val sanity = checkableTAC.sanity
                 val currRule = checkableTAC.subRule
 
                 val newSingleRule = if (methodMatch.isNotEmpty()) {
+                    val sanity = currRule.ruleGenerationMeta.sanity
                     val (methodInstsNames, declarationId) = methodMatchToRuleName(methodMatch)
                     val parentRule = if (hasMethodInstFromNonPrimaryContract) {
                         methodMatchToContractRule[methodMatch] ?: throw IllegalStateException("no $methodMatch in $methodMatchToContractRule")
@@ -754,8 +741,10 @@ class RuleChecker(
 
                     /* If it's not a parametric rule, then it's a base rule with some sanity checks
                     (see CompiledRule::staticRules). */
-
-                    ruleWithExpectedSanityGenerationMeta(currRule, sanity, SingleRuleGenerationMeta.Sanity.PRE_SANITY_CHECK)
+                    check(currRule.ruleGenerationMeta.sanity == SingleRuleGenerationMeta.Sanity.PRE_SANITY_CHECK) {
+                        "Expected a base rule with some sanity checks"
+                    }
+                    currRule
                 }
 
                 if (checkableTAC is CheckableTACWithSanity) {
@@ -778,7 +767,7 @@ class RuleChecker(
             }
 
             // create a map of compiled rules for sanity rules
-            val compiledSubRulesSanity = sanityCheckableTACs.map { (subCode, methodMatch ,sanity, currRule) ->
+            val compiledSubRulesSanity = sanityCheckableTACs.map { (subCode, methodMatch ,currRule) ->
                 val sanityRuleType: SpecType.Single.GeneratedFromBasicRule.SanityRule =
                     currRule.narrowType<SpecType.Single.GeneratedFromBasicRule.SanityRule>().ruleType
                 val sanityRuleMetaData = getRuleTypeMetaData(sanityRuleType)
@@ -790,7 +779,7 @@ class RuleChecker(
                     val (methodInstsNames, _) = methodMatchToRuleName(methodMatch)
                     currRule.copy(
                         ruleGenerationMeta = SingleRuleGenerationMeta.WithMethodInstantiations(
-                            sanity,
+                            currRule.ruleGenerationMeta.sanity,
                             currRule.range,
                             methodInstsNames,
                         ),
@@ -798,7 +787,10 @@ class RuleChecker(
                     )
                 } else {
                     /* sanity rules have [SingleRuleGenerationMeta.Sanity.BASIC_SANITY] (see CompiledRule::compileSanityCheckSubRules). */
-                    ruleWithExpectedSanityGenerationMeta(currRule, sanity, SingleRuleGenerationMeta.Sanity.BASIC_SANITY).copy(ruleIdentifier = sanityRuleIdentifier)
+                    check(currRule.ruleGenerationMeta.sanity == SingleRuleGenerationMeta.Sanity.BASIC_SANITY) {
+                        "sanity rules should have BASIC_SANITY rule generation meta"
+                    }
+                    currRule.copy(ruleIdentifier = sanityRuleIdentifier)
                 }
 
                 require(newSingleSanityRule.ruleType is SpecType.Single.GeneratedFromBasicRule){
