@@ -1141,8 +1141,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             pathCondition = path, l = graph.elab(succ), w = stepped
                     )?.let { prop ->
                         unreachable.remove(succ)
-                        val eq = stepped.inv.getEqualities()
-                        val sat = stepped.inv.propagateEqualities(listOf(), eq) { it ->
+                        val sat = stepped.inv.propagateEqualities(listOf(), listOf()) { it ->
                             prop[it]?.let {
                                 if(it.x.isConstant) {
                                     it.x.c
@@ -1189,6 +1188,15 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             } == true
                         }
 
+                        fun roundedUpLength(v: TACSymbol.Var) = roundUpAt.query(v, graph.elab(it)).toNullableResult()?.let { (v, where) ->
+                            /**
+                             * If so, is the variable we're rouding up equal to the length of the array?
+                             */
+                            graph.cache.gvn.findCopiesAt(it, where to v).any { lenAlias ->
+                                state.num[lenAlias]?.qual.orEmpty().contains(Roles.LENGTH)
+                            }
+                        } == true
+
                         /**
                          * Check whether
                          * WRITE + len - V = END
@@ -1201,14 +1209,22 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                                 /**
                                  * Is this a round up?
                                  */
-                                ow is LVar.PVar && roundUpAt.query(ow.v, graph.elab(it)).toNullableResult()?.let { (v, where) ->
-                                    /**
-                                     * If so, is the variable we're rouding up equal to the length of the array?
-                                     */
-                                    graph.cache.gvn.findCopiesAt(it, where to v).any { lenAlias ->
-                                        state.num[lenAlias]?.qual.orEmpty().contains(Roles.LENGTH)
+                                ow is LVar.PVar && (roundedUpLength(ow.v) || sat.containsAny { saturatingEq ->
+                                    if(!saturatingEq.relates(ow.v) || saturatingEq.k != BigInteger.ZERO || saturatingEq.term.size != 2) {
+                                        return@containsAny false
                                     }
-                                } == true
+                                    val scale = saturatingEq.term[ow]!!
+                                    if(scale.abs() != BigInteger.ONE) {
+                                        return@containsAny false
+                                    }
+                                    val other = saturatingEq.term.entries.singleOrNull {
+                                        it.key != ow && it.key is LVar.PVar
+                                    } ?: return@containsAny false
+                                    if(other.value != scale.negate()) {
+                                        return@containsAny false
+                                    }
+                                    roundedUpLength((other.key as LVar.PVar).v)
+                                })
                             } `=` END_BLOCK
                         }) != null
                         if((matchWithSlippage || matchWithBound || matchWithRounding) && (stepped.elemSize == null || stepped.seenLengthWrite == true)) {
