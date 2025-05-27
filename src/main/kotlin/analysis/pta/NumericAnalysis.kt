@@ -1742,15 +1742,23 @@ class NumericAnalysis(
             for(ub in propagatedFacts.filterIsInstance<UpperBound>().filter {
                 it.sym != null
             }) {
+
+                /**
+                 * If we have that v1 + v2 <= K (or `<` as we are only looking for [UpperBound]),
+                 * where K is some *lower* bound on the number of bytes remaining in an `array`
+                 * then we know that it is safe to copy v1 bytes starting at v2 in the element
+                 * block of `array` (and vice versa).
+                 *
+                 * Some candidates for K are another safe copy index of v2, the size of the element segment,
+                 * or (if the array has element size 1) the length of the array.
+                 */
                 fun TACSymbol.Var.elemSize() = pointerAnalysis.getElementSize(this, pState = pstate.pointsToState)
                 val ubAv = ub.sym!!.let(st::get)?.let { it as? QualifiedInt } ?: continue
                 val arrVars = ubAv.qual.mapNotNullToTreapSet {
                     when(it) {
                         is IntQualifier.LengthOfArray -> {
-                            if(it.arrayVar.elemSize() == BigInteger.ONE) {
-                                it.arrayVar
-                            } else {
-                                null
+                            it.arrayVar.takeIf { av ->
+                                av.elemSize() == BigInteger.ONE
                             }
                         }
                         is IntQualifier.SizeOfElementSegment -> it.arrayVar
