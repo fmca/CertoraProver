@@ -60,6 +60,7 @@ import vc.data.*
 import java.math.BigInteger
 import java.util.stream.Collectors
 import kotlin.jvm.optionals.getOrNull
+import kotlin.math.absoluteValue
 
 private val logger = Logger(LoggerTypes.FUNCTION_BUILDER)
 
@@ -385,6 +386,27 @@ object FunctionFlowAnnotator {
                         }
                     }
                 }
+
+                fun Set<TACSymbol>.pickBest(expectedStackHeight: Int): TACSymbol {
+                    return this.filter {
+                        it.stackHeight() != null
+                    }.takeIf { it.isNotEmpty() }?.let outer@{ stkHeightVars ->
+                        stkHeightVars.singleOrNull {
+                            it.stackHeight()!! == expectedStackHeight
+                        }?.let { return@outer it }
+                        val minDistance = stkHeightVars.minOf {
+                            (it.stackHeight()!! - expectedStackHeight).absoluteValue
+                        }
+                        stkHeightVars.singleOrNull {
+                            (it.stackHeight()!! - expectedStackHeight).absoluteValue == minDistance
+                        }?.let {
+                            return@outer it
+                        }
+                        return stkHeightVars.minBy {
+                            it.stackHeight()!!
+                        }
+                    } ?: this.first()
+                }
                 if (resolved is ResolutionHints.EmbeddedInfo) {
                     val stackOffsetToArgPos = treapMapOf<Int, Int>().mutate { res ->
                         var stackOffset = 1
@@ -482,7 +504,7 @@ object FunctionFlowAnnotator {
                                 }
                                 resolvedArgs.add(
                                     InternalFuncArg(
-                                        s = relocOffset.first(),
+                                        s = relocOffset.pickBest(expectedHeight),
                                         offset = ++sumOffset,
                                         sort = InternalArgSort.CALLDATA_ARRAY_ELEMS,
                                         location = null,
@@ -509,7 +531,7 @@ object FunctionFlowAnnotator {
                                 }
                                 resolvedArgs.add(
                                     InternalFuncArg(
-                                        s = relocV.first(),
+                                        s = relocV.pickBest(expectedHeight),
                                         offset = ++sumOffset,
                                         sort = when(arg) {
                                             is StackArg.CalldataPointer -> InternalArgSort.CALLDATA_POINTER
