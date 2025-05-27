@@ -23,52 +23,34 @@ import rules.dpgraph.SanityCheckNode
 import rules.dpgraph.SanityCheckNodeType
 import rules.sanity.SanityDPResult
 import rules.sanity.*
-import rules.sanity.SanityCheckResultOrdinal.Companion.toDefaultSanityCheckResultOrdinal
 import solver.SolverResult
 import spec.cvlast.CVLCmd
-import spec.cvlast.SpecType
 import datastructures.stdcollections.*
-import utils.CheckedUrl
+import report.RuleAlertReport
+import utils.*
 
 object TrivialInvariant :
     SanityCheckSort.FunctionIndependent<RuleCheckResult.Single, CVLCmd.Simple.Assert> {
     override val mode = SanityValues.BASIC
-    override val severityLevel: SanityCheckSeverity = SanityCheckSeverity.Critical
-    override val reportName = "Trivial invariant check"
-
-    override fun checkResultToSanityResultOrd(s: DPSuccess<RuleCheckResult.Single>) =
-        s.result.toDefaultSanityCheckResultOrdinal()
-
-    override fun checkResultToDetailsStr(s: DPSuccess<RuleCheckResult.Single>) =
-        s.result.firstData.details
-
-    override val nonErrorUIMessageFormatter: SanityCheckNonErrorUIMessageFormatter<CVLCmd.Simple.Assert> =
-        SanityCheckNonErrorUIMessageFormatter(
-            rawMsg = reportName,
-            rawMsgFormatter = { sanityOrdinalValue, assertCmd, _, rawMsg ->
-                "$rawMsg ${sanityOrdinalValue.reportString()}:" +
-                    if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                        " The invariant condition `${assertCmd.exp}` is trivially true - it's verified also without " +
-                            "assuming it first, or calling any contract function. See ${CheckedUrl.TRIVIAL_INVARIANT_CHECKS}"
-                    } else {
-                        ""
-                    }
-            }
-        )
-
-    override fun toSanityResultsView(_sanityCheckResults: List<SanityDPResult>):
-        SanityResultsView.FunctionIndependent<RuleCheckResult.Single> =
-        SanityResultsView.FunctionIndependent<RuleCheckResult.Single,
-            SpecType.Single.GeneratedFromBasicRule.SanityRule.TrivialInvariantCheck,
-            CVLCmd.Simple.Assert>(_sanityCheckResults, this)
-
-
-    override fun checkResultToSanitySubCheckGroup(r: SanityDPResult) =
-        r.result.rule.narrowType<SpecType.Single.GeneratedFromBasicRule.SanityRule.TrivialInvariantCheck>()
-            .ruleType.assertCVLCmd
 
     override val preds: List<SanityCheckNodeType> =
         listOf(SanityCheckNodeType.None)
+
+    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*> {
+        if(solverResult == SolverResult.UNSAT){
+            return RuleAlertReport.Warning("The trivial invariant sanity check failed. " +
+                "The invariant condition is trivially true - it's verified also without assuming it first, or calling any contract function. " +
+                "See ${CheckedUrl.SANITY_TRIVIAL_INVARIANT_CHECKS}")
+        }
+        val status = when (solverResult) {
+            SolverResult.SAT -> "succeeded"
+            SolverResult.UNKNOWN -> "did not terminate as expected"
+            SolverResult.TIMEOUT -> "timed out"
+            SolverResult.SANITY_FAIL,
+            SolverResult.UNSAT -> `impossible!`
+        }
+        return RuleAlertReport.Info("The trivial invariant sanity check $status.")
+    }
 
     /**
      * If the invariant failed it is not trivially true.

@@ -29,7 +29,6 @@ import config.DestructiveOptimizationsModeEnum
 import config.OUTPUT_NAME_DELIMITER
 import config.ReportTypes
 import datastructures.stdcollections.*
-import datastructures.toNonEmptyList
 import diagnostics.*
 import instrumentation.transformers.*
 import kotlinx.coroutines.coroutineScope
@@ -44,6 +43,7 @@ import rules.dpgraph.DPResult
 import rules.dpgraph.SanityRulesDependencies
 import rules.genericrulecheckers.BuiltInRuleCustomChecker
 import rules.sanity.*
+import rules.sanity.SanityCheckResultOrdinal.Companion.toDefaultSanityCheckResultOrdinal
 import scene.IScene
 import solver.SolverResult
 import spec.CVL
@@ -487,144 +487,34 @@ class RuleChecker(
         }
 
         /**
-         * Given the [RuleCheckResult] [originalBaseResult] and the computed [SanityCheckResult] of [updatedBaseRule],
+         * Given the [RuleCheckResult] [originalBaseResult] and the [SanityCheckResultOrdinal] of [updatedBaseRule],
          * determines what final result will be attached to [updatedBaseRule].
          */
         fun getFinalBaseResult(
             originalBaseResult: RuleCheckResult,
             updatedBaseRule: IRule,
-            sanityResultForBase: SanityCheckResult
+            sanityResult: SanityCheckResultOrdinal
         ): RuleCheckResult {
-            fun getSingleOrMultiResult(): RuleCheckResult =
-                when (originalBaseResult) {
-                    is RuleCheckResult.Single -> {
-                        // [getSingleOrMultiResult] is called when [SanityResultForBase.SanityCheckResultOrdinal] is not
-                        // [FAILED]. In this case we present all the alerts except for ones indicating failure or success of
-                        // sanity checks.
-                        val ruleAlerts = sanityResultForBase.allAlertsInRange(
-                            SanityCheckResultOrdinal.TIMEOUT, SanityCheckResultOrdinal.ERROR
-                        ).let { sanityAlertReport ->
-                            originalBaseResult.ruleAlerts?.join(sanityAlertReport)
-                        }
-                        val updatedSolverResult = if (originalBaseResult.result == SolverResult.UNSAT) {
-                            // get the sanity-result
-                            when (sanityResultForBase.ordinal) {
-                                // note that the [SanityCheckResultOrdinal.FAILED] and the [SanityCheckResultOrdinal.ERROR]
-                                // cases are unreachable (should have already being treated)
-                                SanityCheckResultOrdinal.PASSED -> originalBaseResult.result
-                                SanityCheckResultOrdinal.UNKNOWN, SanityCheckResultOrdinal.TIMEOUT,
-                                SanityCheckResultOrdinal.FAILED, SanityCheckResultOrdinal.ERROR -> SolverResult.SANITY_FAIL
-                            }
-                        } else {
-                            // get the original result. the sanity-result is expected to be trivially PASSED
-                            // since we run sanity-checks only for rules which the prover found to be UNSAT
-                            if (sanityResultForBase.ordinal != SanityCheckResultOrdinal.PASSED) {
-                                logger.warn { "Expected the sanity checks for the (UNSAT) rule ${originalBaseResult.rule} to trivially pass" }
-                            }
-                            originalBaseResult.result
-                        }
-                        // since [base] is Single, asserts are passing
-                        // returning single summary
-                        when (originalBaseResult) {
-                            is RuleCheckResult.Single.Basic -> {
-                                RuleCheckResult.Single.Basic(
-                                    rule = updatedBaseRule,
-                                    result = updatedSolverResult,
-                                    verifyTime = originalBaseResult.verifyTime,
-                                    ruleCheckInfo = originalBaseResult.ruleCheckInfo,
-                                    callResolutionTable = originalBaseResult.callResolutionTable,
-                                    ruleAlerts = ruleAlerts,
-                                    unsatCoreStats = originalBaseResult.unsatCoreStats
-                                )
-                            }
-                            is RuleCheckResult.Single.WithCounterExamples -> {
-                                RuleCheckResult.Single.WithCounterExamples(
-                                    rule = updatedBaseRule,
-                                    result = updatedSolverResult,
-                                    verifyTime = originalBaseResult.verifyTime,
-                                    ruleCheckInfo = originalBaseResult.ruleCheckInfo,
-                                    callResolutionTable = originalBaseResult.callResolutionTable,
-                                    ruleAlerts = ruleAlerts,
-                                )
-                            }
-                        }
-                    }
-                    is RuleCheckResult.Multi -> {
-                        check(
-                            originalBaseResult.resultType == RuleCheckResult.MultiResultType.SPLIT_ASSERTS
-                        ) {
-                            "Got a multi result for the base rule (${
-                                originalBaseResult
-                            }) whose type is not MultiResultType.SPLIT_ASSERTS"
-                        }
-                        // [originalBaseResult] is Multi with multi-assert children results.
-                        // NOTE: It may still be that all asserts are passing (it's not necessarily the case that some fail)
-                        originalBaseResult.copy(
-                            rule = updatedBaseRule
-                        )
-                    }
-                    else -> throw IllegalStateException(
-                        "Expected the base result ($originalBaseResult) to be either single or multi result"
+            return when(originalBaseResult){
+                is RuleCheckResult.Error -> originalBaseResult.copy(rule = updatedBaseRule)
+                is RuleCheckResult.Single.Basic  -> originalBaseResult.copy(rule = updatedBaseRule)
+                is RuleCheckResult.Single.WithCounterExamples  -> originalBaseResult.copy(rule = updatedBaseRule)
+                is RuleCheckResult.Skipped -> originalBaseResult.copy(rule = updatedBaseRule)
+                is RuleCheckResult.Multi -> originalBaseResult.copy(rule = updatedBaseRule)
+            }.let {
+                when(sanityResult){
+                    SanityCheckResultOrdinal.FAILED -> it.copyWithResult(SolverResult.SANITY_FAIL)
+                    SanityCheckResultOrdinal.ERROR -> RuleCheckResult.Error(
+                        updatedBaseRule,
+                        CertoraException(
+                            CertoraErrorType.NO_SANITY_RESULTS,
+                            "No sanity results for ${updatedBaseRule.declarationId}"
+                        ),
                     )
-                }
-            return if (originalBaseResult is RuleCheckResult.Error) {
-                RuleCheckResult.Error(
-                    rule = updatedBaseRule,
-                    ruleAlerts = originalBaseResult.ruleAlerts
-                )
-            } else {
-                /* notice that if the result of the base rule is SAT, no sanity-checks
-                will actually run, thus, sanityResultForBase.ordinal will be (trivially)
-                SanityCheckResultOrdinal.PASSED */
-                when (sanityResultForBase.ordinal) {
-                    SanityCheckResultOrdinal.FAILED -> {
-                        if (originalBaseResult is RuleCheckResult.Multi) {
-                            originalBaseResult.copy(
-                                rule = updatedBaseRule,
-                                parentSanityResult = sanityResultForBase
-                            )
-                        } else {
-                            RuleCheckResult.Single.Basic(
-                                rule = updatedBaseRule,
-                                result = SolverResult.SANITY_FAIL,
-                                // TODO: should take into account the sanity-rules' times: CERT-4186
-                                verifyTime = originalBaseResult.computeVerifyTime(),
-                                ruleCheckInfo = RuleCheckResult.Single.RuleCheckInfo.BasicInfo(
-                                    failureResultMeta = emptyList(),
-                                    dumpGraphLink = (originalBaseResult as? RuleCheckResult.Single.Basic)?.ruleCheckInfo?.dumpGraphLink,
-                                    isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
-                                    isSolverResultFromCache = IsFromCache.INAPPLICABLE,
-                                ),
-                                callResolutionTable = (originalBaseResult as? RuleCheckResult.Single.Basic)?.callResolutionTable
-                                    ?: CallResolutionTableBase.Empty,
-                                // In case of sanity failure of the base we present all the alerts except for ones
-                                // indicating passing sanity checks.
-                                ruleAlerts = sanityResultForBase.allAlertsInRange(from = SanityCheckResultOrdinal.TIMEOUT),
-                                unsatCoreStats = (originalBaseResult as? RuleCheckResult.Single.Basic)?.unsatCoreStats
-                            )
-                        }
-                    }
-                    SanityCheckResultOrdinal.ERROR -> {
-                        sanityResultForBase.errors.let { alerts ->
-                            alerts.toNonEmptyList()?.let { ruleErrorAlerts ->
-                                RuleCheckResult.Error(
-                                    updatedBaseRule,
-                                    RuleAlertReport(ruleErrorAlerts),
-                                )
-                            } ?: RuleCheckResult.Error(
-                                updatedBaseRule,
-                                CertoraException(
-                                    CertoraErrorType.NO_SANITY_RESULTS,
-                                    "No sanity results for ${updatedBaseRule.declarationId}"
-                                ),
-                            )
-                        }
-                    }
+
                     SanityCheckResultOrdinal.PASSED,
                     SanityCheckResultOrdinal.TIMEOUT,
-                    SanityCheckResultOrdinal.UNKNOWN -> {
-                        getSingleOrMultiResult()
-                    }
+                    SanityCheckResultOrdinal.UNKNOWN -> it
                 }
             }
         }
@@ -838,12 +728,12 @@ class RuleChecker(
                         (it.result.rule as CVLSingleRule).ruleGenerationMeta is
                             SingleRuleGenerationMeta.WithMethodInstantiations
                     }
-                val resultsContainer = SanityResultsContainer(results)
 
                 return if (Config.DoSanityChecksForRules.get() == SanityValues.NONE) { // no sanity check
+                    check(allResults.none { it.rule.ruleType is SpecType.Single.GeneratedFromBasicRule.SanityRule }){ "Running in none sanity mode, did not expect to have any sanity rules, got $allResults " }
                     if (!isWithMethodInstantiations) {
                         // single non-parametric rule, so there should be a single result
-                        resultsContainer.baseResults.singleOrNull()?.result
+                        allResults.singleOrNull()
                             ?: throw IllegalStateException("Got no base result for ${rule.declarationId}")
                     } else {
                         RuleCheckResult.Multi(
@@ -853,24 +743,41 @@ class RuleChecker(
                         )
                     }
                 } else {
-                    val enabledSanityChecksViews = resultsContainer.narrow(enabledSanityChecksSorts(allResults))
-                    val sanityResultSummarizer = SanityResultSummarizer(enabledSanityChecksViews)
-                    val mergedWithSanity = resultsContainer.baseResults.map { originalBaseResult ->
-                        val baseRuleMeta = (originalBaseResult.result.rule as CVLSingleRule).ruleGenerationMeta
-                        val updatedBaseRule = (originalBaseResult.result.rule as CVLSingleRule).copy(ruleGenerationMeta = baseRuleMeta.updateSanity(SingleRuleGenerationMeta.Sanity.DONE))
-                        val sanityResultForBase = sanityResultSummarizer.joinByBase(originalBaseResult)
-                        getFinalBaseResult(originalBaseResult.result, updatedBaseRule, sanityResultForBase)
+                    val (sanityResults, baseResults) = allResults.partition { it.rule.ruleType is SpecType.Single.GeneratedFromBasicRule.SanityRule }
+                    val baseResultsUpdatedWithSanity = baseResults.map { originalBaseResult ->
+                        val baseRuleMeta = (originalBaseResult.rule as CVLSingleRule).ruleGenerationMeta
+                        val updatedBaseRule = (originalBaseResult.rule as CVLSingleRule).copy(ruleGenerationMeta = baseRuleMeta.updateSanity(SingleRuleGenerationMeta.Sanity.DONE))
+
+                        /**
+                         * In the case we are solving a parametric rule, the set of sanity rules also contain results from other parametric rule instantiations,
+                         *  so filter them out here.
+                         */
+                        val matchingSanityRulesForBase = sanityResults
+                            .filter { (it.rule.ruleType as? SpecType.Single.GeneratedFromBasicRule.SanityRule)?.originalRule == originalBaseResult.rule }
+
+                        /**
+                         * Compute the final result of sanity by joining all the results of the sanity rules. If any reports SANITY_FAIL, the overall result is
+                         * SANITY_FAIL. See [rules.sanity.SanityCheckResultOrdinal.join]
+                         */
+                        val sanityResultForBase = matchingSanityRulesForBase.map {
+                            when (it) {
+                                is RuleCheckResult.Single -> it.toDefaultSanityCheckResultOrdinal()
+                                is RuleCheckResult.Skipped -> SanityCheckResultOrdinal.PASSED
+                                is RuleCheckResult.Error -> SanityCheckResultOrdinal.ERROR
+                                is RuleCheckResult.Multi -> `impossible!`
+                            }
+                        }.fold(SanityCheckResultOrdinal.PASSED) { acc, curr -> acc join curr }
+                        getFinalBaseResult(originalBaseResult, updatedBaseRule, sanityResultForBase)
                     }
 
                     if (isWithMethodInstantiations) {
                         RuleCheckResult.Multi(
                             rule, // TODO: this is not necessarily correct, for example, it might be the case that a contract-rule is the actual parent-rule: CERT-4077
-                            mergedWithSanity,
-                            RuleCheckResult.MultiResultType.PARAMETRIC,
-                            parentSanityResult = sanityResultSummarizer.parentResult
+                            baseResultsUpdatedWithSanity,
+                            RuleCheckResult.MultiResultType.PARAMETRIC
                         )
                     } else {
-                        mergedWithSanity.first()
+                        baseResultsUpdatedWithSanity.first()
                     }
                 }
             }

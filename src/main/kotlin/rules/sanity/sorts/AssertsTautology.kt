@@ -22,49 +22,27 @@ import rules.RuleCheckResult
 import rules.dpgraph.SanityCheckNode
 import rules.dpgraph.SanityCheckNodeType
 import rules.sanity.SanityDPResult
-import rules.sanity.*
-import rules.sanity.SanityCheckResultOrdinal.Companion.toDefaultSanityCheckResultOrdinal
 import solver.SolverResult
 import spec.cvlast.CVLCmd
-import spec.cvlast.SpecType
 import datastructures.stdcollections.*
+import report.RuleAlertReport
+import utils.*
 
-data object AssertsTautology :
+object AssertsTautology :
     SanityCheckSort.FunctionDependent<RuleCheckResult.Single, CVLCmd.Simple.Assert> {
     override val mode = SanityValues.ADVANCED
-    override val severityLevel = SanityCheckSeverity.Critical
-    override val reportName = "assert tautology check"
-
-    override fun checkResultToSanityResultOrd(s: DPSuccess<RuleCheckResult.Single>) =
-        s.result.toDefaultSanityCheckResultOrdinal()
-
-    override fun checkResultToDetailsStr(s: DPSuccess<RuleCheckResult.Single>) =
-        s.result.firstData.details
-
-    override val nonErrorUIMessageFormatter: SanityCheckNonErrorUIMessageFormatter<CVLCmd.Simple.Assert> =
-        SanityCheckNonErrorUIMessageFormatter(
-            rawMsg = reportName,
-            rawMsgFormatter = { sanityOrdinalValue, assertCmd: CVLCmd.Simple.Assert, _, rawMsg: String ->
-                "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}"
-            }
-        )
-
-    override fun toSanityResultsView(
-        _baseResults: List<SanityDPResult>,
-        _sanityCheckResults: List<SanityDPResult>
-    ): SanityResultsView.FunctionDependent<RuleCheckResult.Single> =
-        SanityResultsView.FunctionDependent<RuleCheckResult.Single,
-                SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertTautologyCheck,
-                CVLCmd.Simple.Assert>(
-            _baseResults, _sanityCheckResults, this
-        )
-
-    override fun checkResultToSanitySubCheckGroup(r: SanityDPResult) =
-        r.result.rule.narrowType<SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertTautologyCheck>().ruleType.assertCVLCmd
 
     override val preds: List<SanityCheckNodeType> =
         listOf(SanityCheckNodeType.None)
 
+    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*> {
+        val msg =  "The assert tautology sanity check ${solverResult.toSanityStatusString()}."
+        return if(solverResult == SolverResult.UNSAT) {
+            RuleAlertReport.Warning(msg + " The respective assert is a tautology, i.e. is always true. See ${CheckedUrl.SANITY_ASSERTS_TAUTOLOGY}")
+        } else {
+            RuleAlertReport.Info(msg)
+        }
+    }
     /**
      * If the base rule has failed the assert is not a tautology.
      */

@@ -73,6 +73,7 @@ import java.util.*
 import java.util.stream.Collectors
 import analysis.controlflow.checkIfAllPathsAreLastReverted
 import rules.genericrulecheckers.collectRequireWithoutReasonNotifications
+import rules.sanity.sorts.SanityCheckSort
 
 
 private val logger = Logger(LoggerTypes.COMMON)
@@ -160,8 +161,9 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             } else {
                 null
             }
+            val sanityAlerts = computeSanityAlerts(compiledRule.rule, res)
             val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule)
-            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts)
+            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts + sanityAlerts)
             if (generateReport && !Config.CoinbaseFeaturesMode.get()) {
                 generateSingleResult(scene, compiledRule.rule, res, time, isOptimizedRuleFromCache, isSolverResultFromCache, alerts)
             } else {
@@ -181,6 +183,14 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     callResolutionTable = CallResolutionTableBase.Empty
                 )
             }
+        }
+
+        private fun computeSanityAlerts(rule: CVLSingleRule, res: Verifier.JoinedResult): Iterable<RuleAlertReport.Single<*>> {
+            val ruleType = rule.ruleType
+            if (ruleType is SpecType.Single.GeneratedFromBasicRule.SanityRule) {
+                return listOf(SanityCheckSort(ruleType).getRuleNotificationForResult(res.finalResult))
+            }
+            return listOf()
         }
 
         companion object {

@@ -17,7 +17,6 @@
 
 package rules.sanity
 
-import rules.RuleCheckResult
 import rules.sanity.sorts.SanityCheckSort
 
 /**
@@ -30,102 +29,12 @@ import rules.sanity.sorts.SanityCheckSort
  */
 sealed class SanityCheckSeverity {
 
-    abstract fun <S : RuleCheckResult.Single> computeSanityCheckResult(
-        sanityChecksNonErrorResults: List<DPSuccess<S>>,
-        sanityChecksErrorResults: List<DPError>,
-        sanityCheckSort: SanityCheckSort<S, *>
-    ): SanityCheckResult
 
-    object Critical : SanityCheckSeverity() {
-        /**
-         * We aggregate independent failures using existential abstraction/quantification
-         * for critical level sanity-checks
-         */
-        override fun <S : RuleCheckResult.Single> computeSanityCheckResult(
-            sanityChecksNonErrorResults: List<DPSuccess<S>>,
-            sanityChecksErrorResults: List<DPError>,
-            sanityCheckSort: SanityCheckSort<S, *>
-        ): SanityCheckResult {
-            return SanityCheckResult(
-                nonErrorMsgs = sanityChecksNonErrorResults.map(sanityCheckSort::nonErrorUIMessageOf),
-                errors = sanityChecksErrorResults.flatMapTo(mutableListOf()) { it.result.ruleAlerts.asList },
-                ordinal = sanityChecksNonErrorResults
-                    .map { sanityCheckSort.checkResultToSanityResultOrd(it) }
-                    .let { ordinals ->
-                        when {
-                            ordinals.any { it == SanityCheckResultOrdinal.FAILED } -> {
-                                SanityCheckResultOrdinal.FAILED
-                            }
-                            sanityChecksErrorResults.isNotEmpty() -> {
-                                SanityCheckResultOrdinal.ERROR
-                            }
-                            ordinals.any { it == SanityCheckResultOrdinal.TIMEOUT } -> {
-                                SanityCheckResultOrdinal.TIMEOUT
-                            }
-                            ordinals.any { it == SanityCheckResultOrdinal.UNKNOWN } -> {
-                                SanityCheckResultOrdinal.UNKNOWN
-                            }
-                            ordinals.all { it == SanityCheckResultOrdinal.PASSED } -> {
-                                SanityCheckResultOrdinal.PASSED
-                            }
-                            else -> {
-                                throw IllegalStateException(
-                                    "Unexpected sanity check results non error " +
-                                            "$sanityChecksNonErrorResults and error " +
-                                            "$sanityChecksErrorResults for sort " +
-                                            "$sanityCheckSort in $this"
-                                )
-                            }
-                        }
-                    }
-            )
-        }
-    }
+    object Critical : SanityCheckSeverity()
 
     /**
      * We aggregate independent failures using universal abstraction/quantification
      * for info level sanity checks
      */
-    object Info : SanityCheckSeverity() {
-        override fun <S : RuleCheckResult.Single> computeSanityCheckResult(
-            sanityChecksNonErrorResults: List<DPSuccess<S>>,
-            sanityChecksErrorResults: List<DPError>,
-            sanityCheckSort: SanityCheckSort<S, *>
-        ): SanityCheckResult {
-            return SanityCheckResult(
-                nonErrorMsgs = sanityChecksNonErrorResults.map(sanityCheckSort::nonErrorUIMessageOf),
-                errors = sanityChecksErrorResults.flatMapTo(mutableListOf()) { it.result.ruleAlerts.asList },
-                ordinal = sanityChecksNonErrorResults
-                    .map { sanityCheckSort.checkResultToSanityResultOrd(it) }
-                    .let { ordinals ->
-                        when {
-                            sanityChecksErrorResults.isNotEmpty() -> {
-                                SanityCheckResultOrdinal.ERROR
-                            }
-                            ordinals.any { it == SanityCheckResultOrdinal.TIMEOUT } -> {
-                                SanityCheckResultOrdinal.TIMEOUT
-                            }
-                            ordinals.any { it == SanityCheckResultOrdinal.UNKNOWN } -> {
-                                SanityCheckResultOrdinal.UNKNOWN
-                            }
-                            ordinals.any { it == SanityCheckResultOrdinal.PASSED } -> {
-                                SanityCheckResultOrdinal.PASSED
-                            }
-                            ordinals.all { it == SanityCheckResultOrdinal.FAILED } -> {
-                                SanityCheckResultOrdinal.FAILED
-                            }
-                            else -> {
-                                throw IllegalStateException(
-                                    "Unexpected sanity check results non error " +
-                                            "$sanityChecksNonErrorResults and error " +
-                                            "$sanityChecksErrorResults for sort " +
-                                            "$sanityCheckSort in $this"
-                                )
-                            }
-                        }
-                    }
-
-            )
-        }
-    }
+    object Info : SanityCheckSeverity()
 }

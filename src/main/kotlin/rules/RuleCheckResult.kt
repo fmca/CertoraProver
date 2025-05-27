@@ -33,8 +33,6 @@ import report.calltrace.formatter.*
 import report.calltrace.generator.generateCallTrace
 import report.dumps.UnsolvedSplitInfo
 import report.dumps.generateUnsolvedSplitCodeMap
-import rules.sanity.SanityCheckResult
-import rules.sanity.SanityCheckResultOrdinal
 import scene.ISceneIdentifiers
 import solver.CounterexampleModel
 import solver.SolverResult
@@ -129,6 +127,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
     }
 
     abstract fun consolePrint(satIsGood: Boolean): String
+    abstract fun copyWithResult(res: SolverResult): RuleCheckResult
 
     sealed class RuleFailureMeta {
 
@@ -197,7 +196,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
             operator fun invoke(): String = repString
         }
-
         /**
          * Shared logic for building the JsonObject of both [WithCounterExamples]
          * and [Basic].
@@ -305,6 +303,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                     },
                 )
             }
+
+            override fun copyWithResult(res: SolverResult): RuleCheckResult = this.copy(result = res)
         }
 
 
@@ -324,6 +324,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
             override val firstData: RuleCheckInfo.BasicDataContainer
                 get() = ruleCheckInfo.examples.head
+
+            override fun copyWithResult(res: SolverResult): RuleCheckResult = this.copy(result = res)
 
             fun toOutputReportView(
                 location: TreeViewLocation?,
@@ -876,8 +878,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
         override val rule: IRule,
         val results: List<RuleCheckResult>,
         val resultType: MultiResultType,
-        val details: String = "",
-        val parentSanityResult: SanityCheckResult? = null
+        val details: String = ""
     ) : RuleCheckResult(rule) {
 
         override fun toString(): String {
@@ -921,6 +922,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                 }
             }
         }
+
+        override fun copyWithResult(res: SolverResult): RuleCheckResult = copy(results = this.results.map { it.copyWithResult(res) })
         private class FlattenedResultsCache(val flattenedResults: List<FlattenedResult>) {
 
             /**
@@ -1030,42 +1033,12 @@ sealed class RuleCheckResult(open val rule: IRule) {
         fun computeFinalResult(): SolverResult {
             // Result when taking only sanity results into account and ignoring results of original rules
             val resultFromSanity =
-                if (parentSanityResult != null) {
-                    when (parentSanityResult.ordinal) {
-                        /*
-                        We map each sanity check ordinal to a corresponding
-                        solver result ordinal, denoted SRO; the idea is to compute
-                        max { SRO, solver result ordinal of original rule } to
-                        obtain the final result.
-                        Timeouts and unknown results are ignored in this computation:
-                        In case of a passing rule with timeout/unknown results in
-                        sanity checks the rule is considered as passing and appropriate
-                        msgs should appear in the problems view.
-                        TODO: In the above case the status in the tree view won't be "verified" (this is a known bug,
-                              see CERT-3208).
-                         */
-                        SanityCheckResultOrdinal.ERROR -> {
-                            SolverResult.UNKNOWN
-                        }
-
-                        SanityCheckResultOrdinal.FAILED -> {
-                            SolverResult.SANITY_FAIL
-                        }
-
-                        SanityCheckResultOrdinal.TIMEOUT,
-                        SanityCheckResultOrdinal.UNKNOWN,
-                        SanityCheckResultOrdinal.PASSED -> {
-                            SolverResult.UNSAT
-                        }
-                    }
+                //  We determine SANITY_FAIL if one of the sub-rules has sanity failure, otherwise consider sanity
+                // check as passing.
+                if (anyChildResultFailedSanity) {
+                    SolverResult.SANITY_FAIL
                 } else {
-                    //  We determine SANITY_FAIL if one of the sub-rules has sanity failure, otherwise consider sanity
-                    // check as passing.
-                    if (anyChildResultFailedSanity) {
-                        SolverResult.SANITY_FAIL
-                    } else {
-                        SolverResult.UNSAT
-                    }
+                    SolverResult.UNSAT
                 }
 
             // Result when taking everything but sanity-results into account
@@ -1103,6 +1076,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
         override fun consolePrint(satIsGood: Boolean): String {
             return "${rule.declarationId}: Rule-check skipped. Skipping reason: ${ruleAlerts.msg}."
         }
+
+        override fun copyWithResult(res: SolverResult): RuleCheckResult = this
     }
 
     data class Error(
@@ -1121,6 +1096,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
             return listOf(FlattenedResult(rule.declarationId, SolverResult.UNKNOWN, this))
         }
 
+        override fun copyWithResult(res: SolverResult): RuleCheckResult = this
 
         override fun consolePrint(satIsGood: Boolean): String =
             "${rule.declarationId}: Error: " +

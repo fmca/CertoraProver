@@ -22,59 +22,31 @@ import rules.RuleCheckResult
 import rules.dpgraph.SanityCheckNode
 import rules.dpgraph.SanityCheckNodeType
 import rules.sanity.SanityDPResult
-import rules.sanity.*
-import rules.sanity.SanityCheckResultOrdinal.Companion.toDefaultSanityCheckResultOrdinal
 import solver.SolverResult
 import spec.cvlast.CVLCmd
-import spec.cvlast.SpecType
 import datastructures.stdcollections.*
+import report.RuleAlertReport
+import utils.*
 
-data object RedundantRequires :
+data class RedundantRequires(val assumeCmd: CVLCmd.Simple.AssumeCmd) :
     SanityCheckSort.FunctionDependent<RuleCheckResult.Single, CVLCmd.Simple.AssumeCmd> {
     override val mode = SanityValues.ADVANCED
-    override val severityLevel = SanityCheckSeverity.Info
-    override val reportName = "require-redundancy check"
-
-    override fun checkResultToSanityResultOrd(s: DPSuccess<RuleCheckResult.Single>): SanityCheckResultOrdinal =
-        s.result.toDefaultSanityCheckResultOrdinal()
-
-    override fun checkResultToDetailsStr(s: DPSuccess<RuleCheckResult.Single>) =
-        s.result.firstData.details
-
-    override val nonErrorUIMessageFormatter: SanityCheckNonErrorUIMessageFormatter<CVLCmd.Simple.AssumeCmd> =
-        SanityCheckNonErrorUIMessageFormatter(
-            rawMsg = reportName,
-            rawMsgFormatter = { sanityOrdinalValue, assumeCmd: CVLCmd.Simple.AssumeCmd, _, rawMsg: String ->
-                if (assumeCmd is CVLCmd.Simple.AssumeCmd.Assume && assumeCmd.invariantPreCond) {
-                    "$rawMsg ${sanityOrdinalValue.reportString()}: precondition check"
-                } else {
-                    "$rawMsg ${sanityOrdinalValue.reportString()}: ${assumeCmd.range}"
-                }
-            }
-        )
-
-    override fun toSanityResultsView(
-        _baseResults: List<SanityDPResult>,
-        _sanityCheckResults: List<SanityDPResult>
-    ): SanityResultsView.FunctionDependent<RuleCheckResult.Single> =
-        SanityResultsView.FunctionDependent<RuleCheckResult.Single,
-                SpecType.Single.GeneratedFromBasicRule.SanityRule.RedundantRequireCheck,
-                CVLCmd.Simple.AssumeCmd>(
-            _baseResults,
-            _sanityCheckResults,
-            this
-        )
-
-    override fun checkResultToSanitySubCheckGroup(r: SanityDPResult): CVLCmd.Simple.AssumeCmd =
-        r.result.rule
-            .narrowType<SpecType.Single.GeneratedFromBasicRule.SanityRule.RedundantRequireCheck>().ruleType.assumeCVLCmd
 
     override val preds: List<SanityCheckNodeType> =
         listOf(
             SanityCheckNodeType.SanityCheck(AssertsTautology),
             SanityCheckNodeType.SanityCheck(TrivialInvariant)
         )
-
+    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*> {
+        val msg = "The require-redundancy sanity check ${solverResult.toSanityStatusString()}. " +
+            if (solverResult == SolverResult.UNSAT) {
+                "There are require statements in the rule that are redundant and can be removed. " +
+                    "See ${CheckedUrl.SANITY_REDUNDANT_REQUIRES}"
+            } else {
+                ""
+            }
+        return RuleAlertReport.Info(msg)
+    }
     /**
      * If the asserts are vacuous the require is redundant.
      */
