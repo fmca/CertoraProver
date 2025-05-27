@@ -1,0 +1,11 @@
+{
+	"rules": {
+		"decrementDecreasesCountByOne": "SUCCESS",
+		"envfreeFuncsStaticCheck": {
+			"SUCCESS": [
+				"getCount()"
+			]
+		},
+		"incrementIncreasesCountByOne": "SUCCESS"
+	}
+}

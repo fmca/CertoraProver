@@ -38,7 +38,11 @@ import vc.data.TACCmd
 @Tag(TestTags.EXPENSIVE)
 class InitializationTests : SingleMethodTest, SolidityContractTest {
     @ParameterizedTest
-    @SolidityVersions([SolidityVersion.V4_25, SolidityVersion.ANY_5, SolidityVersion.V7_0, SolidityVersion.V6_8, SolidityVersion.V6_10, SolidityVersion.V8_16, SolidityVersion.V8_29])
+    @SolidityVersions([
+        SolidityVersion.V4_25, SolidityVersion.ANY_5, SolidityVersion.V7_0,
+        SolidityVersion.V6_8, SolidityVersion.V6_10, SolidityVersion.V8_16, SolidityVersion.V8_29,
+        SolidityVersion.V8_3O
+    ])
     @WithOptimizedFlag
     fun testConstantSizePrimitizeArray(solc: String, optimize: Boolean) {
         val graph = this.loadTestContractGraph("analysis/ConstantUintAlloc.sol", solc, optimize)
@@ -46,7 +50,11 @@ class InitializationTests : SingleMethodTest, SolidityContractTest {
     }
 
     @ParameterizedTest
-    @SolidityVersions([SolidityVersion.V4_25, SolidityVersion.ANY_5, SolidityVersion.V7_0, SolidityVersion.V6_8, SolidityVersion.V6_10, SolidityVersion.V8_16, SolidityVersion.V8_29])
+    @SolidityVersions([
+        SolidityVersion.V4_25, SolidityVersion.ANY_5, SolidityVersion.V7_0,
+        SolidityVersion.V6_8, SolidityVersion.V6_10, SolidityVersion.V8_16, SolidityVersion.V8_29,
+        SolidityVersion.V8_3O
+    ])
     @WithOptimizedFlag
     fun testConstantSizeStructArray(solc: String, optimize: Boolean) {
         val graph = this.loadTestContractGraph("analysis/ConstantStructAlloc.sol", solc, optimize)
@@ -54,14 +62,23 @@ class InitializationTests : SingleMethodTest, SolidityContractTest {
     }
 
     @ParameterizedTest
-    @SolidityVersions([SolidityVersion.V6_1, SolidityVersion.V6_10, SolidityVersion.V6_8, SolidityVersion.V7_0, SolidityVersion.ANY_5, SolidityVersion.ANY_4, SolidityVersion.V8_1, SolidityVersion.V8_16, SolidityVersion.V8_29])
+    @SolidityVersions([
+        SolidityVersion.V6_1, SolidityVersion.V6_10, SolidityVersion.V6_8,
+        SolidityVersion.V7_0, SolidityVersion.ANY_5, SolidityVersion.ANY_4, SolidityVersion.V8_1,
+        SolidityVersion.V8_16, SolidityVersion.V8_29, SolidityVersion.V8_3O
+    ])
     @WithOptimizedFlag
     fun testStringGetter(solc: String, optimize: Boolean) {
         assertHasInitAnnotations(this.loadTestContractGraph("analysis/StringGetter.sol", solc, optimize))
     }
 
     @ParameterizedTest
-    @SolidityVersions([SolidityVersion.V6_1, SolidityVersion.V6_10, SolidityVersion.V6_8, SolidityVersion.V7_0, SolidityVersion.ANY_5, SolidityVersion.ANY_4, SolidityVersion.V8_1, SolidityVersion.V8_16, SolidityVersion.V8_29])
+    @SolidityVersions([
+        SolidityVersion.V6_1, SolidityVersion.V6_10, SolidityVersion.V6_8,
+        SolidityVersion.V7_0, SolidityVersion.ANY_5, SolidityVersion.ANY_4,
+        SolidityVersion.V8_1, SolidityVersion.V8_16, SolidityVersion.V8_29,
+        SolidityVersion.V8_3O
+    ])
     @WithOptimizedFlag
     fun testMappingStringGetter(solc: String, optimize: Boolean) {
         assertHasInitAnnotations(this.loadTestContractGraph("analysis/StringInMapGetter.sol", solc, optimize))
@@ -74,7 +91,12 @@ class InitializationTests : SingleMethodTest, SolidityContractTest {
     }
 
     @ParameterizedTest
-    @SolidityVersions([SolidityVersion.V6_1, SolidityVersion.V6_10, SolidityVersion.V6_8, SolidityVersion.V7_0, SolidityVersion.V7_6, SolidityVersion.ANY_5, SolidityVersion.V8_1, SolidityVersion.V8_19, SolidityVersion.V8_16, SolidityVersion.V8_29])
+    @SolidityVersions([
+        SolidityVersion.V6_1, SolidityVersion.V6_10, SolidityVersion.V6_8,
+        SolidityVersion.V7_0, SolidityVersion.V7_6, SolidityVersion.ANY_5,
+        SolidityVersion.V8_1, SolidityVersion.V8_19, SolidityVersion.V8_16, SolidityVersion.V8_29,
+        SolidityVersion.V8_3O
+    ])
     @WithOptimizedFlag
     fun testDuplicateStringLookup(solc: String, optimize: Boolean) {
         assertHasInitAnnotations(this.loadTestContractGraph("analysis/DuplicateStringLookup.sol", solc, optimize))
@@ -89,7 +111,7 @@ class InitializationTests : SingleMethodTest, SolidityContractTest {
 
     @ParameterizedTest
     @WithOptimizedFlag
-    @SolidityVersions([SolidityVersion.V8_16, SolidityVersion.V8_29])
+    @SolidityVersions([SolidityVersion.V8_16, SolidityVersion.V8_29, SolidityVersion.V8_3O])
     fun multiNestedStructs(solc: String, optimize: Boolean) {
         assertHasInitAnnotations(this.loadTestContractGraph("analysis/MultiStruct.sol", solc, optimize))
     }
@@ -124,7 +146,7 @@ class InitializationTests : SingleMethodTest, SolidityContractTest {
 
     @ParameterizedTest
     @WithOptimizedFlag
-    @SolidityVersions([SolidityVersion.V8_9, SolidityVersion.V8_16, SolidityVersion.V8_29])
+    @SolidityVersions([SolidityVersion.V8_9, SolidityVersion.V8_16, SolidityVersion.V8_29, SolidityVersion.V8_3O])
     fun copyArrayOfBytesFromStorageToMem(solc: String, optimize: Boolean) {
         val x = this.loadTestGraph("""
             contract Test {
@@ -175,7 +197,9 @@ class InitializationTests : SingleMethodTest, SolidityContractTest {
     @ParameterizedTest
     @SolidityVersionEnum([
         SolidityVersion.V7_0, SolidityVersion.V7_6,
-        SolidityVersion.V8_2, SolidityVersion.V8_9, SolidityVersion.V8_13, SolidityVersion.V8_11, SolidityVersion.V8_16, SolidityVersion.V8_19, SolidityVersion.V8_29
+        SolidityVersion.V8_2, SolidityVersion.V8_9, SolidityVersion.V8_13,
+        SolidityVersion.V8_11, SolidityVersion.V8_16, SolidityVersion.V8_19, SolidityVersion.V8_29,
+        SolidityVersion.V8_3O
     ])
     @WithOptimizedFlag
     fun testDecodeStructStatics(solc: SolidityVersion, optimize: Boolean) {
