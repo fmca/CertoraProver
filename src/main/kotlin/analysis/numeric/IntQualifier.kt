@@ -236,6 +236,10 @@ sealed class IntQualifier : SelfQualifier<IntQualifier> {
             is HasUpperBound -> this.other.collectReferenced(out)
             is ModularUpperBound -> out.add(this.other)
             is NullabilityFlagFor -> out.add(this.pointerVar)
+            is SafeCopyOffset -> {
+                out.add(this.safeCopyLength)
+                out.add(this.arrayVar)
+            }
         }
     }
 
@@ -580,5 +584,32 @@ sealed class IntQualifier : SelfQualifier<IntQualifier> {
         override fun relates(v: TACSymbol.Var): Boolean {
             return v == pointerVar
         }
+    }
+
+    /**
+     * Indicates that while this variable is *not* a safe offset for reading, it is an offset within [arrayVar] that is
+     * safe to copy for exactly [safeCopyLength]. This can come up if we have a proof that:
+     * v + len <= endOf(array)
+     *
+     * if len == 0, then this is not safe for reading as an element (we're at the end of the array) *but* it is safe for reading for
+     * exactly len bytes, which in this case, is 0 so no harm no foul.
+     */
+    data class SafeCopyOffset(override val arrayVar: TACSymbol.Var, val safeCopyLength: TACSymbol.Var) : IntQualifier(), ArrayAnnot {
+        override fun relatesAny(vars: Collection<TACSymbol.Var>): Boolean {
+            return arrayVar in vars || safeCopyLength in vars
+        }
+
+        override fun saturateWith(equivClasses: VariableSaturation): List<IntQualifier> {
+            return equivClasses(arrayVar).flatMap { eqArr ->
+                equivClasses(safeCopyLength).map { eqLen ->
+                    SafeCopyOffset(eqArr, eqLen)
+                }
+            }
+        }
+
+        override fun relates(v: TACSymbol.Var): Boolean {
+            return arrayVar == v || safeCopyLength == v
+        }
+
     }
 }

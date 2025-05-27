@@ -39,7 +39,6 @@ import vc.data.tacexprutil.getFreeVars
 import java.util.concurrent.atomic.AtomicInteger
 import vc.data.TACProgramCombiners.andThen
 import verifier.equivalence.CEXUtils.asEither
-import kotlin.streams.toList
 
 @Suppress("FunctionName")
 /**

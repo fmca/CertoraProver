@@ -2029,6 +2029,8 @@ class PointerSemantics(
                         cont(target, toKill)
                     } else if(numericAnalysis.interpAsUnambiguousConstant(pState, value = length, ltacCmd = ltacCmd) == BigInteger.ZERO) {
                         target.toResult()
+                    } else if(isSafeLongCopy(dstOffset, length, pState) != null) {
+                        target.toResult()
                     } else {
                         handleConstantModeSwitchAndAlloc()
                     }
@@ -3274,7 +3276,7 @@ class PointerSemantics(
         }
     }
 
-    fun finalize() {
+    fun finalizeAnalysis() {
         concreteAllocationManager.finalizeUnification()
     }
 
@@ -3955,6 +3957,40 @@ class PointerSemantics(
         }
     }
 
+    fun isSafeLongCopy(
+        offs: TACSymbol,
+        len: TACSymbol,
+        pState: PointsToDomain
+    ) : TACSymbol.Var? {
+        if(offs !is TACSymbol.Var) {
+            return null
+        }
+        return pState.invariants.matches {
+            offs `=` v("arr") {
+                it is LVar.PVar
+            } + 32 + v("proof") {
+                it is LVar.PVar
+            }
+        }.firstNotNullOfOrNull {
+            val proof = (it.symbols["proof"] as LVar.PVar).v
+            val arr = (it.symbols["arr"] as LVar.PVar).v
+            val ty = getHeapType(arr, pState)
+            if(ty != HeapType.Array(HeapType.Int) && ty != HeapType.ByteArray) {
+                return@firstNotNullOfOrNull null
+            }
+            val hasBound = pState.boundsAnalysis[proof]?.let {
+                it as? QualifiedInt
+            }?.qual?.any { q ->
+                q is IntQualifier.SafeCopyOffset && q.arrayVar == arr && q.safeCopyLength == len
+            } == true
+            if(hasBound) {
+                arr
+            } else {
+                null
+            }
+        }
+    }
+
     /**
      * This function is expected to be called *before* executing [nxt], and is used to populate the *pre*-state
      * of [nxt]. This function serves to switch the state to use concrete allocations (if necessary), and ensure that the
@@ -4065,6 +4101,10 @@ class PointerSemantics(
              * Do *any* of the accesses require that we switch to concrete mode?
              */
             val isPreExecutionConstantSwitch = nxt.cmd.accesses.any {
+                if(it.isWrite && !alwaysInConstantOffsetMode && isSafeLongCopy(it.offset, it.length, context) != null) {
+                    return@any false
+                }
+
                 (it.isWrite || alwaysInConstantOffsetMode)
                 && it.base == TACKeyword.MEMORY.toVar()
                 && p.interp(it.offset, nxt).tryResolve() is INT
