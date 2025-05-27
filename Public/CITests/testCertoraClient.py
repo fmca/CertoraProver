@@ -1294,6 +1294,46 @@ class TestClient(unittest.TestCase):
                              run_flags=['--storage_extension_harnesses', 'Test=Spec1', 'Test=Spec2'],
                              expected="Var 'b1' added to Test")
 
+    def test_automatic_storage_extension_harnesses(self) -> None:
+        # Test the no storage extension flow (no extracted storage extension from the contract)
+        with Util.change_working_directory('Public/TestEVM/Counter'):
+            suite = ProverTestSuite(conf_file_template='counter.conf',
+                                    test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+            suite.expect_success(description="ERC7201 storage extension harnesses no flow",
+                                 run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+            result = suite.expect_checkpoint(description="Expecting empty mapping",
+                                             run_flags=['--disable_local_typechecking', "--storage_extension_annotation"])
+            assert result == {}, "test_automatic_storage_extension_harnesses: expected empty mapping"
+
+        # Test the normal flow (extracted storage extension from the contract)
+        with Util.change_working_directory('Public/TestEVM/StorageExtensions'):
+            suite = ProverTestSuite(conf_file_template='ERC7201.conf',
+                                    test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+            suite.expect_success(description="ERC7201 storage extension harnesses normal flow",
+                                 run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+            result = suite.expect_checkpoint(description="test_automatic_storage_extension_harnesses:  mapping",
+                                             run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+            assert len(result) == 1, "test_automatic_storage_extension_harnesses: expected only one mapping"
+            assert list(result.keys())[0][1] == 'Test_ERC7201'
+
+        # Test 2 structs but only one storage extension
+        suite = ProverTestSuite(conf_file_template=f'{CITests_path}/test_data/automatic_storage_extensions/single_struct/single_struct.conf',
+                                test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+        suite.expect_success(description="Single struct with storage extension out of 2",
+                            run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+        result = suite.expect_checkpoint(description="Expecting mapping",
+                                         run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+        added_fields = list(result.values())[0][0]
+        assert len(added_fields) == 1, "test_automatic_storage_extension_harnesses: expected only one added field"
+        assert added_fields[0]["label"] == "ext_test_book1"
+
+        # Test 2 structs with the same storage extension variable
+        suite = ProverTestSuite(conf_file_template=f'{CITests_path}/test_data/automatic_storage_extensions/same_extension/same_extension.conf',
+                                test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+        suite.expect_failure(description="Same extension for 2 structs",
+                             run_flags=['--disable_local_typechecking', '--storage_extension_annotation'],
+                             expected="DeclarationError: Identifier already declared.")
+
     @staticmethod
     def get_card_object(parent, nested):
         return next((section for section in parent if section.card_title == nested), None)
