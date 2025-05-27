@@ -167,7 +167,7 @@ object ConstantComputationInliner : ArrayLengthHeuristicMixin {
         } while(newSize > oldSize)
 
         fun locToReservedLocationScalar(base: TACSymbol, loc: BigInteger) : TACSymbol.Var? {
-            if(!Config.Mem0x0To0x40AsScalar) {
+            if(Config.EquivalenceCheck.get()) {
                 return null
             }
             if(base == TACKeyword.MEMORY.toVar() &&
