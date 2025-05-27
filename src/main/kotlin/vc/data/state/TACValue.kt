@@ -310,7 +310,7 @@ sealed class TACValue : SerializableWithAdapter {
                                 // some overhead)
                                 try {
                                     "${e.id}:${sortToTag(e.sort!!)}".parseExpr()
-                                } catch (@Suppress("TooGenericExceptionCaught") _: Exception) {
+                                } catch (_: Exception) {
                                     unsupp()
                                 }
                             }

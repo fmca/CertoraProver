@@ -165,13 +165,6 @@
         <ID>ImportStdCollections:TwoCmdProcessors.kt$TwoCmdProcessors$listOf</ID>
         <ID>SwallowedException:SMTParser.kt$SMTParser.Companion$e: Exception</ID>
         <ID>SwallowedException:SMTParser.kt$SMTParser.Companion$e: SmtParserException</ID>
-        <ID>TooGenericExceptionCaught:CollectDifficultyStats.kt$CollectDifficultyStats$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:InteractingCmdProcessor.kt$InteractingCmdProcessor$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:PostProcessModel.kt$PostProcessModel$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:PrintingCmdProcessor.kt$PrintingCmdProcessor$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:SMTParser.kt$SMTParser$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:SMTParser.kt$SMTParser.Companion$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:SimpleFormulaChecker.kt$SimpleFormulaChecker$e: Exception</ID>
         <ID>UseOrEmpty:EMatching.kt$EMatching$match(pattern, variables, toMatch, emptySet()) ?: setOf()</ID>
         <ID>UseOrEmpty:SmtPrettyPrinter.kt$SmtPrettyPrinter.DiffFriendly$cmd.comment?.let { " ; $it" } ?: ""</ID>
     </CurrentIssues>

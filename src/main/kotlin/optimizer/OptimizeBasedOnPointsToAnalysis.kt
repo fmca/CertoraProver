@@ -335,7 +335,7 @@ object OptimizeBasedOnPointsToAnalysis {
             transformMethod(pruned, transforms).code as? CoreTACProgram
                 ?: throw IllegalStateException("CoreTACProgram expected")
 
-        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+        } catch (e: Exception) {
             Logger.alwaysWarn("Failed to run memory splitting for ${m.name}", e)
             m.code as CoreTACProgram
         }

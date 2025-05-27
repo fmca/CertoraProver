@@ -778,7 +778,7 @@ class TACVerifier private constructor(
             return
         }
         if (subProblemSplitAddress == SplitAddress.Root || Config.TreeViewLiveStatsPerSplit.get()) {
-            @Suppress("TooGenericExceptionCaught", "SwallowedException")
+            @Suppress("SwallowedException")
             try {
                 val pathCountStats = PathCountStats.computeAndLogTime(
                     difficultyStatsCollector!!.codeMap,

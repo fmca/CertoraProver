@@ -178,12 +178,6 @@
         <ID>ImportStdCollections:SymbolTableFiller.kt$SymbolTableFiller$forEach</ID>
         <ID>ImportStdCollections:TrivialScene.kt$TrivialScene$listOf</ID>
         <ID>ImportStdCollections:VariableSubstitutor.kt$VariableSubstitutor$mutableMapOf</ID>
-        <ID>TooGenericExceptionCaught:BigIntegerDecimalSerializer.kt$BigIntegerDecimalSerializer$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CVLSource.kt$CVLSource.File$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CommandLineExecutor.kt$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:LongProcessKiller.kt$LongProcessKiller$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:OutPrinter.kt$TimePing$e : Exception</ID>
-        <ID>TooGenericExceptionCaught:StandardSolcRunner.kt$StandardSolcRunner$e: Exception</ID>
         <ID>TooGenericExceptionThrown:BigIntegerDecimalSerializer.kt$BigIntegerDecimalSerializer$throw Exception(msg, e)</ID>
         <ID>TooGenericExceptionThrown:CVLAst.kt$CVLExp.RelopExp.CVLERelop.Companion$throw RuntimeException("Illegal relop $s")</ID>
         <ID>TooGenericExceptionThrown:CommandLineExecutor.kt$throw Exception("Failed to run command ($stringCommand), exited with code $exitValue, see errors: ${fileError?.path ?: "N/A"}, output: ${fileOutput?.path ?: "N/A"}. Details: $errors")</ID>

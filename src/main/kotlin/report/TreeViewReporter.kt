@@ -849,7 +849,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             delay(HOT_UPDATE_TIME_RATE.inWholeMilliseconds)
             try {
                 hotUpdate()
-            } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+            } catch (e: Throwable) {
                 logger.error { "Tree view reporting failed: $e" }
             }
         }

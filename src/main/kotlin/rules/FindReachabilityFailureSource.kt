@@ -48,7 +48,7 @@ object FindReachabilityFailureSource {
                 it.runReachabilityFailureSourceFinder()
             } catch(e: CancellationException) {
                 throw e
-            } catch(@Suppress("TooGenericExceptionCaught") e: Exception) {
+            } catch(e: Exception) {
                 logger.error(
                     e,
                     "Had an exception while running Reachability Failure Source Finder ${tacProgram.name}",

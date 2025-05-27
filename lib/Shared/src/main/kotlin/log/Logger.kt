@@ -234,7 +234,6 @@ class KotlinLoggingLogger(val type: LoggerName) : Logger() {
  */
 fun Logger.reportOnEventInCode(eventInCodeName: String) {
     if (isTraceEnabled) {
-        @Suppress("TooGenericExceptionCaught")
         try {
             throw object : Exception(eventInCodeName) {}
         } catch (e: Exception) {

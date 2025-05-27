@@ -54,7 +54,7 @@ fun launchMaybeBackground(
             block()
         }
     }
-    // We have to return a Job, but the coroutine is already complete.  So we create a new Job and immediately complete 
+    // We have to return a Job, but the coroutine is already complete.  So we create a new Job and immediately complete
     // it.
     Job().also { it.complete() }
 }
@@ -113,7 +113,6 @@ internal class BackgroundCoroutineScope : CoroutineScope {
      * of them has failed, then [run] rethrows the exception.
      */
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
-    @Suppress("TooGenericExceptionCaught")
     fun run(
         context: CoroutineContext = defaultTopLevelCoroutineDispatcher,
         exitTimeout: Duration = Duration.INFINITE,

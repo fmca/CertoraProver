@@ -672,7 +672,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     } catch (e: CancellationException) {
                         // do not interfere with the coroutine cancellation mechanism
                         throw e
-                    } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                    } catch (e: Exception) {
                         logger.warn(e) {
                             "WithExamplesData generation ended prematurely due to unexpected exception " +
                                 "(rule ${rule.ruleIdentifier.displayName})"

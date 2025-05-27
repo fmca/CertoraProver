@@ -2430,7 +2430,6 @@ object CallGraphBuilder {
                     var s = step(startState, start)
                     for(l in block.commands.drop(1)) {
                         state[l.ptr] = s
-                        @Suppress("TooGenericExceptionCaught")
                         try {
                             s = step(s, l)
                         } catch(t: Throwable) {

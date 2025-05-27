@@ -59,7 +59,6 @@ suspend fun verifierResultFromCheckerResult(
      * Generates an example-info given the result [result].
      */
     fun getExampleInfo(result: SmtFormulaCheckerResult): AbstractTACChecker.ExampleInfo {
-        @Suppress("TooGenericExceptionCaught")
         val model = try {
             if (result.satResult is SatResult.SAT) {
                 check(postprocessor != null) { "In case of SAT results, postprocessor has to be around." }

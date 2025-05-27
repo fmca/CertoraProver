@@ -83,7 +83,6 @@
         <ID>ImportStdCollections:solver.SolverConfig_dynamicConversion.kt$toMutableMap</ID>
         <ID>SwallowedException:Configurable.kt$CLIParser$e: ConfigurationException</ID>
         <ID>ThrowingExceptionsWithoutMessageOrCause:SmallList.kt$SmallList$IndexOutOfBoundsException()</ID>
-        <ID>TooGenericExceptionCaught:BigIntegerSerializer.kt$BigIntegerSerializer$e: Exception</ID>
         <ID>TooGenericExceptionThrown:ArtifactFileUtils.kt$ArtifactFileUtils$throw Exception("Could not find $newRootDir in $wholePath")</ID>
         <ID>TooGenericExceptionThrown:ArtifactFileUtils.kt$ArtifactFileUtils$throw Exception("Failed to create directory $dirString")</ID>
         <ID>TooGenericExceptionThrown:BigIntegerSerializer.kt$BigIntegerSerializer$throw Exception(msg, e)</ID>

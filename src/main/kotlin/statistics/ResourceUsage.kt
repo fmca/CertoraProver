@@ -116,7 +116,6 @@ fun startResourceUsageCollector() {
     )
     timer("ResourceUsageCollector", daemon = true, period = 1000) {
         metrics.forEach {
-            @Suppress("TooGenericExceptionCaught")
             try {
                 it.tick()
             } catch (e: Throwable) {

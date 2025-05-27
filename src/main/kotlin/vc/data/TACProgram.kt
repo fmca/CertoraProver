@@ -1459,7 +1459,7 @@ class CoreTACProgram private constructor(
                                     StaticArtifactLocation.Reports,
                                     DumpTime.AGNOSTIC
                                 )
-                            } catch (@Suppress("TooGenericExceptionCaught") eDump: Exception) {
+                            } catch (eDump: Exception) {
                                 logger.warn(eDump) { "Failed to dump error file for ${codeToCheck.name}" }
                             }
                         }

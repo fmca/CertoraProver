@@ -121,7 +121,7 @@ class RuleChecker(
                     .getOrElse { RuleCheckResult.Error(compiledCVLRule.rule, it) }
                 SDCollectorFactory.collector().recordAny("${TimeSinceStart()}", "finishTime", compiledCVLRule.tac.name)
                 res
-            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+            } catch (e: Exception) {
                 RuleCheckResult.Error(
                     rule,
                     CertoraException.fromExceptionWithRuleName(e, rule.declarationId),

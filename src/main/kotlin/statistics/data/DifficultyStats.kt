@@ -200,7 +200,7 @@ data class PathCountStats(
          * severe anti-pattern in most contexts, so this method should stay local and only be used for securing
          * stats computations. */
         private fun <T> swallowExceptionsInStatsComputation(block: () -> T): T? =
-            @Suppress("SwallowedException", "TooGenericExceptionCaught")
+            @Suppress("SwallowedException")
             try {
                 block()
             } catch (e: Exception) {

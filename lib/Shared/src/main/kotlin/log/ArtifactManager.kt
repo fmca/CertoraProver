@@ -476,7 +476,6 @@ private object StandardArtifactManager : IArtifactsManager {
      * @param backupFileName The file name that fileName will be backed up to
      * @return Unit
      */
-    @Suppress("TooGenericExceptionCaught")
     override fun backup(fileName: String, backupFileName: String) {
         try {
             val reader = CertoraFileCache.getContentReader(fileName)
@@ -512,7 +511,6 @@ private object StandardArtifactManager : IArtifactsManager {
     private val logger = Logger(LoggerTypes.COMMON)
 
 
-    @Suppress("TooGenericExceptionCaught")
     override fun copyInputsToRootOfOutputDir(filenames: List<String>) {
         val target = ArtifactManagerFactory().mainPath
         try {

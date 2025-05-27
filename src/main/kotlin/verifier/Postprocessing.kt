@@ -116,7 +116,7 @@ suspend fun postprocessResult(vc: LExpVC, result: SmtFormulaCheckerResultWithChe
                                             config.prettifyCEX == PrettifyCEXEnum.EXTENSIVE,
                                     )
                                 }
-                            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                            } catch (e: Exception) {
                                 when (e) {
                                     is CancellationException,
                                     is ClosedByInterruptException ->
@@ -153,7 +153,7 @@ suspend fun postprocessResult(vc: LExpVC, result: SmtFormulaCheckerResultWithChe
                                 prettifierStats.complete(prettifier.getStatistics())
                                 diversifierStats.complete(diversifier.getStatistics())
                             }
-                        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                        } catch (e: Exception) {
                             logger.warn { "diversification aborted with: ${e.message}" }
                             flowOf(newResult)
                         }

@@ -1100,7 +1100,7 @@ public inline suspend fun <T : SuspendCloseable?, R> T.use(block: (T) -> R): R {
     var exception: Throwable? = null
     try {
         return block(this)
-    } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+    } catch (e: Throwable) {
         exception = e
         throw e
     } finally {
@@ -1110,7 +1110,7 @@ public inline suspend fun <T : SuspendCloseable?, R> T.use(block: (T) -> R): R {
             else ->
                 try {
                     close()
-                } catch (@Suppress("TooGenericExceptionCaught") _: Throwable) {
+                } catch (_: Throwable) {
                     // ignore; `e` is still propagating
                 }
         }

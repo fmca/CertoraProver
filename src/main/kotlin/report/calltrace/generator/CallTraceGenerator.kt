@@ -293,7 +293,6 @@ internal sealed class CallTraceGenerator(
                 Config.DestructiveOptimizationsMode
             ))
         } else {
-            @Suppress("TooGenericExceptionCaught")
             try {
                 generate()
             } catch (e: Exception) {
@@ -515,7 +514,6 @@ internal sealed class CallTraceGenerator(
     private fun handleRevertPath(cmd: TACCmd.Simple, currBlock: NBId, idx: Int): HandleCmdResult {
         currCallInstance.status = CallEndStatus.REVERT
 
-        @Suppress("TooGenericExceptionCaught")
         val revertSliceResults = try {
             DynamicSlicer(program, model, scene).sliceRevertCond(LTACCmd(CmdPointer(currBlock, idx), cmd).narrow())
         } catch (e: Exception) {
