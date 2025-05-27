@@ -361,7 +361,7 @@ object TermMatching {
     }
 
     /**
-     * Attempts to match the specification represented by [this] against [other]. Put formally,
+     * Attempts to match the specification represented by [this] against [other_]. Put formally,
      * let the symbolic equation represented by this be normalized to:
      * kj + sum ki * vi = 0
      * where kj, ki, and vi have the interpretation as in [MatchSpec].
@@ -377,7 +377,7 @@ object TermMatching {
         if(this.terms.size != other.term.size) {
             return listOf()
         }
-        if(this.k is Factor.Constant && this.k.c != BigInteger.ZERO && other.k == BigInteger.ZERO) {
+        if(this.k is Factor.Constant && (this.k.c == BigInteger.ZERO) != (other.k == BigInteger.ZERO)) {
             return listOf()
         }
         /**
@@ -392,14 +392,14 @@ object TermMatching {
          * Thus, we partition the terms ki * vi in this pattern into those where vi is exact vs symbolic terms (1).
          * We then iterate through the exact variables, seeing if the variable is mentioned in our target (2). If it is not,
          * we can bail out early. Otherwise, we check its factor ki (3). If it is constant, then we can either resolve
-         * r (as r = a / ci, where a is the coefficient in [other]) (4), or determine there is no possible value for
+         * r (as r = a / ci, where a is the coefficient in [other_]) (4), or determine there is no possible value for
          * r (r * a != ci) (5). Otherwise, we save the wildcard factor for later resolution (6).
          *
          * After processing all exact terms, we try to find vsub by enumerating all possibilities. This takes the form
          * of a loop that tries different possible assignments, and tries to find a "contradiction", i.e., an assignment
          * of Wi -> xi such that r * a != ki. Note that, by design, we only start resolving factor wildcards after determining
          * r (if we find this isn't possible, we declare the pattern is ambiguous and refuse to produce a match). In other words,
-         * by the time we are trying to assign a wildcard variable to a concrete variable in [other], we must have r, which means
+         * by the time we are trying to assign a wildcard variable to a concrete variable in [other_], we must have r, which means
          * we can immediately discover such contradictions and fail early.
          *
          * The loop is pretty gnarly (it was written with the expectation this is called in several tight loops), so it is

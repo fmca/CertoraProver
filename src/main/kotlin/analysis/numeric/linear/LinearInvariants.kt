@@ -141,11 +141,11 @@ fun LinearInvariants.propagateConstant(subst: (TACSymbol.Var) -> BigInteger?) : 
     }
 }
 
-fun LinearInvariants.propagateEquality(eqs: List<Pair<TACSymbol.Var, TACSymbol.Var>>, valuation: (TACSymbol.Var) -> BigInteger?) : LinearInvariants {
+fun LinearInvariants.propagateEquality(eqs: Iterable<Pair<TACSymbol.Var, TACSymbol.Var>>, valuation: (TACSymbol.Var) -> BigInteger?) : LinearInvariants {
     return propagateEqualities(listOf(), eqs, valuation)
 }
 
-fun LinearInvariants.propagateEqualities(scaledEq: List<Pair<TACSymbol.Var, Pair<TACSymbol.Var, BigInteger>>>, eqs: List<Pair<TACSymbol.Var, TACSymbol.Var>>, valuation: (TACSymbol.Var) -> BigInteger?) : LinearInvariants = mutate { toRet ->
+fun LinearInvariants.propagateEqualities(scaledEq: Iterable<Pair<TACSymbol.Var, Pair<TACSymbol.Var, BigInteger>>>, eqs: Iterable<Pair<TACSymbol.Var, TACSymbol.Var>>, valuation: (TACSymbol.Var) -> BigInteger?) : LinearInvariants = mutate { toRet ->
     for(l in this) {
         for((v1, v2) in eqs) {
             toRet.addAll(l.genEquality(v1, v2))
