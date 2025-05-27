@@ -6,5 +6,5 @@ rule ok {
     uint256 z = doOtherThing(e, x, which);
     satisfy(x == y);
     satisfy(x != z);
-    satisfy(y == currentContract.test_book1.field1.words[0]);
+    satisfy(y == currentContract.ext_test_book1.field1.words[0]);
 }
