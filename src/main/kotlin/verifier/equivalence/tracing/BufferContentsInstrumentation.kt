@@ -14,11 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package instrumentation.transformers.tracing
+package verifier.equivalence.tracing
 
 import analysis.CommandWithRequiredDecls
 import datastructures.stdcollections.*
-import instrumentation.transformers.tracing.BufferTraceInstrumentation.Companion.`=`
+import verifier.equivalence.tracing.BufferTraceInstrumentation.Companion.`=`
 import tac.Tag
 import vc.data.*
 import vc.data.TACProgramCombiners.andThen
@@ -28,7 +28,7 @@ import vc.data.tacexprutil.ExprUnfolder
  * Records the writes/copies that define the contents of a long read.
  * This can be extracted from a CEX to build a more precise model of the buffer.
  *
- * See [instrumentation.transformers.tracing.BufferTraceInstrumentation.IBufferContentsInstrumentation]
+ * See [BufferTraceInstrumentation.IBufferContentsInstrumentation]
  * for an explanation of the member variables
  */
 internal data class BufferContentsInstrumentation(

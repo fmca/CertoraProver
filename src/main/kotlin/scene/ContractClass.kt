@@ -44,7 +44,6 @@ import diagnostics.*
 import disassembler.DisassembledEVMBytecode
 import evm.EVM_WORD_SIZE
 import instrumentation.ImmutableInstrumenter
-//import instrumentation.ReturnBufferInstrumentation
 import instrumentation.StoragePackedLengthSummarizer
 import instrumentation.constructor.ConstructorInstrumentation
 import instrumentation.createEmptyProgram
@@ -312,7 +311,12 @@ class ContractClass(
             transforms.add(ReportTypes.REWRITE_ALLOCATIONS, InlineArrayAllocationRewriter::rewriteAllocations)
             transforms.add(ReportTypes.REWRITE_ALLOCATIONS_FROM_LOOP_INTERPOLATION, LoopInterpolationAllocationRewriter::rewrite)
             transforms.add(ReportTypes.NORMALIZE_TRY_CATCH, TryCatchNormalization::normalizeTryCatch)
-            transforms.add(ReportTypes.OPTIMIZE_REVERT_STRINGS, RevertStringsOptimizer::optimizeRevertStrings)
+            // this analysis is known to be problematic with the equivalence checker,
+            // it will only sometimes fire for some hard to predict subset of reverts, leading to spurious mismatches
+            // in revert reasons
+            if(!Config.EquivalenceCheck.get()) {
+                transforms.add(ReportTypes.OPTIMIZE_REVERT_STRINGS, RevertStringsOptimizer::optimizeRevertStrings)
+            }
 
             transforms.add(ReportTypes.SCRATCH_COPY_NORMALIZATION) { c: CoreTACProgram ->
                 c.parallelLtacStream().mapNotNull {

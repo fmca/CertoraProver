@@ -25,9 +25,9 @@ import analysis.maybeAnnotation
 import datastructures.stdcollections.*
 import evm.MASK_SIZE
 import instrumentation.calls.CalldataEncoding
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
-import instrumentation.transformers.tracing.BufferTraceInstrumentation.Companion.`=`
-import instrumentation.transformers.tracing.BufferTraceInstrumentation.Companion.flatten
+import verifier.equivalence.tracing.BufferTraceInstrumentation
+import verifier.equivalence.tracing.BufferTraceInstrumentation.Companion.`=`
+import verifier.equivalence.tracing.BufferTraceInstrumentation.Companion.flatten
 import scene.ContractClass
 import scene.TACMethod
 import solver.CounterexampleModel

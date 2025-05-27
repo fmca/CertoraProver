@@ -1175,7 +1175,17 @@ object Config {
                 }
             }
 
-    val Mem0x0To0x40AsScalar = object : ConfigType.BooleanCmdLine(
+    val EquivalenceCheck = object : ConfigType.BooleanCmdLine(
+        false,
+        Option(
+            "equivalenceCheck",
+            true,
+            "Magic flag that must be set if equivalence checker is run"
+        )
+    ) {}
+
+
+    private val _Mem0x0To0x40AsScalar = object : ConfigType.BooleanCmdLine(
         true,
         Option(
             "mem0x0To0x40AsScalar",
@@ -1183,6 +1193,8 @@ object Config {
             "Treats all accesses to hash scratch space [0x0-0x40) in memory as scalars, ignoring any conflicting aliases from unresolved locations"
         )
     ) {}
+
+    val Mem0x0To0x40AsScalar get() = _Mem0x0To0x40AsScalar.get() && !EquivalenceCheck.get()
 
     val HavocInitEVMMemory = object : ConfigType.BooleanCmdLine(
         false,

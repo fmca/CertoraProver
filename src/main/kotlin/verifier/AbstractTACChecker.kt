@@ -25,7 +25,7 @@ import config.ReportTypes
 import datastructures.NonEmptyList
 import instrumentation.transformers.*
 import instrumentation.transformers.FilteringFunctions.Companion.default
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import log.*
 import optimizer.SinkOptimizer
 import report.LiveStatsReporter

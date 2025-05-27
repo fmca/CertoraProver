@@ -22,7 +22,7 @@ import config.Config
 import config.ReportTypes
 import datastructures.NonEmptyList
 import datastructures.stdcollections.*
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.*
@@ -48,6 +48,7 @@ import log.*
 import spec.rules.EquivalenceRule
 import java.io.File
 import kotlin.math.max
+import kotlin.streams.toList
 
 private val logger = Logger(LoggerTypes.EQUIVALENCE)
 private typealias TCmdPointer<@Suppress("UNUSED_TYPEALIAS_PARAMETER", "unused") T> = CmdPointer
@@ -118,6 +119,12 @@ class EquivalenceChecker private constructor(
 
 
         suspend fun handleEquivalence(query: ProverQuery.EquivalenceQuery, scene: IScene, outputReporter: OutputReporter) : List<RuleCheckResult> {
+            if(!Config.EquivalenceCheck.get()) {
+                throw CertoraException(
+                    CertoraErrorType.BAD_CONFIG,
+                    "Need to set ${Config.EquivalenceCheck.option.argName} in equivalence checker mode"
+                )
+            }
             val methodChoice = Config.MethodChoices.orEmpty().singleOrNull() ?: throw CertoraException(
                 CertoraErrorType.BAD_CONFIG,
                 "Missing single method choice"
@@ -145,11 +152,14 @@ class EquivalenceChecker private constructor(
                 )
             }
             /**
-             * Give a unique numbering to all mload. This helps identify reads that need to have a bounded precision window
+             * Give a unique numbering to all mloads [MemoryReadNumbering]. This helps identify reads that need to have a bounded precision window.
+             *
+             * Further, annotate buffers for which we can statically determine the writes which define their contents [DefiniteBufferConstructionAnalysis].
              */
             scene.mapContractMethodsInPlace("read_numbering") { _, method ->
                 ContractUtils.transformMethodInPlace(method, ChainedMethodTransformers(listOf(
-                    CoreToCoreTransformer(ReportTypes.READ_NUMBERING, MemoryReadNumbering::instrument).lift()
+                    CoreToCoreTransformer(ReportTypes.READ_NUMBERING, MemoryReadNumbering::instrument).lift(),
+                    CoreToCoreTransformer(ReportTypes.DEFINITE_BUFFER_ANALYSIS, DefiniteBufferConstructionAnalysis::instrument).lift()
                 )))
             }
             val equivalenceRule = EquivalenceRule.freshRule("Equivalence of ${query.contractA.name} and ${query.contractB.name} on $methodChoice")
@@ -508,13 +518,13 @@ class EquivalenceChecker private constructor(
     internal interface TraceExplorer {
 
         /**
-         * Get the [instrumentation.transformers.tracing.BufferTraceInstrumentation.InstrumentationControl] to use
+         * Get the [BufferTraceInstrumentation.InstrumentationControl] to use
          * for instrumenting [methodA].
          */
         fun getAConfig(pairwiseProofManager: PairwiseProofManager): BufferTraceInstrumentation.InstrumentationControl
 
         /**
-         * Get the [instrumentation.transformers.tracing.BufferTraceInstrumentation.InstrumentationControl] to use
+         * Get the [BufferTraceInstrumentation.InstrumentationControl] to use
          * for instrumenting [methodB]
          */
         fun getBConfig(pairwiseProofManager: PairwiseProofManager): BufferTraceInstrumentation.InstrumentationControl
@@ -581,6 +591,62 @@ class EquivalenceChecker private constructor(
         ): TraceExplorer?
     }
 
+    internal interface IInstrumentationLevels {
+        val traceLevel: BufferTraceInstrumentation.TraceTargets
+        fun onTimeout(
+            context: QueryContext,
+            pairwiseProofManager: PairwiseProofManager,
+            aConfig: BufferTraceInstrumentation.InstrumentationResults
+        ): IInstrumentationLevels?
+
+        fun onSuccess(
+            context: QueryContext,
+            aConfig: BufferTraceInstrumentation.InstrumentationResults,
+            bConfig: BufferTraceInstrumentation.InstrumentationResults
+        ): IInstrumentationLevels?
+
+        fun getAInclusion(): BufferTraceInstrumentation.TraceInclusionMode
+        fun getBInclusion(): BufferTraceInstrumentation.TraceInclusionMode
+    }
+
+    internal class ExitInstrumentation(val exits: List<CmdPointer>, val curr: Int) :IInstrumentationLevels {
+        constructor(method: TACMethod) : this((method.code as CoreTACProgram).parallelLtacStream().filter {
+            it.cmd.isHalting()
+        }.map { it.ptr }.toList(), 0)
+        override val traceLevel: BufferTraceInstrumentation.TraceTargets
+            get() = BufferTraceInstrumentation.TraceTargets.Results
+
+        override fun onTimeout(
+            context: QueryContext,
+            pairwiseProofManager: PairwiseProofManager,
+            aConfig: BufferTraceInstrumentation.InstrumentationResults
+        ): IInstrumentationLevels? {
+            return null
+        }
+
+        override fun onSuccess(
+            context: QueryContext,
+            aConfig: BufferTraceInstrumentation.InstrumentationResults,
+            bConfig: BufferTraceInstrumentation.InstrumentationResults
+        ): IInstrumentationLevels? {
+            if(curr == exits.lastIndex) {
+                return null
+            }
+            return ExitInstrumentation(exits, curr + 1)
+        }
+
+        override fun getAInclusion(): BufferTraceInstrumentation.TraceInclusionMode {
+            return BufferTraceInstrumentation.TraceInclusionMode.UntilExactly(
+                exits[curr]
+            )
+        }
+
+        override fun getBInclusion(): BufferTraceInstrumentation.TraceInclusionMode {
+            return BufferTraceInstrumentation.TraceInclusionMode.Unified
+        }
+
+    }
+
     /**
      * Encapsulates the logic for determining how to "advance" the equivalence proof. This involves
      * proceeding through the various trace targets, and the "tiers" of events in the (entirely
@@ -588,15 +654,19 @@ class EquivalenceChecker private constructor(
      */
     internal data class InstrumentationLevels(
         val inclusion: BufferTraceInstrumentation.TraceInclusionMode,
-        val traceLevel: BufferTraceInstrumentation.TraceTargets,
-    ) {
+        override val traceLevel: BufferTraceInstrumentation.TraceTargets,
+    ) : IInstrumentationLevels {
         /**
          * Used to try to simplify the problem to address a timeout, or give up
          */
-        fun onTimeout(
+        override fun onTimeout(
+            context: QueryContext,
             pairwiseProofManager: PairwiseProofManager,
             aConfig: BufferTraceInstrumentation.InstrumentationResults
-        ) : InstrumentationLevels? {
+        ) : IInstrumentationLevels? {
+            if(traceLevel == BufferTraceInstrumentation.TraceTargets.Results) {
+                return ExitInstrumentation(context.methodA)
+            }
             return when(inclusion) {
                 BufferTraceInstrumentation.TraceInclusionMode.Unified -> {
                     logger.info {
@@ -640,10 +710,11 @@ class EquivalenceChecker private constructor(
          * Advance the proof state. If we're in the unified mode, go to the next trace target (call -> log -> exits).
          * If we're in tiered mode, go to the next tier if necessary, otherwise go to the next target.
          */
-        fun onSuccess(
+        override fun onSuccess(
+            context: QueryContext,
             aConfig: BufferTraceInstrumentation.InstrumentationResults,
             bConfig: BufferTraceInstrumentation.InstrumentationResults
-        ): InstrumentationLevels? {
+        ): IInstrumentationLevels? {
             when(inclusion) {
                 BufferTraceInstrumentation.TraceInclusionMode.Unified -> {
                     val nxt = this.traceLevel.nextTarget()
@@ -681,6 +752,9 @@ class EquivalenceChecker private constructor(
                 is BufferTraceInstrumentation.TraceInclusionMode.UntilExactly -> `impossible!`
             }
         }
+
+        override fun getAInclusion(): BufferTraceInstrumentation.TraceInclusionMode = inclusion
+        override fun getBInclusion(): BufferTraceInstrumentation.TraceInclusionMode = inclusion
 
 
         private fun BufferTraceInstrumentation.TraceTargets.nextTarget(): BufferTraceInstrumentation.TraceTargets? {
@@ -1172,7 +1246,6 @@ class EquivalenceChecker private constructor(
 
         fun getAUseSiteControl(): Map<TCmdPointer<METHODA>, BufferTraceInstrumentation.UseSiteControl> = methodAReached.mapValues {
             BufferTraceInstrumentation.UseSiteControl(
-                exactBufferContents = false,
                 trackBufferContents = false,
                 traceReached = it.value
             )
@@ -1221,7 +1294,7 @@ class EquivalenceChecker private constructor(
 
 
     /**
-     * An event that is of interest, as extracted from the [instrumentation.transformers.tracing.BufferTraceInstrumentation.TraceIndexMarker]
+     * An event that is of interest, as extracted from the [BufferTraceInstrumentation.TraceIndexMarker]
      * annotation. This annotation appeared at [vcProgramSite] in the program sent to the solver, and
      * was found at [origProgramSite] in the pre-inlined, instrumented version.
      */

@@ -14,37 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package instrumentation.transformers.tracing
+package verifier.equivalence.tracing
 
+import analysis.CmdPointer
 import vc.data.TACSymbol
 
 /**
- * "Public" version of instrumentation data
- * exposed to the [InstrumentationMixin] classes.
+ * Basic external interface for a long read. Includes [where]
+ * the long read occurs, it's byte location [loc] within memory,
+ * and the [length] of the buffer. These are the *original* symbols used in the
+ * original command, *not* the prophecy variables.
  */
-internal sealed interface ILongReadInstrumentation {
-    /**
-     * Internal id of the long read
-     */
-    val id: Int
-
-    /**
-     * Hash accumulator, equivalent of `r.hash`
-     */
-    val hashVar: TACSymbol.Var
-
-    /**
-     * length prophecy, equivalent of r.lenProphecy
-     */
-    val lengthProphecy: TACSymbol.Var
-
-    /**
-     * base pointer prophecy, equivalent of r.bpProphecy
-     */
-    val baseProphecy: TACSymbol.Var
-
-    /**
-     * Alignment flag, equivalent of `r.aligned`
-     */
-    val allAlignedVar: TACSymbol.Var
+internal sealed interface ILongRead {
+    val where: CmdPointer
+    val loc: TACSymbol
+    val length: TACSymbol
 }

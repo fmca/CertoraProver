@@ -14,28 +14,37 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package instrumentation.transformers.tracing
+package verifier.equivalence.tracing
 
 import vc.data.TACSymbol
 
 /**
- * Public information about buffer updates. Includes
- * information about the source of the write [updateSource],
- * the location, and the length.
+ * "Public" version of instrumentation data
+ * exposed to the [InstrumentationMixin] classes.
  */
-internal interface IBufferUpdate {
+internal sealed interface ILongReadInstrumentation {
     /**
-     * Partial information about the source of the write.
+     * Internal id of the long read
      */
-    val updateSource: IWriteSource
+    val id: Int
 
     /**
-     * Location of the write (the target offset in memory)
+     * Hash accumulator, equivalent of `r.hash`
      */
-    val updateLoc: TACSymbol
+    val hashVar: TACSymbol.Var
 
     /**
-     * Length of the write
+     * length prophecy, equivalent of r.lenProphecy
      */
-    val len: TACSymbol
+    val lengthProphecy: TACSymbol.Var
+
+    /**
+     * base pointer prophecy, equivalent of r.bpProphecy
+     */
+    val baseProphecy: TACSymbol.Var
+
+    /**
+     * Alignment flag, equivalent of `r.aligned`
+     */
+    val allAlignedVar: TACSymbol.Var
 }

@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package instrumentation.transformers.tracing
+package verifier.equivalence.tracing
 
 import algorithms.dominates
 import analysis.*
@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import vc.data.TACProgramCombiners.andThen
 import verifier.equivalence.CEXUtils.asEither
 import kotlin.streams.toList
+import verifier.equivalence.DefiniteBufferConstructionAnalysis
 
 @Suppress("FunctionName")
 /**
@@ -91,7 +92,9 @@ class BufferTraceInstrumentation private constructor(
 
     // START global vars
 
-    private val globalStateAccumulator: TACSymbol.Var = globalStateInstrumentationVar("stateAccumulator").withMeta(GLOBAL_STATE_ACCUM)
+    private val globalStateAccumulator: TACSymbol.Var = globalStateInstrumentationVar("stateAccumulator").withMeta(
+        GLOBAL_STATE_ACCUM
+    )
     val storageVar: TACSymbol.Var get() = m.getContainingContract().storage.stateVars().single()
 
     private val globalStateVars get() = listOf(globalStateAccumulator, storageVar) + staticInstrumentationVars
@@ -335,7 +338,8 @@ class BufferTraceInstrumentation private constructor(
         override val length: TACSymbol,
         override val id: Int,
         override val isNullRead: Boolean,
-        override val traceEventInfo: TraceEventWithContext
+        override val traceEventInfo: TraceEventWithContext,
+        val explicitReadId: Int?
     ) : LongRead
 
     private fun LongRead.instrumentationInfo() = readToInstrumentation[this]!!
@@ -677,7 +681,15 @@ class BufferTraceInstrumentation private constructor(
                 if(traceInfo == null) {
                     BasicLongRead(where = it.ptr, loc = read.offset, length = read.length, id = idCounter.getAndIncrement(), isNullRead = nullRead)
                 } else {
-                    EventLongRead(where = it.ptr, loc = read.offset, length = read.length, id = idCounter.getAndIncrement(), isNullRead = nullRead, traceEventInfo = traceInfo)
+                    EventLongRead(
+                        where = it.ptr,
+                        loc = read.offset,
+                        length = read.length,
+                        id = idCounter.getAndIncrement(),
+                        isNullRead = nullRead,
+                        traceEventInfo = traceInfo,
+                        explicitReadId = it.cmd.meta.find(DefiniteBufferConstructionAnalysis.LONG_READ_ID)
+                    )
                 }
 
             }.collect(Collectors.toSet()) + options.forceMloadInclusion.map {
@@ -712,7 +724,7 @@ class BufferTraceInstrumentation private constructor(
                             patternMatcher.queryFrom(it)
                         } is PatternMatcher.ConstLattice.Match
                     } == true
-                }
+                } && (longSource as? EventLongRead)?.explicitReadId == null
             }.toSet()
 
             /**
@@ -763,7 +775,7 @@ class BufferTraceInstrumentation private constructor(
                         hashVar = instrumentationVar("bufferHash"),
                         baseProphecy = instrumentationVar("bufferBaseProphecy"),
                         lengthProphecy = instrumentationVar("bufferLengthProphecy"),
-                        gcInfo = null.letIf(s in hasPrecedingGCPoint) { _ ->
+                        gcInfo = null.letIf(s in hasPrecedingGCPoint && (s !is EventLongRead || s.explicitReadId == null)) { _ ->
                             GarbageCollectionInfo(
                                 writeBoundVars = instrumentationVar("lower") to instrumentationVar("upper"),
                                 hashBackupVar = instrumentationVar("hashBackup"),
@@ -780,9 +792,6 @@ class BufferTraceInstrumentation private constructor(
                                 preciseBuffer = instrumentationVar("bufferIsPrecise", Tag.ByteMap),
                                 bufferCopySource = instrumentationVar("bufferCopies", Tag.ByteMap)
                             )
-                        } else { null },
-                        preciseContentsInfo = if(useSiteControl?.exactBufferContents == true) {
-                            ExactBufferContentInstrumentation(instrumentationVar("preciseContentsMap", Tag.ByteMap))
                         } else { null },
                         eventSiteVisited = useSiteControl?.traceReached?.let(::EventSiteVisitedTracker),
                         id = i,
@@ -827,12 +836,7 @@ class BufferTraceInstrumentation private constructor(
                             } else {
                                 null
                             },
-                            baseVar = inst.baseProphecy,
-                            preciseContents = if(usc.exactBufferContents) {
-                                inst.preciseContentsInfo!!.preciseContentsMap
-                            } else {
-                                null
-                            }
+                            baseVar = inst.baseProphecy
                         )
                     },
                     traceReport = (it as? EventLongRead)?.let {
@@ -1146,10 +1150,6 @@ class BufferTraceInstrumentation private constructor(
          */
         val bufferWriteInfo: BufferContentsInstrumentation?,
         /**
-         * Instrumentation variables that track the precise bytemap representation of the variable
-         */
-        val preciseContentsInfo: ExactBufferContentInstrumentation?,
-        /**
          * Instrumentation variables to record whether the event site was hit
          */
         val eventSiteVisited: EventSiteVisitedTracker?,
@@ -1162,7 +1162,7 @@ class BufferTraceInstrumentation private constructor(
     ) : WithVarInit, ILongReadInstrumentation {
         override val havocInitVars get() = listOf(lengthProphecy, baseProphecy)
 
-        val instrumentationMixins : List<InstrumentationMixin> get() = listOfNotNull(gcInfo, bufferWriteInfo, preciseContentsInfo, eventSiteVisited, preciseBoundedWindow)
+        val instrumentationMixins : List<InstrumentationMixin> get() = listOfNotNull(gcInfo, bufferWriteInfo, eventSiteVisited, preciseBoundedWindow)
 
         override val constantInitVars: List<Pair<TACSymbol.Var, ToTACExpr>> = listOf(
             hashVar to TACSymbol.Zero,
@@ -2176,11 +2176,6 @@ class BufferTraceInstrumentation private constructor(
          */
         val trackBufferContents: Boolean,
         /**
-         * Build a completely precise model of the buffer using bytemap definition chaining. This is *murderously* expensive
-         * and should never be used.
-         */
-        val exactBufferContents: Boolean,
-        /**
          * If non-null, then the long read site is instrumented to set this variable to true if control-flow reaches that
          * site. This variable is initialized to false by this instrumentation.
          */
@@ -2539,15 +2534,11 @@ class BufferTraceInstrumentation private constructor(
      * and [baseVar] is the prophecy variable for the start of the buffer (aka `bpProphecy`). [bufferWrites]
      * is non-null if the [UseSiteControl.trackBufferContents] flag for site was true, and includes information
      * about that instrumentation.
-     *
-     * [preciseContents] is non-null if [UseSiteControl.exactBufferContents] was true, and includes the bytemap which
-     * has the precise model of the buffer contents.
      */
     data class UseSiteInstrumentation(
         val lengthVar: TACSymbol.Var,
         val baseVar: TACSymbol.Var,
         val bufferWrites: IBufferContentsInstrumentation?,
-        val preciseContents: TACSymbol.Var?
     )
 
     /**
@@ -2734,7 +2725,9 @@ class BufferTraceInstrumentation private constructor(
         val sourceProphecy = sourceInfo.baseProphecy
         val lenProphecy = sourceInfo.lengthProphecy
         val hash = sourceInfo.hashVar
-        val toRet = mutableListOf<TACCmd.Simple>()
+        val toRet = MutableCommandWithRequiredDecls<TACCmd.Simple>()
+
+        val explicitReadId = (targetBuffer as? EventLongRead)?.explicitReadId
 
         val includePredicateRes = traceInclusionManager.updateShadowBuffer(targetBuffer)
         if(includePredicateRes == InclusionAnswer.Definite(false)) {
@@ -2745,98 +2738,80 @@ class BufferTraceInstrumentation private constructor(
         } else {
             TACSymbol.True.lift()
         }
+        toRet.extend(includePredicateCmds.toCRD())
 
-        /**
-         * Compute the intersection checks
-         */
-        val bufferEnd = TACSymbol.Var("bufferEndPoint", Tag.Bit256).toUnique("!").also {
-            toRet.add(
-                TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                    lhs = it,
-                    rhs = with(TACExprFactTypeCheckedOnlyPrimitives) {
-                        Add(sourceProphecy.asSym(), lenProphecy.asSym())
-                    }
-                )
-            )
+        // definitely not related so skip
+        if(explicitReadId != null &&
+            g.elab(write.where).cmd.meta.find(DefiniteBufferConstructionAnalysis.DefiniteDefiningWrite.META_KEY)?.writesFor?.contains(explicitReadId) != true) {
+            return CommandWithRequiredDecls()
         }
         val writeEndPoint = TACSymbol.Var("writeEndPoint", Tag.Bit256).toUnique("!").also {
-            toRet.add(
-                TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                    lhs = it,
-                    rhs = with(TACExprFactTypeCheckedOnlyPrimitives) {
-                        Add(offs.asSym(), length.asSym())
-                    }
-                )
-            )
+            toRet.extend(it `=` {
+                offs add length
+            })
         }
-        /*
-          we have (a, b) = (source, bufferEnd) and (c, d) = (offs, endPoint)
-          endPoint and bufferEnd are both exclusive (if we write 32 bytes starting at offs, offs + 32 isn't touched)
-          so overlap formula is
-          b > c and d > a AKA
-          offs < bufferEnd and endPoint > source
-         */
-        val overlapSym = TACSymbol.Var("bufferOverlap", Tag.Bool).toUnique("!").also {
-            toRet.add(
-                TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                    lhs = it,
-                    rhs = TACExprFactoryExtensions.run {
-                        LAnd(
-                            Lt(offs.asSym(), bufferEnd.asSym()),
-                            Lt(sourceProphecy.asSym(), writeEndPoint.asSym()),
-                            includePredicateCmds.exp,
-                            (length gt 0).toTACExpr()
-                        )
-                    }
+
+        val overlapSym = TACSymbol.Var("bufferOverlap", Tag.Bool).toUnique("!")
+        val overlapDefinition = if(explicitReadId != null) {
+
+            /**
+             * Compute the intersection checks
+             */
+            val bufferEnd = TACSymbol.Var("bufferEndPoint", Tag.Bit256).toUnique("!").also {
+                toRet.extend(it `=` {
+                    sourceProphecy add lenProphecy
+                })
+            }
+            /*
+              we have (a, b) = (source, bufferEnd) and (c, d) = (offs, endPoint)
+              endPoint and bufferEnd are both exclusive (if we write 32 bytes starting at offs, offs + 32 isn't touched)
+              so overlap formula is
+              b > c and d > a AKA
+              offs < bufferEnd and endPoint > source
+             */
+            TXF {
+                LAnd(
+                    offs lt bufferEnd,
+                    sourceProphecy lt writeEndPoint,
+                    includePredicateCmds.exp,
+                    length gt 0
                 )
-            )
+            }
+        } else {
+            includePredicateCmds.exp
         }
+        toRet.extend(overlapSym `=` overlapDefinition)
 
         /**
          * Get the relative offset of the write
          */
         val relativeOffs = TACSymbol.Var("relativeOffs", Tag.Bit256).toUnique("!").also {
-            toRet.add(
-                TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                    lhs = it,
-                    rhs = TXF {
-                        offs sub sourceProphecy
-                    }
-                )
+            toRet.extend(it `=` {
+                    offs sub sourceProphecy
+                }
             )
         }
         val hashUpdate = updateGenerator.updateShadowHash(hash, relativeOffs, length)
-        toRet.add(
-            TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                lhs = hash,
-                rhs = TXF {
-                    ite(overlapSym, hashUpdate.exp, hash)
-                }
-            )
+        toRet.extend(hash `=` {
+                ite(overlapSym, hashUpdate.exp, hash)
+            }
         )
         // update alignment
-        toRet.add(
-            TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                lhs = sourceInfo.allAlignedVar,
-                rhs = TXF {
-                    ite(overlapSym,
-                        sourceInfo.allAlignedVar and (
-                            sourceInfo.baseProphecy le write.loc
-                            ) and (
-                                (length mod EVM_WORD_SIZE) eq TACExpr.zeroExpr
-                            ) and (
-                                (relativeOffs mod EVM_WORD_SIZE) eq TACExpr.zeroExpr
-                            ) and (updateGenerator.getSourceIsAlignedPredicate()),
-                        sourceInfo.allAlignedVar
-                    )
-                }
-            )
+        toRet.extend(sourceInfo.allAlignedVar `=` {
+                ite(overlapSym,
+                    sourceInfo.allAlignedVar and (
+                        sourceInfo.baseProphecy le write.loc
+                        ) and (
+                            (length mod EVM_WORD_SIZE) eq TACExpr.zeroExpr
+                        ) and (
+                            (relativeOffs mod EVM_WORD_SIZE) eq TACExpr.zeroExpr
+                        ) and (updateGenerator.getSourceIsAlignedPredicate()),
+                    sourceInfo.allAlignedVar
+                )
+            }
         )
 
-        val hashUpdateCommands = includePredicateCmds.toCRD() andThen hashUpdate.toCRD() andThen CommandWithRequiredDecls(
-            toRet,
-            setOfNotNull(hash, sourceProphecy, lenProphecy, relativeOffs, overlapSym, writeEndPoint, bufferEnd) + sourceInfo.allVars
-        )
+        val hashUpdateCommands = hashUpdate.toCRD() andThen toRet.toCommandWithRequiredDecls()
         // call the mixins. Take care not to have call instrument itself
         val instrumentationUpdates = sourceInfo.instrumentationMixins.map {
             if(targetBuffer.where == write.where && !it.intrumentSelfUpdates) {

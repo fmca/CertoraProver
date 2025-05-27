@@ -268,7 +268,8 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
     SIGHASH_READ_NORMALIZER(LoggerTypes.EQUIVALENCE),
     OPTIMIZE_WASM_BITOPS(LoggerTypes.OPTIMIZE),
     LOG_FP_REUSE_NORMALIZATION(LoggerTypes.ALLOC),
-    BMC_FUNC(LoggerTypes.BOUNDED_MODEL_CHECKER)
+    BMC_FUNC(LoggerTypes.BOUNDED_MODEL_CHECKER),
+    DEFINITE_BUFFER_ANALYSIS(LoggerTypes.EQUIVALENCE)
     ;
 
     override fun isEnabled(): Boolean = this == NONE || Config.isEnabledLogger(this.loggerCategory) || Config.isEnabledReport(this)

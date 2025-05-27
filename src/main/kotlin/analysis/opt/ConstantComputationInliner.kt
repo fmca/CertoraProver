@@ -20,6 +20,7 @@ package analysis.opt
 import analysis.*
 import analysis.dataflow.IGlobalValueNumbering
 import analysis.dataflow.IUseAnalysis
+import config.Config
 import datastructures.stdcollections.*
 import kotlinx.serialization.Serializable
 import tac.MetaKey
@@ -166,6 +167,9 @@ object ConstantComputationInliner : ArrayLengthHeuristicMixin {
         } while(newSize > oldSize)
 
         fun locToReservedLocationScalar(base: TACSymbol, loc: BigInteger) : TACSymbol.Var? {
+            if(!Config.Mem0x0To0x40AsScalar) {
+                return null
+            }
             if(base == TACKeyword.MEMORY.toVar() &&
                 loc in setOf(0x0.toBigInteger(), 0x20.toBigInteger())) {
                 if(loc == 0x0.toBigInteger()) {

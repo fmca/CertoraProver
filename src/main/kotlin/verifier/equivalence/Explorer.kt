@@ -18,7 +18,7 @@
 package verifier.equivalence
 
 import datastructures.NonEmptyList
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import rules.RuleCheckResult
 import tac.Tag
 import vc.data.CoreTACProgram
@@ -26,7 +26,7 @@ import vc.data.TACSymbol
 import verifier.AbstractTACChecker
 
 internal class Explorer(
-    traceLevel: EquivalenceChecker.InstrumentationLevels,
+    traceLevel: EquivalenceChecker.IInstrumentationLevels,
     context: QueryContext
 ) : AbstractExplorer(traceLevel, context) {
     override fun generateVC(
@@ -43,6 +43,7 @@ internal class Explorer(
         pairwiseProofManager: EquivalenceChecker.PairwiseProofManager
     ): EquivalenceChecker.TraceExplorer? {
         return this.traceLevel.onTimeout(
+            context,
             pairwiseProofManager = pairwiseProofManager,
             aConfig = methodA.instrumentation
         )?.let {
@@ -55,7 +56,7 @@ internal class Explorer(
         methodB: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODB>,
         pairwiseProofManager: EquivalenceChecker.PairwiseProofManager
     ): EquivalenceChecker.UnsatInterpretation {
-        traceLevel.onSuccess(methodA.instrumentation, methodB.instrumentation)?.let {
+        traceLevel.onSuccess(context, methodA.instrumentation, methodB.instrumentation)?.let {
             return EquivalenceChecker.UnsatInterpretation.Refine(Explorer(it, context))
         }
         return EquivalenceChecker.UnsatInterpretation.Verified

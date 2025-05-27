@@ -14,11 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package instrumentation.transformers.tracing
+package verifier.equivalence.tracing
 
 import analysis.CommandWithRequiredDecls
 import evm.MAX_EVM_UINT256
-import instrumentation.transformers.tracing.BufferTraceInstrumentation.Companion.`=`
+import verifier.equivalence.tracing.BufferTraceInstrumentation.Companion.`=`
 import tac.Tag
 import vc.data.*
 import vc.data.tacexprutil.ExprUnfolder

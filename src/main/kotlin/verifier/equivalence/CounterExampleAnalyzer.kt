@@ -20,8 +20,8 @@ package verifier.equivalence
 import analysis.*
 import datastructures.stdcollections.*
 import evm.DEFAULT_SIGHASH_SIZE
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
 import kotlin.streams.toList
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import log.*
 import report.calltrace.CallInputsAndOutputs
 import report.calltrace.calldataMovement
@@ -59,7 +59,7 @@ internal class CounterExampleAnalyzer(
     private val vcProgram: CoreTACProgram,
     private val methodAContext: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODA>,
     private val methodBContext: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODB>,
-    private val instLevels: EquivalenceChecker.InstrumentationLevels,
+    private val instLevels: EquivalenceChecker.IInstrumentationLevels,
     override val context: QueryContext,
     val pairwiseProofManager: EquivalenceChecker.PairwiseProofManager
 ) : WithQueryContext {
@@ -160,7 +160,7 @@ internal class CounterExampleAnalyzer(
     }
 
     /**
-     * From the [instrumentation.transformers.tracing.BufferTraceInstrumentation.CallEvent] object
+     * From the [BufferTraceInstrumentation.CallEvent] object
      * found at [where] in [graph], extract the [verifier.equivalence.EquivalenceChecker.ExternalCall] object
      * describing the call, using the values in [model]. [maxOrd] indicates we are only interested in calls up to that index,
      * if the ordinal of [ce] is greater or equal to this parameter, this function returns null. Otherwise, it returns the extracted
@@ -192,7 +192,7 @@ internal class CounterExampleAnalyzer(
 
     /**
      * Try to extract the [verifier.equivalence.EquivalenceChecker.ExternalCall.Complete]
-     * from the [instrumentation.transformers.tracing.BufferTraceInstrumentation.CallEvent] [ce]
+     * from the [BufferTraceInstrumentation.CallEvent] [ce]
      * found at [where] in [graph] using the values in [model].
      */
     private fun callEventDataToInteraction(
@@ -687,7 +687,7 @@ internal class CounterExampleAnalyzer(
     )
 
     /**
-     * From the [instrumentation.transformers.tracing.BufferTraceInstrumentation.TraceIndexMarker],
+     * From the [BufferTraceInstrumentation.TraceIndexMarker],
      * extract the [verifier.equivalence.EquivalenceChecker.EventWithData] representation,
      * including sort information, parameter info, etc.
      */

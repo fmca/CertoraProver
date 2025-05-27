@@ -616,6 +616,61 @@ class TACCommandGraph(
         }
     }
 
+    /**
+     * Starting from [start], iterate forward through the graph following single successors
+     * of basic blocks. In other words, iterate from [start] until the end of the block.
+     * Then, from [start]'s block, follow single successors through the graph, iterating through each
+     * such block's commands. The sequence terminates if there are no single successors to follow.
+     *
+     * [start] is included in the sequence depending on [excludeStart]; if true, then the sequence starts
+     * from the single, unique command immediately following [start].
+     */
+    fun interBlockForwardsFrom(start: CmdPointer, excludeStart: Boolean) : Sequence<LTACCmd> {
+        val blockGenerator = sequence<NBId> {
+            var currBlock: NBId? = start.block
+            while(currBlock != null) {
+                yield(currBlock)
+                currBlock = succ(currBlock).singleOrNull()
+            }
+        }.asIterable()
+        return sequence {
+            var started = false
+            for(lc in lcmdSequence(blockGenerator, reverse = false)) {
+                if(started || (!excludeStart && lc.ptr == start)) {
+                    yield(lc)
+                }
+                started = started || lc.ptr == start
+            }
+        }
+    }
+
+    /**
+     * the same as [interBlockForwardsFrom], but in reverse: starting from [start] we go back through the block.
+     * Afterwards, we follow single predecessor blocks, iterating through those blocks in reverse order.
+     *
+     * [start] is included in the sequence depending on [excludeStart]; if true, then the sequence starts
+     * from the unique predecessor command of [start].
+     */
+    fun interBlockBackwardsFrom(start: CmdPointer, excludeStart: Boolean = true) : Sequence<LTACCmd> {
+        val blockGenerator = sequence<NBId> {
+            var currBlock : NBId? = start.block
+            while(currBlock != null) {
+                yield(currBlock)
+                currBlock = pred(currBlock).singleOrNull()
+            }
+        }.asIterable()
+        return sequence {
+            var started = false
+            for(lc in lcmdSequence(blockGenerator, reverse = true)) {
+                if(started || (!excludeStart && lc.ptr == start)) {
+                    yield(lc)
+                }
+                started = started || lc.ptr == start
+            }
+        }
+    }
+
+
     private fun toExp(ep: ExpPointer): TACExpr {
         fun findInSubExp(path: ExpPointer.Path, subExp: TACExpr): TACExpr? {
             var curSubExp: TACExpr = subExp

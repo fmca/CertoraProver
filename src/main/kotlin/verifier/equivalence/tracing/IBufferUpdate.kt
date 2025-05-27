@@ -14,19 +14,28 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package instrumentation.transformers.tracing
+package verifier.equivalence.tracing
 
-import analysis.CmdPointer
 import vc.data.TACSymbol
 
 /**
- * Basic external interface for a long read. Includes [where]
- * the long read occurs, it's byte location [loc] within memory,
- * and the [length] of the buffer. These are the *original* symbols used in the
- * original command, *not* the prophecy variables.
+ * Public information about buffer updates. Includes
+ * information about the source of the write [updateSource],
+ * the location, and the length.
  */
-internal sealed interface ILongRead {
-    val where: CmdPointer
-    val loc: TACSymbol
-    val length: TACSymbol
+internal interface IBufferUpdate {
+    /**
+     * Partial information about the source of the write.
+     */
+    val updateSource: IWriteSource
+
+    /**
+     * Location of the write (the target offset in memory)
+     */
+    val updateLoc: TACSymbol
+
+    /**
+     * Length of the write
+     */
+    val len: TACSymbol
 }
