@@ -540,6 +540,13 @@ class CVLCompiler(
         )
     }
 
+    fun compileSetStorageState(state: String): ParametricInstantiation<CVLTACProgram> {
+        val stateVar = allocatedTACSymbols.get(state, Tag.BlockchainState)
+        return CommandWithRequiredDecls(
+            TACCmd.CVL.SetBlockchainState(stateVar)
+        ).toProg("set state to $state", CompilationEnvironment()).toSimple()
+    }
+
     /*
     Will always be a connected graph with single root in compileStatement
      */

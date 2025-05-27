@@ -15,22 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using C as c;
+ contract C {
+    uint counter = 0;
 
-methods {
-    function getN() external returns (int8) envfree;
-}
-
-invariant nNonNegative() getN() >= 0;
-
-invariant mCurrentContractNonNegative() c.m[currentContract] >= 0 {
-    preserved setM1(address a) with (env e) {
-        require a != currentContract;
+    function foo(uint a) public {
+        if(a != 0){
+            counter = counter + 1;
+        }
     }
-}
 
-invariant mInvariantParamInPreserved(address b) c.m[b] >= 0 {
-    preserved addM1(address a) with (env e) {
-        require getM(e, b) >= 0;
+    function bar(uint a) public {
+        if (a == counter) {
+            counter += 1;
+        }
     }
 }

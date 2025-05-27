@@ -1,0 +1,19 @@
+{
+	"rules": {
+		"preservedParamsIndependent": {
+			"Initial State": {
+				"preservedParamsIndependent-Initial State-vacuity": "SUCCESS"
+			},
+			"Range 1": {
+				"SUCCESS": [
+					"preservedParamsIndependent-Initial State-C.bar"
+				]
+			},
+			"Range 2": {
+				"FAIL": [
+					"preservedParamsIndependent-Initial State-C.bar(uint256)-C.bar"
+				]
+			}
+		}
+	}
+}

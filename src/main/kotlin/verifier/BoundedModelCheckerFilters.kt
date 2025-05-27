@@ -63,7 +63,7 @@ enum class BoundedModelCheckerFilters(private val filter: BoundedModelCheckerFil
             cvl: CVL,
             scene: IScene,
             compiler: CVLCompiler,
-            compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
+            compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
             funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
             funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
             invAssertProgs: Map<CVLInvariant, CoreTACProgram>
@@ -92,7 +92,7 @@ private sealed interface BoundedModelCheckerFilter {
         cvl: CVL,
         scene: IScene,
         compiler: CVLCompiler,
-        compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
+        compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>
@@ -123,7 +123,7 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
         cvl: CVL,
         scene: IScene,
         compiler: CVLCompiler,
-        compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
+        compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>
@@ -187,8 +187,7 @@ private data object CommutativityFilter : BoundedModelCheckerFilter {
  * foo(params1);
  * foo(params2);
  * storage afterTwoCalls = lastStorage;
- * lastStorage = storageInit;
- * foo(params2); // notice here it's the same parameters as the second call on purpose)
+ * foo(params2) at storageInit; // notice here it's the same parameters as the second call on purpose)
  * assert lastStorage == afterTwoCalls;
  * ```
  */
@@ -230,7 +229,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
         cvl: CVL,
         scene: IScene,
         compiler: CVLCompiler,
-        compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
+        compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>
@@ -249,9 +248,9 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
                 }.transformer(it)
             }.optimize(scene)
 
-        idempotencyCheckProgs = compiledFuncs.entries.toList().mapIndexed { i, (func, funcProg) ->
-            val copy1 = funcProg.first.copyFunction(addCallId0Sink = true)
-            val copy2 = funcProg.first
+        idempotencyCheckProgs = compiledFuncs.entries.toList().mapIndexed { i, (func, funcData) ->
+            val copy1 = (funcData.paramsProg andThen funcData.funcProg).copyFunction(addCallId0Sink = true)
+            val copy2 = funcData.paramsProg andThen funcData.funcProg
 
             val initProg = compiler.generateRuleSetupCode().transformToCore(scene).optimize(scene)
 
@@ -286,29 +285,7 @@ private data object IdempotencyFilter : BoundedModelCheckerFilter {
                 StorageBasis.Ghost(it)
             }
 
-            val restoreStorageState = compiler.compileCommands(
-                withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
-                    listOf(
-                        CVLCmd.Simple.Definition(
-                            range,
-                            null,
-                            listOf(
-                                CVLLhs.Id(
-                                    range,
-                                    CVLKeywords.lastStorage.keyword,
-                                    CVLType.PureCVLType.VMInternal.BlockchainState.asTag()
-                                )
-                            ),
-                            CVLExp.VariableExp(
-                                "storageInit$i",
-                                CVLKeywords.lastStorage.type.asTag()
-                            ),
-                            scope
-                        )
-                    )
-                },
-                "check idempotency of $func"
-            ).toOptimizedCoreWithGhostInstrumentation(scene)
+            val restoreStorageState = compiler.compileSetStorageState("storageInit$i").toOptimizedCoreWithGhostInstrumentation(scene)
 
             val compareStorageStateProg = compiler.compileCommands(
                 withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
@@ -393,7 +370,7 @@ private data object FunctionNonModifyingFilter : BoundedModelCheckerFilter {
         cvl: CVL,
         scene: IScene,
         compiler: CVLCompiler,
-        compiledFuncs: Map<ContractFunction, Pair<CoreTACProgram, CallId>>,
+        compiledFuncs: Map<ContractFunction, BoundedModelChecker.FuncData>,
         funcReads: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         funcWrites: Map<ContractFunction, BoundedModelChecker.Companion.StateModificationFootprint?>,
         invAssertProgs: Map<CVLInvariant, CoreTACProgram>

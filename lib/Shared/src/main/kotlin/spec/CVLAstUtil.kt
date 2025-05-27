@@ -35,7 +35,6 @@ import spec.cvlast.typedescriptors.PrintingContext
 import spec.rules.*
 import utils.*
 import utils.CollectingResult.Companion.asError
-import utils.CollectingResult.Companion.flatten
 import utils.CollectingResult.Companion.lift
 import utils.CollectingResult.Companion.map
 import utils.CollectingResult.Companion.safeForce
@@ -924,9 +923,12 @@ class GenerateRulesForInvariantsAndEnvFree(
         }
     }
 
-    fun generatedRules(): CollectingResult<List<ICVLRule>, CVLError> {
-        return cvlAst.invs.filter { it.needsVerification }.map { rulesOfInvariant(it) }.flatten().map { invRules ->
-            invRules + listOfNotNull(ruleEnvfreeFuncsStatic())
+    fun generatedRules(): CollectingResult<List<ICVLRule>, CVLError> = collectingErrors {
+        val invRules = if (Config.BoundedModelChecking.getOrNull() == null) {
+            collectAndFilter(cvlAst.invs.filter { it.needsVerification }.map { rulesOfInvariant(it) })
+        } else {
+            listOf()
         }
+        invRules + listOfNotNull(ruleEnvfreeFuncsStatic())
     }
 }

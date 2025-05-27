@@ -73,17 +73,17 @@ private val logger = Logger(LoggerTypes.BOUNDED_MODEL_CHECKER)
  * the unfeasible number of possible sequences.
  */
 class BoundedModelChecker(
-    cvl: CVL,
+    private val cvl: CVL,
     private val scene: IScene,
     private val mainContract: NamedContractIdentifier,
     private val treeViewReporter: TreeViewReporter,
     private val reporter: OutputReporter
 ) {
     companion object {
-        private const val INV_N = "invN"
-        private fun envParam(n: Int) = "envParam$n"
-        private fun argParam(n: Int) = "argParam$n"
-        private fun selectorVarName(n: Int) = "SelectorVar$n"
+        private fun envParam(n: Int) = "envParam_$n"
+        private fun argParam(n: Int) = "argParam_$n"
+        private fun param(n: Int, i: Int) = "param_${n}_$i"
+        private fun selectorVarName(n: Int) = "SelectorVar_$n"
         private const val SETUP_FUNC_NAME = "setup"
 
         /**
@@ -101,6 +101,7 @@ class BoundedModelChecker(
 
         fun CoreTACProgram.optimize(scene: IScene): CoreTACProgram {
             val optimized = CompiledRule.optimize(scene.toIdentifiers(), this.withCoiOptimizations(false), bmcMode = true)
+            check(!optimized.isEmptyCode()) { "After (non-cone-of-influence) optimizations all the code of `${optimized.name} was optimized away"}
             return optimized
         }
 
@@ -166,6 +167,10 @@ class BoundedModelChecker(
             f.parallelLtacStream().filter { lcmd ->
                 callId == null || callId in callStack.currentCallIds(lcmd.ptr)
             }.forEach { lcmd ->
+                if (TACMeta.LAST_STORAGE_UPDATE in lcmd.cmd.meta) {
+                    // lastStorage updates don't count as reads/writes of the program
+                    return@forEach
+                }
                 when (val cmd = lcmd.cmd) {
                     is TACCmd.Simple.WordStore -> {
                         val base = cmd.base
@@ -237,7 +242,6 @@ class BoundedModelChecker(
     }
 
     private val maxSequenceLen = Config.BoundedModelChecking.get()
-    private val cvl = cvl.copy(ghosts = cvl.ghosts + CVLGhostDeclaration.Variable(Range.Empty(), CVLType.PureCVLType.Primitive.Mathint, INV_N, true, listOf(), CVLScope.AstScope))
     private val invariants = Config.getRuleChoices(cvl.invariants.mapToSet { it.id }).let { chosenInvs ->
         cvl.invariants
             .filter { inv ->
@@ -268,10 +272,16 @@ class BoundedModelChecker(
     private val setupFunctionProg: CoreTACProgram
 
     /**
-     * A mapping from a [ContractFunction] to the [CoreTACProgram] it compiles to along with the [CallId] of that
-     * function in the program. See [compileFunction] for details of what these programs contain.
+     * @param n: A unique number per contract function, used to uniquely define the parameters to the function.
+     * @param paramsProg: The [CoreTACProgram] that declares the parameters to the function.
+     * @param funcProg: The [CoreTACProgram] of the actual function body.
+     * @param callId: The callId of the function body in [funcProg]
      */
-    private val compiledFuncs: SortedMap<ContractFunction, Pair<CoreTACProgram, CallId>>
+    data class FuncData(val n: Int, val paramsProg: CoreTACProgram, val funcProg: CoreTACProgram, val callId: CallId)
+    /**
+     * A mapping from a [ContractFunction] to its [FuncData]..
+     */
+    private val compiledFuncs: SortedMap<ContractFunction, FuncData>
 
     private val invProgs: Map<CVLInvariant, InvariantPrograms>
 
@@ -346,9 +356,6 @@ class BoundedModelChecker(
 
             prog.copy(name = "initialization code").applySummaries().optimize(scene)
         }
-        check(!initializationProg.isEmptyCode()) {
-            "Optimizations removed all initialization code!"
-        }
 
         setupFunctionProg = run {
             val callSetup = withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
@@ -372,84 +379,13 @@ class BoundedModelChecker(
         }
 
         /**
-         * Compiles [func] as a standalone program, with the preserved blocks of all invariants from the spec inlined before
-         * the function call.
-         *
-         * The way the preserved block inlining works is that we add a new persistent ghost, [INV_N], and each invariant
-         * will set this to a different number (from the [invariants] mapping).
-         * The preserved blocks are then inserted within an if-else sequence that compares the value of [INV_N] to the
-         * corresponding invariant's constant. i.e. it will look like this:
-         * ```
-         * if (invN == 0) {
-         *     //invariant 0's preserved block
-         * } else if (invN == 1) {
-         *     //invariant 1's preserved block
-         * } else if (...) {
-         * ...
-         * } else {
-         *     assume false;
-         * }
-         * ```
-         *
-         * Another issue regarding inlining the preserved block is establishing the relation between the env variable
-         * declared via `with (env e)` and the actual env variable used in the call to the function. This is done by having
-         * a transform on the invariant's code that renames the variable declared via the `with` clause to the name used by
-         * the function call.
+         * Compiles [func] as a standalone program.
          */
-        fun compileFunction(func: ContractFunction): Pair<CoreTACProgram, CallId> {
+        fun compileFunction(func: ContractFunction): FuncData {
             val n = Allocator.getFreshNumber()
-            fun param(i: Int) = "param${n}_$i"
-
-            fun matchesContractAndNameAndParams(methodSig: QualifiedMethodParameterSignature): Boolean {
-                return (methodSig.qualifiedMethodName.host.name == CVLKeywords.wildCardExp.keyword || methodSig.qualifiedMethodName.host == func.methodSignature.qualifiedMethodName.host) &&
-                    methodSig.matchesNameAndParams(func.methodSignature)
-            }
-
-            val preservedList = invariants.mapKeys { (inv, _) -> inv.proof.preserved }.filterKeys { preserved ->
-                preserved.any { (it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature)) || it is CVLPreserved.Generic }
-            }.mapKeys { (_preserved, _) ->
-                val preserved = _preserved.find { it is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(it.methodSignature) }
-                    ?: _preserved.filterIsInstance<CVLPreserved.Generic>().single()
-                val envParamId = preserved.withParams.singleOrNull()?.id
-                val paramIds = if (preserved is CVLPreserved.ExplicitMethod) {
-                    preserved.params.map { it.id }
-                } else {
-                    null
-                }
-                if (envParamId == null && paramIds == null) {
-                    return@mapKeys preserved
-                }
-
-                // OK, there's an env param declared via a `with` clause. Let's rename it.
-                // See the kdoc of this function for details.
-                val renamer = object : CVLCmdTransformer<Nothing>(
-                    object : CVLExpTransformer<Nothing> {
-                        override fun variable(exp: CVLExp.VariableExp): CollectingResult<CVLExp, Nothing> {
-                            return super.variable(exp).map {
-                                if (exp.id == envParamId) {
-                                    exp.copy(id = envParam(n))
-                                } else {
-                                    val i = paramIds?.indexOf(exp.id) ?: -1
-                                    if (i != -1) {
-                                        exp.copy(id = param(i))
-                                    } else {
-                                        exp
-                                    }
-                                }
-                            }
-                        }
-                    }
-                ) {}
-                when (preserved) {
-                    is CVLPreserved.ExplicitMethod -> preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
-                    is CVLPreserved.Generic -> preserved.copy(block = renamer.cmdList(preserved.block).flatten().safeForce())
-                    else -> `impossible!`
-                }
-            }.toList()
-
             val cvlParams = func.methodSignature.params.mapIndexed { i, p ->
                 val ty = p.vmType.getPureTypeToConvertFrom(ToVMContext.ArgumentPassing).resultOrNull() ?: error("Can't convert ${p.vmType}")
-                CVLParam(ty, param(i), Range.Empty())
+                CVLParam(ty, param(n, i), Range.Empty())
             }
             val paramDeclarations = withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
                 compiler.declareVariables(
@@ -458,32 +394,6 @@ class BoundedModelChecker(
                     range
                 )
             }.toCore(scene)
-
-            // Generate the "dispatch" of the preserved blocks, see the kdoc of this function for details.
-            val preservedDispatch = withScopeAndRange(CVLScope.AstScope, Range.Empty()) {
-                preservedList.fold(CVLCmd.Simple.Nop(range, scope) as CVLCmd) { acc, (pres, i) ->
-                    CVLCmd.Composite.If(
-                        range,
-                        CVLExp.RelopExp.EqExp(
-                            CVLExp.VariableExp(INV_N, CVLType.PureCVLType.Primitive.Mathint.asTag()),
-                            CVLExp.Constant.NumberLit(
-                                i.toBigInteger(),
-                                CVLType.PureCVLType.Primitive.NumberLiteral(i.toBigInteger()).asTag()
-                            ),
-                            CVLType.PureCVLType.Primitive.Bool
-                                .asTag()
-                                .copy(annotation = CVLCmd.Composite.If.ConstantIfCond)
-                        ),
-                        CVLCmd.Composite.Block(
-                            range,
-                            pres.block,
-                            scope
-                        ),
-                        acc,
-                        scope
-                    )
-                }
-            }.wrapWithMessageLabel("Preserved block for $func").let { compiler.compileCommands(it, "preserved block") }.toCore(scene)
 
             val (call, callId) = compiler.compileStandaloneContractFunctionCall(
                 func,
@@ -498,13 +408,7 @@ class BoundedModelChecker(
                 }.toCore(scene)
             }
 
-            val prog = paramDeclarations andThen preservedDispatch andThen call
-
-            return prog.copy(name = func.abiWithContractStr()) to callId
-        }
-
-        invProgs = invariants.mapValues { (inv, _) ->
-            InvariantPrograms(inv, compiler) { this.applySummaries() }
+            return FuncData(n, paramDeclarations, call.copy(name = func.abiWithContractStr()), callId)
         }
 
         compiledFuncs = this.cvl.importedFuncs.values.asSequence()
@@ -525,37 +429,39 @@ class BoundedModelChecker(
             }
             // Now that we're done with the CVLCompiler, we can parallelize
             .parallelStream()
-            .map { (contractFunc, progAndCallId) ->
-                val (prog, callId) = progAndCallId
-                val optimized = prog.applySummaries().optimize(scene)
+            .map { (contractFunc, funcData) ->
+                val optimizedFuncProg = funcData.funcProg.applySummaries().optimize(scene)
+                val optimizedParamsProg = funcData.paramsProg.optimize(scene)
 
                 ArtifactManagerFactory().dumpMandatoryCodeArtifacts(
-                    optimized,
+                    optimizedFuncProg,
                     ReportTypes.BMC_FUNC,
                     StaticArtifactLocation.Outputs,
                     DumpTime.AGNOSTIC
                 )
 
-                contractFunc to (optimized to callId)
+                contractFunc to funcData.copy(paramsProg = optimizedParamsProg, funcProg = optimizedFuncProg)
             }
-            .filter { (_, progAndCallId) ->
-                val (prog, callId) = progAndCallId
+            .filter { (_, funcData) ->
                 // Note the filtering we do ignores the `isView` attribute of the functions. This is because e.g. Solidity-generated
                 // getters don't have this flag yet we want to skip them, and also it may be that a view function will modify a ghost
                 // via some hook.
-                getAllWritesAndReads(prog, callId).first?.let { !it.isEmpty() } != false
+                getAllWritesAndReads(funcData.funcProg, funcData.callId).first?.let { !it.isEmpty() } != false
             }.collect(Collectors.toMap({ it.first }, { it.second })).also {
                 logger.info { "bmc on ${it.size} functions" }
             }.toSortedMap(compareBy<ContractFunction> { it.abiWithContractStr() })
 
-
-        val funcWritesAndReads = compiledFuncs.mapValues { (_, progAndCallId) ->
-            getAllWritesAndReads(progAndCallId.first, progAndCallId.second)
+        val funcWritesAndReads = compiledFuncs.mapValues { (_, funcData) ->
+            getAllWritesAndReads(funcData.funcProg, funcData.callId)
         }
 
         funcWrites = funcWritesAndReads.mapValues { (_, writesAndReads) -> writesAndReads.first }
 
         funcReads = funcWritesAndReads.mapValues { (_, writesAndReads) -> writesAndReads.second }
+
+        invProgs = invariants.mapValues { (inv, _) ->
+            InvariantPrograms(inv, compiler) { this.applySummaries() }
+        }
 
         BoundedModelCheckerFilters.init(
             cvl,
@@ -577,8 +483,6 @@ class BoundedModelChecker(
      * In order to help the solvers, before each such dispatch we insert an `assume` of the invariant ([InvariantPrograms.assume]).
      *
      * At the end of the sequence we postpend an assertion of the invariant ([InvariantPrograms.assert]).
-     *
-     * We also prepend to the program setting the [INV_N] ghost to the value corresponding to this invariant ([InvariantPrograms.invN]).
      */
     private fun generateProgForSequence(
         funcsList: List<List<ContractFunction>>,
@@ -591,7 +495,7 @@ class BoundedModelChecker(
         }
 
         val functionCallsProg = funcsList.foldIndexed(
-            initializationProg andThen setupFunctionProg andThen invProgs.invN andThen invProgs.params
+            initializationProg andThen setupFunctionProg andThen invProgs.params
         ) { idx, outerAcc, contractFunctions ->
             if (contractFunctions.isEmpty()) {
                 // the constructor only case
@@ -608,7 +512,17 @@ class BoundedModelChecker(
                     ),
                     setOf(condVar, selectorVar)
                 ).toCore("condProg", scene)
-                val funcProg = compiledFuncs[contractFunction]!!.first.copyFunction(addCallId0Sink = true)
+
+                /*
+                 * Generate the function call itself. This is comprised of declaring the functions parameters,
+                 * calling the preserved block if there is one (which will be using the same parameters thanks to the
+                 * transformer used when generating its code, see the comment there), and then the function call itself.
+                 * Now make a unique copy of all of this via `copyFunction` to make sure that several calls to the
+                 * same function in a given sequence will be independent.
+                 */
+                val funcData = compiledFuncs[contractFunction]!!
+                val preserved = invProgs.preserveds[contractFunction] ?: CoreTACProgram.empty("no preserved")
+                val funcProg = (funcData.paramsProg andThen preserved andThen funcData.funcProg).copyFunction(addCallId0Sink = true)
 
                 val jumpiCmd = TACCmd.Simple.JumpiCmd(
                     cond = condVar,
@@ -680,7 +594,7 @@ class BoundedModelChecker(
         val params: CoreTACProgram,
         val assume: CoreTACProgram,
         val assert: CoreTACProgram,
-        val invN: CoreTACProgram
+        val preserveds: Map<ContractFunction, CoreTACProgram>
     ) {
         constructor(inv: CVLInvariant, compiler: CVLCompiler, summaryApplier: CoreTACProgram.() -> CoreTACProgram) : this(
             id = inv.id,
@@ -709,25 +623,61 @@ class BoundedModelChecker(
                 ).wrapWithMessageLabel("assert invariant"),
                 "the assert of ${inv.id}"
             ).toCore(scene).summaryApplier().optimize(scene),
-            invN = invariants[inv]!!.let { invN ->
-                compiler.compileCommands(
-                    listOf(
-                        CVLCmd.Simple.Definition(
-                            inv.range,
-                            null,
-                            listOf(CVLLhs.Id(
-                                inv.range,
-                                INV_N,
-                                CVLExpTag(inv.scope, CVLType.PureCVLType.Primitive.Mathint, inv.range)
-                            )),
-                            CVLExp.Constant.NumberLit(
-                                invN.toBigInteger(),
-                                CVLExpTag(inv.scope, CVLType.PureCVLType.Primitive.NumberLiteral(invN.toBigInteger()), inv.range)
-                            ),
-                            inv.scope
-                        )
-                    ), "$INV_N assignment"
-                ).toCore(scene)
+            preserveds = compiledFuncs.mapValuesNotNull { (func, funcData) ->
+                fun matchesContractAndNameAndParams(methodSig: QualifiedMethodParameterSignature): Boolean {
+                    return (methodSig.qualifiedMethodName.host.name == CVLKeywords.wildCardExp.keyword || methodSig.qualifiedMethodName.host == func.methodSignature.qualifiedMethodName.host) &&
+                        methodSig.matchesNameAndParams(func.methodSignature)
+                }
+
+                val preserveds = inv.proof.preserved
+                val preserved = preserveds.find { preserved ->
+                    preserved is CVLPreserved.ExplicitMethod && matchesContractAndNameAndParams(preserved.methodSignature)
+                } ?: preserveds.find { it is CVLPreserved.Generic } ?: return@mapValuesNotNull null
+
+                val envParamId = preserved.withParams.singleOrNull()?.id
+                val paramIds = if (preserved is CVLPreserved.ExplicitMethod) {
+                    preserved.params.map { it.id }
+                } else {
+                    null
+                }
+                if (envParamId == null && paramIds == null) {
+                    return@mapValuesNotNull preserved
+                }
+
+                // There is a `with` clause, or parameters to the explicit preserved (or both).
+                // Transform the preserved block's code renaming those parameters to their names in the call to [func]
+                // so that they will both use the same parameters as expected.
+                val renamer = object : CVLCmdTransformer<Nothing>(
+                    object : CVLExpTransformer<Nothing> {
+                        override fun variable(exp: CVLExp.VariableExp): CollectingResult<CVLExp, Nothing> {
+                            return super.variable(exp).map {
+                                if (exp.id == envParamId) {
+                                    exp.copy(id = envParam(funcData.n))
+                                } else {
+                                    val i = paramIds?.indexOf(exp.id) ?: -1
+                                    if (i != -1) {
+                                        exp.copy(id = param(funcData.n, i))
+                                    } else {
+                                        exp
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ) {}
+                when (preserved) {
+                    is CVLPreserved.ExplicitMethod -> preserved.copy(
+                        block = renamer.cmdList(preserved.block).flatten().safeForce()
+                    )
+
+                    is CVLPreserved.Generic -> preserved.copy(
+                        block = renamer.cmdList(preserved.block).flatten().safeForce()
+                    )
+
+                    else -> `impossible!`
+                }
+            }.mapValues { (_, preserved) ->
+                compiler.compileCommands(preserved.block, "preserved").toCore(scene).summaryApplier().optimize(scene)
             }
         )
     }

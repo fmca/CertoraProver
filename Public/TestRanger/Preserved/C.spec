@@ -15,22 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using C as c;
-
-methods {
-    function getN() external returns (int8) envfree;
-}
-
-invariant nNonNegative() getN() >= 0;
-
-invariant mCurrentContractNonNegative() c.m[currentContract] >= 0 {
-    preserved setM1(address a) with (env e) {
-        require a != currentContract;
+// This invariant should pass on the sequence `foo->foo` only if the parameter to the preserved is
+// the same parameter passed to it's corresponding function call.
+invariant preservedParamsLinkedToFunctionCall() currentContract.counter == 0 {
+    preserved foo(uint a) {
+        require a == 0;
     }
 }
 
-invariant mInvariantParamInPreserved(address b) c.m[b] >= 0 {
-    preserved addM1(address a) with (env e) {
-        require getM(e, b) >= 0;
+// This invariant should fail on `bar->bar` only if the parameters to the two invocations are independent.
+invariant preservedParamsIndependent() currentContract.counter < 2 {
+    preserved bar(uint a) {
+        require a == currentContract.counter;
     }
 }
