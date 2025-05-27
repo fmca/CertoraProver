@@ -1492,13 +1492,23 @@ object Config {
         )
     ) {}
 
-    val defaultInvariantType = ConfigType.CmdLine(
+    val DefaultInvariantType = ConfigType.CmdLine(
         converter = InvariantTypeConverter,
         default = InvariantType.WEAK,
         option = Option(
             "defaultInvariantType",
             true,
             "The type of an invariant to use when declaring an invariant without weak or strong keyword.  [default: weak]"
+        )
+    )
+
+    val RequireInvariantsPreRuleSemantics = ConfigType.BooleanCmdLine(
+        default = false,
+        option = Option(
+            "requireInvariantsPreRuleSemantics",
+            true,
+            "Collect all requireInvariant commands used in a rule and assume them in the rule setup " +
+                "instead of assuming them at the location where they are in the spec [default: false]."
         )
     )
 

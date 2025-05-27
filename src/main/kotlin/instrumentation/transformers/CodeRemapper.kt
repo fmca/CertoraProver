@@ -65,7 +65,7 @@ import java.io.Serializable
  *
  * ## Remapping Call Ids
  *
- * Unlike all uther unique IDs, Call ids are the only "built-in" id sequence that [CodeRemapper] reasons about. Further,
+ * Unlike all other unique IDs, Call ids are the only "built-in" id sequence that [CodeRemapper] reasons about. Further,
  * it has traditionally been the ID sequence where the most special handling logic is required. This class promises that
  * *every* call index, those that appear in Metas and block IDs and variables will be remapped via the [callIndexStrategy]
  * fields [CallIndexStrategy.remapCallIndex] class. The "fresh ID generation" callback passed to the

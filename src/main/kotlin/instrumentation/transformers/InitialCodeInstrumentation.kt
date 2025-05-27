@@ -192,6 +192,9 @@ object InitialCodeInstrumentation {
                     scene, cvl, code.name, code.symbolTable.globalScope
                 )
                 ).transform(code)
+            }).mapIf(Config.BoundedModelChecking.getOrNull() == null, CoreToCoreTransformer(ReportTypes.REQUIRE_INVARIANT_TRANSFORMER) { code ->
+                // translates requireInvariant commands
+                RequireInvariantTransformer(scene).transform(code)
             }).map(CoreToCoreTransformer(ReportTypes.APPLIED_SUMMARIES2) { code ->
                 // IMPORTANT: hooks will not be instrumented for summaries applied at this stage
                 // (i.e. if the summaries call Solidity)

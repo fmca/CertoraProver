@@ -17,6 +17,7 @@
 
 package vc.data
 
+import algorithms.SimpleDominanceAnalysis
 import algorithms.findRoots
 import algorithms.topologicalOrder
 import allocator.Allocator
@@ -1845,6 +1846,80 @@ class CoreTACProgram private constructor(
         symbolTable: TACSymbolTable,
         procedures: Set<Procedure>?,
     ) = this.copy(code = code, blockgraph = blockgraph, name = name, symbolTable = symbolTable, procedures = procedures ?: this.procedures)
+
+    /**
+     * Moves the commands between [startPos] (exclusive) and [endPos] (inclusive) to come after [targetPos] and rewires
+     * the graph such that the control from [startPos] continues after [endPos].
+     *
+     * See also [vc.data.PatchingTACProgram.moveCommandsBetweenTo]
+     *
+     * After rewiring, this method also updates all callIds of blocks.
+     * All blocks that are between block([toMoveStart]) and block([toMoveEnd]) (only the ones
+     * that have callId of either of the two blocks!) get the callId id of the block([target]).
+     * This ensures that TAC dumps are not broken.
+     */
+    fun moveCommandsBetweenTo(toMoveStart: LTACCmd, toMoveEnd: LTACCmd, target: LTACCmd): CoreTACProgram {
+        var res: MoveCommandResult? = null
+        val newProg = this.patching { p ->
+            logger.debug { "Moving program points for between start ${toMoveStart} and end block ${toMoveEnd} to ${target}." }
+            res = p.moveCommandsBetweenTo(toMoveStart.ptr, toMoveEnd.ptr, target.ptr)
+        }
+        val endBlock = toMoveEnd.ptr.block
+        val startBlock = res!!.insertedBlockStartId
+        val targetBlock = res!!.targetBlockIdAfterInsert
+
+        // Update call ids for all blocks between start and end - though only for the ones that have the same callId
+        // as either start or the end blocks. All nested callId will keep their callIds
+        val blocksBetweenStartAndEndWithSameCallId = (newProg.analysisCache.domination.dominatedOf(startBlock)
+            .intersect(SimpleDominanceAnalysis(newProg.analysisCache.graph.toRevBlockGraph()).dominatedOf(endBlock))
+            .filter { it.calleeIdx == startBlock.calleeIdx || it.calleeIdx == endBlock.calleeIdx } + endBlock + startBlock)
+            // Ensure that the start block will not receive a new call id.
+            .filter { it != toMoveStart.ptr.block }.toSet()
+
+        return newProg.updateCallIdOfBlocks(targetBlock.calleeIdx, blocksBetweenStartAndEndWithSameCallId)
+    }
+
+    private data class UpdateCallIdRemapperState(val blockMapping: MutableMap<NBId, NBId> = mutableMapOf(),
+                                                 val idRemapper: MutableMap<Pair<Any, Int>, Int> = mutableMapOf())
+
+    /**
+     * Updates the call ids of all blocks in the collection [blocksToUpdate] to be [newCallId].
+     */
+    private fun updateCallIdOfBlocks(newCallId: CallId, blocksToUpdate: Collection<NBId>): CoreTACProgram {
+        val state = UpdateCallIdRemapperState()
+        val remapCallIds = object : CodeRemapper<UpdateCallIdRemapperState>(
+            blockRemapper = { blk, _, _, state ->
+                if (blk in blocksToUpdate) {
+                    state.blockMapping.computeIfAbsent(blk) {
+                        blk.copy(calleeIdx = newCallId, freshCopy = Allocator.getFreshId(Allocator.Id.BLOCK_FRESH_COPY))
+                    }
+                } else {
+                    blk
+                }
+            },
+            callIndexStrategy = { _, idx, _ ->
+                idx
+            },
+            idRemapper = IdRemapperGenerator.generatorFor(UpdateCallIdRemapperState::idRemapper),
+            variableMapper = { _, t ->
+                t
+            }
+        ) {}
+        val mapper = remapCallIds.commandMapper(state)
+        return this.copy(
+            check = true,
+            blockgraph = this.blockgraph.entries.associateTo(MutableBlockGraph()) {
+                remapCallIds.remapBlockId(state, CodeRemapper.BlockRemappingStrategy.RemappingContext.BLOCK_ID, it.key) to it.value.updateElements {
+                    remapCallIds.remapBlockId(state, CodeRemapper.BlockRemappingStrategy.RemappingContext.SUCCESSOR, it)
+                }
+            },
+            code = this.code.entries.parallelStream().map {
+                remapCallIds.remapBlockId(state, CodeRemapper.BlockRemappingStrategy.RemappingContext.BLOCK_ID, it.key) to it.value.map {
+                    mapper(it)
+                }
+            }.collect(Collectors.toMap({ it.first }, { it.second })),
+        )
+    }
 }
 
 internal fun BlockGraph.leafNodes() =

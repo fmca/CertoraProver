@@ -1,0 +1,40 @@
+{
+  "assertMessages": {
+    "shouldFail": "assertVal - DataInvariant.spec line 16"
+  },
+  "rules": {
+    "alwaysPositive": {
+      "Induction base: After the constructor": "SUCCESS",
+      "Induction step: after external (non-view) methods": {
+        "Using general requirements": {
+          "FAIL": [
+            "breakInvariant(address,int256)"
+          ],
+          "SANITY_FAIL": [],
+          "SUCCESS": [
+            "addTogether(address,address,address,int256)",
+            "addTogetherAndIncrease(address,address,address,int256)",
+            "increase(address,int256)",
+            "temporarilyAdd(address,int256)",
+            "temporarilyMakeNegative(address,int256)"
+          ],
+          "TIMEOUT": [],
+          "UNKNOWN": []
+        }
+      }
+    },
+    "envfreeFuncsStaticCheck": {
+      "FAIL": [],
+      "SANITY_FAIL": [],
+      "SUCCESS": [
+        "accessInvariant(address)",
+        "increase(address,int256)"
+      ],
+      "TIMEOUT": [],
+      "UNKNOWN": []
+    },
+    "shouldFail": "FAIL",
+    "shouldSucceed": "SUCCESS",
+    "shouldSucceed2": "SUCCESS"
+  }
+}

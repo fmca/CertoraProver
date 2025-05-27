@@ -1,0 +1,102 @@
+{
+  "assertMessages": {
+    "shouldFail_requireInvariantWithAddr_after_assert0": "currentContract.addr == baz - C.spec line 27",
+    "shouldFail_requireInvariantWithAddr_after_assert2": "currentContract.addr == baz - C.spec line 14",
+    "shouldFail_requireInvariantWithParam_after_assert0": "currentContract.foo >= 5 - C.spec line 49",
+    "shouldFail_requireInvariantWithParam_after_assert1": "currentContract.foo >= 5 - C.spec line 57",
+    "shouldFail_requireInvariantWithParam_after_assert2": "currentContract.foo >= 5 - C.spec line 64",
+    "shouldFail_requireInvariantWithStruct_after_assert0": "currentContract.foo >= 5 - C.spec line 35",
+    "shouldFail_requireInvariantWithStruct_after_assert10": "currentContract.foo >= 5 - C.spec line 43",
+    "shouldFail_twoRequireInvariantCommands": "currentContract.foo >= 5 && currentContr... - C.spec line 93"
+  },
+  "rules": {
+    "invariantBar": {
+      "Induction base: After the constructor": "FAIL",
+      "Induction step: after external (non-view) methods": {
+        "Using general requirements": {
+          "FAIL": [],
+          "SANITY_FAIL": [],
+          "SUCCESS": [
+            "get()",
+            "getAddress(address)"
+          ],
+          "TIMEOUT": [],
+          "UNKNOWN": []
+        }
+      }
+    },
+    "invariantFoo": {
+      "Induction base: After the constructor": "FAIL",
+      "Induction step: after external (non-view) methods": {
+        "Using general requirements": {
+          "FAIL": [],
+          "SANITY_FAIL": [],
+          "SUCCESS": [
+            "get()",
+            "getAddress(address)"
+          ],
+          "TIMEOUT": [],
+          "UNKNOWN": []
+        }
+      }
+    },
+    "invariantFooWithParam": {
+      "Induction base: After the constructor": "FAIL",
+      "Induction step: after external (non-view) methods": {
+        "Using general requirements": {
+          "FAIL": [],
+          "SANITY_FAIL": [],
+          "SUCCESS": [
+            "get()",
+            "getAddress(address)"
+          ],
+          "TIMEOUT": [],
+          "UNKNOWN": []
+        }
+      }
+    },
+    "invariantWithAddr": {
+      "Induction base: After the constructor": "FAIL",
+      "Induction step: after external (non-view) methods": {
+        "Using general requirements": {
+          "FAIL": [],
+          "SANITY_FAIL": [],
+          "SUCCESS": [
+            "get()",
+            "getAddress(address)"
+          ],
+          "TIMEOUT": [],
+          "UNKNOWN": []
+        }
+      }
+    },
+    "invariantWithStruct": {
+      "Induction base: After the constructor": "FAIL",
+      "Induction step: after external (non-view) methods": {
+        "Using general requirements": {
+          "FAIL": [],
+          "SANITY_FAIL": [],
+          "SUCCESS": [
+            "get()",
+            "getAddress(address)"
+          ],
+          "TIMEOUT": [],
+          "UNKNOWN": []
+        }
+      }
+    },
+    "shouldFail_requireInvariantWithAddr_after_assert0": "FAIL",
+    "shouldFail_requireInvariantWithAddr_after_assert2": "FAIL",
+    "shouldFail_requireInvariantWithParam_after_assert0": "FAIL",
+    "shouldFail_requireInvariantWithParam_after_assert1": "FAIL",
+    "shouldFail_requireInvariantWithParam_after_assert2": "FAIL",
+    "shouldFail_requireInvariantWithStruct_after_assert0": "FAIL",
+    "shouldFail_requireInvariantWithStruct_after_assert10": "FAIL",
+    "shouldFail_twoRequireInvariantCommands": "FAIL",
+    "shouldSucceed_requireInvariantInCVLFunction": "SUCCESS",
+    "shouldSucceed_requireInvariantWithParam_before_assert": "SUCCESS",
+    "shouldSucceed_requireInvariant_after_assert": "SUCCESS",
+    "shouldSucceed_requireInvariant_before_assert": "SUCCESS",
+    "shouldSucceed_twoRequireInvariantCommands": "SUCCESS"
+  }
+}

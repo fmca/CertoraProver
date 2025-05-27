@@ -17,6 +17,8 @@
 
 package vc.data
 
+import algorithms.SimpleDominanceAnalysis
+import algorithms.dominates
 import algorithms.findRoots
 import allocator.Allocator
 import analysis.CmdPointer
@@ -1015,6 +1017,8 @@ open class PatchingTACProgram<T : TACCmd> protected constructor(
         this.replaceCommand(pos, listOf(cmd) + after)
     }
 
+
+
     /**
      * @param start start removing from here, inclusive
      * @param end end removing here, inclusive
@@ -1262,4 +1266,53 @@ fun <T: TACCmd> PatchingTACProgram<T>.addBefore(where: CmdPointer, what: Command
 fun <T: TACCmd> PatchingTACProgram<T>.addAfter(where: CmdPointer, what: CommandWithRequiredDecls<T>) {
     this.addAfter(where, what.cmds)
     this.addVarDecls(what.varDecls)
+}
+
+/**
+ * A results of [moveCommandsBetweenTo].
+ *
+ * @param insertedBlockStartId The new block id of the block that will follow directly [targetPos] after the move.
+ * @param insertedBlockEndId The new block id of the last block of the move. It will be the predecessor of [targetBlockIdAfterInsert]
+ * @param targetBlockIdAfterInsert The new block id of the block containing the successors statements of [targetPos].
+ * [targetBlockIdAfterInsert] will be the new successor of [insertedBlockEndId]
+ */
+data class MoveCommandResult(val insertedBlockStartId: NBId, val insertedBlockEndId: NBId, val targetBlockIdAfterInsert: NBId)
+
+/**
+ * Moves the commands between [startPos] (exclusive) and [endPos] (inclusive) to come after [targetPos] and rewires
+ * the graph such that the control from [startPos] continues after [endPos].
+ *
+ * Please note that this operation will not move the [startPos] pointer, and control flow after
+ * [startPos] will continues at the successors of [endPos]. But [endPos] will be moved and
+ * the new successors of [endPos] will be the old successors of [targetPos].
+ *
+ * It's required that all paths from [startPos] flow through [endPos], and in the reversed control flow graph,
+ * all path from [endPos] flow through [startPos]. As otherwise, we'll have a malformed control flow graph. This check
+ * is done using the dominance analysis.
+ *
+ * @param startPos start command (exclusive) after which the control flow will be moved.
+ * @param endPos end command of the code to be moved (inclusive)
+ * @param targetPos the position all commands between [startPos] and [endPos] should be moved to.
+ *
+ * Note: This code will _not_ update the callId of the blocks which causes TAC dumps to
+ * render incorrectly. Please use method [vc.data.CoreTACProgram.moveCommandsBetweenTo] if this is required.
+ */
+fun PatchingTACProgram<TACCmd.Simple>.moveCommandsBetweenTo(startPos: CmdPointer, endPos: CmdPointer, targetPos: CmdPointer): MoveCommandResult {
+    check(startPos != endPos) { "Expecting start and end position to differ." }
+    check(startPos != targetPos) { "Expecting start and target position to differ." }
+    check(endPos != targetPos) { "Expecting start and target position to differ." }
+    check(endPos.block != targetPos.block)
+    check(startPos.block != targetPos.block)
+    check(SimpleDominanceAnalysis(blockgraph).dominates(startPos, endPos)) { "Expecting start command to always occur before end command in the graph." }
+    check(SimpleDominanceAnalysis(blockgraph.asReversed()).dominates(endPos.block, startPos.block)) { "Expecting end command to always occur before start command in the reversed graph." }
+
+    val targetBlockAfter = this.splitBlockAfter(targetPos)
+    val toMoveStartBlockAfter = this.splitBlockAfter(startPos)
+    val toMoveEndBlockAfter = this.splitBlockAfter(endPos)
+
+    this.insertAfter(targetPos, listOf(TACCmd.Simple.JumpCmd(toMoveStartBlockAfter)))
+    this.insertAfter(endPos, listOf(TACCmd.Simple.JumpCmd(targetBlockAfter)))
+    this.insertAfter(startPos, listOf(TACCmd.Simple.JumpCmd(toMoveEndBlockAfter)))
+
+    return MoveCommandResult(toMoveStartBlockAfter, toMoveEndBlockAfter, targetBlockAfter)
 }

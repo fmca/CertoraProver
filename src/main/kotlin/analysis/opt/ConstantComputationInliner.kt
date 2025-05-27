@@ -167,13 +167,7 @@ object ConstantComputationInliner : ArrayLengthHeuristicMixin {
         } while(newSize > oldSize)
 
         fun locToReservedLocationScalar(base: TACSymbol, loc: BigInteger) : TACSymbol.Var? {
-            /**
-             * We have some tests that opt out of scalarization via [Config._Mem0x0To0x40AsScalar] BUT
-             * actually rely on that flag being IGNORED in the below (so storage analyses work).
-             *
-             * So, narrow the check here to check the explicit equivalence check opt out.
-             */
-            if(Config.EquivalenceCheck.get()) {
+            if(!Config.Mem0x0To0x40AsScalar) {
                 return null
             }
             if(base == TACKeyword.MEMORY.toVar() &&

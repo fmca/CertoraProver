@@ -72,8 +72,11 @@ import vc.data.ParametricMethodInstantiatedCode.addSink
 import vc.data.ParametricMethodInstantiatedCode.removeMethodParamHavocs
 import vc.data.TACCmd.Simple.AnnotationCmd.Companion.toAnnotation
 import vc.data.TACMeta.BIT_WIDTH
+import vc.data.TACMeta.CVL_ASSUME_INVARIANT_CMD_END
+import vc.data.TACMeta.CVL_ASSUME_INVARIANT_CMD_START
 import vc.data.TACMeta.CVL_DEF_SITE
 import vc.data.TACMeta.CVL_DISPLAY_NAME
+import vc.data.TACMeta.CVL_ASSUME_INVARIANT_TARGET
 import vc.data.TACMeta.CVL_EXP
 import vc.data.TACMeta.CVL_GHOST
 import vc.data.TACMeta.CVL_LABEL_END
@@ -82,6 +85,7 @@ import vc.data.TACMeta.CVL_LABEL_START_ID
 import vc.data.TACMeta.CVL_STRUCT_PATH
 import vc.data.TACMeta.CVL_TYPE
 import vc.data.TACMeta.CVL_VAR
+import vc.data.TACMeta.IGNORE_IN_CALLTRACE
 import vc.data.TACMeta.RESET_STORAGE
 import vc.data.TACMeta.SATISFY_ID
 import vc.data.TACMeta.SCALARIZATION_SORT
@@ -577,7 +581,6 @@ class CVLCompiler(
                     }
                 }
             })
-
         // add range info aux function adding CVL range meta info to every result of the compileCommand method
         fun ParametricInstantiation<CVLTACProgram>.addRangeInfo(): ParametricInstantiation<CVLTACProgram> =
             this.copy(withMethodParamInsts = this.withMethodParamInsts.map { mwpi ->
@@ -612,7 +615,11 @@ class CVLCompiler(
             }
 
             is CVLCmd.Simple.AssumeCmd.AssumeInvariant -> {
-                compileAssumeInvariant(cmd, allocatedTACSymbols)
+                if(Config.RequireInvariantsPreRuleSemantics.get()){
+                    compileAssumeInvariantGlobally(cmd, allocatedTACSymbols)
+                } else{
+                    compileAssumeInvariant(cmd, allocatedTACSymbols)
+                }
             }
 
             is CVLCmd.Composite.If -> {
@@ -1617,6 +1624,102 @@ class CVLCompiler(
         )
     }
 
+
+    /**
+     * A data class to hold different parts of the program during compilation of a require invariant command.
+     *
+     * [programToMove] is what we describe below in the command as toBePlacedAfterRuleParamSetup, while
+     * [programToMaintain] is what we describe below in the command as assumeRequireInvParam
+     */
+    private data class RequireInvariantProgram(val programToMove: CVLTACProgram, val programToMaintain: CVLTACProgram)
+
+    /**
+     * This compilation step compiles a requireInvariant into two different programs (toBePlacedAfterRuleParamSetup, assumeRequireInvParam).
+     *
+     * The program assumeRequireInvParam will be inlined at the location where the user originally specified requireInvariant and consists of statements
+     * ASSUME (requireInvParam_i == evaluated expression of invariant parameter i)
+     * ASSUME (requireInvParam_i == initiallyHavocedParam_i) for every param.
+     *
+     * The program toBePlacedAfterRuleParamSetup consists of the code compiled by ASSUME invariant_exp(initiallyHavocedParam_0, ... initiallyHavocedParam_n)
+     * which will then be wrapped by annotation commands [CVL_ASSUME_INVARIANT_CMD_START] and [CVL_ASSUME_INVARIANT_CMD_END] indicating that this code will be moved.
+     *
+     * Both code programs (toBePlacedAfterRuleParamSetup, assumeRequireInvParam) are first inlined at the location the user specified the requireInvariant command,
+     * then [instrumentation.transformers.RequireInvariantTransformer] takes care of moving the program toBePlacedAfterRuleParamSetup to the correct location
+     * (given by where the [CVL_ASSUME_INVARIANT_TARGET] is placed).
+     */
+    private fun compileAssumeInvariantGlobally(cmd: CVLCmd.Simple.AssumeCmd.AssumeInvariant, allocatedTACSymbols: TACSymbolAllocation): ParametricInstantiation<CVLTACProgram> {
+
+        fun CVLTACProgram.ignoreInCallTrace(): CVLTACProgram =
+            this.copy(code = this.code.mapValues { (_, cmds) ->
+                cmds.map { tacCmd ->
+                    when(tacCmd){
+                        is TACCmd.Simple.NopCmd -> tacCmd // NopCmd crashes on withMeta
+                        else -> tacCmd.plusMeta(IGNORE_IN_CALLTRACE)
+                    }
+                }
+            })
+        val inv =
+            symbolTable.lookUpNonFunctionLikeSymbol(cmd.id, cmd.scope)?.symbolValue as? CVLInvariant
+                ?: error("Failed to find invariant ${cmd.id}")
+
+        check(cmd.params.size == inv.params.size){ "The number of parameters of the invariant and the number of parameters of the command don't match." }
+        val havocedInvParams = cmd.params.mapIndexed { i, exp ->
+            val toHavocType = exp.getOrInferPureCVLType();
+            val havocParameterName = symbolTable.freshName("initiallyHavocedParam_${i}")
+            val (havocedInvParam, _) = allocatedTACSymbols.generateTransientUniqueCVLParam(symbolTable, havocParameterName, toHavocType)
+            havocedInvParam
+        }
+
+        // Replacing the parameters as they are declared in the actual invariant by the newly created havoc'ed parameter names.
+        val replacements = inv.params
+            .map { param -> param.id }
+            .zip(havocedInvParams.map { CVLExp.VariableExp(it.id, tag = CVLExpTag(cmd.scope, it.type, cmd.range)) })
+            .toMap()
+
+        val convertedExp = SubstitutorExp(replacements).expr(inv.exp).safeForce()
+        val invariantAssume = compileCommand(
+            CVLCmd.Simple.AssumeCmd.Assume(
+                cmd.range,
+                convertedExp,
+                null,
+                cmd.scope
+            ),
+            allocatedTACSymbols,
+            CompilationEnvironment()
+        )
+
+        val combinedProg = havocedInvParams.zip(cmd.params).foldIndexed(RequireInvariantProgram(CVLTACProgram.empty("toBePlacedAfterRuleParamSetup"), CVLTACProgram.empty("assumeRequireInvParam"))) { i, acc, (havocedInvParam, exp) ->
+            val globalRequireInvVar = symbolTable.freshName("globalRequireInvParam${i}")
+            val (globalRequireInvVarCVL, _) = allocatedTACSymbols.generateTransientUniqueCVLParam(symbolTable, globalRequireInvVar, havocedInvParam.type)
+
+            val left = CVLExp.VariableExp(havocedInvParam.id, tag = CVLExpTag(cmd.scope, havocedInvParam.type, cmd.range))
+            val right = CVLExp.VariableExp(globalRequireInvVarCVL.id, tag = CVLExpTag(cmd.scope, globalRequireInvVarCVL.type, cmd.range))
+            val eqExp = CVLExp.RelopExp.EqExp(left, right, tag = CVLExpTag(cmd.scope, globalRequireInvVarCVL.type, cmd.range))
+            val assumeCmd = CVLCmd.Simple.AssumeCmd.Assume(cmd.range, eqExp, null, cmd.scope)
+
+            // compiling the assumption that the assigned global is equal to the initially havoc'ed variable
+            val compiledAssume = compileCommand(assumeCmd, allocatedTACSymbols, CompilationEnvironment())
+
+            // Compiling the evaluation of the expression of parameter
+            val evaulatedExpressionOfParam = CVLExpressionCompiler(this, allocatedTACSymbols, CompilationEnvironment())
+                .compileExp(globalRequireInvVarCVL, exp).getAsSimple().merge(compiledAssume).getAsSimple().ignoreInCallTrace()
+
+            // Adding variable assumption to the freshly havoc'ed CVL parameters. As the freshly generated havoc'ed parameter variables will be moved, the assumption on the bounds must be moved as well.
+            val havocedVariableAssumptions = addVariableValueAssumptions(havocedInvParam.id, havocedInvParam.type, "variable assumptions for havoced parameters ", allocatedTACSymbols, CompilationEnvironment()).getAsSimple()
+            RequireInvariantProgram(programToMove = acc.programToMove.merge(havocedVariableAssumptions), programToMaintain = acc.programToMaintain.merge(evaulatedExpressionOfParam))
+        }
+
+        // Creating a labelId to be able to map start and end of the currently compiled command in [instrumentation.transformers.RequireInvariantTransformer]
+        val labelId = Allocator.getFreshId(Allocator.Id.REQUIRE_INVARIANT_CMDS)
+
+        val toBePlacedAfterRuleParamSetup = combinedProg.programToMove.merge(invariantAssume)
+            .getAsSimple()
+            .prependToBlock0(CommandWithRequiredDecls(listOf(TACCmd.Simple.AnnotationCmd(CVL_ASSUME_INVARIANT_CMD_START, TACMeta.RequireInvariant(labelId, cmd.id)))))
+            .appendToSinks(CommandWithRequiredDecls(listOf(TACCmd.Simple.AnnotationCmd(CVL_ASSUME_INVARIANT_CMD_END, TACMeta.RequireInvariant(labelId, cmd.id)))))
+
+        return combinedProg.programToMaintain.merge(toBePlacedAfterRuleParamSetup).toSimple()
+    }
+
     private fun compileLabelCmd(cmd: CVLCmd.Simple.Label, name: String, env: CompilationEnvironment): ParametricInstantiation<CVLTACProgram> {
         val tacCmd = when (cmd) {
             is CVLCmd.Simple.Label.Start -> TACCmd.Simple.AnnotationCmd(CVL_LABEL_START, cmd.content).plusMeta(CVL_LABEL_START_ID, cmd.id)
@@ -2380,7 +2483,9 @@ class CVLCompiler(
                 wrapWithCVL(constrainNonConstImmutables(), "Constrain immutables")
             ).merge(
                 wrapWithCVL(establishEquivalenceOfExtensionContractImmutables(), "establish equivalence of extension and base contract immutables")
-            )
+            ).letIf(Config.RequireInvariantsPreRuleSemantics.get()) {
+                it.merge(wrapWithCVL(CommandWithRequiredDecls<TACCmd.Spec>(listOf(TACCmd.Simple.AnnotationCmd(CVL_ASSUME_INVARIANT_TARGET))), "Assuming all requireInvariants commands globally"))
+            }
 
         return codeFromCommandVarWithDecls(StartBlock, wrapWithCVL(startBlockEnvSetup, "Setup"), ruleName)
     }

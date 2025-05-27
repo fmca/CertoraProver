@@ -49,7 +49,7 @@ class Invariant(
             InvariantType.WEAK.msg -> WeakInvariantType
             InvariantType.STRONG.msg -> StrongInvariantType
             else -> {
-                if(Config.defaultInvariantType.get() == InvariantType.STRONG) {
+                if(Config.DefaultInvariantType.get() == InvariantType.STRONG) {
                     StrongInvariantType
                 } else {
                     WeakInvariantType
