@@ -101,7 +101,7 @@ internal class BoundedPreciseCellInstrumentation(
     /**
      * Helper class for stringing together auxiliary definitions. See below
      */
-    private class Binder(val tmpVar: TACSymbol.Var, val definingExpr: TACExpr) {
+    private class Binder(val tmpVar: TACSymbol.Var, val definingExpr: TACExpr, vararg val extra: TACSymbol.Var) {
         @JvmName("in_withdecl")
         infix fun `in`(f: (TACSymbol.Var) -> TACExprWithRequiredCmdsAndDecls<TACCmd.Simple>) : TACExprWithRequiredCmdsAndDecls<TACCmd.Simple> {
             return getBinding() andThen f(tmpVar)
@@ -110,7 +110,7 @@ internal class BoundedPreciseCellInstrumentation(
         private fun getBinding() =
             CommandWithRequiredDecls(
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(lhs = tmpVar, rhs = definingExpr),
-                setOf(tmpVar)
+                setOf(tmpVar) + extra
             )
 
         @JvmName("in_expr")
@@ -137,7 +137,12 @@ internal class BoundedPreciseCellInstrumentation(
      */
     private fun bind(mk: TACExprFactoryExtensions.() -> ToTACExpr) : Binder {
         val holder = TACKeyword.TMP(Tag.Bit256, "preciseTempVar")
-        return Binder(holder, TACExprFactoryExtensions.mk().toTACExpr())
+        val expr = TACExprFactoryExtensions.mk().toTACExpr()
+        if(expr is TACExpr.Unconstrained) {
+            val rhs = TACKeyword.TMP(Tag.Bit256, "!Unconstrained")
+            return Binder(holder, rhs.asSym(), rhs)
+        }
+        return Binder(holder, expr)
     }
 
     override fun atPrecedingUpdate(
@@ -216,7 +221,7 @@ internal class BoundedPreciseCellInstrumentation(
                                 ite(
                                     // actually slicing the middle, give up :(
                                     baseInstrumentation.baseProphecy lt s.updateLoc,
-                                    bind { TACKeyword.TMP(Tag.Bit256, "!unconstrained") } inExpr { it },
+                                    bind { TACExpr.Unconstrained(Tag.Bit256) } inExpr { it },
                                     bind { writeEndPoint sub baseInstrumentation.baseProphecy } `in` { upperBytesWidth ->
                                         bind { EVM_WORD_SIZE sub upperBytesWidth} `in` { remainingLowerBytes ->
                                             bind { baseInstrumentation.baseProphecy sub s.updateLoc } inExpr  { sourceDataStart ->
@@ -305,7 +310,7 @@ internal class BoundedPreciseCellInstrumentation(
             is IWriteSource.LongMemCopy,
             is IWriteSource.Other -> {
                 TACExprFactTypeCheckedOnlyPrimitives.run {
-                    bind { TACKeyword.TMP(Tag.Bit256, "!unconstrained") } inExpr { it }
+                    bind { TACExpr.Unconstrained(Tag.Bit256) } inExpr { it }
                 }
             }
         }

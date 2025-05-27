@@ -45,6 +45,7 @@ import verifier.*
 import java.math.BigInteger
 import java.util.concurrent.atomic.AtomicInteger
 import log.*
+import report.TreeViewReporter
 import spec.cvlast.QualifiedMethodSignature
 import spec.rules.EquivalenceRule
 import verifier.equivalence.summarization.PureFunctionExtraction
@@ -76,17 +77,74 @@ class EquivalenceChecker private constructor(
     /**
      * Display information
      */
-    enum class ContextLabel(val displayLabel: String, val description: String) {
-        CALL_VALUE("Value", "Ether value sent with call in wei"),
-        CALLEE("Callee address", "Target account of external call"),
-        CALLEE_CODESIZE("Callee codesize", "Non-deterministically chosen codesize of the target account"),
-        RETURNSIZE("Result Buffer Size", "Size, in bytes, of the return/revert buffer"),
-        CALL_RESULT("Call Result", "Whether the external call reverted or returned successfully"),
+    sealed interface ContextLabel {
+        val displayLabel: String
+        val description: String
 
-        LOG_TOPIC1("Topic 1", "The first log topic (usually the hash of the event signature)"),
-        LOG_TOPIC2("Topic 2", "The second log topic (the first indexed event parameter)"),
-        LOG_TOPIC3("Topic 3", "The third log topic (the second indexed event parameter)"),
-        LOG_TOPIC4("Topic 4", "The fourth log topic (the third indexed event parameter)")
+        enum class LogLabel(override val displayLabel: String, override val description: String) : ContextLabel {
+            LOG_TOPIC1("Topic 1", "The first log topic (usually the hash of the event signature)"),
+            LOG_TOPIC2("Topic 2", "The second log topic (the first indexed event parameter)"),
+            LOG_TOPIC3("Topic 3", "The third log topic (the second indexed event parameter)"),
+            LOG_TOPIC4("Topic 4", "The fourth log topic (the third indexed event parameter)")
+        }
+
+        enum class ExternalCallLabel(override val displayLabel: String, override val description: String) : ContextLabel {
+            CALL_VALUE("Value", "Ether value sent with call in wei"),
+            CALLEE("Callee address", "Target account of external call"),
+            CALLEE_CODESIZE("Callee codesize", "Non-deterministically chosen codesize of the target account"),
+            RETURNSIZE("Result Buffer Size", "Size, in bytes, of the return/revert buffer"),
+            CALL_RESULT("Call Result", "Whether the external call reverted or returned successfully")
+        }
+
+        sealed interface InternalCallLabel : ContextLabel {
+            data object Signature : InternalCallLabel {
+                override val displayLabel: String
+                    get() = "Internal function signature"
+                override val description: String
+                    get() = "The fully qualified signature of a common pure function"
+            }
+
+            data class Arg(val name: String, val tooltip: String) : InternalCallLabel {
+                override val displayLabel: String
+                    get() = name
+                override val description: String
+                    get() = tooltip
+            }
+
+            data class ReturnValue(val ord: Int) : InternalCallLabel {
+                override val displayLabel: String
+                    get() {
+                        val naturalPos = ord + 1
+                        return naturalPos.toString() + when(naturalPos.mod(10)) {
+                            1 -> "st"
+                            2 -> "nd"
+                            3 -> "rd"
+                            else -> "th"
+                        } + "  Return"
+                    }
+
+                override val description: String
+                    get() = "The $displayLabel value returned by the function"
+            }
+        }
+    }
+
+    @KSerializable
+    data class StorageComparison(
+        val contractAValue: TACSymbol.Var,
+        val contractBValue: TACSymbol.Var,
+        val skolemIndex: TACSymbol.Var
+    ) : AmbiSerializable, TransformableVarEntityWithSupport<StorageComparison> {
+        override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): StorageComparison {
+            return StorageComparison(
+                contractAValue = f(contractAValue),
+                contractBValue = f(contractBValue),
+                skolemIndex = f(skolemIndex)
+            )
+        }
+
+        override val support: Set<TACSymbol.Var>
+            get() = setOf(contractAValue, contractBValue, skolemIndex)
     }
 
     companion object {
@@ -117,7 +175,7 @@ class EquivalenceChecker private constructor(
         }
 
         val TRACE_EQUIVALENCE_ASSERTION = MetaKey<Int>("equivalence.trace.assertion")
-        val STORAGE_EQUIVALENCE_ASSERTION = MetaKey.Nothing("equivalence.storage.assertion")
+        val STORAGE_EQUIVALENCE_ASSERTION = MetaKey<StorageComparison>("equivalence.storage.assertion")
 
         private fun trySummarize(
             sharedSigs: Collection<QualifiedMethodSignature>,
@@ -193,11 +251,16 @@ class EquivalenceChecker private constructor(
             return (methodA as TACMethod) to (methodB as TACMethod)
         }
 
-        suspend fun handleEquivalence(query: ProverQuery.EquivalenceQuery, scene: IScene, outputReporter: OutputReporter) : List<RuleCheckResult> {
+        suspend fun handleEquivalence(
+            query: ProverQuery.EquivalenceQuery,
+            scene: IScene,
+            outputReporter: OutputReporter,
+            treeViewReporter: TreeViewReporter
+        ) : List<RuleCheckResult> {
             if(!Config.EquivalenceCheck.get()) {
                 throw CertoraException(
                     CertoraErrorType.BAD_CONFIG,
-                    "Need to set ${Config.EquivalenceCheck.option.argName} in equivalence checker mode"
+                    "Need to set ${Config.EquivalenceCheck.option.opt} in equivalence checker mode"
                 )
             }
             val methodChoice = Config.MethodChoices.orEmpty().singleOrNull() ?: throw CertoraException(
@@ -284,6 +347,9 @@ class EquivalenceChecker private constructor(
 
             val (methodA, methodB) = scene.resolve(query)
 
+            treeViewReporter.addTopLevelRule(equivalenceRule)
+            treeViewReporter.signalStart(equivalenceRule)
+
             val r = EquivalenceChecker(
                 QueryContext(
                     scene = scene,
@@ -292,6 +358,11 @@ class EquivalenceChecker private constructor(
                 ),
                 equivalenceRule = equivalenceRule,
             ).handleEquivalence()
+            r.forEach {
+                if(it is RuleCheckResult.Leaf) {
+                    treeViewReporter.signalEnd(it.rule, it)
+                }
+            }
             outputReporter.feedReporter(r, scene)
             return r
         }
@@ -403,17 +474,17 @@ class EquivalenceChecker private constructor(
              */
             val calldata: Either<List<UByte>, String>,
         ) : ExternalCall, EventWithData {
-            override val params: List<ExternalEventParam>
+            override val params: List<EventParam>
                 get() = listOf(
-                    ExternalEventParam(ContextLabel.CALLEE, callee.toHexString()),
-                    ExternalEventParam(ContextLabel.CALL_VALUE, value.toString()),
-                    ExternalEventParam(ContextLabel.CALLEE_CODESIZE, calleeCodesize.toString()),
-                    ExternalEventParam(ContextLabel.CALL_RESULT, if(callResult) {
+                    EventParam(ContextLabel.ExternalCallLabel.CALLEE, callee.toHexString()),
+                    EventParam(ContextLabel.ExternalCallLabel.CALL_VALUE, value.toString()),
+                    EventParam(ContextLabel.ExternalCallLabel.CALLEE_CODESIZE, calleeCodesize.toString()),
+                    EventParam(ContextLabel.ExternalCallLabel.CALL_RESULT, if(callResult) {
                         "Successful return"
                     } else {
                         "Revert"
                     }),
-                    ExternalEventParam(ContextLabel.RETURNSIZE, returnSize.toString()),
+                    EventParam(ContextLabel.ExternalCallLabel.RETURNSIZE, returnSize.toString()),
                 )
             override val sort: BufferTraceInstrumentation.TraceEventSort
                 get() = BufferTraceInstrumentation.TraceEventSort.EXTERNAL_CALL
@@ -457,6 +528,20 @@ class EquivalenceChecker private constructor(
         fun prettyPrint(): String
     }
 
+    object SyncEvent : IEvent {
+        override fun prettyPrint(): String {
+            throw UnsupportedOperationException()
+        }
+    }
+
+    data class Elaboration(
+        val what: String
+    ) : IEvent {
+        override fun prettyPrint(): String {
+            return what
+        }
+    }
+
     /**
      * A placeholder for an event that we couldn't actually precisely resolve,
      * for whatever reason is described in [msg].
@@ -465,10 +550,16 @@ class EquivalenceChecker private constructor(
         val msg: String
     }
 
+    data class Missing(override val msg: String) : IncompleteEvent {
+        override fun prettyPrint(): String {
+            return "Failed to resolve event: $msg"
+        }
+    }
+
     /**
      * KV-pair for some event parameter and it's formatted value
      */
-    data class ExternalEventParam(
+    data class EventParam(
         val label: ContextLabel,
         val value: String? // the formatted value
     )
@@ -478,9 +569,10 @@ class EquivalenceChecker private constructor(
      * and an optional buffer representation [bufferRepr].
      */
     sealed interface EventWithData : IEvent {
-        val params: List<ExternalEventParam>
+        val params: List<EventParam>
         val sort: BufferTraceInstrumentation.TraceEventSort
         val bufferRepr: List<UByte>?
+
     }
 
     /**
@@ -489,12 +581,12 @@ class EquivalenceChecker private constructor(
     data class BasicEvent(
         override val bufferRepr: List<UByte>?,
         override val sort: BufferTraceInstrumentation.TraceEventSort,
-        override val params: List<ExternalEventParam>
+        override val params: List<EventParam>,
     ) : EventWithData {
 
         override fun prettyPrint() : String {
             val context = params.joinToString("\n") { (k, v) ->
-                "\t\t -> $k: $v"
+                "\t\t -> ${k.displayLabel}: $v"
             }.ifBlank {
                 "\t\tNo additional context information"
             }
@@ -506,13 +598,15 @@ class EquivalenceChecker private constructor(
                 BufferTraceInstrumentation.TraceEventSort.EXTERNAL_CALL -> "! An external call was made"
                 BufferTraceInstrumentation.TraceEventSort.INTERNAL_SUMMARY_CALL -> "! An internal call was made"
             }
-            val bufferDescription = bufferRepr?.let { bufferMap ->
-                bufferMap.joinToString("") {
-                    it.toString(16)
-                }.ifBlank { "! Empty" }
-            } ?: "? Couldn't extract the buffer contents"
-            val bufferBody = "\tThe raw buffer used in the event was:\n\t\t$bufferDescription"
-            return "\t$description\n$contextBody\n$bufferBody"
+            val bufferBody = if(sort.showBuffer) {
+                val bufferDescription = bufferRepr?.let { bufferMap ->
+                    bufferMap.joinToString("") {
+                        it.toString(16)
+                    }.ifBlank { "! Empty" }
+                } ?: "? Couldn't extract the buffer contents"
+                "\n\tThe raw buffer used in the event was:\n\t\t$bufferDescription"
+            } else { "" }
+            return "\t$description\n$contextBody$bufferBody"
         }
     }
 
@@ -544,20 +638,13 @@ class EquivalenceChecker private constructor(
 
         /**
          * Same events, but storage was left in different states. [slot] is the witness to this
-         * difference, and the differences are described in [leftOp] and [rightOp]
-         *
-         * FIXME(CERT-8862): refactor this, having to figure out which param is which is miserable
+         * difference, and the differences are described in [contractAValue] and [contractBValue]
          */
         data class StorageExplanation(
-            val slot: BigInteger,
-            val leftOp: StorageRepr,
-            val rightOp: StorageRepr
-        ) : MismatchExplanation {
-            data class StorageRepr(
-                val which: ContractClass,
-                val slotValue: BigInteger
-            )
-        }
+            val slot: String,
+            val contractAValue: String,
+            val contractBValue: String
+        ) : MismatchExplanation
     }
 
     /**
@@ -603,7 +690,8 @@ class EquivalenceChecker private constructor(
             /**
              * Any events (logs/external calls) that occurred before the divergence
              */
-            val priorEvents: List<IEvent>?,
+            val priorEventsA: List<IEvent>?,
+            val priorEventsB: List<IEvent>?,
             /**
              * The divergence itself
              */
@@ -1038,7 +1126,7 @@ class EquivalenceChecker private constructor(
                 check(reportContent == null || reportContent.indexOf("ADD_PARAMS_HERE") == reportContent.lastIndexOf("ADD_PARAMS_HERE")) {
                     "Malformed report content"
                 }
-                fun contextObj(label: String, tooltip: String, value: String?) = buildJsonObject {
+                fun contextObj(label: String, tooltip: String?, value: String?) = buildJsonObject {
                     put("key", label)
                     put("tooltip", tooltip)
                     put("value", value)
@@ -1058,14 +1146,23 @@ class EquivalenceChecker private constructor(
                                 BufferTraceInstrumentation.TraceEventSort.EXTERNAL_CALL -> "External Call"
                                 BufferTraceInstrumentation.TraceEventSort.INTERNAL_SUMMARY_CALL -> "Internal Call"
                             })
-                            val r = bufferRepr?.asBufferRepr("")
-                            put("rawBuffer", r)
+                            if(sort.showBuffer) {
+                                val r = bufferRepr?.asBufferRepr("")
+                                put("rawBuffer", r)
+                            }
                             put("context", buildJsonArray {
                                 for(c in params) {
                                     val o = contextObj(c.label.displayLabel, c.label.description, c.value)
                                     add(o)
                                 }
                             })
+                        }
+
+                        is Elaboration -> {
+                            put("detail", what)
+                        }
+                        SyncEvent -> {
+                            put("sync", true)
                         }
                     }
                 }
@@ -1090,7 +1187,7 @@ class EquivalenceChecker private constructor(
 
                 fun IEvent.toJsonString() = Json.encodeToString(JsonObject.serializer(), this.toJson())
                 if(reportContent != null) {
-                    val prefixStr = interp.priorEvents.orEmpty().let { prior ->
+                    val prefixStrA = interp.priorEventsA.orEmpty().let { prior ->
                         buildJsonArray {
                             for(p in prior) {
                                 add(p.toJson())
@@ -1098,6 +1195,14 @@ class EquivalenceChecker private constructor(
                         }
                     }.let {
                         Json.encodeToString(JsonArray.serializer(), it)
+                    }
+
+                    val prefixStrB = interp.priorEventsB.orEmpty().let { priorB ->
+                        buildJsonArray {
+                            for(p in priorB) {
+                                add(p.toJson())
+                            }
+                        }
                     }
 
                     val contractAStr = Json.encodeToString(String.serializer(), methodA.getContainingContract().name)
@@ -1114,20 +1219,17 @@ class EquivalenceChecker private constructor(
                             interp.diffExplanation.eventInA.toJsonString() to null
                         }
                         is MismatchExplanation.StorageExplanation -> {
-                            val (methodADiff, methodBDiff) = if(interp.diffExplanation.leftOp.which.instanceId == methodA.getContainingContract().instanceId) {
-                                interp.diffExplanation.leftOp to interp.diffExplanation.rightOp
-                            } else {
-                                interp.diffExplanation.rightOp to interp.diffExplanation.leftOp
-                            }
+                            val methodADiff = interp.diffExplanation.contractAValue
+                            val methodBDiff = interp.diffExplanation.contractBValue
 
-                            fun MismatchExplanation.StorageExplanation.StorageRepr.toJsonString() = buildJsonObject {
+                            fun String.toJsonString() = buildJsonObject {
                                 put("sort", "Storage Mismatch")
                                 put("context", buildJsonArray {
                                     add(contextObj(
-                                        "Storage slot", "Internal prover representation of the storage slot; may or may not match an actual storage slot", interp.diffExplanation.slot.toString()
+                                        "Storage slot", "Internal prover representation of the storage slot; may or may not match an actual storage slot", interp.diffExplanation.slot
                                     ))
                                     add(contextObj(
-                                        "Value after execution", "Value in the slot after execution", slotValue.toString(16)
+                                        "Value after execution", "Value in the slot after execution", this@toJsonString
                                     ))
                                 })
                             }.let {
@@ -1147,7 +1249,8 @@ class EquivalenceChecker private constructor(
                         window.contractB = $contractBStr;
 
                         window.input = $inputsStr;
-                        window.prefix = $prefixStr;
+                        window.prefixA = $prefixStrA;
+                        window.prefixB = $prefixStrB
                         window.eventA = $eventAStr;
                         window.eventB = $eventBStr;
                     """.trimIndent()
@@ -1159,9 +1262,9 @@ class EquivalenceChecker private constructor(
                 }
 
 
-                if(interp.priorEvents != null) {
-                    println("There were ${interp.priorEvents.size} call(s) prior to this event:")
-                    interp.priorEvents.forEach {
+                if(interp.priorEventsA != null) {
+                    println("There were ${interp.priorEventsA.size} call(s) prior to this event:")
+                    interp.priorEventsA.forEach {
                         println(it.prettyPrint())
                     }
                 } else {
@@ -1182,19 +1285,10 @@ class EquivalenceChecker private constructor(
                         "${methodA.pp()} included an event *missing* in ${methodB.pp()}:\n${interp.diffExplanation.eventInA.prettyPrint()}"
                     }
                     is MismatchExplanation.StorageExplanation -> {
-                        fun MismatchExplanation.StorageExplanation.StorageRepr.pp(): String {
-                            val which = if(this.which.instanceId == methodA.getContainingContract().instanceId) {
-                                methodA
-                            } else {
-                                check(this.which.instanceId == methodB.getContainingContract().instanceId)
-                                methodB
-                            }
-                            return "After executing $which, this slot had value: ${this.slotValue}"
-                        }
                         "The executions left storage in conflicting states:\n" +
                             "The witness storage slot was ${interp.diffExplanation.slot}:" +
-                            "\t! ${interp.diffExplanation.leftOp.pp()}\n" +
-                            "\t! ${interp.diffExplanation.rightOp.pp()}"
+                            "\t! ${methodA.getContainingContract().name}: ${interp.diffExplanation.contractAValue}\n" +
+                            "\t! ${methodB.getContainingContract().name}: ${interp.diffExplanation.contractBValue}"
                     }
                 }
                 println(msg)
@@ -1411,11 +1505,10 @@ class EquivalenceChecker private constructor(
     )
 
     /**
-     * [LTraceEventMarker] stored in [trace] with some extract context, namely which index event this was [eventIndex],
-     * and information about the enclosing method in [context].
+     * [LTraceEventMarker] stored in [trace] with some information
+     * about the enclosing method in [context].
      */
     internal data class LTraceWithContext<Which: METHOD_MARKER>(
-        val eventIndex: BigInteger,
         val trace: LTraceEventMarker<Which>,
         val context: InlinedInstrumentation<Which>
     )

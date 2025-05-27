@@ -155,7 +155,7 @@ class TreeViewReporter(
     scene: IScene,
 ) {
     // XXX: this path used to configurable, but I believe it's now hardcoded in some of our infrastructure.
-    private val versionedFIle get() = VersionedFile("treeViewStatus.json")
+    private val versionedFile get() = VersionedFile("treeViewStatus.json")
 
     init {
         instance = this
@@ -180,7 +180,7 @@ class TreeViewReporter(
 
     init {
         // set up the files we'll dump
-        ArtifactManagerFactory().registerArtifact(versionedFIle, StaticArtifactLocation.TreeViewReports)
+        ArtifactManagerFactory().registerArtifact(versionedFile, StaticArtifactLocation.TreeViewReports)
         ArtifactManagerFactory().registerArtifact(Config.OutputJSONFile)
     }
 
@@ -804,7 +804,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
 
     private fun writeToFile(jsond: String) {
         logger.info { "Writing version $fileVersion of treeView json" }
-        ArtifactManagerFactory().useArtifact(versionedFIle, fileVersion) { handle ->
+        ArtifactManagerFactory().useArtifact(versionedFile, fileVersion) { handle ->
             ArtifactFileUtils.getWriterForFile(handle, overwrite = true).use { i ->
                 i.append(jsond)
             }

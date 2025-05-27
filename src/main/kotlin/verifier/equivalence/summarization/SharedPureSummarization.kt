@@ -158,7 +158,13 @@ class SharedPureSummarization(
                 }
                 is EVMTypeDescriptor.EVMContractTypeDescriptor,
                 EVMTypeDescriptor.address -> TACExpr.BinOp.Mod(baseForm, MOD_MASK_SIZE(EVM_ADDRESS_SIZE).asTACExpr)
-                EVMTypeDescriptor.bool -> TACExpr.BinRel.Eq(baseForm, TACExpr.zeroExpr, Tag.Bool)
+                EVMTypeDescriptor.bool ->
+                    TACExpr.BinRel.Eq(baseForm, TACExpr.zeroExpr, Tag.Bool).letIf(ret.s.tag != Tag.Bool) { cond ->
+                        TACExpr.TernaryExp.Ite(cond,
+                            1.asTACExpr,
+                            0.asTACExpr
+                        )
+                    }
             }
             summary.extend(
                 TACCmd.Simple.AssigningCmd.AssignExpCmd(

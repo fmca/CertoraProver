@@ -413,17 +413,19 @@ object StaticBufferRefinement {
             if(ui.instrumentation?.bufferWrites == null) {
                 continue
             }
+            val toEmbed = EmbeddedInstrumentationVars(
+                preciseBufferVar = ui.instrumentation.bufferWrites.preciseBuffer,
+                bufferCopySourceVar = ui.instrumentation.bufferWrites.bufferCopySource,
+                id = ui.id,
+                bufferOffsetsVar = ui.instrumentation.bufferWrites.bufferOffsetHolder,
+                bufferLengthVar = ui.instrumentation.lengthVar,
+                bufferWriteCountVar = ui.instrumentation.bufferWrites.bufferWriteCountVar
+            )
             toAdd.extend(TACCmd.Simple.AnnotationCmd(
                 KEEP_ALIVE_META,
-                EmbeddedInstrumentationVars(
-                    preciseBufferVar = ui.instrumentation.bufferWrites.preciseBuffer,
-                    bufferCopySourceVar = ui.instrumentation.bufferWrites.bufferCopySource,
-                    id = ui.id,
-                    bufferOffsetsVar = ui.instrumentation.bufferWrites.bufferOffsetHolder,
-                    bufferLengthVar = ui.instrumentation.lengthVar,
-                    bufferWriteCountVar = ui.instrumentation.bufferWrites.bufferWriteCountVar
-                )
+                toEmbed
             ))
+            toAdd.extend(toEmbed.support)
         }
 
         /**

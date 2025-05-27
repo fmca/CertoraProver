@@ -141,7 +141,11 @@ internal abstract class AbstractExplorer(
                 TACCmd.Simple.AssertCmd(
                     it.s,
                     "storage equal post execution",
-                    MetaMap(EquivalenceChecker.STORAGE_EQUIVALENCE_ASSERTION)
+                    MetaMap(EquivalenceChecker.STORAGE_EQUIVALENCE_ASSERTION to EquivalenceChecker.StorageComparison(
+                        contractAValue = reprA,
+                        contractBValue = reprB,
+                        skolemIndex = skolemInd
+                    ))
                 )
             }.merge(skolemInd, reprA, reprB, storageA, storageB)
             traceAssert andThen storageAssert

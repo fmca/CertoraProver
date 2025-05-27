@@ -22,6 +22,7 @@ import analysis.CommandWithRequiredDecls
 import analysis.EthereumVariables
 import analysis.icfg.Inliner
 import analysis.maybeAnnotation
+import analysis.snarrowOrNull
 import datastructures.stdcollections.*
 import evm.MASK_SIZE
 import instrumentation.calls.CalldataEncoding
@@ -43,6 +44,7 @@ import vc.data.TACSymbol.Companion.atSync
 import vc.data.codeFromCommandWithVarDecls
 import vc.data.tacexprutil.ExprUnfolder
 import verifier.equivalence.EquivalenceChecker.Companion.mergeCodes
+import verifier.equivalence.summarization.CommonPureInternalFunction
 import java.math.BigInteger
 import java.util.stream.Collectors
 
@@ -213,10 +215,22 @@ class RuleGenerator(private val methodA: TACMethod, private val methodB: TACMeth
     ) : ForInlining {
         val callId = Allocator.getFreshId(Allocator.Id.CALL_ID)
         val callee = code.createCopy(callId).let { withCopy ->
-            withCopy.parallelLtacStream().filter {
-                it.cmd.isHalting()
-            }.map { it.ptr }.patchForEach(withCopy, check = true) {
-                this.replaceCommand(it, listOf(TACCmd.Simple.NopCmd))
+            withCopy.parallelLtacStream().mapNotNull {
+                if(it.cmd.isHalting()) {
+                    return@mapNotNull { patch: SimplePatchingProgram ->
+                        patch.replaceCommand(it.ptr, listOf(TACCmd.Simple.NopCmd))
+                    }
+                }
+                val summ = it.snarrowOrNull<CommonPureInternalFunction>() ?: return@mapNotNull null;
+                { patch: SimplePatchingProgram ->
+                    patch.replaceCommand(it.ptr, listOf(
+                        TACCmd.Simple.AnnotationCmd(
+                            CommonPureInternalFunction.ANNOTATION_META, summ
+                        )
+                    ))
+                }
+            }.patchForEach(withCopy, check = true) {
+                it(this)
             }
         }.patching { patcher ->
             this.analysisCache.graph.sinks.forEach(

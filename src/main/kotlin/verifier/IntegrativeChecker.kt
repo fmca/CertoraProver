@@ -786,7 +786,11 @@ object IntegrativeChecker {
                     scene,
                 )
             }
-            is ProverQuery.EquivalenceQuery -> `impossible!`
+            is ProverQuery.EquivalenceQuery -> TreeViewReporter(
+                null,
+                "",
+                scene
+            )
         }
     }
 
@@ -800,11 +804,13 @@ object IntegrativeChecker {
         reporterContainer: ReporterContainer,
         extensionContractsMapping: ExtensionContractsMapping,
     ): List<RuleCheckResult> {
-        val treeView by lazy { createTreeViewReporter(scene, query) }
+        val treeView = createTreeViewReporter(scene, query)
         val result = if (!Config.SceneConstructionOnly.get()) { // works thanks to logSceneInfo above which triggers the lazy computation
             // run initial transformations, before checking specs or assertions
             if(query is ProverQuery.EquivalenceQuery) {
-                return handleEquivalence(query, scene, reporterContainer).also {
+                return handleEquivalence(query, scene, reporterContainer, treeView).also {
+                    treeView.hotUpdate() // v hot
+                    treeView.writeOutputJson()
                     reporterContainer.toFile(scene)
                 }
             }
@@ -847,8 +853,13 @@ object IntegrativeChecker {
         return result
     }
 
-    private suspend fun handleEquivalence(query: ProverQuery.EquivalenceQuery, scene: IScene, reporter: OutputReporter): List<RuleCheckResult> {
-        return EquivalenceChecker.handleEquivalence(query, scene, reporter)
+    private suspend fun handleEquivalence(
+        query: ProverQuery.EquivalenceQuery,
+        scene: IScene,
+        reporter: OutputReporter,
+        treeViewReporter: TreeViewReporter
+    ): List<RuleCheckResult> {
+        return EquivalenceChecker.handleEquivalence(query, scene, reporter, treeViewReporter)
     }
 
     // sets up the status reporter, tree view reporter and reporter container

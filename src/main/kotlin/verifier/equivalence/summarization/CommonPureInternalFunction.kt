@@ -20,6 +20,7 @@ package verifier.equivalence.summarization
 import datastructures.stdcollections.plus
 import datastructures.stdcollections.toSet
 import spec.cvlast.QualifiedMethodSignature
+import tac.MetaKey
 import utils.KSerializable
 import vc.data.TACSummary
 import vc.data.TACSymbol
@@ -45,5 +46,9 @@ data class CommonPureInternalFunction(
             qualifiedMethodSignature = qualifiedMethodSignature,
             rets = rets.map(f)
         )
+    }
+
+    companion object {
+        val ANNOTATION_META = MetaKey<CommonPureInternalFunction>("pure.function.annotation")
     }
 }

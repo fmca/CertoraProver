@@ -33,15 +33,15 @@ import java.math.BigInteger
 import java.util.stream.Collectors
 import datastructures.stdcollections.*
 import scene.TACMethod
-import solver.CounterexampleModel
+import spec.cvlast.QualifiedMethodSignature
 import tac.*
 import vc.data.tacexprutil.getFreeVars
 import java.util.concurrent.atomic.AtomicInteger
 import vc.data.TACProgramCombiners.andThen
-import verifier.equivalence.CEXUtils.asEither
-import kotlin.streams.toList
 import verifier.equivalence.DefiniteBufferConstructionAnalysis
 import verifier.equivalence.summarization.CommonPureInternalFunction
+import verifier.equivalence.tracing.BufferTraceInstrumentation.ContextSymbols.Companion.lift
+import kotlin.streams.toList
 
 @Suppress("FunctionName")
 /**
@@ -223,13 +223,14 @@ class BufferTraceInstrumentation private constructor(
     data class TraceIndexMarker(
         val id: Int,
         val indexVar: TACSymbol,
-        val eventSort: Int,
+        val eventSort: TraceEventSort,
         val lengthVar: TACSymbol.Var,
         val bufferStart: TACSymbol.Var,
         val bufferBase: TACSymbol.Var,
         val numCalls: TACSymbol.Var,
         val bufferHash: TACSymbol.Var,
-        val eventHash: TACSymbol.Var
+        val eventHash: TACSymbol.Var,
+        val context: Context
     ) : TransformableVarEntityWithSupport<TraceIndexMarker>, AmbiSerializable {
         override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): TraceIndexMarker {
             return TraceIndexMarker(
@@ -241,12 +242,13 @@ class BufferTraceInstrumentation private constructor(
                 f(bufferBase),
                 f(numCalls),
                 f(bufferHash),
-                f(eventHash)
+                f(eventHash),
+                context.transformSymbols(f)
             )
         }
 
         override val support: Set<TACSymbol.Var>
-            get() = setOfNotNull(indexVar as? TACSymbol.Var, lengthVar, bufferStart, bufferBase, bufferHash, eventHash, numCalls)
+            get() = setOfNotNull(indexVar as? TACSymbol.Var, lengthVar, bufferStart, bufferBase, bufferHash, eventHash, numCalls) + context.support
 
         companion object {
             val META_KEY = MetaKey<TraceIndexMarker>("buffer.index.marker")
@@ -531,16 +533,16 @@ class BufferTraceInstrumentation private constructor(
         private fun getTraceEvent(origCommand: TACCmd.Simple) : TraceEventWithContext? {
             return when(origCommand) {
                 is TACCmd.Simple.ReturnCmd -> {
-                    TraceEventWithContext(TraceEventSort.RETURN, treapListOf())
+                    TraceEventWithContext(TraceEventSort.RETURN, Context.MethodExit)
                 }
                 is TACCmd.Simple.RevertCmd -> {
-                    TraceEventWithContext(TraceEventSort.REVERT, treapListOf())
+                    TraceEventWithContext(TraceEventSort.REVERT, Context.MethodExit)
                 }
                 is TACCmd.Simple.CallCore -> {
-                    TraceEventWithContext(TraceEventSort.EXTERNAL_CALL, treapListOf(origCommand.to, origCommand.value))
+                    TraceEventWithContext(TraceEventSort.EXTERNAL_CALL, Context.ExternalCall(callee = origCommand.to, value = origCommand.value))
                 }
                 is TACCmd.Simple.LogCmd -> {
-                    TraceEventWithContext(TraceEventSort.LOG, origCommand.args.drop(2).toTreapList())
+                    TraceEventWithContext(TraceEventSort.LOG, Context.Log(origCommand.args.drop(2).toTreapList()))
                 }
                 else -> null
             }
@@ -667,12 +669,15 @@ class BufferTraceInstrumentation private constructor(
                             where = it.ptr,
                             length = TACSymbol.Zero,
                             loc = TACSymbol.Zero,
-                            id = idCounter.incrementAndGet(),
+                            id = idCounter.getAndIncrement(),
                             isNullRead = true,
                             explicitReadId = null,
                             traceEventInfo = TraceEventWithContext(
                                 TraceEventSort.INTERNAL_SUMMARY_CALL,
-                                context = it.cmd.summ.argSymbols.toTreapList()
+                                context = Context.InternalCall(
+                                    it.cmd.summ.qualifiedMethodSignature,
+                                    it.cmd.summ.argSymbols.toTreapList()
+                                )
                             )
                         )
                     }
@@ -880,55 +885,45 @@ class BufferTraceInstrumentation private constructor(
             )
         }
 
-        private val TraceEventSort.extractor: IParamExtractor get() = when(this.extractorH) {
-            is IParamExtractor -> this.extractorH
-        }
-
         /**
-         * From a [TraceIndexMarker] at [where] in a program [vcProgram] for which there is a
-         * counter example in some [theModel], extract the [RawEventParams] where possible.
+         * From a [TraceIndexMarker] extract the [RawEventParams].
          */
         fun extractEvent(
-            theModel: CounterexampleModel,
-            vcProgram: CoreTACProgram,
-            where: CmdPointer,
             marker: TraceIndexMarker
         ) : Either<RawEventParams, String> {
-            val g = vcProgram.analysisCache.graph
-            val sda = g.cache.strictDef
-            val defSite = when(val s = sda.source(where, marker.eventHash)) {
-                is StrictDefAnalysis.Source.Defs -> {
-                    s.ptrs.singleOrNull {
-                        it == null || it.block in theModel.reachableNBIds
-                    }?.let(g::elab) ?: return "Couldn't extract trace hash definition".toRight()
-                }
-                is StrictDefAnalysis.Source.Const,
-                is StrictDefAnalysis.Source.Uinitialized -> return "Couldn't extract trace hash definition".toRight()
-            }
-            val hashDef = defSite.maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>() ?: return "Unrecognized trace hash def $defSite".toRight()
-            val (lenExp, args) = when(val e = hashDef.cmd.rhs) {
-                is TACExpr.SimpleHash -> e.length to e.args
-                is TACExpr.Apply -> {
-                    val f = e.f as? TACExpr.TACFunctionSym.BuiltIn ?: return "Unrecognize definition $defSite".toRight()
-                    if(f.bif !is TACBuiltInFunction.Hash.SimpleHashApplication || f.bif.arity == 0) {
-                        return "Unrecognized definition $defSite".toRight()
+            fun mismatch() = "Context sort mismatch: trace object identifies as ${marker.eventSort} but have ${marker.context}".toRight()
+            when(marker.eventSort) {
+                TraceEventSort.REVERT,
+                TraceEventSort.RETURN -> {
+                    if(marker.context !is Context.MethodExit) {
+                        // there is no actual info here, but worth doing the sanity check...
+                        return mismatch()
                     }
-                    e.ops[0] to e.ops.drop(1)
+                    return RawEventParams.ExitParams(marker.eventSort).toLeft()
                 }
-                else -> return "Unrecognized defSite $defSite".toRight()
+                TraceEventSort.LOG -> {
+                    if(marker.context !is Context.Log) {
+                        return mismatch()
+                    }
+                    return RawEventParams.LogTopics(marker.context).toLeft()
+                }
+                TraceEventSort.EXTERNAL_CALL -> {
+                    if(marker.context !is Context.ExternalCall) {
+                        return mismatch()
+                    }
+                    return RawEventParams.ExternalCallParams(
+                        context = marker.context
+                    ).toLeft()
+                }
+                TraceEventSort.INTERNAL_SUMMARY_CALL -> {
+                    if(marker.context !is Context.InternalCall) {
+                        return mismatch()
+                    }
+                    return RawEventParams.InternalSummaryParams(
+                        context = marker.context
+                    ).toLeft()
+                }
             }
-            val len = theModel.evalExprByRhs(lenExp).asEither("Failed to eval length").leftOr { return it }
-            check(len == marker.eventSort.toBigInteger()) {
-                "Sanity check failed: event sort embedded into meta (${marker.eventSort}) does not match the hash's sort $len"
-            }
-            if(args.size < 2) {
-                return "Invalid hash format, expecting at least two args: got $defSite".toRight()
-            }
-            val e = TraceEventSort.entries[marker.eventSort]
-            return e.extractor.extract(
-                args.drop(2),
-                theModel
-            ).toLeft()
         }
 
     }
@@ -1657,11 +1652,7 @@ class BufferTraceInstrumentation private constructor(
                 IncludedInTrace.MAYBE_INCLUDED -> {
                     // for those where we don't know, generate a predicate on the current count number
                     check(v.traceEventInfo.eventSort.includeIn == targetEvents)
-                    val countHolder = when(targetEvents) {
-                        TraceTargets.Calls -> callTraceLog.itemCountVar
-                        TraceTargets.Log -> logTraceLog.itemCountVar
-                        TraceTargets.Results -> throw UnsupportedOperationException("Selecting numbers of exit events makes no sense: there is only ever one")
-                    }
+                    val countHolder = getEventCountHolder()
                     InclusionAnswer.Dynamic(
                         TACExpr.BinRel.Eq(countHolder.asSym(), idxAsBig.asTACExpr, Tag.Bool).lift()
                     )
@@ -1669,6 +1660,12 @@ class BufferTraceInstrumentation private constructor(
                 // those definitely included, definitely answer yes
                 IncludedInTrace.DEFINITELY_INCLUDED -> InclusionAnswer.Definite(true)
             }
+        }
+
+        private fun getEventCountHolder() = when (targetEvents) {
+            TraceTargets.Calls -> callTraceLog.itemCountVar
+            TraceTargets.Log -> logTraceLog.itemCountVar
+            TraceTargets.Results -> throw UnsupportedOperationException("Selecting numbers of exit events makes no sense: there is only ever one")
         }
 
         /**
@@ -1679,6 +1676,13 @@ class BufferTraceInstrumentation private constructor(
             patcher: SimplePatchingProgram,
             ls: LongRead
         ): CommandWithRequiredDecls<TACCmd.Simple> {
+            if(ls.traceEventInfo?.eventSort?.includeIn == TraceTargets.Results) {
+                return ExprUnfolder.unfoldPlusOneCmd("exitAssume", TXF {
+                    (target.traceNumber + 1) eq getEventCountHolder()
+                }) { cond ->
+                    TACCmd.Simple.AssumeCmd(cond.s, "Assuming exit count")
+                }
+            }
             /**
              * We only exit after the relevant events, so if this isn't an event we care about,
              * do nothing
@@ -1922,43 +1926,117 @@ class BufferTraceInstrumentation private constructor(
         }
     }
 
+    private data class ContextSymbols(
+        val symbols: List<TACSymbol>,
+        val setup: CommandWithRequiredDecls<TACCmd.Simple>?
+    ) {
+        companion object {
+            fun List<TACSymbol>.lift() = ContextSymbols(this, null)
+        }
+    }
+
+    private fun Context.contextSymbols(): ContextSymbols = when(this) {
+        is Context.ExternalCall -> {
+            val storageIdx = TACKeyword.TMP(Tag.Bit256, "storageInclusionIdx")
+            val res = TACKeyword.TMP(Tag.Bit256, "storageComponent")
+            val setup = CommandWithRequiredDecls(listOf(
+                TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                    lhs = storageIdx,
+                    rhs = TACExpr.Select(STORAGE_STATE_INCLUSION_MAP.asSym(), globalStateAccumulator.asSym())
+                ),
+                TACCmd.Simple.AssigningCmd.AssignExpCmd(
+                    lhs = res,
+                    rhs = TACExpr.Select(storageVar.asSym(), storageIdx.asSym())
+                )
+            ), setOf(globalStateAccumulator, STORAGE_STATE_INCLUSION_MAP, res, storageIdx, storageVar))
+            ContextSymbols(
+                treapListOf(
+                    callee, value, res
+                ),
+                setup
+            )
+        }
+        is Context.InternalCall -> args.lift()
+        is Context.Log -> this.topics.lift()
+        Context.MethodExit -> treapListOf<TACSymbol>().lift()
+    }
+
+    @KSerializable
+    sealed interface Context : AmbiSerializable, TransformableVarEntityWithSupport<Context> {
+        @KSerializable
+        object MethodExit : Context {
+
+            override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Context {
+                return this
+            }
+
+            override val support: Set<TACSymbol.Var>
+                get() = setOf()
+
+
+
+            fun readResolve(): Any = MethodExit
+        }
+
+        @KSerializable
+        data class InternalCall(
+            val signature: QualifiedMethodSignature,
+            val args: List<TACSymbol>
+        ) : Context {
+            override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Context {
+                return InternalCall(
+                    signature, args.map { it.map(f) }
+                )
+            }
+
+            override val support: Set<TACSymbol.Var>
+                get() = args.mapNotNullToTreapSet { it as? TACSymbol.Var }
+        }
+
+        fun TACSymbol.map(f: (TACSymbol.Var) -> TACSymbol.Var) = (this as? TACSymbol.Var)?.let(f) ?: this
+
+        @KSerializable
+        data class Log(
+            val topics: List<TACSymbol>
+        ) : Context {
+            override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Context {
+                return Log(
+                    topics.map { s ->
+                        s.map(f)
+                    }
+                )
+            }
+
+            override val support: Set<TACSymbol.Var>
+                get() = topics.mapNotNullToTreapSet { it as? TACSymbol.Var }
+        }
+
+        @KSerializable
+        data class ExternalCall(
+            val callee: TACSymbol,
+            val value: TACSymbol
+        ) : Context {
+
+            override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var): Context {
+                return ExternalCall(
+                    callee = callee.map(f),
+                    value = value.map(f)
+                )
+            }
+
+            override val support: Set<TACSymbol.Var>
+                get() = setOfNotNull(callee as? TACSymbol.Var, value as? TACSymbol.Var)
+        }
+    }
+
     /**
      * Indicates the [eventSort] (log, call, etc.) and scalar values which should be included in the event hash (e.g.,
      * log topics, callee, etc.)
      */
     private data class TraceEventWithContext(
         val eventSort: TraceEventSort,
-        val context: TreapList<TACSymbol>,
+        val context: Context,
     )
-
-    /**
-     * Extra context variables which need some computation to materialize. Implemented as an extension value so we can get
-     * access to the [BufferTraceInstrumentation] state variables.
-     */
-    private val TraceEventWithContext.dynamicContext : TACExprWithRequiredCmdsAndDecls<TACCmd.Simple>? get() = when(this.eventSort) {
-        TraceEventSort.INTERNAL_SUMMARY_CALL,
-        TraceEventSort.REVERT,
-        TraceEventSort.RETURN,
-        TraceEventSort.LOG -> null
-        TraceEventSort.EXTERNAL_CALL -> {
-            val storageIdx = TACKeyword.TMP(Tag.Bit256, "storageInclusionIdx")
-            val res = TACKeyword.TMP(Tag.Bit256, "storageComponent")
-            TACExprWithRequiredCmdsAndDecls(
-                cmdsToAdd = listOf(
-                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                        lhs = storageIdx,
-                        rhs = TACExpr.Select(STORAGE_STATE_INCLUSION_MAP.asSym(), globalStateAccumulator.asSym())
-                    ),
-                    TACCmd.Simple.AssigningCmd.AssignExpCmd(
-                        lhs = res,
-                        rhs = TACExpr.Select(storageVar.asSym(), storageIdx.asSym())
-                    )
-                ),
-                declsToAdd = setOf(globalStateAccumulator, STORAGE_STATE_INCLUSION_MAP, res, storageIdx, storageVar),
-                exp = res.asSym()
-            )
-        }
-    }
 
     /**
      * Compute the instrumentation for the [update] at [where]. If [where] is a GC point for some long reads,
@@ -2322,7 +2400,7 @@ class BufferTraceInstrumentation private constructor(
             }
         }
         val bufferHashVar = TACKeyword.TMP(Tag.Bit256, "hashVar")
-        val dynamicContext = ls.traceEventInfo.dynamicContext
+        val context = ls.traceEventInfo.context.contextSymbols()
         val fullPrefix = listOfNotNull(
             bufferSig.toCRD(),
             CommandWithRequiredDecls(
@@ -2333,17 +2411,15 @@ class BufferTraceInstrumentation private constructor(
                     )
                 ), setOf(bufferHashVar)
             ),
-            dynamicContext?.toCRD()
+            context.setup
         ).flatten()
         val basicHash = TACExpr.SimpleHash(
             length = ls.traceEventInfo.eventSort.ordinal.asTACExpr,
-            args = listOf(bufferHashVar.asSym()) + ls.length.asSym() + ls.traceEventInfo.context.map {
-                it.asSym()
-            } + listOfNotNull(dynamicContext?.exp),
+            args = listOf(bufferHashVar.asSym()) + ls.length.asSym() + context.symbols.map { it.asSym() },
             hashFamily = HashFamily.Sha3
         )
         return EventSignature(
-            computation = fullPrefix.merge(ls.traceEventInfo.context).merge(ls.length),
+            computation = fullPrefix.merge(context.symbols).merge(ls.length),
             eventSig = basicHash,
             bufferHash = bufferHashVar
         )
@@ -2613,11 +2689,6 @@ class BufferTraceInstrumentation private constructor(
     )
 
     /**
-     * Public (opaque) type of the [TraceEventSort.extractorH] field
-     */
-    sealed interface IParam
-
-    /**
      * The raw event parameters extracted from the event hash command
      */
     sealed interface RawEventParams {
@@ -2625,62 +2696,45 @@ class BufferTraceInstrumentation private constructor(
          * What sort of event was this
          */
         val sort: TraceEventSort
-        data class ExitParams(override val sort: TraceEventSort) : RawEventParams
+        val context: Context
+        data class ExitParams(override val sort: TraceEventSort) : RawEventParams {
+            override val context: Context.MethodExit
+                get() = Context.MethodExit
+        }
         data class LogTopics(
-            val params: List<Either<BigInteger, String>>
+            val params: Context.Log
         ) : RawEventParams {
             override val sort: TraceEventSort
                 get() = TraceEventSort.LOG
+            override val context: Context.Log
+                get() = params
         }
 
         data class ExternalCallParams(
-            val callee: Either<BigInteger, String>,
-            val value: Either<BigInteger, String>
+            override val context: Context.ExternalCall
         ) : RawEventParams {
             override val sort: TraceEventSort
                 get() = TraceEventSort.EXTERNAL_CALL
+
+
         }
 
-        data class InternalSummaryParams(val scalarArgs: List<Either<BigInteger, String>>) : RawEventParams {
+        data class InternalSummaryParams(override val context: Context.InternalCall) : RawEventParams {
             override val sort: TraceEventSort
                 get() = TraceEventSort.INTERNAL_SUMMARY_CALL
         }
     }
 
     /**
-     * Private version of [IParam], exposing the extraction functionality.
-     */
-    private fun interface IParamExtractor : IParam {
-        fun extract(hashArgs: List<TACExpr>, model: CounterexampleModel) : RawEventParams
-    }
-
-    /**
      * Enum class for event sorts. [includeIn] indicates which [TraceTargets] selection tracks
      * the corresponding event sort.
-     *
-     * [extractorH] is used extract event information from the hash commands; not intended for external users.
      */
-    enum class TraceEventSort(val includeIn: TraceTargets, val extractorH: IParam) {
-        REVERT(TraceTargets.Results, IParamExtractor { _, _ -> RawEventParams.ExitParams(REVERT) }),
-        RETURN(TraceTargets.Results, IParamExtractor { _, _, -> RawEventParams.ExitParams(RETURN) }),
-        LOG(TraceTargets.Log, IParamExtractor { args, theModel ->
-            RawEventParams.LogTopics(args.mapIndexed { index, tacExpr ->
-                theModel.evalExprByRhs(tacExpr).asEither("Failed extracting the value of topic $index")
-            })
-        }),
-        EXTERNAL_CALL(TraceTargets.Calls, IParamExtractor { args, theModel ->
-            RawEventParams.ExternalCallParams(
-                callee = theModel.evalExprByRhs(args[0]).asEither("Failed getting the callee of the call"),
-                value = theModel.evalExprByRhs(args[1]).asEither("Failed getting value of call")
-            )
-        }),
-        INTERNAL_SUMMARY_CALL(TraceTargets.Calls, IParamExtractor { args, theModel ->
-            RawEventParams.InternalSummaryParams(
-                scalarArgs = args.mapIndexed { index, arg ->
-                    theModel.evalExprByRhs(arg).asEither("Failed getting the value of argument $index")
-                }
-            )
-        })
+    enum class TraceEventSort(val includeIn: TraceTargets, val showBuffer: Boolean = true) {
+        REVERT(TraceTargets.Results),
+        RETURN(TraceTargets.Results),
+        LOG(TraceTargets.Log),
+        EXTERNAL_CALL(TraceTargets.Calls),
+        INTERNAL_SUMMARY_CALL(TraceTargets.Calls, showBuffer = false)
     }
 
     /**
@@ -2749,13 +2803,14 @@ class BufferTraceInstrumentation private constructor(
                 TACCmd.Simple.AnnotationCmd(TraceIndexMarker.META_KEY, TraceIndexMarker(
                     id = source.id,
                     indexVar = it,
-                    eventSort = eventSort.ordinal,
+                    eventSort = eventSort,
                     lengthVar = source.instrumentationInfo().lengthProphecy,
                     bufferBase = TACKeyword.MEMORY.toVar(),
                     bufferStart = source.instrumentationInfo().baseProphecy,
                     numCalls = globalStateAccumulator,
                     bufferHash = eventSignature.bufferHash,
-                    eventHash = traceHashVar
+                    eventHash = traceHashVar,
+                    context = source.traceEventInfo.context
                 ))
             }
 
@@ -2811,7 +2866,7 @@ class BufferTraceInstrumentation private constructor(
         }
 
         val overlapSym = TACSymbol.Var("bufferOverlap", Tag.Bool).toUnique("!")
-        val overlapDefinition = if(explicitReadId != null) {
+        val overlapDefinition = if(explicitReadId == null) {
 
             /**
              * Compute the intersection checks

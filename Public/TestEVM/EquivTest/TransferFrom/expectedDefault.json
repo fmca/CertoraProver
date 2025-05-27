@@ -1,0 +1,5 @@
+{
+	"rules": {
+		"Equivalence of Orig and Simple on entry(address,address,address,uint256)": "SUCCESS"
+	}
+}
