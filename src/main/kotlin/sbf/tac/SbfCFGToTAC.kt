@@ -523,7 +523,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         return listOf(
             cmd,
             Calltrace.assert(inst, cmd.lhs),
-            TACCmd.Simple.AssertCmd(cmd.lhs, inst.metaData.getVal(SbfMeta.COMMENT).orEmpty(), MetaMap(TACMeta.ASSERT_ID to mkFreshAssertId()))
+            TACCmd.Simple.AssertCmd(cmd.lhs, inst.metaData.getVal(SbfMeta.COMMENT) ?: "assertion failed", MetaMap(TACMeta.ASSERT_ID to mkFreshAssertId()))
         )
     }
 
@@ -539,7 +539,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
             Debug.satisfy(inst),
             TACCmd.Simple.AssigningCmd.AssignExpCmd(condVar, cond),
             Calltrace.satisfy(condVar),
-            TACCmd.Simple.AssertCmd(condVar, inst.metaData.getVal(SbfMeta.COMMENT).orEmpty(), MetaMap(TACMeta.SATISFY_ID to mkFreshSatisfyId()))
+            TACCmd.Simple.AssertCmd(condVar, inst.metaData.getVal(SbfMeta.COMMENT) ?: "satisfy reached", MetaMap(TACMeta.SATISFY_ID to mkFreshSatisfyId()))
         )
     }
 

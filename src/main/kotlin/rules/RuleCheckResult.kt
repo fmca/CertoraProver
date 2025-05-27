@@ -170,12 +170,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
         abstract val ruleCheckInfo: RuleCheckInfo
         abstract val callResolutionTable: CallResolutionTable<*>
 
-        val ruleAlertsWithCallResolutionTableAlerts: RuleAlertReport<*>?
-            get() = ruleAlerts join callResolutionTable.alertReport join
-                RuleAlertReport((this as? WithCounterExamples)?.ruleCheckInfo?.examples?.mapNotNull { example ->
-                    example.callTrace?.alertReport
-                }.orEmpty())
-
         /**
          * A sample out of the [RuleCheckInfo]s, which is the first one.
          */
@@ -185,7 +179,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
             TREE_VIEW_PATH("treeViewPath"),
             GRAPH_LINK("graph_link"),
             JUMP_TO_DEFINITION("jumpToDefinition"),
-            RESULT("result"),
             ASSERT_MESSAGE("assertMessage"),
             VALUE_REPRESENTATIONS("valueRepresentations"),
             NAME("name"),
@@ -227,10 +220,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                         null
                     }
                 } else if (rule.ruleType is SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule.SpecFile) {
-                    /*
-                If the rule is not violated (e.g., ERROR, TIMEOUT, VERIFIED),
-                and it was generated for an assert statement that is originating from the spec
-                 */
+                    // If the rule is not violated (e.g., ERROR, TIMEOUT, VERIFIED),
+                    // and it was generated for an assert statement that is originating from the spec
                     val multiAssertRuleType =
                         rule.ruleType as SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule.SpecFile
                     if (multiAssertRuleType.assertMessage != "") {
@@ -312,7 +303,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
          * A result with a basic data and at least one example attached.
          * Each example has its own basic data.
          */
-        data class WithCounterExamples constructor(
+        data class WithCounterExamples(
             override val rule: IRule,
             override val result: SolverResult,
             override val verifyTime: VerifyTime,
@@ -530,7 +521,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
                     /**
                      * Generates and writes a CodeMap Htmls (aka tac dumps). Used when verification of [rule] returned
-                     * unsat and we made an unsat core ananalysis.
+                     * unsat and we made an unsat core analysis.
                      * Will make a dump for each unsat core.
                      * Returns the name of the written html file for the first of the unsat cores and
                      * the unsat core stats object.
@@ -567,8 +558,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                                 computeAndDumpUnsolvedSplitCodeMap(rule, unsolvedSplitsData)
                             } ?:
                                 // This is a fallback such that we don't crash and link to the PreSolver dump instead
-                                //  (which is always dumped), if anything weird happens. Currently, this case is
-                                //  statically unreachable, but we're staying on the safe side.
+                                // (which is always dumped), if anything weird happens. Currently, this case is
+                                // statically unreachable, but we're staying on the safe side.
                                 run {
                                     logger.warn { "vResponse for rule ${rule.declarationId} has no unsolvedSplitsData; reverting to " +
                                         "dumping / linking Presolver report instead of the colored graph with " +
@@ -948,11 +939,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
              * All descendant [SolverResult]s that are [SolverResult.UNKNOWN]
              */
             val unknown: List<FlattenedResult> by lazy { flattenedResults.filter { it.solverResult == solver.SolverResult.UNKNOWN } }
-
-            /**
-             * All descendant [SolverResult]s that are [SolverResult.SANITY_FAIL]
-             */
-            val sanityFail: List<FlattenedResult> by lazy { flattenedResults.filter { it.solverResult == SolverResult.SANITY_FAIL } }
 
             /**
              * Whether all descendant [RuleCheckResult]s are the expected good result
