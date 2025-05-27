@@ -290,10 +290,13 @@ abstract class TACProgram<T : TACCmd>(entry: NBId? = null) : NamedCode<ReportTyp
     }
 
 
-    private fun writeGraph(edges: Map<Edge, List<TACExpr>>, reportName: String) {
-        // We produce two reports: one with, and one without internal functions.
+    private fun writeGraph(edges: Map<Edge, List<TACExpr>>, reportName: String, reportType: ReportTypes) {
+        // We always write the report without internal functions.
         writeGraph(reportName, edges, addInternalFunctions = false)
-        writeGraph(reportName, edges, addInternalFunctions = true)
+        if (Config.TacDumpsWithInternalFunctions.get() && reportType.allowsTacDumpsWithInternalFunctions()) {
+            // If dumping internal functions is enabled and the report type supports graph dumping with internal functions, proceed with the operation.
+            writeGraph(reportName, edges, addInternalFunctions = true)
+        }
     }
 
     private fun writeGraph(
@@ -397,7 +400,7 @@ abstract class TACProgram<T : TACCmd>(entry: NBId? = null) : NamedCode<ReportTyp
             val filepath = "${outputDir}${File.separator}$nameWithTacSuffix"
             if (Config.isEnabledReport(fullName) && !Config.LowFootprint.get()) {
                 return this.toFile(filepath).apply {
-                    writeGraph(edges, fullName)
+                    writeGraph(edges, fullName, reportType)
                 }
             }
         }

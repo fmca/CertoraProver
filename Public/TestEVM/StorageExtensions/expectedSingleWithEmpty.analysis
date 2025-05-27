@@ -1,9 +1,9 @@
 {
   "AddInternalFunctions": {
-    "sanity-doOtherThing(uint256,bool)-Assertions": [true, true],
-    "sanity-doThing(uint256,bool)-Assertions": [true, true],
-    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true],
-    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true]
+    "sanity-doOtherThing(uint256,bool)-Assertions": true,
+    "sanity-doThing(uint256,bool)-Assertions": true,
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true
   },
   "CALLGRAPH": {
     "constructor()": false,

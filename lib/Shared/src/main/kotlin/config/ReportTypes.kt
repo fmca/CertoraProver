@@ -275,12 +275,21 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
 
     override fun isEnabled(): Boolean = this == NONE || Config.isEnabledLogger(this.loggerCategory) || Config.isEnabledReport(this)
     open fun toFilenamePrefix(): String =
-        this.toString().split("_").map { it.lowercase().replaceFirstChar { it.uppercaseChar() } }.joinToString("")
+        this.toString().split("_").joinToString("") { it.lowercase().replaceFirstChar { it.uppercaseChar() } }
+
+    /**
+     * Returns `true` if this report types allows TAC dumps with internal functions.
+     */
+    fun allowsTacDumpsWithInternalFunctions() =
+        when (this) {
+            REPORT, PRESOLVER_RULE -> true
+            else -> false
+        }
 
     companion object {
         // using `get()` to save global memory (not claiming I fully know garbage collection, but making sure-er);
         // if you call either of these often, materialize them
-        val byLowerCaseName get() = values().associateBy { it.toString().lowercase() }
-        val byConfigName get() = values().associateBy { it.configName }
+        val byLowerCaseName get() = ReportTypes.entries.associateBy { it.toString().lowercase() }
+        val byConfigName get() = ReportTypes.entries.associateBy { it.configName }
     }
 }

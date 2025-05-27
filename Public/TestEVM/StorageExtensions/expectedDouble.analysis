@@ -1,13 +1,13 @@
 {
   "AddInternalFunctions": {
-    "sanity-Test2-Test2_doThing(uint256,bool)-Assertions": [true, true],
-    "sanity-Test2-Test2_doOtherThing(uint256,bool)-Assertions": [true, true],
-    "sanity-Test-Test_doThing(uint256,bool)-Assertions": [true, true],
-    "sanity-Test-Test_doOtherThing(uint256,bool)-Assertions": [true, true],
-    "sanity-Test2-Test2_doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true],
-    "sanity-Test2-Test2_doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true],
-    "sanity-Test-Test_doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true],
-    "sanity-Test-Test_doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true]
+    "sanity-Test2-Test2_doThing(uint256,bool)-Assertions": true,
+    "sanity-Test2-Test2_doOtherThing(uint256,bool)-Assertions": true,
+    "sanity-Test-Test_doThing(uint256,bool)-Assertions": true,
+    "sanity-Test-Test_doOtherThing(uint256,bool)-Assertions": true,
+    "sanity-Test2-Test2_doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-Test2-Test2_doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-Test-Test_doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-Test-Test_doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true
   },
   "CALLGRAPH": {
     "constructor()": [false, false],

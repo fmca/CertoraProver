@@ -296,6 +296,15 @@ object Config {
         return prependInternalDir(SOURCES_SUBDIR)
     }
 
+    val TacDumpsWithInternalFunctions : ConfigType.BooleanCmdLine = object : ConfigType.BooleanCmdLine(
+        false,
+        Option(
+            "tacDumpsWithInternalFunctions",
+            true,
+            "When generating HTML reports of type Report or Presolver_Rule, also generate reports with internal " +
+                "functions folded. The reports have suffix '_with_internal' [default:false]"
+        )
+    ) {}
     val LowFootprint = object : ConfigType.BooleanCmdLine(
         false,
         Option(
@@ -2895,17 +2904,6 @@ object Config {
                 "smt_signedMulAxioms",
                 true,
                 "Generate LIA axioms for signed multiplication [default:true]"
-            )
-        ), TransformationAgnosticConfig {}
-
-        val AddSafeMathAxioms : ConfigType.BooleanCmdLine = object : ConfigType.BooleanCmdLine(
-            false,
-            Option(
-                "smt_safeMathAxioms",
-                true,
-                "Generate LIA axioms for safe math axioms. This is needed only if static analysis misses these" +
-                    "patterns. These originate from the old safe-math library, and since solc8, solidity's auto " +
-                    "generated overflow detection patterns. [default:false]"
             )
         ), TransformationAgnosticConfig {}
 

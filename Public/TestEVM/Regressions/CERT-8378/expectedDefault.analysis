@@ -1,9 +1,9 @@
 {
   "AddInternalFunctions": {
-			"sanity-test1(bytes28)-Assertions": [true, true],
-			"sanity-test2(uint64)-Assertions": [true, true],
-			"sanity-test2(uint64)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true],
-			"sanity-test1(bytes28)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true, true]
+			"sanity-test1(bytes28)-Assertions": true,
+			"sanity-test2(uint64)-Assertions": true,
+			"sanity-test2(uint64)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+			"sanity-test1(bytes28)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true
 	},
   "CALLGRAPH": {
     "constructor()": false,
