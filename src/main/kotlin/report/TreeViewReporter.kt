@@ -24,6 +24,7 @@ import config.Config.TreeViewReportUpdateInterval
 import datastructures.mutableMultiMapOf
 import datastructures.stdcollections.*
 import kotlinx.coroutines.*
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.*
 import log.*
 import org.jetbrains.annotations.TestOnly
@@ -44,6 +45,7 @@ import utils.*
 import verifier.RuleAndSplitIdentifier
 import java.io.IOException
 import java.math.BigInteger
+import java.util.SortedMap
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -177,7 +179,7 @@ class TreeViewReporter(
     init {
         // set up the files we'll dump
         ArtifactManagerFactory().registerArtifact(versionedFIle, StaticArtifactLocation.TreeViewReports)
-        ArtifactManagerFactory().registerArtifact(Config.OutputJSONFile.get())
+        ArtifactManagerFactory().registerArtifact(Config.OutputJSONFile)
     }
 
     companion object {
@@ -1163,6 +1165,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     fun writeOutputJson() {
         /**
          * The output.json groups nodes by their results, i.e. for invariants or parametric rules on method f
@@ -1178,13 +1181,13 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
          *
          * This method swaps key / values and performs the grouping.
          */
-        fun Map<String, JsonElement>.groupByStatus(): Map<String, JsonElement> {
+        fun SortedMap<String, JsonElement>.groupByStatus(): SortedMap<String, JsonElement> {
             val thisVal = this;
-            return buildMap {
+            return buildSortedMap {
                 thisVal.keys.forEach {
                     val value = thisVal[it]!!
                     if (value is JsonPrimitive) {
-                        val existing = this[value.content] ?: JsonArray(listOf())
+                        val existing: JsonElement = this[value.content] ?: JsonArray(listOf())
                         val new = JsonArray((existing as JsonArray).toList() + JsonPrimitive(it))
                         this[value.content] = new
                     } else {
@@ -1194,7 +1197,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             }
         }
 
-        fun computeOutputJsonResult(node: DisplayableIdentifier): Map<String, JsonElement> {
+        fun computeOutputJsonResult(node: DisplayableIdentifier): SortedMap<String, JsonElement> {
             val currRes = tree.getResultForNode(node)
             val children = tree.getChildren(node).associateWith { tree.getResultForNode(it) }
                 // Filter out all children generated as of sanity and multi assert splitting
@@ -1202,7 +1205,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 // Filter out expanded child for a failing assert
                 .filterValues { it.nodeType != NodeType.VIOLATED_ASSERT }
             return if (children.isEmpty()) {
-                buildMap {
+                buildSortedMap {
                     if (currRes.status != TreeViewStatusEnum.SKIPPED) {
                         val outputJsonKey = if(currRes.rule?.ruleType is SpecType.Single.BMC){
                             // In BMC mode we use the full rule identifier to identify nodes as the
@@ -1217,7 +1220,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             } else {
                 val mergedChildren = children.map { computeOutputJsonResult(it.key) }.fold(mapOf<String, JsonElement>()) { acc, curr ->
                     acc.merge(curr)
-                }
+                }.toSortedMap()
                 val grouped = if (children.any { it.value.rule is StaticRule || it.value.nodeType in listOf(NodeType.METHOD_INSTANTIATION, NodeType.INDUCTION_STEPS, NodeType.CUSTOM_INDUCTION_STEP) }) {
                     mergedChildren.groupByStatus()
                 } else {
@@ -1231,7 +1234,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                      */
                     return grouped
                 } else {
-                    buildMap {
+                    buildSortedMap {
                         this[node.displayName] = JsonObject(grouped)
                     }
                 }
@@ -1244,6 +1247,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
         val prettyJson = Json {
             prettyPrint = true
+            prettyPrintIndent = "\t"
         }
         ArtifactManagerFactory().useArtifact(Config.OutputJSONFile.get()) { handle ->
             ArtifactFileUtils.getWriterForFile(handle, overwrite = true).use { i ->
