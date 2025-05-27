@@ -423,7 +423,8 @@ object Config {
             "maxConcurrentRules",
             true,
             "The maximum number of concurrent rule evaluations.  Default: number of processors."
-        )
+        ),
+        pythonName = "--max_concurrent_rules"
     ), RuleCacheAgnosticConfig {
         override fun check(newValue: Int): Boolean = newValue > 0
     }
