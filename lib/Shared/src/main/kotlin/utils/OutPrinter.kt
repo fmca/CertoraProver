@@ -214,7 +214,7 @@ class TimePing(
         }
     }
 
-    fun bye() {
+    fun interruptThread() {
         try {
             this.interrupt()
         } catch (e : Exception) {

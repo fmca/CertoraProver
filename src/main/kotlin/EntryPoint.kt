@@ -252,11 +252,7 @@ fun main(args: Array<String>) {
                     SpecFile.getOrNull() != null -> handleBytecodeFlow(BytecodeFiles.get(), SpecFile.get())
 
                 fileName == null && isCertoraScriptFlow(buildFileName, verificationFileName) -> {
-                    val cfgFileNames = File(getSourcesSubdirInInternal()).walk().filter {
-                        it.isFile
-                    }.map {
-                        getRelativeFileName(it.toString(), SOURCES_SUBDIR)
-                    }.toSet()
+                    val cfgFileNames = getFilesInSourcesDir()
                     val ruleCheckResults = handleCertoraScriptFlow(
                         buildFileName,
                         verificationFileName,
@@ -335,10 +331,10 @@ fun main(args: Array<String>) {
         )
         finalResult = FinalResult.ERROR
     } finally {
-        // bye bye to all thread pools
-        longProcessKiller.bye()
-        timePing.bye()
-        timeChecker?.bye()
+        // Interrupt all thread pools
+        longProcessKiller.interruptThread()
+        timePing.interruptThread()
+        timeChecker?.interruptThread()
         CVTAlertReporter().close()
         // always output stats, even if erroneous
         RunIDFactory.runId().reportRunEnd()
@@ -586,6 +582,10 @@ suspend fun handleGenericFlow(
     rules: Iterable<Pair<EcosystemAgnosticRule, CoreTACProgram>>
 ): List<RuleCheckResult.Single> {
 
+    // Copy in `inputs` directory the contents of the `.certora_sources` directory.
+    val filesInSourceDir = getFilesInSourcesDir()
+    CertoraConf.backupFiles(filesInSourceDir)
+
     treeView.buildRuleTree(rules.map { it.first })
 
     return rules.parallelMapOrdered { _, (rule, coretac) ->
@@ -708,6 +708,14 @@ fun runBuildScript() {
             }
         }
     }
+}
+
+fun getFilesInSourcesDir(): Set<String> {
+    return File(getSourcesSubdirInInternal()).walk().filter {
+        it.isFile
+    }.map {
+        getRelativeFileName(it.toString(), SOURCES_SUBDIR)
+    }.toSet()
 }
 
 /**

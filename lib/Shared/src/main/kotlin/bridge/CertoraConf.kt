@@ -24,6 +24,7 @@ import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import log.ArtifactManagerFactory
+import log.IArtifactsManager
 import log.Logger
 import log.LoggerTypes
 import spec.CVLReservedVariables
@@ -104,38 +105,57 @@ object CertoraConf {
 
     private fun validateVerificationQueries(verificationQuery: VerificationQuery) {
         if (verificationQuery.type == VerificationQueryType.spec
-            && verificationQuery.primary_contract.isBlank()) {
+            && verificationQuery.primary_contract.isBlank()
+        ) {
             logger.error("Primary contract for spec verification query $verificationQuery is blank")
         } else if (verificationQuery.type == VerificationQueryType.assertion
-            && (verificationQuery.primaryContracts.isNullOrEmpty() || verificationQuery.primaryContracts.all { it.isBlank() })) {
+            && (verificationQuery.primaryContracts.isNullOrEmpty() || verificationQuery.primaryContracts.all { it.isBlank() })
+        ) {
             logger.error("No primary contracts for assertion verification query $verificationQuery")
         }
     }
 
     /**
-        * Copy important files to a backup location.
-        * @param buildFilename The name of the build config file (ie .certora_build)
-        * @param verificationFilename The name of the verification config file (ie .certora_verify)
-        * @param cfgFileNames The names of sol/spec files (located in the .certora_config dir)
-        * @param metadataFilename The name of the metadata config file (ie .certora_metadata.
-        *                         Note: This file may not be present)
-        * @return Unit
-        */
-    fun copyInputs(buildFilename: String, verificationFilename: String, cfgFileNames: Set<String>,
-                    metadataFilename: String) {
+     * Copy important files to a backup location.
+     * @param buildFilename The name of the build config file (ie .certora_build)
+     * @param verificationFilename The name of the verification config file (ie .certora_verify)
+     * @param cfgFileNames The names of sol/spec files (located in the .certora_config dir)
+     * @param metadataFilename The name of the metadata config file (ie .certora_metadata.
+     *                         Note: This file may not be present)
+     */
+    fun copyInputs(
+        buildFilename: String, verificationFilename: String, cfgFileNames: Set<String>,
+        metadataFilename: String
+    ) {
         val manager = ArtifactManagerFactory()
-        fun getBackupFileName(fileName: String): String {
-            return "${manager.inputsDir}${File.separator}${fileName}"
-        }
-        fun trimPath(fileName: String) = ArtifactFileUtils.getNameFromPath(fileName)
-
-        manager.backup(buildFilename, getBackupFileName(trimPath(buildFilename)))
-        manager.backup(verificationFilename, getBackupFileName(trimPath(verificationFilename)))
-        // We don't call trimPath for cfgFileNames because we want to retain the relative path, ie we want
-        // .certora_config/fileName rather than just fileName
-        cfgFileNames.forEach {manager.backup(it, getBackupFileName(it))}
+        manager.backupFileWithoutRelativePath(buildFilename)
+        manager.backupFileWithoutRelativePath(verificationFilename)
+        backupFiles(cfgFileNames, manager)
         if (File(metadataFilename).exists()) {
-            manager.backup(metadataFilename, getBackupFileName(trimPath(metadataFilename)))
+            manager.backupFileWithoutRelativePath(metadataFilename)
         }
     }
+
+    /**
+     * Copies the files into [manager]'s input directory, retaining the relative paths.
+     */
+    fun backupFiles(fileNames: Set<String>, manager: IArtifactsManager = ArtifactManagerFactory()) {
+        fileNames.forEach { manager.backupRetainRelativePath(it) }
+    }
+
+    /**
+     * Backups the file without the relative path. For example, `mydir/file.txt` will be backed up as `inputs/file.txt`.
+     */
+    private fun IArtifactsManager.backupFileWithoutRelativePath(fileName: String) {
+        this.backupRetainRelativePath(ArtifactFileUtils.getNameFromPath(fileName))
+    }
+
+    /**
+     * Backups the file retaining the relative path. For example, `mydir/file.txt` will be backed up as `inputs/mydir/file.txt`.
+     */
+    private fun IArtifactsManager.backupRetainRelativePath(fileName: String) {
+        val backupFileName = "${this.inputsDir}${File.separator}${fileName}"
+        this.backup(fileName, backupFileName)
+    }
+
 }

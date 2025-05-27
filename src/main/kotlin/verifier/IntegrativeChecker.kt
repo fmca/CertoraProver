@@ -875,9 +875,7 @@ object IntegrativeChecker {
 
     private fun logSceneInfo(scene: IScene) {
         Logger.always("The scene contains ${scene.getContracts().size} contracts:\n" +
-            scene.getContracts()
-                .map { "${it.name} : 0x${it.instanceId.toString(16)}" }
-                .joinToString(",\n"),
+            scene.getContracts().joinToString(",\n") { "${it.name} : 0x${it.instanceId.toString(16)}" },
             respectQuiet = false
         )
         scene.getContracts().forEach { c ->

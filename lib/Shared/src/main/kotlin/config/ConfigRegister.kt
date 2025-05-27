@@ -17,13 +17,8 @@
 
 package config
 
-import json.BasicJsonifier
 import log.*
 import org.apache.commons.cli.Option
-import utils.ArtifactFileUtils
-import java.io.IOException
-
-private val logger = Logger(LoggerTypes.COMMON)
 
 /**
  * A registrar for configuration.
@@ -51,22 +46,5 @@ object ConfigRegister {
 
     fun getCLIOptions(): List<Option> {
         return registeredConfigs.mapNotNull { if (it is ConfigType.CmdLine) it.allOptions else null }.flatten()
-    }
-
-    fun dumpAll(to: String) {
-        ArtifactManagerFactory().registerArtifact(to, StaticArtifactLocation.Input) { name ->
-            val file = ArtifactFileUtils.getWriterForFile(name, true)
-            try {
-                file.use {
-                    it.append(
-                        BasicJsonifier.mapToJson(registeredConfigs.associate { conf ->
-                            conf.name to conf.getOrNull()
-                        })
-                    )
-                }
-            } catch (_: IOException) {
-                logger.error { "Failed to dump settings to file" }
-            }
-        }
     }
 }
