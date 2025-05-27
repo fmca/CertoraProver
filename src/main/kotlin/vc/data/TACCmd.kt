@@ -1340,12 +1340,6 @@ sealed class TACCmd : Serializable, ITACCmd {
                     this.setLength(MAX_ASSERT_LENGTH)
                     this.append("...")
                 }
-
-                /** this meta might be absent for manually-generated asserts */
-                val range = meta.find(TACMeta.CVL_RANGE)
-                if (range is Range.Range) {
-                    this.append(" - ${range.specFile} line ${range.start.lineForIDE}")
-                }
             }
 
             companion object {
