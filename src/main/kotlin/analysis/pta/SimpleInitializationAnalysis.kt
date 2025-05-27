@@ -1141,7 +1141,8 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             pathCondition = path, l = graph.elab(succ), w = stepped
                     )?.let { prop ->
                         unreachable.remove(succ)
-                        val sat = stepped.inv.propagateEqualities(listOf(), listOf()) { it ->
+                        val eq = stepped.inv.getEqualities()
+                        val sat = stepped.inv.propagateEqualities(listOf(), eq) { it ->
                             prop[it]?.let {
                                 if(it.x.isConstant) {
                                     it.x.c
@@ -1188,15 +1189,6 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             } == true
                         }
 
-                        fun roundedUpLength(v: TACSymbol.Var) = roundUpAt.query(v, graph.elab(it)).toNullableResult()?.let { (v, where) ->
-                            /**
-                             * If so, is the variable we're rouding up equal to the length of the array?
-                             */
-                            graph.cache.gvn.findCopiesAt(it, where to v).any { lenAlias ->
-                                state.num[lenAlias]?.qual.orEmpty().contains(Roles.LENGTH)
-                            }
-                        } == true
-
                         /**
                          * Check whether
                          * WRITE + len - V = END
@@ -1207,30 +1199,16 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                                 it is LVar.PVar && state.num[it.v]?.qual.orEmpty().contains(Roles.LENGTH)
                             } - v("over-write") { ow ->
                                 /**
-                                 * Is this a round up? Either check whether ow.v is itself a rounded up length (the first
-                                 * disjunct) OR there is some variable y st ow.v = y and where y is a rounded up length.
+                                 * Is this a round up?
                                  */
-                                ow is LVar.PVar && (roundedUpLength(ow.v) || sat.containsAny { saturatingEq ->
-                                    if(!saturatingEq.relates(ow.v) || saturatingEq.k != BigInteger.ZERO || saturatingEq.term.size != 2) {
-                                        return@containsAny false
-                                    }
-                                    val scale = saturatingEq.term[ow]!!
-                                    if(scale.abs() != BigInteger.ONE) {
-                                        return@containsAny false
-                                    }
-                                    val other = saturatingEq.term.entries.singleOrNull {
-                                        it.key != ow && it.key is LVar.PVar
-                                    } ?: return@containsAny false
-                                    if(other.value != scale.negate()) {
-                                        return@containsAny false
-                                    }
+                                ow is LVar.PVar && roundUpAt.query(ow.v, graph.elab(it)).toNullableResult()?.let { (v, where) ->
                                     /**
-                                     * We thus have that [saturatingEq] represents k1 * ow.v + k2 * other = 0,
-                                     * where |k1| = 1 and k1 = -k2. We thus have that ow.v = other, and thus if other is
-                                     * a rounded up length, then ow.v is too.
+                                     * If so, is the variable we're rouding up equal to the length of the array?
                                      */
-                                    roundedUpLength((other.key as LVar.PVar).v)
-                                })
+                                    graph.cache.gvn.findCopiesAt(it, where to v).any { lenAlias ->
+                                        state.num[lenAlias]?.qual.orEmpty().contains(Roles.LENGTH)
+                                    }
+                                } == true
                             } `=` END_BLOCK
                         }) != null
                         if((matchWithSlippage || matchWithBound || matchWithRounding) && (stepped.elemSize == null || stepped.seenLengthWrite == true)) {

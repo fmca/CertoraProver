@@ -175,7 +175,7 @@ def run_local(context: CertoraContext, timings: Dict, additional_commands: Optio
     if additional_commands:
         cmd.extend(additional_commands)
 
-    print("Verifier run command:\n %s", " ".join(cmd))
+    print(f'Verifier run command:\n {" ".join(cmd)}')
     rc = Util.run_jar_cmd(
         cmd,
         override_exit_code=compare_with_expected_file,
