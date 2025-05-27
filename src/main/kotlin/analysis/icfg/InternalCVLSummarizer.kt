@@ -645,7 +645,8 @@ class InternalCVLSummarizer private constructor(
                     !Config.EnableAggressiveABIOptimization.get() || !summary.isNoArgSummary()
                 }.orEmpty(),
                 callSrc = entryInfo.callSiteSrc,
-                id = Allocator.getFreshId(Allocator.Id.INTERNAL_CALL_SUMMARY)
+                id = Allocator.getFreshId(Allocator.Id.INTERNAL_CALL_SUMMARY),
+                calleeSrc = entryInfo.calleeSrc
             )
             return Resummarized(CommandWithRequiredDecls(listOf(
                 TACCmd.Simple.SummaryCmd(

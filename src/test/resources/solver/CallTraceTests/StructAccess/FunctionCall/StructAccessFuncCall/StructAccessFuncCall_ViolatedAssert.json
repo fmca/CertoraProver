@@ -19,7 +19,19 @@
             "tag": {
                 "type": "tac.Tag.Bool"
             },
-            "callIndex": 0
+            "callIndex": 0,
+            "meta": [
+                {
+                    "key": {
+                        "name": "cvl.type",
+                        "type": "spec.cvlast.CVLType$PureCVLType",
+                        "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                    }
+                }
+            ]
         },
         "description": "myStruct.num > 0",
         "meta": [

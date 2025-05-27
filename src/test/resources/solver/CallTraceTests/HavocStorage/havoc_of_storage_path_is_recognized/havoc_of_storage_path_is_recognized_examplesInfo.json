@@ -203,7 +203,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "1"
+                    "value": "8000000000000000000000000000000000000000000000000000000000000000"
                 },
                 {
                     "namePrefix": "R3",
@@ -372,7 +372,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "c"
                 },
                 {
                     "namePrefix": "R7",
@@ -403,7 +403,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "1"
+                    "value": "8000000000000000000000000000000000000000000000000000000000000000"
                 },
                 {
                     "namePrefix": "B49",
@@ -431,7 +431,19 @@
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.True"
@@ -441,7 +453,19 @@
                     "tag": {
                         "type": "tac.Tag.Bool"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Bool.False"
@@ -451,132 +475,284 @@
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "8200"
                 },
                 {
                     "namePrefix": "I13",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "I18",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "I23",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "8200"
                 },
                 {
                     "namePrefix": "I26",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "I31",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "I37",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "8200"
                 },
                 {
                     "namePrefix": "I40",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "I45",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "I53",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "8200"
                 },
                 {
                     "namePrefix": "I56",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "I61",
                     "tag": {
                         "type": "tac.Tag.Int"
                     },
-                    "callIndex": 0
+                    "callIndex": 0,
+                    "meta": [
+                        {
+                            "key": {
+                                "name": "cvl.type",
+                                "type": "spec.cvlast.CVLType$PureCVLType",
+                                "erasureStrategy": "CallTrace"
+                            },
+                            "value": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                "k": 256
+                            }
+                        }
+                    ]
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "R12",
@@ -599,7 +775,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
                 },
                 {
                     "namePrefix": "R15",
@@ -621,7 +797,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "20"
                 },
                 {
                     "namePrefix": "R16",
@@ -644,7 +820,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001e"
                 },
                 {
                     "namePrefix": "R17",
@@ -667,7 +843,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2712"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001f"
                 },
                 {
                     "namePrefix": "R20",
@@ -690,7 +866,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d4c"
                 },
                 {
                     "namePrefix": "R21",
@@ -739,7 +915,19 @@
                                                                 "tag": {
                                                                     "type": "tac.Tag.Int"
                                                                 },
-                                                                "callIndex": 0
+                                                                "callIndex": 0,
+                                                                "meta": [
+                                                                    {
+                                                                        "key": {
+                                                                            "name": "cvl.type",
+                                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                            "erasureStrategy": "CallTrace"
+                                                                        },
+                                                                        "value": {
+                                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                                        }
+                                                                    }
+                                                                ]
                                                             },
                                                             "baseSlot": {
                                                                 "type": "vc.data.TACSymbol.Const",
@@ -761,7 +949,20 @@
                                                         "tag": {
                                                             "type": "tac.Tag.Int"
                                                         },
-                                                        "callIndex": 0
+                                                        "callIndex": 0,
+                                                        "meta": [
+                                                            {
+                                                                "key": {
+                                                                    "name": "cvl.type",
+                                                                    "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                    "erasureStrategy": "CallTrace"
+                                                                },
+                                                                "value": {
+                                                                    "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                                    "k": 256
+                                                                }
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "offset": {
@@ -775,7 +976,20 @@
                                                 "tag": {
                                                     "type": "tac.Tag.Int"
                                                 },
-                                                "callIndex": 0
+                                                "callIndex": 0,
+                                                "meta": [
+                                                    {
+                                                        "key": {
+                                                            "name": "cvl.type",
+                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                            "erasureStrategy": "CallTrace"
+                                                        },
+                                                        "value": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             "baseSlot": {
                                                 "type": "vc.data.TACSymbol.Var.Full",
@@ -809,7 +1023,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d54"
                 },
                 {
                     "namePrefix": "R22",
@@ -831,7 +1045,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "1"
+                    "value": "6"
                 },
                 {
                     "namePrefix": "R25",
@@ -854,7 +1068,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
                 },
                 {
                     "namePrefix": "R28",
@@ -876,7 +1090,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "20"
                 },
                 {
                     "namePrefix": "R29",
@@ -899,7 +1113,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001e"
                 },
                 {
                     "namePrefix": "R30",
@@ -922,7 +1136,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2712"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001f"
                 },
                 {
                     "namePrefix": "R33",
@@ -945,7 +1159,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d4c"
                 },
                 {
                     "namePrefix": "R34",
@@ -994,7 +1208,19 @@
                                                                 "tag": {
                                                                     "type": "tac.Tag.Int"
                                                                 },
-                                                                "callIndex": 0
+                                                                "callIndex": 0,
+                                                                "meta": [
+                                                                    {
+                                                                        "key": {
+                                                                            "name": "cvl.type",
+                                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                            "erasureStrategy": "CallTrace"
+                                                                        },
+                                                                        "value": {
+                                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                                        }
+                                                                    }
+                                                                ]
                                                             },
                                                             "baseSlot": {
                                                                 "type": "vc.data.TACSymbol.Const",
@@ -1016,7 +1242,20 @@
                                                         "tag": {
                                                             "type": "tac.Tag.Int"
                                                         },
-                                                        "callIndex": 0
+                                                        "callIndex": 0,
+                                                        "meta": [
+                                                            {
+                                                                "key": {
+                                                                    "name": "cvl.type",
+                                                                    "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                    "erasureStrategy": "CallTrace"
+                                                                },
+                                                                "value": {
+                                                                    "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                                    "k": 256
+                                                                }
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "offset": {
@@ -1030,7 +1269,20 @@
                                                 "tag": {
                                                     "type": "tac.Tag.Int"
                                                 },
-                                                "callIndex": 0
+                                                "callIndex": 0,
+                                                "meta": [
+                                                    {
+                                                        "key": {
+                                                            "name": "cvl.type",
+                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                            "erasureStrategy": "CallTrace"
+                                                        },
+                                                        "value": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             "baseSlot": {
                                                 "type": "vc.data.TACSymbol.Var.Full",
@@ -1064,7 +1316,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d54"
                 },
                 {
                     "namePrefix": "R35",
@@ -1086,7 +1338,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "1"
+                    "value": "6"
                 },
                 {
                     "namePrefix": "R39",
@@ -1109,7 +1361,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
                 },
                 {
                     "namePrefix": "R42",
@@ -1131,7 +1383,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "20"
                 },
                 {
                     "namePrefix": "R43",
@@ -1154,7 +1406,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001e"
                 },
                 {
                     "namePrefix": "R44",
@@ -1177,7 +1429,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2712"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001f"
                 },
                 {
                     "namePrefix": "R47",
@@ -1200,7 +1452,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d4c"
                 },
                 {
                     "namePrefix": "R48",
@@ -1249,7 +1501,19 @@
                                                                 "tag": {
                                                                     "type": "tac.Tag.Int"
                                                                 },
-                                                                "callIndex": 0
+                                                                "callIndex": 0,
+                                                                "meta": [
+                                                                    {
+                                                                        "key": {
+                                                                            "name": "cvl.type",
+                                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                            "erasureStrategy": "CallTrace"
+                                                                        },
+                                                                        "value": {
+                                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                                        }
+                                                                    }
+                                                                ]
                                                             },
                                                             "baseSlot": {
                                                                 "type": "vc.data.TACSymbol.Const",
@@ -1271,7 +1535,20 @@
                                                         "tag": {
                                                             "type": "tac.Tag.Int"
                                                         },
-                                                        "callIndex": 0
+                                                        "callIndex": 0,
+                                                        "meta": [
+                                                            {
+                                                                "key": {
+                                                                    "name": "cvl.type",
+                                                                    "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                    "erasureStrategy": "CallTrace"
+                                                                },
+                                                                "value": {
+                                                                    "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                                    "k": 256
+                                                                }
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "offset": {
@@ -1285,7 +1562,20 @@
                                                 "tag": {
                                                     "type": "tac.Tag.Int"
                                                 },
-                                                "callIndex": 0
+                                                "callIndex": 0,
+                                                "meta": [
+                                                    {
+                                                        "key": {
+                                                            "name": "cvl.type",
+                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                            "erasureStrategy": "CallTrace"
+                                                        },
+                                                        "value": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             "baseSlot": {
                                                 "type": "vc.data.TACSymbol.Var.Full",
@@ -1319,7 +1609,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d54"
                 },
                 {
                     "namePrefix": "R50",
@@ -1364,7 +1654,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
                 },
                 {
                     "namePrefix": "R58",
@@ -1386,7 +1676,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "20"
                 },
                 {
                     "namePrefix": "R59",
@@ -1409,7 +1699,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001e"
                 },
                 {
                     "namePrefix": "R60",
@@ -1432,7 +1722,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2712"
+                    "value": "1000000000000000000000000000000000000000000000000000000000000001f"
                 },
                 {
                     "namePrefix": "R63",
@@ -1455,7 +1745,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d4c"
                 },
                 {
                     "namePrefix": "R64",
@@ -1504,7 +1794,19 @@
                                                                 "tag": {
                                                                     "type": "tac.Tag.Int"
                                                                 },
-                                                                "callIndex": 0
+                                                                "callIndex": 0,
+                                                                "meta": [
+                                                                    {
+                                                                        "key": {
+                                                                            "name": "cvl.type",
+                                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                            "erasureStrategy": "CallTrace"
+                                                                        },
+                                                                        "value": {
+                                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                                        }
+                                                                    }
+                                                                ]
                                                             },
                                                             "baseSlot": {
                                                                 "type": "vc.data.TACSymbol.Const",
@@ -1526,7 +1828,20 @@
                                                         "tag": {
                                                             "type": "tac.Tag.Int"
                                                         },
-                                                        "callIndex": 0
+                                                        "callIndex": 0,
+                                                        "meta": [
+                                                            {
+                                                                "key": {
+                                                                    "name": "cvl.type",
+                                                                    "type": "spec.cvlast.CVLType$PureCVLType",
+                                                                    "erasureStrategy": "CallTrace"
+                                                                },
+                                                                "value": {
+                                                                    "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                                    "k": 256
+                                                                }
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "offset": {
@@ -1540,7 +1855,20 @@
                                                 "tag": {
                                                     "type": "tac.Tag.Int"
                                                 },
-                                                "callIndex": 0
+                                                "callIndex": 0,
+                                                "meta": [
+                                                    {
+                                                        "key": {
+                                                            "name": "cvl.type",
+                                                            "type": "spec.cvlast.CVLType$PureCVLType",
+                                                            "erasureStrategy": "CallTrace"
+                                                        },
+                                                        "value": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    }
+                                                ]
                                             },
                                             "baseSlot": {
                                                 "type": "vc.data.TACSymbol.Var.Full",
@@ -1574,7 +1902,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2713"
+                    "value": "4000000000000000000000000000000000000000000000000000000000001d54"
                 },
                 {
                     "namePrefix": "R65",
@@ -1830,7 +2158,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "2380"
                 },
                 {
                     "namePrefix": "CANON11",
@@ -2066,7 +2394,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "b"
                 },
                 {
                     "namePrefix": "CANON12",
@@ -2302,7 +2630,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "9"
                 },
                 {
                     "namePrefix": "CANON13",
@@ -2538,7 +2866,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "7"
                 },
                 {
                     "namePrefix": "CANON14",
@@ -2774,7 +3102,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "5"
                 },
                 {
                     "namePrefix": "CANON15",
@@ -2835,7 +3163,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "8200"
                 },
                 {
                     "namePrefix": "CANON16",
@@ -2897,7 +3225,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "8"
                 },
                 {
                     "namePrefix": "CANON45",
@@ -2958,7 +3286,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "1"
+                    "value": "6"
                 },
                 {
                     "namePrefix": "CANON47",
@@ -3069,7 +3397,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "c"
                 },
                 {
                     "namePrefix": "CANON5",
@@ -3268,7 +3596,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "c100"
                 },
                 {
                     "namePrefix": "CANON6",
@@ -3469,7 +3797,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "3"
                 },
                 {
                     "namePrefix": "CANON7",
@@ -3661,7 +3989,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "4300"
                 },
                 {
                     "namePrefix": "CANON8",
@@ -3897,7 +4225,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "e"
                 },
                 {
                     "namePrefix": "CANON9",
@@ -4133,7 +4461,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "0"
+                    "value": "a"
                 },
                 {
                     "namePrefix": "OK_0_0_0_0_0_0",
@@ -4212,7 +4540,7 @@
                 },
                 {
                     "type": "vc.data.state.TACValue.PrimitiveValue.Integer",
-                    "value": "2711"
+                    "value": "c"
                 }
             ],
             "reachableBadNBIds": [

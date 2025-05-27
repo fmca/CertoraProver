@@ -1,0 +1,1259 @@
+{
+    "message": {
+        "text": "unresolvedExternalForcingDefaultCase()",
+        "arguments": [
+        ]
+    },
+    "status": "",
+    "childrenList": [
+        {
+            "message": {
+                "text": "Global State",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+                {
+                    "message": {
+                        "text": "Balances",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                        {
+                            "message": {
+                                "text": "0x2735.balance: '{0}'",
+                                "arguments": [
+                                    {
+                                        "value": "MAX_UINT256",
+                                        "values": [
+                                            "MAX_UINT256",
+                                            "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                        ],
+                                        "tooltip": "balance",
+                                        "truncatable": false
+                                    }
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": null
+                        },
+                        {
+                            "message": {
+                                "text": "Test.balance: '{0}'",
+                                "arguments": [
+                                    {
+                                        "value": "2^256 - 2",
+                                        "values": [
+                                            "2^256 - 2",
+                                            "115792089237316195423570985008687907853269984665640564039457584007913129639934",
+                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                        ],
+                                        "tooltip": "balance",
+                                        "truncatable": false
+                                    }
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": null
+                        }
+                    ],
+                    "jumpToDefinition": null,
+                    "storageId": 1
+                }
+            ],
+            "jumpToDefinition": null,
+            "storageId": null
+        },
+        {
+            "message": {
+                "text": "rule parameters setup",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+            ],
+            "jumpToDefinition": null
+        },
+        {
+            "message": {
+                "text": "Setup",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+                {
+                    "message": {
+                        "text": "multi contract setup",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "contract address vars initialized",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "setup read tracking instrumentation",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "last storage initialize",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "assuming contracts in scene with non-empty bytecode have EXTCODESIZE larger than zero",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "assuming address(0).code has no code deployed",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "assumptions about contracts' addresses",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "assumptions about static addresses",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "establish addresses of precompiled contracts",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "assumptions about uniqueness of contracts' addresses",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "static links",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "record starting nonces",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "cloned contracts have no balances",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "Linked immutable setup",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "Constrain immutables",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                },
+                {
+                    "message": {
+                        "text": "establish equivalence of extension and base contract immutables",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                    ],
+                    "jumpToDefinition": null
+                }
+            ],
+            "jumpToDefinition": null
+        },
+        {
+            "message": {
+                "text": "env e",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+            ],
+            "jumpToDefinition": {
+                "file": "Summarization.spec",
+                "start": {
+                    "line": 47,
+                    "col": 5
+                },
+                "end": {
+                    "line": 47,
+                    "col": 11
+                }
+            }
+        },
+        {
+            "message": {
+                "text": "address target",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+            ],
+            "jumpToDefinition": {
+                "file": "Summarization.spec",
+                "start": {
+                    "line": 48,
+                    "col": 5
+                },
+                "end": {
+                    "line": 48,
+                    "col": 20
+                }
+            }
+        },
+        {
+            "message": {
+                "text": "bytes b",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+            ],
+            "jumpToDefinition": {
+                "file": "Summarization.spec",
+                "start": {
+                    "line": 49,
+                    "col": 5
+                },
+                "end": {
+                    "line": 49,
+                    "col": 13
+                }
+            }
+        },
+        {
+            "message": {
+                "text": "require Test.getToSummarizeFunctionSelector(e) != b",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+                {
+                    "message": {
+                        "text": "Test.getToSummarizeFunctionSelector() ↪ '{0}'",
+                        "arguments": [
+                            {
+                                "value": "...",
+                                "values": [
+                                    "..."
+                                ],
+                                "tooltip": "cannot display this value",
+                                "truncatable": false
+                            }
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                        {
+                            "message": {
+                                "text": "sender: '{0}'; receiver: '{1}'; transferred amount: '{2}'",
+                                "arguments": [
+                                    {
+                                        "value": "0x2735",
+                                        "values": [
+                                            "0x2735",
+                                            "0x2735",
+                                            "0x2735"
+                                        ],
+                                        "tooltip": "address of sender",
+                                        "truncatable": true
+                                    },
+                                    {
+                                        "value": "Test",
+                                        "values": [
+                                            "Test",
+                                            "Test",
+                                            "0xf"
+                                        ],
+                                        "tooltip": "address of receiver",
+                                        "truncatable": false
+                                    },
+                                    {
+                                        "value": "0x0",
+                                        "values": [
+                                            "0x0",
+                                            "0",
+                                            "0x0"
+                                        ],
+                                        "tooltip": "transferred amount",
+                                        "truncatable": true
+                                    }
+                                ]
+                            },
+                            "status": "TRANSFER",
+                            "childrenList": [
+                                {
+                                    "message": {
+                                        "text": "Load from: sender.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "MAX_UINT256",
+                                                "values": [
+                                                    "MAX_UINT256",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                },
+                                {
+                                    "message": {
+                                        "text": "Store at: sender.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "MAX_UINT256",
+                                                "values": [
+                                                    "MAX_UINT256",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                },
+                                {
+                                    "message": {
+                                        "text": "Load from: receiver.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "2^256 - 2",
+                                                "values": [
+                                                    "2^256 - 2",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639934",
+                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                },
+                                {
+                                    "message": {
+                                        "text": "Store at: receiver.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "2^256 - 2",
+                                                "values": [
+                                                    "2^256 - 2",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639934",
+                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                }
+                            ],
+                            "jumpToDefinition": null
+                        },
+                        {
+                            "message": {
+                                "text": "Evaluate branch condition",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 33,
+                                    "col": 1
+                                },
+                                "end": {
+                                    "line": 86,
+                                    "col": 2
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Copy-Loop",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": null
+                        },
+                        {
+                            "message": {
+                                "text": "Return",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 73,
+                                    "col": 5
+                                },
+                                "end": {
+                                    "line": 75,
+                                    "col": 6
+                                }
+                            }
+                        }
+                    ],
+                    "jumpToDefinition": {
+                        "file": "Test.sol",
+                        "start": {
+                            "line": 73,
+                            "col": 5
+                        },
+                        "end": {
+                            "line": 75,
+                            "col": 6
+                        }
+                    }
+                }
+            ],
+            "jumpToDefinition": {
+                "file": "Summarization.spec",
+                "start": {
+                    "line": 50,
+                    "col": 5
+                },
+                "end": {
+                    "line": 50,
+                    "col": 53
+                }
+            }
+        },
+        {
+            "message": {
+                "text": "res = Test.unresolvedExternalSummaryDefault(e, target, b)",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+                {
+                    "message": {
+                        "text": "Test.unresolvedExternalSummaryDefault(target='{0}', data=bytes (length='{1}')) ↪ '{2}'",
+                        "arguments": [
+                            {
+                                "value": "0x2737",
+                                "values": [
+                                    "0x2737",
+                                    "0x2737",
+                                    "0x2737"
+                                ],
+                                "tooltip": "value",
+                                "truncatable": true
+                            },
+                            {
+                                "value": "0x3",
+                                "values": [
+                                    "0x3",
+                                    "3",
+                                    "0x3"
+                                ],
+                                "tooltip": "value",
+                                "truncatable": true
+                            },
+                            {
+                                "value": "0x1",
+                                "values": [
+                                    "0x1",
+                                    "1",
+                                    "0x1"
+                                ],
+                                "tooltip": "value",
+                                "truncatable": true
+                            }
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                        {
+                            "message": {
+                                "text": "sender: '{0}'; receiver: '{1}'; transferred amount: '{2}'",
+                                "arguments": [
+                                    {
+                                        "value": "0x2735",
+                                        "values": [
+                                            "0x2735",
+                                            "0x2735",
+                                            "0x2735"
+                                        ],
+                                        "tooltip": "address of sender",
+                                        "truncatable": true
+                                    },
+                                    {
+                                        "value": "Test",
+                                        "values": [
+                                            "Test",
+                                            "Test",
+                                            "0xf"
+                                        ],
+                                        "tooltip": "address of receiver",
+                                        "truncatable": false
+                                    },
+                                    {
+                                        "value": "0x0",
+                                        "values": [
+                                            "0x0",
+                                            "0",
+                                            "0x0"
+                                        ],
+                                        "tooltip": "transferred amount",
+                                        "truncatable": true
+                                    }
+                                ]
+                            },
+                            "status": "TRANSFER",
+                            "childrenList": [
+                                {
+                                    "message": {
+                                        "text": "Load from: sender.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "MAX_UINT256",
+                                                "values": [
+                                                    "MAX_UINT256",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                },
+                                {
+                                    "message": {
+                                        "text": "Store at: sender.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "MAX_UINT256",
+                                                "values": [
+                                                    "MAX_UINT256",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                },
+                                {
+                                    "message": {
+                                        "text": "Load from: receiver.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "2^256 - 2",
+                                                "values": [
+                                                    "2^256 - 2",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639934",
+                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                },
+                                {
+                                    "message": {
+                                        "text": "Store at: receiver.balance ↪ '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "2^256 - 2",
+                                                "values": [
+                                                    "2^256 - 2",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639934",
+                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                }
+                            ],
+                            "jumpToDefinition": null
+                        },
+                        {
+                            "message": {
+                                "text": "Evaluate branch condition",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 33,
+                                    "col": 1
+                                },
+                                "end": {
+                                    "line": 86,
+                                    "col": 2
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Evaluate branch condition",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 60,
+                                    "col": 5
+                                },
+                                "end": {
+                                    "line": 67,
+                                    "col": 6
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Copy-Loop",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": null
+                        },
+                        {
+                            "message": {
+                                "text": "/* Test.sol: 61: */ address(target).call(data): DISPATCH_LIST summary @ Summarization.spec:15:85()",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "SUMMARIZED",
+                            "childrenList": [
+                                {
+                                    "message": {
+                                        "text": "Applying default case of 'unresolved external' summary, using 'a havoc that only havocs the return value'",
+                                        "arguments": [
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": {
+                                        "file": "Summarization.spec",
+                                        "start": {
+                                            "line": 15,
+                                            "col": 85
+                                        },
+                                        "end": {
+                                            "line": 15,
+                                            "col": 131
+                                        }
+                                    }
+                                }
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Summarization.spec",
+                                "start": {
+                                    "line": 15,
+                                    "col": 85
+                                },
+                                "end": {
+                                    "line": 15,
+                                    "col": 131
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Evaluate branch condition",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 61,
+                                    "col": 42
+                                },
+                                "end": {
+                                    "line": 61,
+                                    "col": 68
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Declare success,x",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 61,
+                                    "col": 9
+                                },
+                                "end": {
+                                    "line": 61,
+                                    "col": 68
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Evaluate branch condition",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 62,
+                                    "col": 9
+                                },
+                                "end": {
+                                    "line": 66,
+                                    "col": 10
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Test.bytesToUint(b=bytes) ↪ '{0}'",
+                                "arguments": [
+                                    {
+                                        "value": "0x1",
+                                        "values": [
+                                            "0x1",
+                                            "1",
+                                            "0x1"
+                                        ],
+                                        "tooltip": "return value",
+                                        "truncatable": true
+                                    }
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                                {
+                                    "message": {
+                                        "text": "Evaluate branch condition",
+                                        "arguments": [
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": {
+                                        "file": "Test.sol",
+                                        "start": {
+                                            "line": 78,
+                                            "col": 9
+                                        },
+                                        "end": {
+                                            "line": 78,
+                                            "col": 32
+                                        }
+                                    }
+                                },
+                                {
+                                    "message": {
+                                        "text": "res  ↪  '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "0x0",
+                                                "values": [
+                                                    "0x0",
+                                                    "0",
+                                                    "0x0"
+                                                ],
+                                                "tooltip": "value",
+                                                "truncatable": true
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": {
+                                        "file": "Test.sol",
+                                        "start": {
+                                            "line": 80,
+                                            "col": 9
+                                        },
+                                        "end": {
+                                            "line": 80,
+                                            "col": 17
+                                        }
+                                    }
+                                }
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 63,
+                                    "col": 20
+                                },
+                                "end": {
+                                    "line": 63,
+                                    "col": 34
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "Global State",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                                {
+                                    "message": {
+                                        "text": "Balances",
+                                        "arguments": [
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                        {
+                                            "message": {
+                                                "text": "0x2735.balance: '{0}'",
+                                                "arguments": [
+                                                    {
+                                                        "value": "MAX_UINT256",
+                                                        "values": [
+                                                            "MAX_UINT256",
+                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                        ],
+                                                        "tooltip": "balance",
+                                                        "truncatable": false
+                                                    }
+                                                ]
+                                            },
+                                            "status": "",
+                                            "childrenList": [
+                                            ],
+                                            "jumpToDefinition": null
+                                        },
+                                        {
+                                            "message": {
+                                                "text": "Test.balance: '{0}'",
+                                                "arguments": [
+                                                    {
+                                                        "value": "2^256 - 2",
+                                                        "values": [
+                                                            "2^256 - 2",
+                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639934",
+                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                        ],
+                                                        "tooltip": "balance",
+                                                        "truncatable": false
+                                                    }
+                                                ]
+                                            },
+                                            "status": "",
+                                            "childrenList": [
+                                            ],
+                                            "jumpToDefinition": null
+                                        }
+                                    ],
+                                    "jumpToDefinition": null,
+                                    "storageId": 2
+                                }
+                            ],
+                            "jumpToDefinition": null,
+                            "storageId": null
+                        },
+                        {
+                            "message": {
+                                "text": "Return",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Test.sol",
+                                "start": {
+                                    "line": 60,
+                                    "col": 5
+                                },
+                                "end": {
+                                    "line": 67,
+                                    "col": 6
+                                }
+                            }
+                        }
+                    ],
+                    "jumpToDefinition": {
+                        "file": "Test.sol",
+                        "start": {
+                            "line": 60,
+                            "col": 5
+                        },
+                        "end": {
+                            "line": 67,
+                            "col": 6
+                        }
+                    }
+                }
+            ],
+            "jumpToDefinition": {
+                "file": "Summarization.spec",
+                "start": {
+                    "line": 51,
+                    "col": 5
+                },
+                "end": {
+                    "line": 51,
+                    "col": 63
+                }
+            }
+        },
+        {
+            "message": {
+                "text": "assert res == 5",
+                "arguments": [
+                ]
+            },
+            "status": "",
+            "childrenList": [
+                {
+                    "message": {
+                        "text": "res == 5 ↪ '{0}'",
+                        "arguments": [
+                            {
+                                "value": "false",
+                                "values": [
+                                    "false"
+                                ],
+                                "tooltip": "value of expression",
+                                "truncatable": false
+                            }
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                        {
+                            "message": {
+                                "text": "res ↪ '{0}'",
+                                "arguments": [
+                                    {
+                                        "value": "0x1",
+                                        "values": [
+                                            "0x1",
+                                            "1",
+                                            "0x1"
+                                        ],
+                                        "tooltip": "value of expression",
+                                        "truncatable": true
+                                    }
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Summarization.spec",
+                                "start": {
+                                    "line": 52,
+                                    "col": 12
+                                },
+                                "end": {
+                                    "line": 52,
+                                    "col": 15
+                                }
+                            }
+                        },
+                        {
+                            "message": {
+                                "text": "5",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                            ],
+                            "jumpToDefinition": {
+                                "file": "Summarization.spec",
+                                "start": {
+                                    "line": 52,
+                                    "col": 19
+                                },
+                                "end": {
+                                    "line": 52,
+                                    "col": 20
+                                }
+                            }
+                        }
+                    ],
+                    "jumpToDefinition": {
+                        "file": "Summarization.spec",
+                        "start": {
+                            "line": 52,
+                            "col": 12
+                        },
+                        "end": {
+                            "line": 52,
+                            "col": 20
+                        }
+                    }
+                },
+                {
+                    "message": {
+                        "text": "Global State",
+                        "arguments": [
+                        ]
+                    },
+                    "status": "",
+                    "childrenList": [
+                        {
+                            "message": {
+                                "text": "Balances",
+                                "arguments": [
+                                ]
+                            },
+                            "status": "",
+                            "childrenList": [
+                                {
+                                    "message": {
+                                        "text": "0x2735.balance: '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "MAX_UINT256",
+                                                "values": [
+                                                    "MAX_UINT256",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                },
+                                {
+                                    "message": {
+                                        "text": "Test.balance: '{0}'",
+                                        "arguments": [
+                                            {
+                                                "value": "2^256 - 2",
+                                                "values": [
+                                                    "2^256 - 2",
+                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639934",
+                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                ],
+                                                "tooltip": "balance",
+                                                "truncatable": false
+                                            }
+                                        ]
+                                    },
+                                    "status": "",
+                                    "childrenList": [
+                                    ],
+                                    "jumpToDefinition": null
+                                }
+                            ],
+                            "jumpToDefinition": null,
+                            "storageId": 3
+                        }
+                    ],
+                    "jumpToDefinition": null,
+                    "storageId": null
+                }
+            ],
+            "jumpToDefinition": {
+                "file": "Summarization.spec",
+                "start": {
+                    "line": 52,
+                    "col": 5
+                },
+                "end": {
+                    "line": 52,
+                    "col": 36
+                }
+            }
+        }
+    ],
+    "jumpToDefinition": null
+}

@@ -2,7 +2,7 @@
     "ptr": {
         "block": {
             "type": "tac.BlockIdentifier",
-            "origStartPc": 47,
+            "origStartPc": 39,
             "stkTop": 0,
             "decompCopy": 0,
             "calleeIdx": 0,
@@ -15,11 +15,23 @@
         "type": "vc.data.TACCmd.Simple.AssertCmd",
         "o": {
             "type": "vc.data.TACSymbol.Var.Full",
-            "namePrefix": "B31",
+            "namePrefix": "B26",
             "tag": {
                 "type": "tac.Tag.Bool"
             },
-            "callIndex": 0
+            "callIndex": 0,
+            "meta": [
+                {
+                    "key": {
+                        "name": "cvl.type",
+                        "type": "spec.cvlast.CVLType$PureCVLType",
+                        "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                    }
+                }
+            ]
         },
         "description": "s1 == s2",
         "meta": [
@@ -38,7 +50,7 @@
                     "type": "java.lang.Integer",
                     "erasureStrategy": "Canonical"
                 },
-                "value": 6
+                "value": 5
             },
             {
                 "key": {

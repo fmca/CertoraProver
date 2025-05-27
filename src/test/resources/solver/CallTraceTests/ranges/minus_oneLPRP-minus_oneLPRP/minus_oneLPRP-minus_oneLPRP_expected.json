@@ -35,11 +35,11 @@
                                         "text": "n: '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0x0",
+                                                "value": "0x5",
                                                 "values": [
-                                                    "0x0",
-                                                    "0",
-                                                    "0x0"
+                                                    "0x5",
+                                                    "5",
+                                                    "0x5"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": true
@@ -81,17 +81,17 @@
                     "childrenList": [
                         {
                             "message": {
-                                "text": "0x2710.balance: '{0}'",
+                                "text": "0x8200.balance: '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                        "value": "2^255",
                                         "values": [
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                            "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                            "2^255",
+                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                         ],
                                         "tooltip": "balance",
-                                        "truncatable": true
+                                        "truncatable": false
                                     }
                                 ]
                             },
@@ -105,14 +105,14 @@
                                 "text": "MultipleCandidates.balance: '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                        "value": "2^255",
                                         "values": [
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                            "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                            "2^255",
+                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                         ],
                                         "tooltip": "balance",
-                                        "truncatable": true
+                                        "truncatable": false
                                     }
                                 ]
                             },
@@ -340,11 +340,11 @@
                         "text": "Load from MultipleCandidates.n ↪ '{0}'",
                         "arguments": [
                             {
-                                "value": "0x0",
+                                "value": "0x5",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "0x5",
+                                    "5",
+                                    "0x5"
                                 ],
                                 "tooltip": "storage value",
                                 "truncatable": true
@@ -400,11 +400,11 @@
                                 "text": "sender: '{0}'; receiver: '{1}'; transferred amount: '{2}'",
                                 "arguments": [
                                     {
-                                        "value": "0x2710",
+                                        "value": "0x8200",
                                         "values": [
-                                            "0x2710",
-                                            "0x2710",
-                                            "0x2710"
+                                            "0x8200",
+                                            "0x8200",
+                                            "0x8200"
                                         ],
                                         "tooltip": "address of sender",
                                         "truncatable": true
@@ -414,7 +414,7 @@
                                         "values": [
                                             "MultipleCandidates",
                                             "MultipleCandidates",
-                                            "0x1f8f"
+                                            "0x4300"
                                         ],
                                         "tooltip": "address of receiver",
                                         "truncatable": false
@@ -438,14 +438,14 @@
                                         "text": "Load from: sender.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -459,14 +459,14 @@
                                         "text": "Store at: sender.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -480,14 +480,14 @@
                                         "text": "Load from: receiver.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -501,14 +501,14 @@
                                         "text": "Store at: receiver.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -529,20 +529,20 @@
                                         "values": [
                                             "MultipleCandidates",
                                             "MultipleCandidates",
-                                            "0x1f8f"
+                                            "0x4300"
                                         ],
                                         "tooltip": "address",
                                         "truncatable": false
                                     },
                                     {
-                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe35",
+                                        "value": "2^255",
                                         "values": [
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe35",
-                                            "115792089237316195423570985008687907853269984665640564039457584007913129639477",
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe35"
+                                            "2^255",
+                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                         ],
                                         "tooltip": "storage value",
-                                        "truncatable": true
+                                        "truncatable": false
                                     }
                                 ]
                             },
@@ -585,11 +585,11 @@
                                         "text": "Load from MultipleCandidates.n ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0x0",
+                                                "value": "0x5",
                                                 "values": [
-                                                    "0x0",
-                                                    "0",
-                                                    "0x0"
+                                                    "0x5",
+                                                    "5",
+                                                    "0x5"
                                                 ],
                                                 "tooltip": "storage value",
                                                 "truncatable": true
@@ -637,14 +637,14 @@
                                         "text": "Store at MultipleCandidates.n ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "2^256 - 1",
+                                                "value": "0x4",
                                                 "values": [
-                                                    "2^256 - 1",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                    "0x4",
+                                                    "4",
+                                                    "0x4"
                                                 ],
                                                 "tooltip": "storage value",
-                                                "truncatable": false
+                                                "truncatable": true
                                             }
                                         ]
                                     },
@@ -705,14 +705,14 @@
                                                         "text": "n: '{0}' (changed)",
                                                         "arguments": [
                                                             {
-                                                                "value": "2^256 - 1",
+                                                                "value": "0x4",
                                                                 "values": [
-                                                                    "2^256 - 1",
-                                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-                                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                                    "0x4",
+                                                                    "4",
+                                                                    "0x4"
                                                                 ],
                                                                 "tooltip": "storage value",
-                                                                "truncatable": false
+                                                                "truncatable": true
                                                             }
                                                         ]
                                                     },
@@ -751,17 +751,17 @@
                                     "childrenList": [
                                         {
                                             "message": {
-                                                "text": "0x2710.balance: '{0}'",
+                                                "text": "0x8200.balance: '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                                        "value": "2^255",
                                                         "values": [
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                                            "2^255",
+                                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                         ],
                                                         "tooltip": "balance",
-                                                        "truncatable": true
+                                                        "truncatable": false
                                                     }
                                                 ]
                                             },
@@ -775,14 +775,14 @@
                                                 "text": "MultipleCandidates.balance: '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                                        "value": "2^255",
                                                         "values": [
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                                            "2^255",
+                                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                         ],
                                                         "tooltip": "balance",
-                                                        "truncatable": true
+                                                        "truncatable": false
                                                     }
                                                 ]
                                             },
@@ -867,11 +867,11 @@
                                 "text": "sender: '{0}'; receiver: '{1}'; transferred amount: '{2}'",
                                 "arguments": [
                                     {
-                                        "value": "0x2710",
+                                        "value": "0x8200",
                                         "values": [
-                                            "0x2710",
-                                            "0x2710",
-                                            "0x2710"
+                                            "0x8200",
+                                            "0x8200",
+                                            "0x8200"
                                         ],
                                         "tooltip": "address of sender",
                                         "truncatable": true
@@ -881,7 +881,7 @@
                                         "values": [
                                             "MultipleCandidates",
                                             "MultipleCandidates",
-                                            "0x1f8f"
+                                            "0x4300"
                                         ],
                                         "tooltip": "address of receiver",
                                         "truncatable": false
@@ -905,14 +905,14 @@
                                         "text": "Load from: sender.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -926,14 +926,14 @@
                                         "text": "Store at: sender.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -947,14 +947,14 @@
                                         "text": "Load from: receiver.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -968,14 +968,14 @@
                                         "text": "Store at: receiver.balance ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -996,20 +996,20 @@
                                         "values": [
                                             "MultipleCandidates",
                                             "MultipleCandidates",
-                                            "0x1f8f"
+                                            "0x4300"
                                         ],
                                         "tooltip": "address",
                                         "truncatable": false
                                     },
                                     {
-                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe35",
+                                        "value": "2^255",
                                         "values": [
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe35",
-                                            "115792089237316195423570985008687907853269984665640564039457584007913129639477",
-                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe35"
+                                            "2^255",
+                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                         ],
                                         "tooltip": "storage value",
-                                        "truncatable": true
+                                        "truncatable": false
                                     }
                                 ]
                             },
@@ -1052,14 +1052,14 @@
                                         "text": "Load from MultipleCandidates.n ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "2^256 - 1",
+                                                "value": "0x4",
                                                 "values": [
-                                                    "2^256 - 1",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-                                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                                    "0x4",
+                                                    "4",
+                                                    "0x4"
                                                 ],
                                                 "tooltip": "storage value",
-                                                "truncatable": false
+                                                "truncatable": true
                                             }
                                         ]
                                     },
@@ -1104,14 +1104,14 @@
                                         "text": "Store at MultipleCandidates.n ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "2^256 - 2",
+                                                "value": "0x3",
                                                 "values": [
-                                                    "2^256 - 2",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639934",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                    "0x3",
+                                                    "3",
+                                                    "0x3"
                                                 ],
                                                 "tooltip": "storage value",
-                                                "truncatable": false
+                                                "truncatable": true
                                             }
                                         ]
                                     },
@@ -1172,14 +1172,14 @@
                                                         "text": "n: '{0}' (changed)",
                                                         "arguments": [
                                                             {
-                                                                "value": "2^256 - 2",
+                                                                "value": "0x3",
                                                                 "values": [
-                                                                    "2^256 - 2",
-                                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639934",
-                                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                                    "0x3",
+                                                                    "3",
+                                                                    "0x3"
                                                                 ],
                                                                 "tooltip": "storage value",
-                                                                "truncatable": false
+                                                                "truncatable": true
                                                             }
                                                         ]
                                                     },
@@ -1218,17 +1218,17 @@
                                     "childrenList": [
                                         {
                                             "message": {
-                                                "text": "0x2710.balance: '{0}'",
+                                                "text": "0x8200.balance: '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                                        "value": "2^255",
                                                         "values": [
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                                            "2^255",
+                                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                         ],
                                                         "tooltip": "balance",
-                                                        "truncatable": true
+                                                        "truncatable": false
                                                     }
                                                 ]
                                             },
@@ -1242,14 +1242,14 @@
                                                 "text": "MultipleCandidates.balance: '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                                        "value": "2^255",
                                                         "values": [
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                                            "2^255",
+                                                            "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                            "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                         ],
                                                         "tooltip": "balance",
-                                                        "truncatable": true
+                                                        "truncatable": false
                                                     }
                                                 ]
                                             },
@@ -1326,11 +1326,11 @@
                         "text": "Load from MultipleCandidates.n ↪ '{0}'",
                         "arguments": [
                             {
-                                "value": "-0x2",
+                                "value": "0x3",
                                 "values": [
-                                    "-0x2",
-                                    "-2",
-                                    "-0x2"
+                                    "0x3",
+                                    "3",
+                                    "0x3"
                                 ],
                                 "tooltip": "storage value",
                                 "truncatable": true
@@ -1394,11 +1394,11 @@
                                 "text": "before ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0x0",
+                                        "value": "0x5",
                                         "values": [
-                                            "0x0",
-                                            "0",
-                                            "0x0"
+                                            "0x5",
+                                            "5",
+                                            "0x5"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -1425,11 +1425,11 @@
                                 "text": "after ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "-0x2",
+                                        "value": "0x3",
                                         "values": [
-                                            "-0x2",
-                                            "-2",
-                                            "-0x2"
+                                            "0x3",
+                                            "3",
+                                            "0x3"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -1493,14 +1493,14 @@
                                                 "text": "n: '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "2^256 - 2",
+                                                        "value": "0x3",
                                                         "values": [
-                                                            "2^256 - 2",
-                                                            "115792089237316195423570985008687907853269984665640564039457584007913129639934",
-                                                            "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
+                                                            "0x3",
+                                                            "3",
+                                                            "0x3"
                                                         ],
                                                         "tooltip": "storage value",
-                                                        "truncatable": false
+                                                        "truncatable": true
                                                     }
                                                 ]
                                             },
@@ -1539,17 +1539,17 @@
                             "childrenList": [
                                 {
                                     "message": {
-                                        "text": "0x2710.balance: '{0}'",
+                                        "text": "0x8200.balance: '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639554",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe82"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },
@@ -1563,14 +1563,14 @@
                                         "text": "MultipleCandidates.balance: '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
+                                                "value": "2^255",
                                                 "values": [
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81",
-                                                    "115792089237316195423570985008687907853269984665640564039457584007913129639553",
-                                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe81"
+                                                    "2^255",
+                                                    "57896044618658097711785492504343953926634992332820282019728792003956564819968",
+                                                    "0x8000000000000000000000000000000000000000000000000000000000000000"
                                                 ],
                                                 "tooltip": "balance",
-                                                "truncatable": true
+                                                "truncatable": false
                                             }
                                         ]
                                     },

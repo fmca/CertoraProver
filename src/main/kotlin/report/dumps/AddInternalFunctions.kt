@@ -523,9 +523,11 @@ internal data class InternalFuncSubgraph(
                 if (func is CallStackEntry.IntFuncStart) {
                     val procedureId = when (func) {
                         is CallStackEntry.IntFuncStart.EVM ->
-                            Internal(func.annot.methodSignature.functionName, externalProcedure)
+                            Internal(name = func.annot.methodSignature.functionName,
+                                externalProc = externalProcedure,
+                                range = func.annot.calleeSrc?.getSourceDetails()?.range)
                         is CallStackEntry.IntFuncStart.Solana ->
-                            Solana(func.annot.name)
+                            Solana(name = func.annot.name)
                     }
                     newProcedures.add(Procedure(newNBId.calleeIdx, procedureId))
                 }

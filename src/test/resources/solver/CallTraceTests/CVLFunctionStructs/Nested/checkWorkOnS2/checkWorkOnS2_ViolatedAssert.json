@@ -19,7 +19,19 @@
             "tag": {
                 "type": "tac.Tag.Bool"
             },
-            "callIndex": 0
+            "callIndex": 0,
+            "meta": [
+                {
+                    "key": {
+                        "name": "cvl.type",
+                        "type": "spec.cvlast.CVLType$PureCVLType",
+                        "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                    }
+                }
+            ]
         },
         "description": "testContract.m[0].s2.b1",
         "meta": [
@@ -38,7 +50,7 @@
                     "type": "java.lang.Integer",
                     "erasureStrategy": "Canonical"
                 },
-                "value": 38
+                "value": 58
             },
             {
                 "key": {

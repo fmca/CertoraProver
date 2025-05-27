@@ -23,6 +23,16 @@
             "meta": [
                 {
                     "key": {
+                        "name": "cvl.type",
+                        "type": "spec.cvlast.CVLType$PureCVLType",
+                        "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                    }
+                },
+                {
+                    "key": {
                         "name": "cvl",
                         "type": "java.lang.Boolean",
                         "erasureStrategy": "Canonical"
@@ -48,7 +58,7 @@
                     "type": "java.lang.Integer",
                     "erasureStrategy": "Canonical"
                 },
-                "value": 137
+                "value": 112
             },
             {
                 "key": {

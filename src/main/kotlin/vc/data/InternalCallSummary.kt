@@ -35,7 +35,8 @@ data class InternalCallSummary(
     val signature: QualifiedMethodSignature,
     val internalArgs: List<InternalFuncArg>,
     val internalExits: List<InternalFuncRet>,
-    val callSrc: TACMetaInfo?
+    val callSrc: TACMetaInfo?,
+    override val calleeSrc: TACMetaInfo?
 ) : TACSummary, InternalFunctionStartInfo, AssigningSummary, RemapperEntity<InternalCallSummary> {
     override val variables: Set<TACSymbol.Var>
         get() = support
@@ -52,7 +53,8 @@ data class InternalCallSummary(
                 it.transformSymbols(f)
             },
             callSrc = callSrc,
-            id = id
+            id = id,
+            calleeSrc = calleeSrc
         )
     }
 

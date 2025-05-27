@@ -268,6 +268,7 @@ object FunctionFlowAnnotator {
                 "Multiple successors for call node $callSrc, ignoring"
             } ?: return@forEach
             val callSiteSrc = g.elab(callSrc).commands.last().cmd.metaSrcInfo
+            val calleeSrc = g.elab(uniqueExit).commands.first().cmd.metaSrcInfo
             val dstPc = dst.origStartPc
             val block = g.elab(dst)
             val exitPoints = v.mapToSet {
@@ -546,7 +547,8 @@ object FunctionFlowAnnotator {
                         stackOffsetToArgPos = stackOffsetToArgPos,
                         methodSignature = functionId,
                         args = resolvedArgs.toList(),
-                        callSiteSrc = callSiteSrc
+                        callSiteSrc = callSiteSrc,
+                        calleeSrc = calleeSrc
                     )
                 } else {
                     check(resolved is ResolutionHints.ModifierInfo)
@@ -610,7 +612,8 @@ object FunctionFlowAnnotator {
                         stackOffsetToArgPos = stackOffsetToArgPos,
                         methodSignature = functionId,
                         args = args.toList(),
-                        callSiteSrc = callSiteSrc
+                        callSiteSrc = callSiteSrc,
+                        calleeSrc = calleeSrc
                     )
                 }
             } else {

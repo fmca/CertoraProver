@@ -229,11 +229,11 @@
                         "text": "math(x='{0}', y='{1}') ↪ '{2}'",
                         "arguments": [
                             {
-                                "value": "0x6",
+                                "value": "0x3",
                                 "values": [
-                                    "0x6",
-                                    "6",
-                                    "0x6"
+                                    "0x3",
+                                    "3",
+                                    "0x3"
                                 ],
                                 "tooltip": "1st parameter",
                                 "truncatable": true
@@ -333,11 +333,11 @@
                                                 "text": "z ↪ '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0xf",
+                                                        "value": "0x5",
                                                         "values": [
-                                                            "0xf",
-                                                            "15",
-                                                            "0xf"
+                                                            "0x5",
+                                                            "5",
+                                                            "0x5"
                                                         ],
                                                         "tooltip": "value of expression",
                                                         "truncatable": true
@@ -437,11 +437,11 @@
                                                 "text": "x ↪ '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0x6",
+                                                        "value": "0x3",
                                                         "values": [
-                                                            "0x6",
-                                                            "6",
-                                                            "0x6"
+                                                            "0x3",
+                                                            "3",
+                                                            "0x3"
                                                         ],
                                                         "tooltip": "value of expression",
                                                         "truncatable": true
@@ -468,11 +468,11 @@
                                                 "text": "y / z * x ↪ '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0x0",
+                                                        "value": "0x3",
                                                         "values": [
-                                                            "0x0",
-                                                            "0",
-                                                            "0x0"
+                                                            "0x3",
+                                                            "3",
+                                                            "0x3"
                                                         ],
                                                         "tooltip": "value of expression",
                                                         "truncatable": true
@@ -486,11 +486,11 @@
                                                         "text": "y / z ↪ '{0}'",
                                                         "arguments": [
                                                             {
-                                                                "value": "0x0",
+                                                                "value": "0x1",
                                                                 "values": [
-                                                                    "0x0",
-                                                                    "0",
-                                                                    "0x0"
+                                                                    "0x1",
+                                                                    "1",
+                                                                    "0x1"
                                                                 ],
                                                                 "tooltip": "value of expression",
                                                                 "truncatable": true
@@ -535,11 +535,11 @@
                                                                 "text": "z ↪ '{0}'",
                                                                 "arguments": [
                                                                     {
-                                                                        "value": "0xf",
+                                                                        "value": "0x5",
                                                                         "values": [
-                                                                            "0xf",
-                                                                            "15",
-                                                                            "0xf"
+                                                                            "0x5",
+                                                                            "5",
+                                                                            "0x5"
                                                                         ],
                                                                         "tooltip": "value of expression",
                                                                         "truncatable": true
@@ -579,11 +579,11 @@
                                                         "text": "x ↪ '{0}'",
                                                         "arguments": [
                                                             {
-                                                                "value": "0x6",
+                                                                "value": "0x3",
                                                                 "values": [
-                                                                    "0x6",
-                                                                    "6",
-                                                                    "0x6"
+                                                                    "0x3",
+                                                                    "3",
+                                                                    "0x3"
                                                                 ],
                                                                 "tooltip": "value of expression",
                                                                 "truncatable": true

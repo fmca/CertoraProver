@@ -325,44 +325,44 @@
                         "text": "TestArray.uint256StaticArray(arr=[0='{0}', 1='{1}', 2='{2}']) ↪ '{3}'",
                         "arguments": [
                             {
-                                "value": "0xaf",
+                                "value": "0x0",
                                 "values": [
-                                    "0xaf",
-                                    "175",
-                                    "0xaf"
+                                    "0x0",
+                                    "0",
+                                    "0x0"
                                 ],
                                 "tooltip": "value",
                                 "truncatable": true
                             },
                             {
-                                "value": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff87e",
+                                "value": "0x5",
                                 "values": [
-                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff87e",
-                                    "115792089237316195423570985008687907853269984665640564039457584007913129638014",
-                                    "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff87e"
+                                    "0x5",
+                                    "5",
+                                    "0x5"
                                 ],
                                 "tooltip": "value",
                                 "truncatable": true
                             },
                             {
-                                "value": "0x6d2",
+                                "value": "0x0",
                                 "values": [
-                                    "0x6d2",
-                                    "1746",
-                                    "0x6d2"
+                                    "0x0",
+                                    "0",
+                                    "0x0"
                                 ],
                                 "tooltip": "value",
                                 "truncatable": true
                             },
                             {
-                                "value": "MAX_UINT256",
+                                "value": "0x5",
                                 "values": [
-                                    "MAX_UINT256",
-                                    "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-                                    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                    "0x5",
+                                    "5",
+                                    "0x5"
                                 ],
                                 "tooltip": "value",
-                                "truncatable": false
+                                "truncatable": true
                             }
                         ]
                     },
@@ -387,7 +387,7 @@
                                         "values": [
                                             "TestArray",
                                             "TestArray",
-                                            "0xf"
+                                            "0x6"
                                         ],
                                         "tooltip": "address of receiver",
                                         "truncatable": false
@@ -674,14 +674,14 @@
                                 "text": "extSum ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "2^256 - 1",
+                                        "value": "0x5",
                                         "values": [
-                                            "2^256 - 1",
-                                            "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                            "0x5",
+                                            "5",
+                                            "0x5"
                                         ],
                                         "tooltip": "value of expression",
-                                        "truncatable": false
+                                        "truncatable": true
                                     }
                                 ]
                             },
@@ -705,14 +705,14 @@
                                 "text": "cvlSum ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "2^256 - 1",
+                                        "value": "0x5",
                                         "values": [
-                                            "2^256 - 1",
-                                            "115792089237316195423570985008687907853269984665640564039457584007913129639935",
-                                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                                            "0x5",
+                                            "5",
+                                            "0x5"
                                         ],
                                         "tooltip": "value of expression",
-                                        "truncatable": false
+                                        "truncatable": true
                                     }
                                 ]
                             },

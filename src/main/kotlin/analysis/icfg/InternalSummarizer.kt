@@ -462,6 +462,8 @@ abstract class InternalSummarizer<K, S> {
                             get() = functionId
                         override val callSiteSrc: TACMetaInfo?
                             get() = callSite.callSiteSrc
+                        override val calleeSrc: TACMetaInfo?
+                            get() = callSite.calleeSrc
                         override val args: List<InternalFuncArg>
                             get() = args
 
