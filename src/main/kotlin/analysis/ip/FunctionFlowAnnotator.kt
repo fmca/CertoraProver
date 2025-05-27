@@ -60,6 +60,7 @@ import vc.data.*
 import java.math.BigInteger
 import java.util.stream.Collectors
 import kotlin.jvm.optionals.getOrNull
+import kotlin.math.absoluteValue
 
 private val logger = Logger(LoggerTypes.FUNCTION_BUILDER)
 
@@ -268,6 +269,7 @@ object FunctionFlowAnnotator {
                 "Multiple successors for call node $callSrc, ignoring"
             } ?: return@forEach
             val callSiteSrc = g.elab(callSrc).commands.last().cmd.metaSrcInfo
+            val calleeSrc = g.elab(uniqueExit).commands.first().cmd.metaSrcInfo
             val dstPc = dst.origStartPc
             val block = g.elab(dst)
             val exitPoints = v.mapToSet {
@@ -384,6 +386,27 @@ object FunctionFlowAnnotator {
                         }
                     }
                 }
+
+                fun Set<TACSymbol>.pickBest(expectedStackHeight: Int): TACSymbol {
+                    return this.filter {
+                        it.stackHeight() != null
+                    }.takeIf { it.isNotEmpty() }?.let outer@{ stkHeightVars ->
+                        stkHeightVars.singleOrNull {
+                            it.stackHeight()!! == expectedStackHeight
+                        }?.let { return@outer it }
+                        val minDistance = stkHeightVars.minOf {
+                            (it.stackHeight()!! - expectedStackHeight).absoluteValue
+                        }
+                        stkHeightVars.singleOrNull {
+                            (it.stackHeight()!! - expectedStackHeight).absoluteValue == minDistance
+                        }?.let {
+                            return@outer it
+                        }
+                        return stkHeightVars.minBy {
+                            it.stackHeight()!!
+                        }
+                    } ?: this.first()
+                }
                 if (resolved is ResolutionHints.EmbeddedInfo) {
                     val stackOffsetToArgPos = treapMapOf<Int, Int>().mutate { res ->
                         var stackOffset = 1
@@ -481,7 +504,7 @@ object FunctionFlowAnnotator {
                                 }
                                 resolvedArgs.add(
                                     InternalFuncArg(
-                                        s = relocOffset.first(),
+                                        s = relocOffset.pickBest(expectedHeight),
                                         offset = ++sumOffset,
                                         sort = InternalArgSort.CALLDATA_ARRAY_ELEMS,
                                         location = null,
@@ -508,7 +531,7 @@ object FunctionFlowAnnotator {
                                 }
                                 resolvedArgs.add(
                                     InternalFuncArg(
-                                        s = relocV.first(),
+                                        s = relocV.pickBest(expectedHeight),
                                         offset = ++sumOffset,
                                         sort = when(arg) {
                                             is StackArg.CalldataPointer -> InternalArgSort.CALLDATA_POINTER
@@ -546,7 +569,8 @@ object FunctionFlowAnnotator {
                         stackOffsetToArgPos = stackOffsetToArgPos,
                         methodSignature = functionId,
                         args = resolvedArgs.toList(),
-                        callSiteSrc = callSiteSrc
+                        callSiteSrc = callSiteSrc,
+                        calleeSrc = calleeSrc
                     )
                 } else {
                     check(resolved is ResolutionHints.ModifierInfo)
@@ -610,7 +634,8 @@ object FunctionFlowAnnotator {
                         stackOffsetToArgPos = stackOffsetToArgPos,
                         methodSignature = functionId,
                         args = args.toList(),
-                        callSiteSrc = callSiteSrc
+                        callSiteSrc = callSiteSrc,
+                        calleeSrc = calleeSrc
                     )
                 }
             } else {

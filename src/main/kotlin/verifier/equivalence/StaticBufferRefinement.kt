@@ -21,7 +21,7 @@ import analysis.*
 import com.certora.collect.*
 import datastructures.stdcollections.*
 import evm.EVM_WORD_SIZE
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import log.*
@@ -130,7 +130,7 @@ object StaticBufferRefinement {
      * Encapsulation of something to build buffer models for buffers in [graph] using [theModel],
      * starting from the assertion location [assertLoc].
      *
-     * Used to interpret the instrumentation maps used by [instrumentation.transformers.tracing.BufferContentsInstrumentation],
+     * Used to interpret the instrumentation maps used by [BufferTraceInstrumentation.IBufferContentsInstrumentation],
      * so all indices are (assumed) to not-overlap.
      *
      * Converts from twos complement to signed representations (relevant for the relative offsets)
@@ -413,17 +413,19 @@ object StaticBufferRefinement {
             if(ui.instrumentation?.bufferWrites == null) {
                 continue
             }
+            val toEmbed = EmbeddedInstrumentationVars(
+                preciseBufferVar = ui.instrumentation.bufferWrites.preciseBuffer,
+                bufferCopySourceVar = ui.instrumentation.bufferWrites.bufferCopySource,
+                id = ui.id,
+                bufferOffsetsVar = ui.instrumentation.bufferWrites.bufferOffsetHolder,
+                bufferLengthVar = ui.instrumentation.lengthVar,
+                bufferWriteCountVar = ui.instrumentation.bufferWrites.bufferWriteCountVar
+            )
             toAdd.extend(TACCmd.Simple.AnnotationCmd(
                 KEEP_ALIVE_META,
-                EmbeddedInstrumentationVars(
-                    preciseBufferVar = ui.instrumentation.bufferWrites.preciseBuffer,
-                    bufferCopySourceVar = ui.instrumentation.bufferWrites.bufferCopySource,
-                    id = ui.id,
-                    bufferOffsetsVar = ui.instrumentation.bufferWrites.bufferOffsetHolder,
-                    bufferLengthVar = ui.instrumentation.lengthVar,
-                    bufferWriteCountVar = ui.instrumentation.bufferWrites.bufferWriteCountVar
-                )
+                toEmbed
             ))
+            toAdd.extend(toEmbed.support)
         }
 
         /**
@@ -502,7 +504,6 @@ object StaticBufferRefinement {
         val bufferCopyUseSites = mapOf(
             eventCmd to BufferTraceInstrumentation.UseSiteControl(
                 trackBufferContents = true,
-                exactBufferContents = false
             )
         ) + eventMarker.context.instrumentation.useSiteInfo.mapNotNull {
             if ((eventMarker.context.orig.code as CoreTACProgram).analysisCache.graph.elab(it.key)
@@ -514,7 +515,6 @@ object StaticBufferRefinement {
             }
             it.key to BufferTraceInstrumentation.UseSiteControl(
                 trackBufferContents = true,
-                exactBufferContents = false
             )
         }
 

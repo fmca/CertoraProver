@@ -127,12 +127,10 @@ infix fun <@Treapable T> Iterable<T>.intersect(other: Iterable<T>): Set<T> =
 infix fun <@Treapable T> Iterable<T>.union(other: Iterable<T>): Set<T> =
     this.toTreapSet().mutate { it.addAll(other) }
 
-@Suppress("HashCodeStability")
 private fun <T> Iterable<T>?.asPersistentSetOrNull(): PersistentSet<T>? =
     this as? PersistentSet<T> ?:
     (this as? PersistentSet.Builder<T>)?.build()
 
-@Suppress("HashCodeStability")
 private fun <T> Iterable<T>?.asTreapSetOrNull(): TreapSet<T>? =
     this as? TreapSet<T> ?:
     ((this as? PersistentSet.Builder<T>)?.build() as? TreapSet<T>)

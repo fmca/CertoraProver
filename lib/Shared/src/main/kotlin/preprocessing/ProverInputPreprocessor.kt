@@ -168,7 +168,6 @@ object ProverInputPreprocessor {
      * - As part of the flow of the LSP rust server, ASTExtraction.jar is run while serialization of .certora_verify.json
      *   is given via stdin of the jar process. No command line arguments are passed in.
      */
-    @Suppress("TooGenericExceptionCaught")
     @PollutesGlobalState
     fun _main(args: Array<String>, astCb: (CVLAst) -> Unit) {
         try {

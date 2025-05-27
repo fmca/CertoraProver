@@ -271,11 +271,11 @@
                         "text": "fu(toCast='{0}')",
                         "arguments": [
                             {
-                                "value": "0x0",
+                                "value": "-0x2",
                                 "values": [
-                                    "0x0",
-                                    "0",
-                                    "0x0"
+                                    "-0x2",
+                                    "-2",
+                                    "-0x2"
                                 ],
                                 "tooltip": "parameter",
                                 "truncatable": true
@@ -297,11 +297,11 @@
                                         "text": "toCast * 1 ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0x0",
+                                                "value": "-0x2",
                                                 "values": [
-                                                    "0x0",
-                                                    "0",
-                                                    "0x0"
+                                                    "-0x2",
+                                                    "-2",
+                                                    "-0x2"
                                                 ],
                                                 "tooltip": "value of expression",
                                                 "truncatable": true
@@ -315,11 +315,11 @@
                                                 "text": "toCast ↪ '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0x0",
+                                                        "value": "-0x2",
                                                         "values": [
-                                                            "0x0",
-                                                            "0",
-                                                            "0x0"
+                                                            "-0x2",
+                                                            "-2",
+                                                            "-0x2"
                                                         ],
                                                         "tooltip": "value of expression",
                                                         "truncatable": true

@@ -141,7 +141,7 @@ open class DefaultCommandLineParser {
         } catch (e: MissingArgumentException) {
             // unlikely that e.message is null, but being safe here
             printErrAndExit(e.message ?: "Missing argument for option: ${e.option}", withProverArgsDocLink = true)
-        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+        } catch (e: Exception) {
             printMsgAndExit(e.message, withHelp = true, allHelp = false, withVersion = false, exitcode = 1)
             // must return `Nothing` to infer that this part is unreachable
         }
@@ -184,6 +184,10 @@ open class DefaultCommandLineParser {
 
         if (Config.SolverMemLimit.allOptions.count { cmdLineArgs.hasOption(it.realOpt()) } > 1) {
             printErrAndExit("Must use at most one out of ${Config.SolverMemLimit.allOptions.map { it.realOpt() }}")
+        }
+
+        if (Config.BoundedModelChecking.getOrNull() != null && Config.RequireInvariantsPreRuleSemantics.get()){
+            printErrAndExit("The configuration option ${Config.RequireInvariantsPreRuleSemantics.name} is not allowed in BMC mode." )
         }
     }
 
@@ -236,7 +240,7 @@ open class DefaultCommandLineParser {
             when (conf) {
                 is ConfigType.CmdLine -> try {
                     conf.setFromCLI(cmdLineArgs)
-                } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                } catch (e: Exception) {
                     val matchedOption = conf.getMatchedOption(cmdLineArgs)
                     check(matchedOption != null) { "Exception can't be thrown if option does not exist in cmd line arguments" }
                     // if we deal with a single-letter option, then the parser allows no space between the option and the value.
@@ -266,7 +270,7 @@ open class DefaultCommandLineParser {
                 try {
                     logger.info { "Deleting ${execName} directory, if it already exists: ${File(execName).exists()}" }
                     File(execName).deleteRecursively()
-                } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                } catch (e: Exception) {
                     @Suppress("TooGenericExceptionThrown")
                     throw Exception("Failed to overwrite output directory ${execName}: $e")
                 }

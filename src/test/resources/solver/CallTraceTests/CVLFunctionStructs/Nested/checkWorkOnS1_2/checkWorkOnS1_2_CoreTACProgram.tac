@@ -42,344 +42,344 @@ TACSymbolTable {
 	CANON101:int:15
 	CANON102:bool:16
 	CANON103:bool:17
-	CANON104:int
-	CANON105@2:bv256:18
-	CANON106@2:bv256:19
-	CANON107@2:bool:18
-	CANON108@2:bv256:18
-	CANON109:bool
-	CANON110:int
-	CANON111@2:bv256:18
-	CANON112@2:bv256:20
-	CANON113@2:bv256:18
-	CANON114:bool
-	CANON115:int
-	CANON116:int
-	CANON117:bool
-	CANON118:bool:21
-	CANON119:int
-	CANON120@2:bv256:18
-	CANON121@2:bv256:22
-	CANON122@2:bool:18
-	CANON123@2:bv256:18
-	CANON124:bool
-	CANON125:int
-	CANON126@2:bv256:18
-	CANON127@2:bv256:23
-	CANON128@2:bv256:18
-	CANON129:bool
-	CANON130:int
-	CANON131:int
-	CANON132:bool
-	CANON133:bool:21
+	CANON104:int:18
+	CANON105@2:bv256:19
+	CANON106@2:bv256:20
+	CANON107@2:bool:19
+	CANON108@2:bv256:19
+	CANON109:bool:21
+	CANON110:int:18
+	CANON111@2:bv256:19
+	CANON112@2:bv256:22
+	CANON113@2:bv256:19
+	CANON114:bool:21
+	CANON115:int:23
+	CANON116:int:24
+	CANON117:bool:21
+	CANON118:bool:25
+	CANON119:int:18
+	CANON120@2:bv256:19
+	CANON121@2:bv256:26
+	CANON122@2:bool:19
+	CANON123@2:bv256:19
+	CANON124:bool:21
+	CANON125:int:18
+	CANON126@2:bv256:19
+	CANON127@2:bv256:27
+	CANON128@2:bv256:19
+	CANON129:bool:21
+	CANON130:int:23
+	CANON131:int:28
+	CANON132:bool:21
+	CANON133:bool:25
 	CANON134:bool
-	CANON135:int
-	CANON136:bv256:18
-	CANON137:bv256:24
-	CANON138:bv256:18
-	CANON139:bool:18
-	CANON140:bool
+	CANON135:int:18
+	CANON136:bv256:19
+	CANON137:bv256:29
+	CANON138:bv256:19
+	CANON139:bool:19
+	CANON140:bool:21
 	tacCalldatasize!!39:bv256:11
-	tacMCANON0havocme2373@1:bytemap:25
+	tacMCANON0havocme2364@1:bytemap:30
 	tacMCANON0@1:bytemap:0
 	tacMCANON1@1:bytemap:4
-	tacMCANON2@1:bytemap:26
-	tacBalance:wordmap:27
-	CANON50!!11:wordmap:28
-	CANON51!!12:wordmap:29
-	tacBalance!!47:wordmap:27
-	CANON52!!13:wordmap:30
+	tacMCANON2@1:bytemap:31
+	tacBalance:wordmap:32
+	CANON50!!11:wordmap:33
+	CANON51!!12:wordmap:34
+	tacBalance!!47:wordmap:32
+	CANON52!!13:wordmap:35
 	CANON53!!14:wordmap:5
-	tacBalance!!7:wordmap:27
+	tacBalance!!7:wordmap:32
 	lastReverted!!2:bool:7
-	CANON58!!15:wordmap:31
-	tacCalldatabuf@1:bytemap:32
+	CANON58!!15:wordmap:36
+	tacCalldatabuf@1:bytemap:37
 	R1:bv256:2
-	B32:bool:18
-	B33:bool:18
-	B36:bool
-	B73:bool:33
-	B83:bool:33
-	I34:int
-	I35:int
-	I37:int
-	I38:int
-	I46:int:18
-	I49:int:18
-	R10:bv256:18
-	R25:bv256:34
-	R26:bv256:35
-	R27:bv256:36
-	R28:bv256:37
-	R31:bv256:18
-	R40:bv256:18
-	R43:bv256:18
-	R44:bv256:18
-	R45:bv256:18
-	R48:bv256:18
-	R50:bv256:18
-	R51:bv256:18
-	R52:bv256:38
-	R53:(uninterp) skey:39
-	R54:bv256:18
-	R56:bv256:40
-	R58:bv256:41
-	R59:bv256:41
-	R60:bv256:42
-	R62:(uninterp) skey:41
-	R63:bv256:41
-	R64:bv256:41
-	R65:bv256:41
-	R66:bv256:41
-	R67:bv256:43
-	R69:bv256:44
-	R71:bv256:45
-	R74:bv256:33
-	R75:bv256:46
-	R77:(uninterp) skey:41
-	R78:bv256:41
-	R79:bv256:47
-	R81:(uninterp) skey:41
-	R82:bv256:41
-	R84:bv256:33
-	R85:bv256:48
-	R87:(uninterp) skey:49
-	R88:bv256:41
-	R89:bv256:41
-	R90:bv256:50
-	R92:(uninterp) skey:41
-	R93:bv256:41
-	R94:bv256:41
-	R95:bv256:41
-	R96:bv256:41
-	R97:bv256:51
-	R99:bv256:52
-	CANON76!!159:wordmap:53
-	B103:bool:33
-	B113:bool:33
-	B119:bool:54
-	B129:bool:18
-	B130:bool:18
-	B131:bool:18
-	B132:bool:18
-	B133:bool:18
-	B134:bool:18
-	B135:bool:18
-	B136:bool:18
-	B137:bool:18
-	B138:bool:18
-	B142:bool:18
-	B145:bool
-	B150:bool
-	B153:bool
-	B157:bool:18
-	B160:bool
-	B165:bool
-	B168:bool
-	B175:bool:18
-	B176:bool
-	I139:int
-	I146:int
-	I151:int
-	I152:int
-	I154:int
-	I161:int
-	I166:int
-	I167:int
-	I171:int
-	R101:bv256:55
-	R104:bv256:33
-	R105:bv256:56
-	R107:(uninterp) skey:41
-	R108:bv256:41
-	R109:bv256:57
-	R111:(uninterp) skey:41
-	R112:bv256:41
-	R114:bv256:33
-	R115:bv256:58
-	R117:(uninterp) skey:49
-	R118:bv256:49
-	R120:bv256:54
-	R121:bv256:59
-	R123:bv256:60
-	R124:bv256:61
-	R125:bv256:62
-	R126:bv256:62
-	R140:(uninterp) skey:18
-	R141:(uninterp) skey:18
-	R143:bv256:18
-	R147:(uninterp) skey:18
-	R148:(uninterp) skey:18
-	R149:bv256:18
-	R155:(uninterp) skey:18
-	R156:(uninterp) skey:18
-	R158:bv256:18
-	R162:(uninterp) skey:18
-	R163:(uninterp) skey:18
-	R164:bv256:18
-	R172:(uninterp) skey:18
-	R173:(uninterp) skey:18
-	R174:bv256:18
-	lastHasThrown!!169:bool:63
-	CANON22!8:ghostmap(bv256*bv256*bv256->bv256):64
+	B32:bool:19
+	B33:bool:19
+	B36:bool:21
+	B73:bool:38
+	B83:bool:38
+	I34:int:23
+	I35:int:24
+	I37:int:39
+	I38:int:23
+	I46:int:19
+	I49:int:19
+	R10:bv256:19
+	R25:bv256:40
+	R26:bv256:41
+	R27:bv256:42
+	R28:bv256:43
+	R31:bv256:19
+	R40:bv256:19
+	R43:bv256:19
+	R44:bv256:19
+	R45:bv256:19
+	R48:bv256:19
+	R50:bv256:19
+	R51:bv256:19
+	R52:bv256:44
+	R53:(uninterp) skey:45
+	R54:bv256:19
+	R56:bv256:46
+	R58:bv256:47
+	R59:bv256:47
+	R60:bv256:48
+	R62:(uninterp) skey:47
+	R63:bv256:47
+	R64:bv256:47
+	R65:bv256:47
+	R66:bv256:47
+	R67:bv256:49
+	R69:bv256:50
+	R71:bv256:51
+	R74:bv256:38
+	R75:bv256:52
+	R77:(uninterp) skey:47
+	R78:bv256:47
+	R79:bv256:53
+	R81:(uninterp) skey:47
+	R82:bv256:47
+	R84:bv256:38
+	R85:bv256:54
+	R87:(uninterp) skey:55
+	R88:bv256:47
+	R89:bv256:47
+	R90:bv256:56
+	R92:(uninterp) skey:47
+	R93:bv256:47
+	R94:bv256:47
+	R95:bv256:47
+	R96:bv256:47
+	R97:bv256:57
+	R99:bv256:58
+	CANON76!!159:wordmap:59
+	B103:bool:38
+	B113:bool:38
+	B119:bool:60
+	B129:bool:19
+	B130:bool:19
+	B131:bool:19
+	B132:bool:19
+	B133:bool:19
+	B134:bool:19
+	B135:bool:19
+	B136:bool:19
+	B137:bool:19
+	B138:bool:19
+	B142:bool:19
+	B145:bool:21
+	B150:bool:21
+	B153:bool:21
+	B157:bool:19
+	B160:bool:21
+	B165:bool:21
+	B168:bool:21
+	B175:bool:19
+	B176:bool:21
+	I139:int:18
+	I146:int:18
+	I151:int:23
+	I152:int:24
+	I154:int:18
+	I161:int:18
+	I166:int:23
+	I167:int:28
+	I171:int:18
+	R101:bv256:61
+	R104:bv256:38
+	R105:bv256:62
+	R107:(uninterp) skey:47
+	R108:bv256:47
+	R109:bv256:63
+	R111:(uninterp) skey:47
+	R112:bv256:47
+	R114:bv256:38
+	R115:bv256:64
+	R117:(uninterp) skey:55
+	R118:bv256:55
+	R120:bv256:60
+	R121:bv256:65
+	R123:bv256:66
+	R124:bv256:67
+	R125:bv256:68
+	R126:bv256:68
+	R140:(uninterp) skey:19
+	R141:(uninterp) skey:19
+	R143:bv256:19
+	R147:(uninterp) skey:19
+	R148:(uninterp) skey:19
+	R149:bv256:19
+	R155:(uninterp) skey:19
+	R156:(uninterp) skey:19
+	R158:bv256:19
+	R162:(uninterp) skey:19
+	R163:(uninterp) skey:19
+	R164:bv256:19
+	R172:(uninterp) skey:19
+	R173:(uninterp) skey:19
+	R174:bv256:19
+	lastHasThrown!!169:bool:69
+	CANON22!8:ghostmap(bv256*bv256*bv256->bv256):70
 	tacAddress@1:bv256:6
 	lastReverted!!170:bool:7
-	LCANON0@1:bv256:38
-	LCANON1@1:bv256:39
-	LCANON2@1:bv256:65
-	LCANON3@1:bv256:41
-	LCANON4@1:bv256:66
-	LCANON5@1:bv256:41
-	LCANON6@1:bv256:41
-	LCANON7@1:bv256:41
-	LCANON8@1:bv256:41
-	LCANON9@1:bool:33
-	CANON60!!16:wordmap:67
+	LCANON0@1:bv256:44
+	LCANON1@1:bv256:45
+	LCANON2@1:bv256:71
+	LCANON3@1:bv256:47
+	LCANON4@1:bv256:72
+	LCANON5@1:bv256:47
+	LCANON6@1:bv256:47
+	LCANON7@1:bv256:47
+	LCANON8@1:bv256:47
+	LCANON9@1:bool:38
+	CANON60!!16:wordmap:73
 	tacMCANON0!!100:bytemap:0
 	tacMCANON0!!102:bytemap:0
 	tacMCANON0!!106:bytemap:0
 	tacMCANON0!!110:bytemap:0
 	tacMCANON0!!116:bytemap:0
 	tacMCANON0!!122:bytemap:0
-	CANON62!!17:wordmap:68
-	CANON10:int:69
-	CANON11:int:70
-	CANON12:int:71
-	CANON13:int:72
-	CANON14:int:73
-	CANON15:int:74
-	CANON16:int:75
-	CANON17:int:76
-	CANON18:int:77
-	CANON19:int
-	CANON20:int
-	CANON22:ghostmap(bv256*bv256*bv256->bv256):64
-	CANON23:bv256:18
-	CANON36:bv256:18
-	CANON37:bv256:18
-	CANON38:bv256:18
-	CANON39:bv256:18
-	CANON40:int:18
-	CANON41:bv256:18
-	CANON42:int:18
-	CANON43:bv256:18
-	CANON44@1:bv256:18
-	CANON45@1:bv256:18
-	CANON46@1:bv256:40
+	CANON62!!17:wordmap:74
+	CANON10:int:75
+	CANON11:int:76
+	CANON12:int:77
+	CANON13:int:78
+	CANON14:int:79
+	CANON15:int:80
+	CANON16:int:81
+	CANON17:int:82
+	CANON18:int:83
+	CANON19:int:39
+	CANON20:int:23
+	CANON22:ghostmap(bv256*bv256*bv256->bv256):70
+	CANON23:bv256:19
+	CANON36:bv256:19
+	CANON37:bv256:19
+	CANON38:bv256:19
+	CANON39:bv256:19
+	CANON40:int:19
+	CANON41:bv256:19
+	CANON42:int:19
+	CANON43:bv256:19
+	CANON44@1:bv256:19
+	CANON45@1:bv256:19
+	CANON46@1:bv256:46
 	CANON47:wordmap:10
-	CANON48@1:bv256:18
-	CANON49@1:bv256:42
-	CANON50:wordmap:28
-	CANON51:wordmap:29
-	CANON52:wordmap:30
+	CANON48@1:bv256:19
+	CANON49@1:bv256:48
+	CANON50:wordmap:33
+	CANON51:wordmap:34
+	CANON52:wordmap:35
 	CANON53:wordmap:5
-	CANON54@1:bv256:43
-	CANON55@1:bv256:44
-	CANON56@1:bv256:45
-	CANON57@1:bv256:46
-	CANON58:wordmap:31
-	CANON59@1:bv256:47
-	CANON60:wordmap:67
-	CANON61@1:bv256:48
-	CANON62:wordmap:68
-	CANON63@1:bv256:50
-	CANON64:wordmap:78
-	CANON65:wordmap:79
-	CANON66:wordmap:80
-	CANON67:wordmap:81
-	CANON68@1:bv256:51
-	CANON69@1:bv256:52
-	CANON70@1:bv256:55
-	CANON71@1:bv256:56
-	CANON72:wordmap:82
-	CANON73@1:bv256:57
-	CANON74:wordmap:83
-	CANON75@1:bv256:58
-	CANON76:wordmap:53
-	CANON77@1:bv256:59
-	CANON78:int:84
-	CANON79:bool:18
-	CANON80:bool:18
-	CANON81:bool:18
-	CANON82:bool:18
-	CANON83:bool:18
-	CANON84:bool:18
-	CANON85:bool:18
-	CANON86:bool:18
-	CANON87:bool:18
-	CANON88:bool:18
-	CANON89:int:85
-	CANON90:int:86
-	CANON91:int:87
-	CANON92:int:88
-	CANON93:bool:89
-	CANON94:int:90
-	CANON95:bool:91
-	CANON96:int:92
-	CANON97:int:93
-	CANON98:int:94
-	CANON99:int:95
-	CANON64!!18:wordmap:78
-	LCANON10@1:bv256:33
-	LCANON11@1:bv256:96
-	LCANON12@1:bv256:41
-	LCANON13@1:bv256:97
-	LCANON14@1:bv256:41
-	LCANON15@1:bool:33
-	LCANON16@1:bv256:33
-	LCANON17@1:bv256:49
-	LCANON18@1:bv256:98
-	LCANON19@1:bv256:41
-	LCANON20@1:bv256:99
-	LCANON21@1:bv256:41
-	LCANON22@1:bv256:41
-	LCANON23@1:bv256:41
-	LCANON24@1:bv256:41
-	LCANON25@1:bool:33
-	LCANON26@1:bv256:33
-	LCANON27@1:bv256:100
-	LCANON28@1:bv256:41
-	LCANON29@1:bv256:101
-	LCANON30@1:bv256:41
-	LCANON31@1:bool:33
-	LCANON32@1:bv256:33
-	LCANON33@1:bv256:102
-	LCANON34@1:bv256:49
-	LCANON35@1:bool:54
-	LCANON36@1:bv256:54
-	LCANON37@1:bv256:60
-	LCANON38@1:bv256:61
-	LCANON39@1:bv256:62
-	LCANON40@1:bv256:62
-	CANON65!!19:wordmap:79
-	CANON66!!20:wordmap:80
-	CANON67!!21:wordmap:81
-	tacContractAtCANON1:bv256:34
-	tacContractAtCANON2:bv256:35
-	tacContractAtCANON3:bv256:36
-	executingContract:int:103
-	lastHasThrown:bool:63
+	CANON54@1:bv256:49
+	CANON55@1:bv256:50
+	CANON56@1:bv256:51
+	CANON57@1:bv256:52
+	CANON58:wordmap:36
+	CANON59@1:bv256:53
+	CANON60:wordmap:73
+	CANON61@1:bv256:54
+	CANON62:wordmap:74
+	CANON63@1:bv256:56
+	CANON64:wordmap:84
+	CANON65:wordmap:85
+	CANON66:wordmap:86
+	CANON67:wordmap:87
+	CANON68@1:bv256:57
+	CANON69@1:bv256:58
+	CANON70@1:bv256:61
+	CANON71@1:bv256:62
+	CANON72:wordmap:88
+	CANON73@1:bv256:63
+	CANON74:wordmap:89
+	CANON75@1:bv256:64
+	CANON76:wordmap:59
+	CANON77@1:bv256:65
+	CANON78:int:90
+	CANON79:bool:19
+	CANON80:bool:19
+	CANON81:bool:19
+	CANON82:bool:19
+	CANON83:bool:19
+	CANON84:bool:19
+	CANON85:bool:19
+	CANON86:bool:19
+	CANON87:bool:19
+	CANON88:bool:19
+	CANON89:int:91
+	CANON90:int:92
+	CANON91:int:93
+	CANON92:int:94
+	CANON93:bool:95
+	CANON94:int:96
+	CANON95:bool:97
+	CANON96:int:98
+	CANON97:int:99
+	CANON98:int:100
+	CANON99:int:101
+	CANON64!!18:wordmap:84
+	LCANON10@1:bv256:38
+	LCANON11@1:bv256:102
+	LCANON12@1:bv256:47
+	LCANON13@1:bv256:103
+	LCANON14@1:bv256:47
+	LCANON15@1:bool:38
+	LCANON16@1:bv256:38
+	LCANON17@1:bv256:55
+	LCANON18@1:bv256:104
+	LCANON19@1:bv256:47
+	LCANON20@1:bv256:105
+	LCANON21@1:bv256:47
+	LCANON22@1:bv256:47
+	LCANON23@1:bv256:47
+	LCANON24@1:bv256:47
+	LCANON25@1:bool:38
+	LCANON26@1:bv256:38
+	LCANON27@1:bv256:106
+	LCANON28@1:bv256:47
+	LCANON29@1:bv256:107
+	LCANON30@1:bv256:47
+	LCANON31@1:bool:38
+	LCANON32@1:bv256:38
+	LCANON33@1:bv256:108
+	LCANON34@1:bv256:55
+	LCANON35@1:bool:60
+	LCANON36@1:bv256:60
+	LCANON37@1:bv256:66
+	LCANON38@1:bv256:67
+	LCANON39@1:bv256:68
+	LCANON40@1:bv256:68
+	CANON65!!19:wordmap:85
+	CANON66!!20:wordmap:86
+	CANON67!!21:wordmap:87
+	tacContractAtCANON1:bv256:40
+	tacContractAtCANON2:bv256:41
+	tacContractAtCANON3:bv256:42
+	executingContract:int:109
+	lastHasThrown:bool:69
 	CANON2!!128:int:8
 	tacReturndata!!127:bytemap:12
-	CANON1:int:104
+	CANON1:int:110
 	CANON2:int:8
-	CANON3:bv256:18
-	CANON4:bool:18
-	CANON5:bool:18
-	CANON6:int
-	CANON7:int
-	CANON8:bool
-	CANON9:int:105
-	tacContractAtCANON:bv256:37
+	CANON3:bv256:19
+	CANON4:bool:19
+	CANON5:bool:19
+	CANON6:int:23
+	CANON7:int:24
+	CANON8:bool:21
+	CANON9:int:111
+	tacContractAtCANON:bv256:43
 	tacCalldatasize!!3:bv256:11
-	CANON72!!22:wordmap:82
-	CANON74!!23:wordmap:83
-	CANON76!!24:wordmap:53
-	lastHasThrown!!41:bool:63
-	tacSighash!!29:bv256:106
-	tacSighash@1:bv256:106
-	CANON:int:107
-	tacMCANON0havocme2373!!5:bytemap:25
+	CANON72!!22:wordmap:88
+	CANON74!!23:wordmap:89
+	CANON76!!24:wordmap:59
+	lastHasThrown!!41:bool:69
+	tacSighash!!29:bv256:112
+	tacSighash@1:bv256:112
+	CANON:int:113
+	tacMCANON0havocme2364!!5:bytemap:30
 }
 Program {
 	Block 0_0_0_0_0_0 Succ [1_0_0_1_0_0] {
@@ -390,611 +390,611 @@ Program {
 		AssignHavocCmd lastReverted!!2:7
 		AssignHavocCmd tacCalldatasize!!3:11
 		AssignHavocCmd tacExtcodesize!!4:9
-		AssignExpCmd tacMCANON0havocme2373!!5:25 MapDefinition(i.2419:bv256 -> 0x0 bytemap)
-		AssignExpCmd tacMCANON1!!6:4 MapDefinition(i.2420:bv256 -> 0x0 bytemap)
-		AssignHavocCmd tacBalance!!7:27
-		AssignHavocCmd CANON10:69
-		AssumeExpCmd Eq(CANON10:69 0x0(int) )
-		AssignHavocCmd CANON11:70
-		AssumeExpCmd LAnd(Ge(CANON11:70 0x0(int) ) Le(CANON11:70 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON12:71
-		AssumeExpCmd LAnd(Ge(CANON12:71 0x0(int) ) Le(CANON12:71 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON13:72
-		AssumeExpCmd LAnd(Ge(CANON13:72 0x0(int) ) Le(CANON13:72 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON14:73
-		AssumeExpCmd LAnd(Ge(CANON14:73 0x0(int) ) Le(CANON14:73 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON15:74
-		AssumeExpCmd LAnd(Ge(CANON15:74 0x0(int) ) Le(CANON15:74 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON16:75
-		AssumeExpCmd LAnd(Ge(CANON16:75 0x0(int) ) Le(CANON16:75 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON17:76
-		AssumeExpCmd LAnd(Ge(CANON17:76 0x0(int) ) Le(CANON17:76 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON18:77
-		AssumeExpCmd LAnd(Ge(CANON18:77 0x0(int) ) Le(CANON18:77 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd CANON22!8:64
+		AssignExpCmd tacMCANON0havocme2364!!5:30 MapDefinition(i.2373:bv256 -> 0x0 bytemap)
+		AssignExpCmd tacMCANON1!!6:4 MapDefinition(i.2374:bv256 -> 0x0 bytemap)
+		AssignHavocCmd tacBalance!!7:32
+		AssignHavocCmd CANON10:75
+		AssumeExpCmd Eq(CANON10:75 0x0(int) )
+		AssignHavocCmd CANON11:76
+		AssumeExpCmd LAnd(Ge(CANON11:76 0x0(int) ) Le(CANON11:76 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON12:77
+		AssumeExpCmd LAnd(Ge(CANON12:77 0x0(int) ) Le(CANON12:77 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON13:78
+		AssumeExpCmd LAnd(Ge(CANON13:78 0x0(int) ) Le(CANON13:78 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON14:79
+		AssumeExpCmd LAnd(Ge(CANON14:79 0x0(int) ) Le(CANON14:79 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON15:80
+		AssumeExpCmd LAnd(Ge(CANON15:80 0x0(int) ) Le(CANON15:80 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON16:81
+		AssumeExpCmd LAnd(Ge(CANON16:81 0x0(int) ) Le(CANON16:81 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON17:82
+		AssumeExpCmd LAnd(Ge(CANON17:82 0x0(int) ) Le(CANON17:82 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON18:83
+		AssumeExpCmd LAnd(Ge(CANON18:83 0x0(int) ) Le(CANON18:83 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd CANON22!8:70
 		AssignHavocCmd CANON47!!9:10
-		AssignHavocCmd R10:18
-		AssignHavocCmd CANON50!!11:28
-		AssignHavocCmd CANON51!!12:29
-		AssignHavocCmd CANON52!!13:30
+		AssignHavocCmd R10:19
+		AssignHavocCmd CANON50!!11:33
+		AssignHavocCmd CANON51!!12:34
+		AssignHavocCmd CANON52!!13:35
 		AssignHavocCmd CANON53!!14:5
-		AssignHavocCmd CANON58!!15:31
-		AssignHavocCmd CANON60!!16:67
-		AssignHavocCmd CANON62!!17:68
-		AssignHavocCmd CANON64!!18:78
-		AssignHavocCmd CANON65!!19:79
-		AssignHavocCmd CANON66!!20:80
-		AssignHavocCmd CANON67!!21:81
-		AssignHavocCmd CANON72!!22:82
-		AssignHavocCmd CANON74!!23:83
-		AssignHavocCmd CANON76!!24:53
-		AssignHavocCmd R25:34
-		AssumeExpCmd Eq(R25:34 0x1 )
-		AssignHavocCmd R26:35
-		AssumeExpCmd Eq(R26:35 0x2 )
-		AssignHavocCmd R27:36
-		AssumeExpCmd Eq(R27:36 0x4 )
-		AssignHavocCmd CANON9:105
-		AssumeExpCmd LAnd(Ge(CANON9:105 0x0(int) ) Le(CANON9:105 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
-		AssignHavocCmd R28:37
-		AssumeExpCmd LAnd(Ge(R28:37 0x1 ) Le(R28:37 0xffffffffffffffffffffffffffffffffffffffff ) )
-		AssignHavocCmd tacSighash!!29:106
-		AssumeExpCmd Eq(tacSighash!!29:106 0x4166f100 )
+		AssignHavocCmd CANON58!!15:36
+		AssignHavocCmd CANON60!!16:73
+		AssignHavocCmd CANON62!!17:74
+		AssignHavocCmd CANON64!!18:84
+		AssignHavocCmd CANON65!!19:85
+		AssignHavocCmd CANON66!!20:86
+		AssignHavocCmd CANON67!!21:87
+		AssignHavocCmd CANON72!!22:88
+		AssignHavocCmd CANON74!!23:89
+		AssignHavocCmd CANON76!!24:59
+		AssignHavocCmd R25:40
+		AssumeExpCmd Eq(R25:40 0x1 )
+		AssignHavocCmd R26:41
+		AssumeExpCmd Eq(R26:41 0x2 )
+		AssignHavocCmd R27:42
+		AssumeExpCmd Eq(R27:42 0x4 )
+		AssignHavocCmd CANON9:111
+		AssumeExpCmd LAnd(Ge(CANON9:111 0x0(int) ) Le(CANON9:111 0xffffffffffffffffffffffffffffffffffffffff(int) ) )
+		AssignHavocCmd R28:43
+		AssumeExpCmd LAnd(Ge(R28:43 0x1 ) Le(R28:43 0xffffffffffffffffffffffffffffffffffffffff ) )
+		AssignHavocCmd tacSighash!!29:112
+		AssumeExpCmd Eq(tacSighash!!29:112 0x4166f100 )
 		AnnotationCmd JSON{"key":{"name":"tac.state.extension","type":"analysis.icfg.Inliner$ExtendedStateVars","erasureStrategy":"Canonical"},"value":"rO0ABXNyACdhbmFseXNpcy5pY2ZnLklubGluZXIkRXh0ZW5kZWRTdGF0ZVZhcnOvh/MjxNFkQAIAAUwAFmluc3RhbmNlVG9FeHRlbmRlZFZhcnN0AA9MamF2YS91dGlsL01hcDt4cHNyACFkYXRhc3RydWN0dXJlcy5MaW5rZWRBcnJheUhhc2hNYXAAAAAAAAAAAQMAAkYACmxvYWRGYWN0b3JMAAloYXNoVGFibGV0AC5MZGF0YXN0cnVjdHVyZXMvYXJyYXloYXNodGFibGUvQXJyYXlIYXNoVGFibGU7eHB3CAAAAAFAAAAAc3IAFGphdmEubWF0aC5CaWdJbnRlZ2VyjPyfH6k7+x0DAAZJAAhiaXRDb3VudEkACWJpdExlbmd0aEkAE2ZpcnN0Tm9uemVyb0J5dGVOdW1JAAxsb3dlc3RTZXRCaXRJAAZzaWdudW1bAAltYWduaXR1ZGV0AAJbQnhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cP///////////////v////4AAAABdXIAAltCrPMX+AYIVOACAAB4cAAAABDORgSgAAAAAAAAAAAAAAABeHNxAH4AA3cIAAAAAEAAAAB4eA=="}
-		AnnotationCmd:108 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"rule parameters setup"}}
-		AssignHavocCmd CANON:107
-		AssumeExpCmd LAnd(Ge(CANON:107 0x0(int) ) Le(CANON:107 0x2(int) ) )
+		AnnotationCmd:114 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"rule parameters setup"}}
+		AssignHavocCmd CANON:113
+		AssumeExpCmd LAnd(Ge(CANON:113 0x0(int) ) Le(CANON:113 0x2(int) ) )
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.PrimitiveArg","callIndex":0,"index":0,"sym":{"namePrefix":"CANON","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":27,"charByteOffset":21},"end":{"line":27,"charByteOffset":27}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"x"}]},"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"id":"x","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":27,"charByteOffset":21},"end":{"line":27,"charByteOffset":27}}}}}
 		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.TACVar","t":{"namePrefix":"CANON","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":27,"charByteOffset":21},"end":{"line":27,"charByteOffset":27}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"x"}]}},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Parameter","sourceName":"x"},"fields":null}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":0}
-		AnnotationCmd:109 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Setup"}}
-		AnnotationCmd:110 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"multi contract setup"}}
-		AssignExpCmd CANON1:104 R28:111
+		AnnotationCmd:115 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Setup"}}
+		AnnotationCmd:116 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"multi contract setup"}}
+		AssignExpCmd CANON1:110 R28:117
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":2}
-		AnnotationCmd:112 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"contract address vars initialized"}}
-		AssignExpCmd CANON2!!30:8 R28:111
+		AnnotationCmd:118 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"contract address vars initialized"}}
+		AssignExpCmd CANON2!!30:8 R28:117
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":3}
-		AnnotationCmd:113 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"setup read tracking instrumentation"}}
+		AnnotationCmd:119 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"setup read tracking instrumentation"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":4}
-		AnnotationCmd:114 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"last storage initialize"}}
+		AnnotationCmd:120 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"last storage initialize"}}
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageGlobalChangeSnippet.StorageTakeSnapshot","lhs":{"namePrefix":"lastStorage","tag":{"#class":"tac.Tag.BlockchainState"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule"}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"lastStorage"}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"lastStorage"}]}}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":5}
-		AnnotationCmd:115 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming contracts in scene with non-empty bytecode have EXTCODESIZE larger than zero"}}
-		AssignExpCmd R31:18 Select(tacExtcodesize!!4:9 Apply(to_skey:bif R28:111) )
-		AssumeExpCmd Ge(R31:18 0x1 )
-		AssumeExpCmd Eq(R31:116 R1:117 )
+		AnnotationCmd:121 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming contracts in scene with non-empty bytecode have EXTCODESIZE larger than zero"}}
+		AssignExpCmd R31:19 Select(tacExtcodesize!!4:9 Apply(to_skey:bif R28:117) )
+		AssumeExpCmd Ge(R31:19 0x1 )
+		AssumeExpCmd Eq(R31:122 R1:123 )
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":6}
-		AnnotationCmd:118 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming address(0).code has no code deployed"}}
-		AssignExpCmd B33:18 Eq(Select(tacExtcodesize!!4:9 Apply(skey_basic:bif 0x0) ) 0x0 )
-		AssumeCmd B33:18 "expToAssumeCmd"
+		AnnotationCmd:124 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assuming address(0).code has no code deployed"}}
+		AssignExpCmd B33:19 Eq(Select(tacExtcodesize!!4:9 Apply(skey_basic:bif 0x0) ) 0x0 )
+		AssumeCmd B33:19 "expToAssumeCmd"
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":7}
-		AnnotationCmd:119 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about contracts' addresses"}}
+		AnnotationCmd:125 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about contracts' addresses"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":8}
-		AnnotationCmd:120 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about static addresses"}}
+		AnnotationCmd:126 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about static addresses"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":9}
-		AnnotationCmd:121 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish addresses of precompiled contracts"}}
+		AnnotationCmd:127 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish addresses of precompiled contracts"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":10}
-		AnnotationCmd:122 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about uniqueness of contracts' addresses"}}
+		AnnotationCmd:128 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"assumptions about uniqueness of contracts' addresses"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":11}
-		AnnotationCmd:123 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"static links"}}
+		AnnotationCmd:129 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"static links"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":12}
-		AnnotationCmd:124 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"record starting nonces"}}
+		AnnotationCmd:130 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"record starting nonces"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":13}
-		AnnotationCmd:125 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"cloned contracts have no balances"}}
+		AnnotationCmd:131 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"cloned contracts have no balances"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":14}
-		AnnotationCmd:126 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Linked immutable setup"}}
+		AnnotationCmd:132 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Linked immutable setup"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":15}
-		AnnotationCmd:127 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Constrain immutables"}}
+		AnnotationCmd:133 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"Constrain immutables"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":16}
-		AnnotationCmd:128 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish equivalence of extension and base contract immutables"}}
+		AnnotationCmd:134 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Message","s":"establish equivalence of extension and base contract immutables"}}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":17}
 		AnnotationCmd JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1}
-		AnnotationCmd:129 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.AssumeCmd.Assume","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":4},"end":{"line":28,"charByteOffset":18}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.ArithRelopExp.LtExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":12},"end":{"line":28,"charByteOffset":13}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"3"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":16},"end":{"line":28,"charByteOffset":17}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":12},"end":{"line":28,"charByteOffset":17}}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:130 I34 CANON:107
-		AssignExpCmd:131 I35 0x3
-		AssignExpCmd:132 B36 true
-		AnnotationCmd:133 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":18}
-		AnnotationCmd:134 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Declaration","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}},"cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"id":"e","scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AnnotationCmd:135 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.AssumeCmd.Assume","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":4},"end":{"line":28,"charByteOffset":18}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.ArithRelopExp.LtExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":12},"end":{"line":28,"charByteOffset":13}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"3"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":16},"end":{"line":28,"charByteOffset":17}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":28,"charByteOffset":12},"end":{"line":28,"charByteOffset":17}}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:136 I34:23 CANON:113
+		AssignExpCmd:137 I35:24 0x3
+		AssignExpCmd:138 B36:21 true
+		AnnotationCmd:139 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":18}
+		AnnotationCmd:140 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Declaration","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}},"cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"id":"e","scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
 		AnnotationCmd JSON{"key":{"name":"cvl.trace.declaration","type":"spec.CVLCompiler$Companion$TraceMeta$VariableDeclaration","erasureStrategy":"Erased"},"value":{"v":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.CVLVar","id":"e872"},"t":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"type":{"#class":"spec.CVLCompiler.Companion.TraceMeta.DeclarationType.Variable"},"fields":[[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"coinbase"}],{"namePrefix":"CANON14","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.coinbase"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"basefee"}],{"namePrefix":"CANON12","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.basefee"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"timestamp"}],{"namePrefix":"CANON18","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.timestamp"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"blobbasefee"}],{"namePrefix":"CANON13","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.blobbasefee"}]},[{"#class":"tac.DataField.StructField","field":"tx"},{"#class":"tac.DataField.StructField","field":"origin"}],{"namePrefix":"CANON11","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.tx.origin"}]},[{"#class":"tac.DataField.StructField","field":"msg"},{"#class":"tac.DataField.StructField","field":"sender"}],{"namePrefix":"CANON9","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.sender"}]},[{"#class":"tac.DataField.StructField","field":"msg"},{"#class":"tac.DataField.StructField","field":"value"}],{"namePrefix":"CANON10","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.msg.value"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"difficulty"}],{"namePrefix":"CANON15","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.difficulty"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"gaslimit"}],{"namePrefix":"CANON16","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.gaslimit"}]},[{"#class":"tac.DataField.StructField","field":"block"},{"#class":"tac.DataField.StructField","field":"number"}],{"namePrefix":"CANON17","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"fields":[{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":30,"charByteOffset":4},"end":{"line":30,"charByteOffset":10}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"e.block.number"}]}]}}
-		AnnotationCmd:135 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":19}
-		AnnotationCmd:136 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Apply","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":4},"end":{"line":31,"charByteOffset":22}},"exp":{"#class":"spec.cvlast.CVLExp.ApplyExp.ContractFunction.Concrete","methodIdWithCallContext":{"#class":"spec.cvlast.ConcreteMethod","signature":{"#class":"spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig","wrapped":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"TestContract"},"methodId":"workOnS1Ext"},"params":[{"#class":"spec.cvlast.VMParam.Named","name":"x","vmType":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"range":{"#class":"utils.Range.Empty"}}],"res":[]},"sighashInt":{"n":"4166f100"}}},"args":[{"#class":"spec.cvlast.CVLExp.VariableExp","id":"e","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":16},"end":{"line":31,"charByteOffset":17}}},"twoStateIndex":"NEITHER"},{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":19},"end":{"line":31,"charByteOffset":20}}},"twoStateIndex":"NEITHER"}],"noRevert":true,"storage":{"id":"lastStorage","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"},"range":{"#class":"utils.Range.Empty","comment":"empty storage type"}},"twoStateIndex":"NEITHER"},"isWhole":false,"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Void"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":4},"end":{"line":31,"charByteOffset":21}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CallResolution$DirectPassing","target":{"methodSignature":{"#class":"spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig","wrapped":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"TestContract"},"methodId":"workOnS1Ext"},"params":[{"#class":"spec.cvlast.VMParam.Named","name":"x","vmType":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"range":{"#class":"utils.Range.Empty"}}],"res":[]},"sighashInt":{"n":"4166f100"}},"definitelyNonPayable":true,"annotation":{"visibility":"EXTERNAL","envFree":false,"library":false,"virtual":false},"stateMutability":"nonpayable","evmExternalMethodInfo":{"sigHash":"4166f100","name":"workOnS1Ext","argTypes":[{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}],"resultTypes":[],"stateMutability":"nonpayable","isConstant":false,"paramNames":["x"],"isLibrary":false,"contractName":"TestContract","contractInstanceId":"ce4604a0000000000000000000000001","sourceSegment":{"range":{"specFile":"TestContract.sol","start":{"line":21,"charByteOffset":4},"end":{"line":23,"charByteOffset":5}},"content":"function workOnS1Ext(uint x) external {\n        this.workOnS1(x, m[0]);\n    }"}}},"hasEnv":true}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg902905"},"src":{"id":"e872"}}}
-		AssignExpCmd:137 I38 CANON:107
+		AnnotationCmd:141 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":19}
+		AnnotationCmd:142 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Apply","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":4},"end":{"line":31,"charByteOffset":22}},"exp":{"#class":"spec.cvlast.CVLExp.ApplyExp.ContractFunction.Concrete","methodIdWithCallContext":{"#class":"spec.cvlast.ConcreteMethod","signature":{"#class":"spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig","wrapped":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"TestContract"},"methodId":"workOnS1Ext"},"params":[{"#class":"spec.cvlast.VMParam.Named","name":"x","vmType":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"range":{"#class":"utils.Range.Empty"}}],"res":[]},"sighashInt":{"n":"4166f100"}}},"args":[{"#class":"spec.cvlast.CVLExp.VariableExp","id":"e","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"env","fields":[{"fieldName":"msg","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"msg","fields":[{"fieldName":"sender","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"value","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"fieldName":"tx","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"tx","fields":[{"fieldName":"origin","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"fieldName":"block","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"block","fields":[{"fieldName":"basefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"blobbasefee","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"coinbase","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"difficulty","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"gaslimit","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"number","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"timestamp","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}}]},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":16},"end":{"line":31,"charByteOffset":17}}},"twoStateIndex":"NEITHER"},{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":19},"end":{"line":31,"charByteOffset":20}}},"twoStateIndex":"NEITHER"}],"noRevert":true,"storage":{"id":"lastStorage","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"},"range":{"#class":"utils.Range.Empty","comment":"empty storage type"}},"twoStateIndex":"NEITHER"},"isWhole":false,"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Void"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":31,"charByteOffset":4},"end":{"line":31,"charByteOffset":21}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CallResolution$DirectPassing","target":{"methodSignature":{"#class":"spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig","wrapped":{"#class":"spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig","qualifiedMethodName":{"#class":"spec.cvlast.QualifiedFunction","host":{"name":"TestContract"},"methodId":"workOnS1Ext"},"params":[{"#class":"spec.cvlast.VMParam.Named","name":"x","vmType":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"range":{"#class":"utils.Range.Empty"}}],"res":[]},"sighashInt":{"n":"4166f100"}},"definitelyNonPayable":true,"annotation":{"visibility":"EXTERNAL","envFree":false,"library":false,"virtual":false},"stateMutability":"nonpayable","evmExternalMethodInfo":{"sigHash":"4166f100","name":"workOnS1Ext","argTypes":[{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}],"resultTypes":[],"stateMutability":"nonpayable","isConstant":false,"paramNames":["x"],"isLibrary":false,"contractName":"TestContract","contractInstanceId":"ce4604a0000000000000000000000001","sourceSegment":{"range":{"specFile":"TestContract.sol","start":{"line":21,"charByteOffset":4},"end":{"line":23,"charByteOffset":5}},"content":"function workOnS1Ext(uint x) external {\n        this.workOnS1(x, m[0]);\n    }"}}},"hasEnv":true}}},"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"certoraArg883886"},"src":{"id":"e872"}}}
+		AssignExpCmd:143 I38:23 CANON:113
 	}
 	Block 1_0_0_1_0_0 Succ [2_0_0_2_0_1] {
-		AnnotationCmd:138 JSON{"key":{"name":"call.trace.push","type":"analysis.icfg.Inliner$CallStack$PushRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"4166f100"},"attr":{"#class":"scene.MethodAttribute.Common"}},"summary":null,"convention":{"#class":"analysis.icfg.Inliner.CallConventionType.FromCVL"},"calleeId":1}}
-		AssignHavocCmd:138 tacCalldatasize!!39:11
+		AnnotationCmd:144 JSON{"key":{"name":"call.trace.push","type":"analysis.icfg.Inliner$CallStack$PushRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"4166f100"},"attr":{"#class":"scene.MethodAttribute.Common"}},"summary":null,"convention":{"#class":"analysis.icfg.Inliner.CallConventionType.FromCVL"},"calleeId":1}}
+		AssignHavocCmd:144 tacCalldatasize!!39:11
 		AssumeExpCmd Eq(tacCalldatasize!!39:11 0x24 )
-		AssignExpCmd:138 tacCalldatabuf@1:32 MapDefinition(CANON21.2412:bv256 -> Ite(Lt(CANON21.2412 tacCalldatasize!!39:11 ) Select(Select(Select(CANON22!8:64 CANON21.2412 ) tacCalldatasize!!39:11 ) 0x4166f100 ) 0x0 ) bytemap)
-		AssignExpCmd:138 R40:18 Select(Select(Select(CANON22!8:64 0x0 ) 0x24 ) 0x4166f100 )
-		AssumeExpCmd LAnd(Ge(R40:18 0x4166f10000000000000000000000000000000000000000000000000000000000 ) Le(R40:18 0x4166f100ffffffffffffffffffffffffffffffffffffffffffffffffffffffff ) )
-		AnnotationCmd:138 JSON{"key":{"name":"cvl.arg-serialization.start","type":"spec.CVLInvocationCompiler$StartSerializationMarker","erasureStrategy":"Canonical"},"value":{"id":0,"callId":1}}
-		LabelCmd:138 "2: Read primitive from certoraArg909910:int..."
-		AssertCmd:139 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
-		AssertCmd:139 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
-		AssignExpCmd:138 tacCalldatabufCANON0@1:140 Apply(safe_math_narrow_bv256:bif I38)
-		LabelCmd:138 "...done 2"
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.external","type":"spec.CVLCompiler$Companion$TraceMeta$ExternalArg","erasureStrategy":"Erased"},"value":{"s":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.TACVar","t":{"namePrefix":"I38","tag":{"#class":"tac.Tag.Int"},"callIndex":0}},"rootOffset":"0","callId":1,"targetType":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"sourceType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"fields":null}}
-		AnnotationCmd:138 JSON{"key":{"name":"cvl.arg-serialization.end","type":"spec.CVLInvocationCompiler$EndSerializationMarker","erasureStrategy":"Canonical"},"value":{"id":0,"callId":1}}
-		AssignExpCmd:138 lastHasThrown!!41:63 false
-		AssertCmd:141 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:142 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:143 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:144 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:145 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssertCmd:146 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssignExpCmd:144 tacCalldatabuf@1:37 MapDefinition(CANON21.2371:bv256 -> Ite(Lt(CANON21.2371 tacCalldatasize!!39:11 ) Select(Select(Select(CANON22!8:70 CANON21.2371 ) tacCalldatasize!!39:11 ) 0x4166f100 ) 0x0 ) bytemap)
+		AssignExpCmd:144 R40:19 Select(Select(Select(CANON22!8:70 0x0 ) 0x24 ) 0x4166f100 )
+		AssumeExpCmd LAnd(Ge(R40:19 0x4166f10000000000000000000000000000000000000000000000000000000000 ) Le(R40:19 0x4166f100ffffffffffffffffffffffffffffffffffffffffffffffffffffffff ) )
+		AnnotationCmd:144 JSON{"key":{"name":"cvl.arg-serialization.start","type":"spec.CVLInvocationCompiler$StartSerializationMarker","erasureStrategy":"Canonical"},"value":{"id":0,"callId":1}}
+		LabelCmd:144 "0: Read primitive from certoraArg889890:int..."
+		AssertCmd:145 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
+		AssertCmd:145 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
+		AssignExpCmd:144 tacCalldatabufCANON0@1:146 Apply(safe_math_narrow_bv256:bif I38:23)
+		LabelCmd:144 "...done 0"
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.external","type":"spec.CVLCompiler$Companion$TraceMeta$ExternalArg","erasureStrategy":"Erased"},"value":{"s":{"#class":"spec.CVLCompiler.Companion.TraceMeta.ValueIdentity.TACVar","t":{"namePrefix":"I38","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},"rootOffset":"0","callId":1,"targetType":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"sourceType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"fields":null}}
+		AnnotationCmd:144 JSON{"key":{"name":"cvl.arg-serialization.end","type":"spec.CVLInvocationCompiler$EndSerializationMarker","erasureStrategy":"Canonical"},"value":{"id":0,"callId":1}}
+		AssignExpCmd:144 lastHasThrown!!41:69 false
 		AssertCmd:147 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:148 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:149 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:150 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:151 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
 		AssertCmd:152 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
-		AssignExpCmd:138 R43:18 Apply(safe_math_narrow_bv256:bif CANON9:105)
-		AssignExpCmd:138 R45:18 Select(tacBalance!!7:27 Apply(to_skey:bif R43:18) )
-		AssignExpCmd:153 tacBalance!!47:27 Store(tacBalance!!7:27 Apply(to_skey:bif R43:18) R45:18 )
-		AssignExpCmd:138 R48:18 Select(tacBalance!!47:27 Apply(to_skey:bif R28:111) )
-		AssignExpCmd:153 R50:18 Apply(safe_math_narrow_bv256:bif R48:18)
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.TransferSnippet","srcAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R45","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R45","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R43","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]}},"trgAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R48","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R50","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R28","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"tacContractAt"}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"TestContract"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]}},"transferredAmount":{"#class":"vc.data.TACSymbol.Const","value":"0"}}}
-		LabelCmd:138 "Start procedure TestContract-workOnS1Ext(uint256)"
-		AnnotationCmd:138 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
-		AssignExpCmd:138 R51:18 Select(tacExtcodesize!!4:9 Apply(to_skey:bif R28:154) )
-		AssumeExpCmd Ge(R51:18 0x1 )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R28","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"tacAddress","maybeTACKeywordOrdinal":22}},{"key":{"name":"tac.env.known-bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":160},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"TestContract"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R51","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"storageType":null,"range":null}}
-		AnnotationCmd:138 JSON{"key":{"name":"internal.func.finder.info","type":"analysis.ip.InternalFunctionFinderReport","erasureStrategy":"Erased"},"value":{"unresolvedFunctions":[]}}
-		AnnotationCmd:138 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":0,"bytecodeCount":8,"sources":[{"source":0,"begin":25,"end":1954}]}}
+		AssertCmd:153 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:154 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:155 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:156 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:157 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssertCmd:158 true "sanity bounds check on cvl to vm encoding (unsigned int) of %1$s failed"
+		AssignExpCmd:144 R43:19 Apply(safe_math_narrow_bv256:bif CANON9:111)
+		AssignExpCmd:144 R45:19 Select(tacBalance!!7:32 Apply(to_skey:bif R43:19) )
+		AssignExpCmd:159 tacBalance!!47:32 Store(tacBalance!!7:32 Apply(to_skey:bif R43:19) R45:19 )
+		AssignExpCmd:144 R48:19 Select(tacBalance!!47:32 Apply(to_skey:bif R28:117) )
+		AssignExpCmd:159 R50:19 Apply(safe_math_narrow_bv256:bif R48:19)
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.TransferSnippet","srcAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R45","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R45","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R43","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]}},"trgAccountInfo":{"old":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R48","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"new":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R50","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"addr":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R28","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"tacContractAt"}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"TestContract"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]}},"transferredAmount":{"#class":"vc.data.TACSymbol.Const","value":"0"}}}
+		LabelCmd:144 "Start procedure TestContract-workOnS1Ext(uint256)"
+		AnnotationCmd:144 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
+		AssignExpCmd:144 R51:19 Select(tacExtcodesize!!4:9 Apply(to_skey:bif R28:160) )
+		AssumeExpCmd Ge(R51:19 0x1 )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R28","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"tacAddress","maybeTACKeywordOrdinal":22}},{"key":{"name":"tac.env.known-bit-width","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":160},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"TestContract"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R51","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"storageType":null,"range":null}}
+		AnnotationCmd:144 JSON{"key":{"name":"internal.func.finder.info","type":"analysis.ip.InternalFunctionFinderReport","erasureStrategy":"Erased"},"value":{"unresolvedFunctions":[]}}
+		AnnotationCmd:144 JSON{"key":{"name":"fps.free-pointer-is-scalarized","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":0,"bytecodeCount":8,"sources":[{"source":0,"begin":25,"end":1954}]}}
 		LabelCmd "→ Assuming FP is strictly monotonic increasing"
 		LabelCmd "←"
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":0,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":2,"charByteOffset":0},"end":{"line":43,"charByteOffset":1}},"content":"contract TestContract {...}"}}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":0}}
-		AnnotationCmd:155 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":16,"bytecodeCount":7,"sources":[{"source":0,"begin":25,"end":1954}]}}
-		AnnotationCmd:155 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":26,"bytecodeCount":9,"sources":[{"source":0,"begin":25,"end":1954}]}}
-		AnnotationCmd:155 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":81,"bytecodeCount":14,"sources":[{"source":0,"begin":319,"end":396}]}}
-		AnnotationCmd:156 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1066,"bytecodeCount":10,"sources":[{"source":1,"begin":690,"end":1019},{"source":1,"begin":749,"end":755},{"source":1,"begin":798,"end":800},{"source":1,"begin":786,"end":795},{"source":1,"begin":777,"end":784},{"source":1,"begin":773,"end":796},{"source":1,"begin":769,"end":801},{"source":1,"begin":766,"end":885}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":1,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":21,"charByteOffset":4},"end":{"line":23,"charByteOffset":5}},"content":"compiler-generate condition in function workOnS1Ext(uint x) external "}}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":1}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1088,"bytecodeCount":9,"sources":[{"source":1,"begin":766,"end":885},{"source":1,"begin":924,"end":925},{"source":1,"begin":949,"end":1002},{"source":1,"begin":994,"end":1001},{"source":1,"begin":985,"end":991},{"source":1,"begin":974,"end":983},{"source":1,"begin":970,"end":992}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1045,"bytecodeCount":10,"sources":[{"source":1,"begin":545,"end":684},{"source":1,"begin":591,"end":596},{"source":1,"begin":629,"end":635},{"source":1,"begin":616,"end":636},{"source":1,"begin":607,"end":636},{"source":1,"begin":645,"end":678},{"source":1,"begin":672,"end":677}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1022,"bytecodeCount":5,"sources":[{"source":1,"begin":417,"end":539},{"source":1,"begin":490,"end":514},{"source":1,"begin":508,"end":513}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1031,"bytecodeCount":5,"sources":[{"source":1,"begin":490,"end":514},{"source":1,"begin":483,"end":488},{"source":1,"begin":480,"end":515},{"source":1,"begin":470,"end":533}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1042,"bytecodeCount":3,"sources":[{"source":1,"begin":470,"end":533},{"source":1,"begin":417,"end":539}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1060,"bytecodeCount":6,"sources":[{"source":1,"begin":645,"end":678},{"source":1,"begin":545,"end":684}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1102,"bytecodeCount":9,"sources":[{"source":1,"begin":949,"end":1002},{"source":1,"begin":939,"end":1002},{"source":1,"begin":895,"end":1012},{"source":1,"begin":690,"end":1019}]}}
-		AnnotationCmd:138 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":102,"bytecodeCount":3,"sources":[{"source":0,"begin":319,"end":396}]}}
-		AnnotationCmd:156 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":193,"bytecodeCount":37,"sources":[{"source":0,"begin":319,"end":396},{"source":0,"begin":367,"end":371},{"source":0,"begin":367,"end":380},{"source":0,"begin":381,"end":382},{"source":0,"begin":384,"end":385},{"source":0,"begin":384,"end":388},{"source":0,"begin":386,"end":387},{"source":0,"begin":367,"end":389}]}}
-		AssignExpCmd:157 R53:39 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
-		AnnotationCmd:138 JSON{"key":{"name":"init.reorder.fence","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
-		AssignExpCmd:158 tacMCANON0!!55:0 Store(tacMCANON0havocme2373!!5:25 0x80 0x870bf39300000000000000000000000000000000000000000000000000000000 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2440,"bytecodeCount":14,"sources":[{"source":1,"begin":11159,"end":11578},{"source":1,"begin":11323,"end":11327},{"source":1,"begin":11361,"end":11364},{"source":1,"begin":11350,"end":11359},{"source":1,"begin":11346,"end":11365},{"source":1,"begin":11338,"end":11365},{"source":1,"begin":11375,"end":11446},{"source":1,"begin":11443,"end":11444},{"source":1,"begin":11432,"end":11441},{"source":1,"begin":11428,"end":11445},{"source":1,"begin":11419,"end":11425}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1810,"bytecodeCount":5,"sources":[{"source":1,"begin":5941,"end":6059},{"source":1,"begin":6028,"end":6052},{"source":1,"begin":6046,"end":6051}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1819,"bytecodeCount":6,"sources":[{"source":1,"begin":6028,"end":6052},{"source":1,"begin":6023,"end":6026},{"source":1,"begin":6016,"end":6053},{"source":1,"begin":5941,"end":6059}]}}
-		AssignExpCmd:138 R56:40 tacCalldatabufCANON0@1:160
-		AssignExpCmd:158 tacMCANON0!!57:0 Store(tacMCANON0!!55:0 0x84 tacCalldatabufCANON0@1:160 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2462,"bytecodeCount":8,"sources":[{"source":1,"begin":11375,"end":11446},{"source":1,"begin":11456,"end":11571},{"source":1,"begin":11567,"end":11569},{"source":1,"begin":11556,"end":11565},{"source":1,"begin":11552,"end":11570},{"source":1,"begin":11543,"end":11549}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2361,"bytecodeCount":15,"sources":[{"source":1,"begin":10315,"end":11153},{"source":1,"begin":10455,"end":10461},{"source":1,"begin":10450,"end":10453},{"source":1,"begin":10446,"end":10462},{"source":1,"begin":10488,"end":10489},{"source":1,"begin":10563,"end":10567},{"source":1,"begin":10556,"end":10561},{"source":1,"begin":10552,"end":10568},{"source":1,"begin":10581,"end":10685},{"source":1,"begin":10679,"end":10683},{"source":1,"begin":10674,"end":10677},{"source":1,"begin":10670,"end":10684},{"source":1,"begin":10656,"end":10668}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2161,"bytecodeCount":15,"sources":[{"source":1,"begin":8485,"end":10243},{"source":1,"begin":8613,"end":8617},{"source":1,"begin":8608,"end":8611},{"source":1,"begin":8604,"end":8618},{"source":1,"begin":8644,"end":8645},{"source":1,"begin":8716,"end":8720},{"source":1,"begin":8709,"end":8714},{"source":1,"begin":8705,"end":8721},{"source":1,"begin":8699,"end":8722},{"source":1,"begin":8686,"end":8722},{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8800,"end":8809}]}}
-		AssignExpCmd:161 R59:41 AnnotationExp(Select(CANON47!!9:10 R53:162 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"0"}}]}})
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R59","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":0}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2182,"bytecodeCount":8,"sources":[{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8880,"end":8884},{"source":1,"begin":8875,"end":8878},{"source":1,"begin":8871,"end":8885},{"source":1,"begin":8857,"end":8869}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
-		AssignExpCmd:158 tacMCANON0!!61:0 Store(tacMCANON0!!57:0 0xa4 R59:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2195,"bytecodeCount":12,"sources":[{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8655,"end":8896},{"source":1,"begin":8967,"end":8971},{"source":1,"begin":8960,"end":8965},{"source":1,"begin":8956,"end":8972},{"source":1,"begin":8950,"end":8973},{"source":1,"begin":8937,"end":8973},{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9051,"end":9060}]}}
-		AssignExpCmd:158 R62:41 Apply(skey_add:bif R53:39 0x1)
-		AssignExpCmd:163 R63:41 AnnotationExp(Select(CANON50!!11:28 R62:164 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"20"}}]}})
-		AssumeExpCmd Le(R63:41 0xffffffffffffffffffffffffffffffffffffffff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R63","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"y","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
-		AssignExpCmd:163 R64:41 AnnotationExp(Select(CANON51!!12:29 R62:165 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"34"}}]}})
-		AssumeExpCmd Le(R64:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R64","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
-		AssignExpCmd:163 R65:41 AnnotationExp(Select(CANON52!!13:30 R62:166 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"35"}}]}})
-		AssumeExpCmd Le(R65:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R65","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
-		AssignExpCmd:163 R66:41 AnnotationExp(Select(CANON53!!14:5 R62:167 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"36"}}]}})
-		AssumeExpCmd Le(R66:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R66","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1921,"bytecodeCount":7,"sources":[{"source":1,"begin":6700,"end":6866},{"source":1,"begin":6769,"end":6774},{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6848,"end":6858}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1935,"bytecodeCount":3,"sources":[{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6794,"end":6860}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1889,"bytecodeCount":11,"sources":[{"source":1,"begin":6555,"end":6694},{"source":1,"begin":6605,"end":6612},{"source":1,"begin":6645,"end":6687},{"source":1,"begin":6638,"end":6643},{"source":1,"begin":6634,"end":6688},{"source":1,"begin":6623,"end":6688}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1940,"bytecodeCount":7,"sources":[{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6785,"end":6860},{"source":1,"begin":6700,"end":6866}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2212,"bytecodeCount":8,"sources":[{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9074,"end":9137},{"source":1,"begin":9131,"end":9135},{"source":1,"begin":9126,"end":9129},{"source":1,"begin":9122,"end":9136},{"source":1,"begin":9108,"end":9120}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1947,"bytecodeCount":5,"sources":[{"source":1,"begin":6872,"end":6980},{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6967,"end":6972}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1288,"bytecodeCount":6,"sources":[{"source":1,"begin":2119,"end":2215},{"source":1,"begin":2156,"end":2163},{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2203,"end":2208}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1256,"bytecodeCount":11,"sources":[{"source":1,"begin":1987,"end":2113},{"source":1,"begin":2024,"end":2031},{"source":1,"begin":2064,"end":2106},{"source":1,"begin":2057,"end":2062},{"source":1,"begin":2053,"end":2107},{"source":1,"begin":2042,"end":2107}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1299,"bytecodeCount":7,"sources":[{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2174,"end":2209},{"source":1,"begin":2119,"end":2215}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1956,"bytecodeCount":6,"sources":[{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6944,"end":6947},{"source":1,"begin":6937,"end":6974},{"source":1,"begin":6872,"end":6980}]}}
-		AssignExpCmd:158 tacMCANON0!!68:0 Store(tacMCANON0!!61:0 0xc4 R63:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2225,"bytecodeCount":6,"sources":[{"source":1,"begin":9074,"end":9137},{"source":1,"begin":8906,"end":9147},{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9254,"end":9263}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1988,"bytecodeCount":7,"sources":[{"source":1,"begin":7203,"end":7368},{"source":1,"begin":7271,"end":7276},{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7350,"end":7360}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1962,"bytecodeCount":11,"sources":[{"source":1,"begin":6986,"end":7092},{"source":1,"begin":7030,"end":7038},{"source":1,"begin":7079,"end":7084},{"source":1,"begin":7074,"end":7077},{"source":1,"begin":7070,"end":7085},{"source":1,"begin":7049,"end":7085}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2002,"bytecodeCount":3,"sources":[{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7296,"end":7362}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2007,"bytecodeCount":7,"sources":[{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7287,"end":7362},{"source":1,"begin":7203,"end":7368}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2235,"bytecodeCount":8,"sources":[{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9330,"end":9334},{"source":1,"begin":9325,"end":9328},{"source":1,"begin":9321,"end":9335},{"source":1,"begin":9307,"end":9319}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
-		AssignExpCmd:158 tacMCANON0!!70:0 Store(tacMCANON0!!68:0 0xe4 R64:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2248,"bytecodeCount":6,"sources":[{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9157,"end":9346},{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9453,"end":9462}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2042,"bytecodeCount":7,"sources":[{"source":1,"begin":7594,"end":7759},{"source":1,"begin":7662,"end":7667},{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7741,"end":7751}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2029,"bytecodeCount":11,"sources":[{"source":1,"begin":7482,"end":7588},{"source":1,"begin":7526,"end":7534},{"source":1,"begin":7575,"end":7580},{"source":1,"begin":7570,"end":7573},{"source":1,"begin":7566,"end":7581},{"source":1,"begin":7545,"end":7581}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2056,"bytecodeCount":3,"sources":[{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7687,"end":7753}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2061,"bytecodeCount":7,"sources":[{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7678,"end":7753},{"source":1,"begin":7594,"end":7759}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2258,"bytecodeCount":8,"sources":[{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9529,"end":9533},{"source":1,"begin":9524,"end":9527},{"source":1,"begin":9520,"end":9534},{"source":1,"begin":9506,"end":9518}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
-		AssignExpCmd:158 tacMCANON0!!72:0 Store(tacMCANON0!!70:0 0x104 R65:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2271,"bytecodeCount":6,"sources":[{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9356,"end":9545},{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9651,"end":9660}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2094,"bytecodeCount":7,"sources":[{"source":1,"begin":7981,"end":8144},{"source":1,"begin":8048,"end":8053},{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8126,"end":8136}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2068,"bytecodeCount":11,"sources":[{"source":1,"begin":7765,"end":7871},{"source":1,"begin":7809,"end":7817},{"source":1,"begin":7858,"end":7863},{"source":1,"begin":7853,"end":7856},{"source":1,"begin":7849,"end":7864},{"source":1,"begin":7828,"end":7864}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2108,"bytecodeCount":3,"sources":[{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8073,"end":8138}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2113,"bytecodeCount":7,"sources":[{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8064,"end":8138},{"source":1,"begin":7981,"end":8144}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2281,"bytecodeCount":8,"sources":[{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9725,"end":9729},{"source":1,"begin":9720,"end":9723},{"source":1,"begin":9716,"end":9730},{"source":1,"begin":9702,"end":9714}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
-		AssignExpCmd:138 R74:33 Ite(Eq(R66:41 0x0 ) 0x0 0x1 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
-		AssignExpCmd:158 tacMCANON0!!76:0 Store(tacMCANON0!!72:0 0x124 R74:33 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2294,"bytecodeCount":12,"sources":[{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9555,"end":9741},{"source":1,"begin":9813,"end":9817},{"source":1,"begin":9806,"end":9811},{"source":1,"begin":9802,"end":9818},{"source":1,"begin":9796,"end":9819},{"source":1,"begin":9783,"end":9819},{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9897,"end":9906}]}}
-		AssignExpCmd:138 R77:41 Apply(skey_add:bif R62:41 0x1)
-		AssignExpCmd:168 R78:41 AnnotationExp(Select(CANON58!!15:31 R77:169 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"2"}}]}})
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R78","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":2}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2311,"bytecodeCount":8,"sources":[{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9977,"end":9981},{"source":1,"begin":9972,"end":9975},{"source":1,"begin":9968,"end":9982},{"source":1,"begin":9954,"end":9966}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
-		AssignExpCmd:158 tacMCANON0!!80:0 Store(tacMCANON0!!76:0 0x144 R78:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2324,"bytecodeCount":12,"sources":[{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9751,"end":9993},{"source":1,"begin":10065,"end":10069},{"source":1,"begin":10058,"end":10063},{"source":1,"begin":10054,"end":10070},{"source":1,"begin":10048,"end":10071},{"source":1,"begin":10035,"end":10071},{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10146,"end":10155}]}}
-		AssignExpCmd:138 R81:41 Apply(skey_add:bif R77:41 0x1)
-		AssignExpCmd:170 R82:41 AnnotationExp(Select(CANON60!!16:67 R81:171 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"60"}}]}})
-		AssumeExpCmd Le(R82:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R82","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2135,"bytecodeCount":7,"sources":[{"source":1,"begin":8255,"end":8415},{"source":1,"begin":8321,"end":8326},{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8397,"end":8407}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2149,"bytecodeCount":3,"sources":[{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8346,"end":8409}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2154,"bytecodeCount":7,"sources":[{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8337,"end":8409},{"source":1,"begin":8255,"end":8415}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2341,"bytecodeCount":8,"sources":[{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10220,"end":10224},{"source":1,"begin":10215,"end":10218},{"source":1,"begin":10211,"end":10225},{"source":1,"begin":10197,"end":10209}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
-		AssignExpCmd:138 R84:33 Ite(Eq(R82:41 0x0 ) 0x0 0x1 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
-		AssignExpCmd:158 tacMCANON0!!86:0 Store(tacMCANON0!!80:0 0x164 R84:33 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2354,"bytecodeCount":7,"sources":[{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10003,"end":10236},{"source":1,"begin":8582,"end":10243},{"source":1,"begin":8485,"end":10243}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2384,"bytecodeCount":12,"sources":[{"source":1,"begin":10581,"end":10685},{"source":1,"begin":10499,"end":10695},{"source":1,"begin":10769,"end":10773},{"source":1,"begin":10762,"end":10767},{"source":1,"begin":10758,"end":10774},{"source":1,"begin":10787,"end":10891},{"source":1,"begin":10885,"end":10889},{"source":1,"begin":10880,"end":10883},{"source":1,"begin":10876,"end":10890},{"source":1,"begin":10862,"end":10874}]}}
-		AssignExpCmd:138 R87:49 Apply(skey_add:bif R81:41 0x1)
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2161,"bytecodeCount":15,"sources":[{"source":1,"begin":8485,"end":10243},{"source":1,"begin":8613,"end":8617},{"source":1,"begin":8608,"end":8611},{"source":1,"begin":8604,"end":8618},{"source":1,"begin":8644,"end":8645},{"source":1,"begin":8716,"end":8720},{"source":1,"begin":8709,"end":8714},{"source":1,"begin":8705,"end":8721},{"source":1,"begin":8699,"end":8722},{"source":1,"begin":8686,"end":8722},{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8800,"end":8809}]}}
-		AssignExpCmd:172 R89:41 AnnotationExp(Select(CANON62!!17:68 R87:173 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"4"}}]}})
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R89","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":3}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2182,"bytecodeCount":8,"sources":[{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8880,"end":8884},{"source":1,"begin":8875,"end":8878},{"source":1,"begin":8871,"end":8885},{"source":1,"begin":8857,"end":8869}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
-		AssignExpCmd:158 tacMCANON0!!91:0 Store(tacMCANON0!!86:0 0x184 R89:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2195,"bytecodeCount":12,"sources":[{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8655,"end":8896},{"source":1,"begin":8967,"end":8971},{"source":1,"begin":8960,"end":8965},{"source":1,"begin":8956,"end":8972},{"source":1,"begin":8950,"end":8973},{"source":1,"begin":8937,"end":8973},{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9051,"end":9060}]}}
-		AssignExpCmd:158 R92:41 Apply(skey_add:bif R87:49 0x1)
-		AssignExpCmd:174 R93:41 AnnotationExp(Select(CANON64!!18:78 R92:175 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"a0"}}]}})
-		AssumeExpCmd Le(R93:41 0xffffffffffffffffffffffffffffffffffffffff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R93","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"y","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
-		AssignExpCmd:174 R94:41 AnnotationExp(Select(CANON65!!19:79 R92:176 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"b4"}}]}})
-		AssumeExpCmd Le(R94:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R94","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
-		AssignExpCmd:174 R95:41 AnnotationExp(Select(CANON66!!20:80 R92:177 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"b5"}}]}})
-		AssumeExpCmd Le(R95:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R95","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
-		AssignExpCmd:174 R96:41 AnnotationExp(Select(CANON67!!21:81 R92:178 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"b6"}}]}})
-		AssumeExpCmd Le(R96:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R96","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1921,"bytecodeCount":7,"sources":[{"source":1,"begin":6700,"end":6866},{"source":1,"begin":6769,"end":6774},{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6848,"end":6858}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1935,"bytecodeCount":3,"sources":[{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6794,"end":6860}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1889,"bytecodeCount":11,"sources":[{"source":1,"begin":6555,"end":6694},{"source":1,"begin":6605,"end":6612},{"source":1,"begin":6645,"end":6687},{"source":1,"begin":6638,"end":6643},{"source":1,"begin":6634,"end":6688},{"source":1,"begin":6623,"end":6688}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1940,"bytecodeCount":7,"sources":[{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6785,"end":6860},{"source":1,"begin":6700,"end":6866}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2212,"bytecodeCount":8,"sources":[{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9074,"end":9137},{"source":1,"begin":9131,"end":9135},{"source":1,"begin":9126,"end":9129},{"source":1,"begin":9122,"end":9136},{"source":1,"begin":9108,"end":9120}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1947,"bytecodeCount":5,"sources":[{"source":1,"begin":6872,"end":6980},{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6967,"end":6972}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1288,"bytecodeCount":6,"sources":[{"source":1,"begin":2119,"end":2215},{"source":1,"begin":2156,"end":2163},{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2203,"end":2208}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1256,"bytecodeCount":11,"sources":[{"source":1,"begin":1987,"end":2113},{"source":1,"begin":2024,"end":2031},{"source":1,"begin":2064,"end":2106},{"source":1,"begin":2057,"end":2062},{"source":1,"begin":2053,"end":2107},{"source":1,"begin":2042,"end":2107}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1299,"bytecodeCount":7,"sources":[{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2174,"end":2209},{"source":1,"begin":2119,"end":2215}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1956,"bytecodeCount":6,"sources":[{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6944,"end":6947},{"source":1,"begin":6937,"end":6974},{"source":1,"begin":6872,"end":6980}]}}
-		AssignExpCmd:158 tacMCANON0!!98:0 Store(tacMCANON0!!91:0 0x1a4 R93:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2225,"bytecodeCount":6,"sources":[{"source":1,"begin":9074,"end":9137},{"source":1,"begin":8906,"end":9147},{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9254,"end":9263}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1988,"bytecodeCount":7,"sources":[{"source":1,"begin":7203,"end":7368},{"source":1,"begin":7271,"end":7276},{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7350,"end":7360}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1962,"bytecodeCount":11,"sources":[{"source":1,"begin":6986,"end":7092},{"source":1,"begin":7030,"end":7038},{"source":1,"begin":7079,"end":7084},{"source":1,"begin":7074,"end":7077},{"source":1,"begin":7070,"end":7085},{"source":1,"begin":7049,"end":7085}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2002,"bytecodeCount":3,"sources":[{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7296,"end":7362}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2007,"bytecodeCount":7,"sources":[{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7287,"end":7362},{"source":1,"begin":7203,"end":7368}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2235,"bytecodeCount":8,"sources":[{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9330,"end":9334},{"source":1,"begin":9325,"end":9328},{"source":1,"begin":9321,"end":9335},{"source":1,"begin":9307,"end":9319}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
-		AssignExpCmd:158 tacMCANON0!!100:0 Store(tacMCANON0!!98:0 0x1c4 R94:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2248,"bytecodeCount":6,"sources":[{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9157,"end":9346},{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9453,"end":9462}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2042,"bytecodeCount":7,"sources":[{"source":1,"begin":7594,"end":7759},{"source":1,"begin":7662,"end":7667},{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7741,"end":7751}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2029,"bytecodeCount":11,"sources":[{"source":1,"begin":7482,"end":7588},{"source":1,"begin":7526,"end":7534},{"source":1,"begin":7575,"end":7580},{"source":1,"begin":7570,"end":7573},{"source":1,"begin":7566,"end":7581},{"source":1,"begin":7545,"end":7581}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2056,"bytecodeCount":3,"sources":[{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7687,"end":7753}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2061,"bytecodeCount":7,"sources":[{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7678,"end":7753},{"source":1,"begin":7594,"end":7759}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2258,"bytecodeCount":8,"sources":[{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9529,"end":9533},{"source":1,"begin":9524,"end":9527},{"source":1,"begin":9520,"end":9534},{"source":1,"begin":9506,"end":9518}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
-		AssignExpCmd:158 tacMCANON0!!102:0 Store(tacMCANON0!!100:0 0x1e4 R95:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2271,"bytecodeCount":6,"sources":[{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9356,"end":9545},{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9651,"end":9660}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2094,"bytecodeCount":7,"sources":[{"source":1,"begin":7981,"end":8144},{"source":1,"begin":8048,"end":8053},{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8126,"end":8136}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2068,"bytecodeCount":11,"sources":[{"source":1,"begin":7765,"end":7871},{"source":1,"begin":7809,"end":7817},{"source":1,"begin":7858,"end":7863},{"source":1,"begin":7853,"end":7856},{"source":1,"begin":7849,"end":7864},{"source":1,"begin":7828,"end":7864}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2108,"bytecodeCount":3,"sources":[{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8073,"end":8138}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2113,"bytecodeCount":7,"sources":[{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8064,"end":8138},{"source":1,"begin":7981,"end":8144}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2281,"bytecodeCount":8,"sources":[{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9725,"end":9729},{"source":1,"begin":9720,"end":9723},{"source":1,"begin":9716,"end":9730},{"source":1,"begin":9702,"end":9714}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
-		AssignExpCmd:138 R104:33 Ite(Eq(R96:41 0x0 ) 0x0 0x1 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
-		AssignExpCmd:158 tacMCANON0!!106:0 Store(tacMCANON0!!102:0 0x204 R104:33 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2294,"bytecodeCount":12,"sources":[{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9555,"end":9741},{"source":1,"begin":9813,"end":9817},{"source":1,"begin":9806,"end":9811},{"source":1,"begin":9802,"end":9818},{"source":1,"begin":9796,"end":9819},{"source":1,"begin":9783,"end":9819},{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9897,"end":9906}]}}
-		AssignExpCmd:138 R107:41 Apply(skey_add:bif R92:41 0x1)
-		AssignExpCmd:179 R108:41 AnnotationExp(Select(CANON72!!22:82 R107:180 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"6"}}]}})
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R108","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":5}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2311,"bytecodeCount":8,"sources":[{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9977,"end":9981},{"source":1,"begin":9972,"end":9975},{"source":1,"begin":9968,"end":9982},{"source":1,"begin":9954,"end":9966}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
-		AssignExpCmd:158 tacMCANON0!!110:0 Store(tacMCANON0!!106:0 0x224 R108:41 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2324,"bytecodeCount":12,"sources":[{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9751,"end":9993},{"source":1,"begin":10065,"end":10069},{"source":1,"begin":10058,"end":10063},{"source":1,"begin":10054,"end":10070},{"source":1,"begin":10048,"end":10071},{"source":1,"begin":10035,"end":10071},{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10146,"end":10155}]}}
-		AssignExpCmd:138 R111:41 Apply(skey_add:bif R107:41 0x1)
-		AssignExpCmd:181 R112:41 AnnotationExp(Select(CANON74!!23:83 R111:182 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"e0"}}]}})
-		AssumeExpCmd Le(R112:41 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R112","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2135,"bytecodeCount":7,"sources":[{"source":1,"begin":8255,"end":8415},{"source":1,"begin":8321,"end":8326},{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8397,"end":8407}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2149,"bytecodeCount":3,"sources":[{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8346,"end":8409}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2154,"bytecodeCount":7,"sources":[{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8337,"end":8409},{"source":1,"begin":8255,"end":8415}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2341,"bytecodeCount":8,"sources":[{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10220,"end":10224},{"source":1,"begin":10215,"end":10218},{"source":1,"begin":10211,"end":10225},{"source":1,"begin":10197,"end":10209}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
-		AssignExpCmd:138 R114:33 Ite(Eq(R112:41 0x0 ) 0x0 0x1 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
-		AssignExpCmd:158 tacMCANON0!!116:0 Store(tacMCANON0!!110:0 0x244 R114:33 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2354,"bytecodeCount":7,"sources":[{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10003,"end":10236},{"source":1,"begin":8582,"end":10243},{"source":1,"begin":8485,"end":10243}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2402,"bytecodeCount":12,"sources":[{"source":1,"begin":10787,"end":10891},{"source":1,"begin":10705,"end":10901},{"source":1,"begin":10973,"end":10977},{"source":1,"begin":10966,"end":10971},{"source":1,"begin":10962,"end":10978},{"source":1,"begin":10956,"end":10979},{"source":1,"begin":10943,"end":10979},{"source":1,"begin":11012,"end":11064},{"source":1,"begin":11054,"end":11063}]}}
-		AssignExpCmd:138 R117:49 Apply(skey_add:bif R111:41 0x1)
-		AssignExpCmd:183 R118:49 AnnotationExp(Select(CANON76!!24:53 R117:184 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
-		AssumeExpCmd Le(R118:49 0xff )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R118","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1009}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2135,"bytecodeCount":7,"sources":[{"source":1,"begin":8255,"end":8415},{"source":1,"begin":8321,"end":8326},{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8397,"end":8407}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2149,"bytecodeCount":3,"sources":[{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8346,"end":8409}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2154,"bytecodeCount":7,"sources":[{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8337,"end":8409},{"source":1,"begin":8255,"end":8415}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2419,"bytecodeCount":8,"sources":[{"source":1,"begin":11012,"end":11064},{"source":1,"begin":11077,"end":11136},{"source":1,"begin":11128,"end":11134},{"source":1,"begin":11123,"end":11126},{"source":1,"begin":11119,"end":11135},{"source":1,"begin":11105,"end":11117}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
-		AssignExpCmd:138 R120:54 Ite(Eq(R118:49 0x0 ) 0x0 0x1 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
-		AssignExpCmd:158 tacMCANON0!!122:0 Store(tacMCANON0!!116:0 0x264 R120:54 )
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2433,"bytecodeCount":7,"sources":[{"source":1,"begin":11077,"end":11136},{"source":1,"begin":10911,"end":11146},{"source":1,"begin":10424,"end":11153},{"source":1,"begin":10315,"end":11153}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2475,"bytecodeCount":7,"sources":[{"source":1,"begin":11456,"end":11571},{"source":1,"begin":11159,"end":11578}]}}
-		AnnotationCmd:159 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":269,"bytecodeCount":17,"sources":[{"source":0,"begin":367,"end":389}]}}
-		AssignExpCmd:158 R123:60 0x80
-		AssignExpCmd:158 R124:61 0x204
-		AssignExpCmd:158 R125:62 Select(tacExtcodesize!!4:9 Apply(to_skey:bif R28:185) )
-		AssumeExpCmd Ge(R125:62 0x1 )
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R28","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"TestContract"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1021}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R125","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1012}]},"storageType":null,"range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}}}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":2,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"content":"this.workOnS1(x, m[0])"}}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":2}}
-		AnnotationCmd:158 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":295,"bytecodeCount":9,"sources":[{"source":0,"begin":367,"end":389}]}}
-		AssignHavocCmd:158 R126:62
-		AnnotationCmd:158 JSON{"key":{"name":"tac.decompiler.call-start","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
-		AssignHavocCmd:158 tacReturndata!!127:12
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":0,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":2,"charByteOffset":0},"end":{"line":43,"charByteOffset":1}},"content":"contract TestContract {...}"}}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":0}}
+		AnnotationCmd:161 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":16,"bytecodeCount":7,"sources":[{"source":0,"begin":25,"end":1954}]}}
+		AnnotationCmd:161 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":26,"bytecodeCount":9,"sources":[{"source":0,"begin":25,"end":1954}]}}
+		AnnotationCmd:161 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":81,"bytecodeCount":14,"sources":[{"source":0,"begin":319,"end":396}]}}
+		AnnotationCmd:162 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1066,"bytecodeCount":10,"sources":[{"source":1,"begin":690,"end":1019},{"source":1,"begin":749,"end":755},{"source":1,"begin":798,"end":800},{"source":1,"begin":786,"end":795},{"source":1,"begin":777,"end":784},{"source":1,"begin":773,"end":796},{"source":1,"begin":769,"end":801},{"source":1,"begin":766,"end":885}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":1,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":21,"charByteOffset":4},"end":{"line":23,"charByteOffset":5}},"content":"compiler-generate condition in function workOnS1Ext(uint x) external "}}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":1}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1088,"bytecodeCount":9,"sources":[{"source":1,"begin":766,"end":885},{"source":1,"begin":924,"end":925},{"source":1,"begin":949,"end":1002},{"source":1,"begin":994,"end":1001},{"source":1,"begin":985,"end":991},{"source":1,"begin":974,"end":983},{"source":1,"begin":970,"end":992}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1045,"bytecodeCount":10,"sources":[{"source":1,"begin":545,"end":684},{"source":1,"begin":591,"end":596},{"source":1,"begin":629,"end":635},{"source":1,"begin":616,"end":636},{"source":1,"begin":607,"end":636},{"source":1,"begin":645,"end":678},{"source":1,"begin":672,"end":677}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1022,"bytecodeCount":5,"sources":[{"source":1,"begin":417,"end":539},{"source":1,"begin":490,"end":514},{"source":1,"begin":508,"end":513}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1031,"bytecodeCount":5,"sources":[{"source":1,"begin":490,"end":514},{"source":1,"begin":483,"end":488},{"source":1,"begin":480,"end":515},{"source":1,"begin":470,"end":533}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1042,"bytecodeCount":3,"sources":[{"source":1,"begin":470,"end":533},{"source":1,"begin":417,"end":539}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1060,"bytecodeCount":6,"sources":[{"source":1,"begin":645,"end":678},{"source":1,"begin":545,"end":684}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1102,"bytecodeCount":9,"sources":[{"source":1,"begin":949,"end":1002},{"source":1,"begin":939,"end":1002},{"source":1,"begin":895,"end":1012},{"source":1,"begin":690,"end":1019}]}}
+		AnnotationCmd:144 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":102,"bytecodeCount":3,"sources":[{"source":0,"begin":319,"end":396}]}}
+		AnnotationCmd:162 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":193,"bytecodeCount":37,"sources":[{"source":0,"begin":319,"end":396},{"source":0,"begin":367,"end":371},{"source":0,"begin":367,"end":380},{"source":0,"begin":381,"end":382},{"source":0,"begin":384,"end":385},{"source":0,"begin":384,"end":388},{"source":0,"begin":386,"end":387},{"source":0,"begin":367,"end":389}]}}
+		AssignExpCmd:163 R53:45 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
+		AnnotationCmd:144 JSON{"key":{"name":"init.reorder.fence","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
+		AssignExpCmd:164 tacMCANON0!!55:0 Store(tacMCANON0havocme2364!!5:30 0x80 0x870bf39300000000000000000000000000000000000000000000000000000000 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2440,"bytecodeCount":14,"sources":[{"source":1,"begin":11159,"end":11578},{"source":1,"begin":11323,"end":11327},{"source":1,"begin":11361,"end":11364},{"source":1,"begin":11350,"end":11359},{"source":1,"begin":11346,"end":11365},{"source":1,"begin":11338,"end":11365},{"source":1,"begin":11375,"end":11446},{"source":1,"begin":11443,"end":11444},{"source":1,"begin":11432,"end":11441},{"source":1,"begin":11428,"end":11445},{"source":1,"begin":11419,"end":11425}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1810,"bytecodeCount":5,"sources":[{"source":1,"begin":5941,"end":6059},{"source":1,"begin":6028,"end":6052},{"source":1,"begin":6046,"end":6051}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1819,"bytecodeCount":6,"sources":[{"source":1,"begin":6028,"end":6052},{"source":1,"begin":6023,"end":6026},{"source":1,"begin":6016,"end":6053},{"source":1,"begin":5941,"end":6059}]}}
+		AssignExpCmd:144 R56:46 tacCalldatabufCANON0@1:166
+		AssignExpCmd:164 tacMCANON0!!57:0 Store(tacMCANON0!!55:0 0x84 tacCalldatabufCANON0@1:166 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2462,"bytecodeCount":8,"sources":[{"source":1,"begin":11375,"end":11446},{"source":1,"begin":11456,"end":11571},{"source":1,"begin":11567,"end":11569},{"source":1,"begin":11556,"end":11565},{"source":1,"begin":11552,"end":11570},{"source":1,"begin":11543,"end":11549}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2361,"bytecodeCount":15,"sources":[{"source":1,"begin":10315,"end":11153},{"source":1,"begin":10455,"end":10461},{"source":1,"begin":10450,"end":10453},{"source":1,"begin":10446,"end":10462},{"source":1,"begin":10488,"end":10489},{"source":1,"begin":10563,"end":10567},{"source":1,"begin":10556,"end":10561},{"source":1,"begin":10552,"end":10568},{"source":1,"begin":10581,"end":10685},{"source":1,"begin":10679,"end":10683},{"source":1,"begin":10674,"end":10677},{"source":1,"begin":10670,"end":10684},{"source":1,"begin":10656,"end":10668}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2161,"bytecodeCount":15,"sources":[{"source":1,"begin":8485,"end":10243},{"source":1,"begin":8613,"end":8617},{"source":1,"begin":8608,"end":8611},{"source":1,"begin":8604,"end":8618},{"source":1,"begin":8644,"end":8645},{"source":1,"begin":8716,"end":8720},{"source":1,"begin":8709,"end":8714},{"source":1,"begin":8705,"end":8721},{"source":1,"begin":8699,"end":8722},{"source":1,"begin":8686,"end":8722},{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8800,"end":8809}]}}
+		AssignExpCmd:167 R59:47 AnnotationExp(Select(CANON47!!9:10 R53:168 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"0"}}]}})
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R59","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":0}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2182,"bytecodeCount":8,"sources":[{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8880,"end":8884},{"source":1,"begin":8875,"end":8878},{"source":1,"begin":8871,"end":8885},{"source":1,"begin":8857,"end":8869}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
+		AssignExpCmd:164 tacMCANON0!!61:0 Store(tacMCANON0!!57:0 0xa4 R59:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2195,"bytecodeCount":12,"sources":[{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8655,"end":8896},{"source":1,"begin":8967,"end":8971},{"source":1,"begin":8960,"end":8965},{"source":1,"begin":8956,"end":8972},{"source":1,"begin":8950,"end":8973},{"source":1,"begin":8937,"end":8973},{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9051,"end":9060}]}}
+		AssignExpCmd:164 R62:47 Apply(skey_add:bif R53:45 0x1)
+		AssignExpCmd:169 R63:47 AnnotationExp(Select(CANON50!!11:33 R62:170 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"20"}}]}})
+		AssumeExpCmd Le(R63:47 0xffffffffffffffffffffffffffffffffffffffff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R63","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"y","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
+		AssignExpCmd:169 R64:47 AnnotationExp(Select(CANON51!!12:34 R62:171 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"34"}}]}})
+		AssumeExpCmd Le(R64:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R64","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
+		AssignExpCmd:169 R65:47 AnnotationExp(Select(CANON52!!13:35 R62:172 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"35"}}]}})
+		AssumeExpCmd Le(R65:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R65","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
+		AssignExpCmd:169 R66:47 AnnotationExp(Select(CANON53!!14:5 R62:173 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"36"}}]}})
+		AssumeExpCmd Le(R66:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R66","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":1}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1921,"bytecodeCount":7,"sources":[{"source":1,"begin":6700,"end":6866},{"source":1,"begin":6769,"end":6774},{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6848,"end":6858}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1935,"bytecodeCount":3,"sources":[{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6794,"end":6860}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1889,"bytecodeCount":11,"sources":[{"source":1,"begin":6555,"end":6694},{"source":1,"begin":6605,"end":6612},{"source":1,"begin":6645,"end":6687},{"source":1,"begin":6638,"end":6643},{"source":1,"begin":6634,"end":6688},{"source":1,"begin":6623,"end":6688}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1940,"bytecodeCount":7,"sources":[{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6785,"end":6860},{"source":1,"begin":6700,"end":6866}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2212,"bytecodeCount":8,"sources":[{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9074,"end":9137},{"source":1,"begin":9131,"end":9135},{"source":1,"begin":9126,"end":9129},{"source":1,"begin":9122,"end":9136},{"source":1,"begin":9108,"end":9120}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1947,"bytecodeCount":5,"sources":[{"source":1,"begin":6872,"end":6980},{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6967,"end":6972}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1288,"bytecodeCount":6,"sources":[{"source":1,"begin":2119,"end":2215},{"source":1,"begin":2156,"end":2163},{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2203,"end":2208}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1256,"bytecodeCount":11,"sources":[{"source":1,"begin":1987,"end":2113},{"source":1,"begin":2024,"end":2031},{"source":1,"begin":2064,"end":2106},{"source":1,"begin":2057,"end":2062},{"source":1,"begin":2053,"end":2107},{"source":1,"begin":2042,"end":2107}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1299,"bytecodeCount":7,"sources":[{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2174,"end":2209},{"source":1,"begin":2119,"end":2215}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1956,"bytecodeCount":6,"sources":[{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6944,"end":6947},{"source":1,"begin":6937,"end":6974},{"source":1,"begin":6872,"end":6980}]}}
+		AssignExpCmd:164 tacMCANON0!!68:0 Store(tacMCANON0!!61:0 0xc4 R63:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2225,"bytecodeCount":6,"sources":[{"source":1,"begin":9074,"end":9137},{"source":1,"begin":8906,"end":9147},{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9254,"end":9263}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1988,"bytecodeCount":7,"sources":[{"source":1,"begin":7203,"end":7368},{"source":1,"begin":7271,"end":7276},{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7350,"end":7360}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1962,"bytecodeCount":11,"sources":[{"source":1,"begin":6986,"end":7092},{"source":1,"begin":7030,"end":7038},{"source":1,"begin":7079,"end":7084},{"source":1,"begin":7074,"end":7077},{"source":1,"begin":7070,"end":7085},{"source":1,"begin":7049,"end":7085}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2002,"bytecodeCount":3,"sources":[{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7296,"end":7362}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2007,"bytecodeCount":7,"sources":[{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7287,"end":7362},{"source":1,"begin":7203,"end":7368}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2235,"bytecodeCount":8,"sources":[{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9330,"end":9334},{"source":1,"begin":9325,"end":9328},{"source":1,"begin":9321,"end":9335},{"source":1,"begin":9307,"end":9319}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
+		AssignExpCmd:164 tacMCANON0!!70:0 Store(tacMCANON0!!68:0 0xe4 R64:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2248,"bytecodeCount":6,"sources":[{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9157,"end":9346},{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9453,"end":9462}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2042,"bytecodeCount":7,"sources":[{"source":1,"begin":7594,"end":7759},{"source":1,"begin":7662,"end":7667},{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7741,"end":7751}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2029,"bytecodeCount":11,"sources":[{"source":1,"begin":7482,"end":7588},{"source":1,"begin":7526,"end":7534},{"source":1,"begin":7575,"end":7580},{"source":1,"begin":7570,"end":7573},{"source":1,"begin":7566,"end":7581},{"source":1,"begin":7545,"end":7581}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2056,"bytecodeCount":3,"sources":[{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7687,"end":7753}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2061,"bytecodeCount":7,"sources":[{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7678,"end":7753},{"source":1,"begin":7594,"end":7759}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2258,"bytecodeCount":8,"sources":[{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9529,"end":9533},{"source":1,"begin":9524,"end":9527},{"source":1,"begin":9520,"end":9534},{"source":1,"begin":9506,"end":9518}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
+		AssignExpCmd:164 tacMCANON0!!72:0 Store(tacMCANON0!!70:0 0x104 R65:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2271,"bytecodeCount":6,"sources":[{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9356,"end":9545},{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9651,"end":9660}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2094,"bytecodeCount":7,"sources":[{"source":1,"begin":7981,"end":8144},{"source":1,"begin":8048,"end":8053},{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8126,"end":8136}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2068,"bytecodeCount":11,"sources":[{"source":1,"begin":7765,"end":7871},{"source":1,"begin":7809,"end":7817},{"source":1,"begin":7858,"end":7863},{"source":1,"begin":7853,"end":7856},{"source":1,"begin":7849,"end":7864},{"source":1,"begin":7828,"end":7864}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2108,"bytecodeCount":3,"sources":[{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8073,"end":8138}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2113,"bytecodeCount":7,"sources":[{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8064,"end":8138},{"source":1,"begin":7981,"end":8144}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2281,"bytecodeCount":8,"sources":[{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9725,"end":9729},{"source":1,"begin":9720,"end":9723},{"source":1,"begin":9716,"end":9730},{"source":1,"begin":9702,"end":9714}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
+		AssignExpCmd:144 R74:38 Ite(Eq(R66:47 0x0 ) 0x0 0x1 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
+		AssignExpCmd:164 tacMCANON0!!76:0 Store(tacMCANON0!!72:0 0x124 R74:38 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2294,"bytecodeCount":12,"sources":[{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9555,"end":9741},{"source":1,"begin":9813,"end":9817},{"source":1,"begin":9806,"end":9811},{"source":1,"begin":9802,"end":9818},{"source":1,"begin":9796,"end":9819},{"source":1,"begin":9783,"end":9819},{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9897,"end":9906}]}}
+		AssignExpCmd:144 R77:47 Apply(skey_add:bif R62:47 0x1)
+		AssignExpCmd:174 R78:47 AnnotationExp(Select(CANON58!!15:36 R77:175 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"2"}}]}})
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R78","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":2}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2311,"bytecodeCount":8,"sources":[{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9977,"end":9981},{"source":1,"begin":9972,"end":9975},{"source":1,"begin":9968,"end":9982},{"source":1,"begin":9954,"end":9966}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
+		AssignExpCmd:164 tacMCANON0!!80:0 Store(tacMCANON0!!76:0 0x144 R78:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2324,"bytecodeCount":12,"sources":[{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9751,"end":9993},{"source":1,"begin":10065,"end":10069},{"source":1,"begin":10058,"end":10063},{"source":1,"begin":10054,"end":10070},{"source":1,"begin":10048,"end":10071},{"source":1,"begin":10035,"end":10071},{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10146,"end":10155}]}}
+		AssignExpCmd:144 R81:47 Apply(skey_add:bif R77:47 0x1)
+		AssignExpCmd:176 R82:47 AnnotationExp(Select(CANON60!!16:73 R81:177 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"60"}}]}})
+		AssumeExpCmd Le(R82:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R82","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2135,"bytecodeCount":7,"sources":[{"source":1,"begin":8255,"end":8415},{"source":1,"begin":8321,"end":8326},{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8397,"end":8407}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2149,"bytecodeCount":3,"sources":[{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8346,"end":8409}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2154,"bytecodeCount":7,"sources":[{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8337,"end":8409},{"source":1,"begin":8255,"end":8415}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2341,"bytecodeCount":8,"sources":[{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10220,"end":10224},{"source":1,"begin":10215,"end":10218},{"source":1,"begin":10211,"end":10225},{"source":1,"begin":10197,"end":10209}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
+		AssignExpCmd:144 R84:38 Ite(Eq(R82:47 0x0 ) 0x0 0x1 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
+		AssignExpCmd:164 tacMCANON0!!86:0 Store(tacMCANON0!!80:0 0x164 R84:38 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2354,"bytecodeCount":7,"sources":[{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10003,"end":10236},{"source":1,"begin":8582,"end":10243},{"source":1,"begin":8485,"end":10243}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2384,"bytecodeCount":12,"sources":[{"source":1,"begin":10581,"end":10685},{"source":1,"begin":10499,"end":10695},{"source":1,"begin":10769,"end":10773},{"source":1,"begin":10762,"end":10767},{"source":1,"begin":10758,"end":10774},{"source":1,"begin":10787,"end":10891},{"source":1,"begin":10885,"end":10889},{"source":1,"begin":10880,"end":10883},{"source":1,"begin":10876,"end":10890},{"source":1,"begin":10862,"end":10874}]}}
+		AssignExpCmd:144 R87:55 Apply(skey_add:bif R81:47 0x1)
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2161,"bytecodeCount":15,"sources":[{"source":1,"begin":8485,"end":10243},{"source":1,"begin":8613,"end":8617},{"source":1,"begin":8608,"end":8611},{"source":1,"begin":8604,"end":8618},{"source":1,"begin":8644,"end":8645},{"source":1,"begin":8716,"end":8720},{"source":1,"begin":8709,"end":8714},{"source":1,"begin":8705,"end":8721},{"source":1,"begin":8699,"end":8722},{"source":1,"begin":8686,"end":8722},{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8800,"end":8809}]}}
+		AssignExpCmd:178 R89:47 AnnotationExp(Select(CANON62!!17:74 R87:179 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"4"}}]}})
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R89","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":3}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2182,"bytecodeCount":8,"sources":[{"source":1,"begin":8755,"end":8810},{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8880,"end":8884},{"source":1,"begin":8875,"end":8878},{"source":1,"begin":8871,"end":8885},{"source":1,"begin":8857,"end":8869}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
+		AssignExpCmd:164 tacMCANON0!!91:0 Store(tacMCANON0!!86:0 0x184 R89:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2195,"bytecodeCount":12,"sources":[{"source":1,"begin":8823,"end":8886},{"source":1,"begin":8655,"end":8896},{"source":1,"begin":8967,"end":8971},{"source":1,"begin":8960,"end":8965},{"source":1,"begin":8956,"end":8972},{"source":1,"begin":8950,"end":8973},{"source":1,"begin":8937,"end":8973},{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9051,"end":9060}]}}
+		AssignExpCmd:164 R92:47 Apply(skey_add:bif R87:55 0x1)
+		AssignExpCmd:180 R93:47 AnnotationExp(Select(CANON64!!18:84 R92:181 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"a0"}}]}})
+		AssumeExpCmd Le(R93:47 0xffffffffffffffffffffffffffffffffffffffff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R93","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"y","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
+		AssignExpCmd:180 R94:47 AnnotationExp(Select(CANON65!!19:85 R92:182 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"b4"}}]}})
+		AssumeExpCmd Le(R94:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R94","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
+		AssignExpCmd:180 R95:47 AnnotationExp(Select(CANON66!!20:86 R92:183 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"b5"}}]}})
+		AssumeExpCmd Le(R95:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R95","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"z2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
+		AssignExpCmd:180 R96:47 AnnotationExp(Select(CANON67!!21:87 R92:184 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"b6"}}]}})
+		AssumeExpCmd Le(R96:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R96","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":4}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1921,"bytecodeCount":7,"sources":[{"source":1,"begin":6700,"end":6866},{"source":1,"begin":6769,"end":6774},{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6848,"end":6858}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1935,"bytecodeCount":3,"sources":[{"source":1,"begin":6825,"end":6859},{"source":1,"begin":6794,"end":6860}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1889,"bytecodeCount":11,"sources":[{"source":1,"begin":6555,"end":6694},{"source":1,"begin":6605,"end":6612},{"source":1,"begin":6645,"end":6687},{"source":1,"begin":6638,"end":6643},{"source":1,"begin":6634,"end":6688},{"source":1,"begin":6623,"end":6688}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1940,"bytecodeCount":7,"sources":[{"source":1,"begin":6794,"end":6860},{"source":1,"begin":6785,"end":6860},{"source":1,"begin":6700,"end":6866}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2212,"bytecodeCount":8,"sources":[{"source":1,"begin":9006,"end":9061},{"source":1,"begin":9074,"end":9137},{"source":1,"begin":9131,"end":9135},{"source":1,"begin":9126,"end":9129},{"source":1,"begin":9122,"end":9136},{"source":1,"begin":9108,"end":9120}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1947,"bytecodeCount":5,"sources":[{"source":1,"begin":6872,"end":6980},{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6967,"end":6972}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1288,"bytecodeCount":6,"sources":[{"source":1,"begin":2119,"end":2215},{"source":1,"begin":2156,"end":2163},{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2203,"end":2208}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1256,"bytecodeCount":11,"sources":[{"source":1,"begin":1987,"end":2113},{"source":1,"begin":2024,"end":2031},{"source":1,"begin":2064,"end":2106},{"source":1,"begin":2057,"end":2062},{"source":1,"begin":2053,"end":2107},{"source":1,"begin":2042,"end":2107}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1299,"bytecodeCount":7,"sources":[{"source":1,"begin":2185,"end":2209},{"source":1,"begin":2174,"end":2209},{"source":1,"begin":2119,"end":2215}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1956,"bytecodeCount":6,"sources":[{"source":1,"begin":6949,"end":6973},{"source":1,"begin":6944,"end":6947},{"source":1,"begin":6937,"end":6974},{"source":1,"begin":6872,"end":6980}]}}
+		AssignExpCmd:164 tacMCANON0!!98:0 Store(tacMCANON0!!91:0 0x1a4 R93:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2225,"bytecodeCount":6,"sources":[{"source":1,"begin":9074,"end":9137},{"source":1,"begin":8906,"end":9147},{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9254,"end":9263}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1988,"bytecodeCount":7,"sources":[{"source":1,"begin":7203,"end":7368},{"source":1,"begin":7271,"end":7276},{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7350,"end":7360}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1962,"bytecodeCount":11,"sources":[{"source":1,"begin":6986,"end":7092},{"source":1,"begin":7030,"end":7038},{"source":1,"begin":7079,"end":7084},{"source":1,"begin":7074,"end":7077},{"source":1,"begin":7070,"end":7085},{"source":1,"begin":7049,"end":7085}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2002,"bytecodeCount":3,"sources":[{"source":1,"begin":7325,"end":7361},{"source":1,"begin":7296,"end":7362}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2007,"bytecodeCount":7,"sources":[{"source":1,"begin":7296,"end":7362},{"source":1,"begin":7287,"end":7362},{"source":1,"begin":7203,"end":7368}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2235,"bytecodeCount":8,"sources":[{"source":1,"begin":9210,"end":9264},{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9330,"end":9334},{"source":1,"begin":9325,"end":9328},{"source":1,"begin":9321,"end":9335},{"source":1,"begin":9307,"end":9319}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
+		AssignExpCmd:164 tacMCANON0!!100:0 Store(tacMCANON0!!98:0 0x1c4 R94:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2248,"bytecodeCount":6,"sources":[{"source":1,"begin":9277,"end":9336},{"source":1,"begin":9157,"end":9346},{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9453,"end":9462}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2042,"bytecodeCount":7,"sources":[{"source":1,"begin":7594,"end":7759},{"source":1,"begin":7662,"end":7667},{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7741,"end":7751}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2029,"bytecodeCount":11,"sources":[{"source":1,"begin":7482,"end":7588},{"source":1,"begin":7526,"end":7534},{"source":1,"begin":7575,"end":7580},{"source":1,"begin":7570,"end":7573},{"source":1,"begin":7566,"end":7581},{"source":1,"begin":7545,"end":7581}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2056,"bytecodeCount":3,"sources":[{"source":1,"begin":7716,"end":7752},{"source":1,"begin":7687,"end":7753}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1975,"bytecodeCount":11,"sources":[{"source":1,"begin":7098,"end":7197},{"source":1,"begin":7146,"end":7153},{"source":1,"begin":7186,"end":7190},{"source":1,"begin":7179,"end":7184},{"source":1,"begin":7175,"end":7191},{"source":1,"begin":7164,"end":7191}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2061,"bytecodeCount":7,"sources":[{"source":1,"begin":7687,"end":7753},{"source":1,"begin":7678,"end":7753},{"source":1,"begin":7594,"end":7759}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2258,"bytecodeCount":8,"sources":[{"source":1,"begin":9409,"end":9463},{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9529,"end":9533},{"source":1,"begin":9524,"end":9527},{"source":1,"begin":9520,"end":9534},{"source":1,"begin":9506,"end":9518}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2014,"bytecodeCount":5,"sources":[{"source":1,"begin":7374,"end":7476},{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7463,"end":7468}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1350,"bytecodeCount":11,"sources":[{"source":1,"begin":2494,"end":2580},{"source":1,"begin":2529,"end":2536},{"source":1,"begin":2569,"end":2573},{"source":1,"begin":2562,"end":2567},{"source":1,"begin":2558,"end":2574},{"source":1,"begin":2547,"end":2574}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2023,"bytecodeCount":6,"sources":[{"source":1,"begin":7447,"end":7469},{"source":1,"begin":7442,"end":7445},{"source":1,"begin":7435,"end":7470},{"source":1,"begin":7374,"end":7476}]}}
+		AssignExpCmd:164 tacMCANON0!!102:0 Store(tacMCANON0!!100:0 0x1e4 R95:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2271,"bytecodeCount":6,"sources":[{"source":1,"begin":9476,"end":9535},{"source":1,"begin":9356,"end":9545},{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9651,"end":9660}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2094,"bytecodeCount":7,"sources":[{"source":1,"begin":7981,"end":8144},{"source":1,"begin":8048,"end":8053},{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8126,"end":8136}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2068,"bytecodeCount":11,"sources":[{"source":1,"begin":7765,"end":7871},{"source":1,"begin":7809,"end":7817},{"source":1,"begin":7858,"end":7863},{"source":1,"begin":7853,"end":7856},{"source":1,"begin":7849,"end":7864},{"source":1,"begin":7828,"end":7864}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2108,"bytecodeCount":3,"sources":[{"source":1,"begin":8101,"end":8137},{"source":1,"begin":8073,"end":8138}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2113,"bytecodeCount":7,"sources":[{"source":1,"begin":8073,"end":8138},{"source":1,"begin":8064,"end":8138},{"source":1,"begin":7981,"end":8144}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2281,"bytecodeCount":8,"sources":[{"source":1,"begin":9608,"end":9661},{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9725,"end":9729},{"source":1,"begin":9720,"end":9723},{"source":1,"begin":9716,"end":9730},{"source":1,"begin":9702,"end":9714}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
+		AssignExpCmd:144 R104:38 Ite(Eq(R96:47 0x0 ) 0x0 0x1 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
+		AssignExpCmd:164 tacMCANON0!!106:0 Store(tacMCANON0!!102:0 0x204 R104:38 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2294,"bytecodeCount":12,"sources":[{"source":1,"begin":9674,"end":9731},{"source":1,"begin":9555,"end":9741},{"source":1,"begin":9813,"end":9817},{"source":1,"begin":9806,"end":9811},{"source":1,"begin":9802,"end":9818},{"source":1,"begin":9796,"end":9819},{"source":1,"begin":9783,"end":9819},{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9897,"end":9906}]}}
+		AssignExpCmd:144 R107:47 Apply(skey_add:bif R92:47 0x1)
+		AssignExpCmd:185 R108:47 AnnotationExp(Select(CANON72!!22:88 R107:186 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Words","numWords":"6"}}]}})
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R108","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"x2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.Id","id":5}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1848,"bytecodeCount":7,"sources":[{"source":1,"begin":6269,"end":6435},{"source":1,"begin":6338,"end":6343},{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6417,"end":6427}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1862,"bytecodeCount":3,"sources":[{"source":1,"begin":6394,"end":6428},{"source":1,"begin":6363,"end":6429}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1838,"bytecodeCount":9,"sources":[{"source":1,"begin":6173,"end":6263},{"source":1,"begin":6223,"end":6230},{"source":1,"begin":6252,"end":6257},{"source":1,"begin":6241,"end":6257}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1867,"bytecodeCount":7,"sources":[{"source":1,"begin":6363,"end":6429},{"source":1,"begin":6354,"end":6429},{"source":1,"begin":6269,"end":6435}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2311,"bytecodeCount":8,"sources":[{"source":1,"begin":9852,"end":9907},{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9977,"end":9981},{"source":1,"begin":9972,"end":9975},{"source":1,"begin":9968,"end":9982},{"source":1,"begin":9954,"end":9966}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1874,"bytecodeCount":5,"sources":[{"source":1,"begin":6441,"end":6549},{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6536,"end":6541}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1012,"bytecodeCount":9,"sources":[{"source":1,"begin":334,"end":411},{"source":1,"begin":371,"end":378},{"source":1,"begin":400,"end":405},{"source":1,"begin":389,"end":405}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1883,"bytecodeCount":6,"sources":[{"source":1,"begin":6518,"end":6542},{"source":1,"begin":6513,"end":6516},{"source":1,"begin":6506,"end":6543},{"source":1,"begin":6441,"end":6549}]}}
+		AssignExpCmd:164 tacMCANON0!!110:0 Store(tacMCANON0!!106:0 0x224 R108:47 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2324,"bytecodeCount":12,"sources":[{"source":1,"begin":9920,"end":9983},{"source":1,"begin":9751,"end":9993},{"source":1,"begin":10065,"end":10069},{"source":1,"begin":10058,"end":10063},{"source":1,"begin":10054,"end":10070},{"source":1,"begin":10048,"end":10071},{"source":1,"begin":10035,"end":10071},{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10146,"end":10155}]}}
+		AssignExpCmd:144 R111:47 Apply(skey_add:bif R107:47 0x1)
+		AssignExpCmd:187 R112:47 AnnotationExp(Select(CANON74!!23:89 R111:188 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"e0"}}]}})
+		AssumeExpCmd Le(R112:47 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R112","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1003}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b2","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s2","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2135,"bytecodeCount":7,"sources":[{"source":1,"begin":8255,"end":8415},{"source":1,"begin":8321,"end":8326},{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8397,"end":8407}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2149,"bytecodeCount":3,"sources":[{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8346,"end":8409}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2154,"bytecodeCount":7,"sources":[{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8337,"end":8409},{"source":1,"begin":8255,"end":8415}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2341,"bytecodeCount":8,"sources":[{"source":1,"begin":10104,"end":10156},{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10220,"end":10224},{"source":1,"begin":10215,"end":10218},{"source":1,"begin":10211,"end":10225},{"source":1,"begin":10197,"end":10209}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
+		AssignExpCmd:144 R114:38 Ite(Eq(R112:47 0x0 ) 0x0 0x1 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
+		AssignExpCmd:164 tacMCANON0!!116:0 Store(tacMCANON0!!110:0 0x244 R114:38 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2354,"bytecodeCount":7,"sources":[{"source":1,"begin":10169,"end":10226},{"source":1,"begin":10003,"end":10236},{"source":1,"begin":8582,"end":10243},{"source":1,"begin":8485,"end":10243}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2402,"bytecodeCount":12,"sources":[{"source":1,"begin":10787,"end":10891},{"source":1,"begin":10705,"end":10901},{"source":1,"begin":10973,"end":10977},{"source":1,"begin":10966,"end":10971},{"source":1,"begin":10962,"end":10978},{"source":1,"begin":10956,"end":10979},{"source":1,"begin":10943,"end":10979},{"source":1,"begin":11012,"end":11064},{"source":1,"begin":11054,"end":11063}]}}
+		AssignExpCmd:144 R117:55 Apply(skey_add:bif R111:47 0x1)
+		AssignExpCmd:189 R118:55 AnnotationExp(Select(CANON76!!24:59 R117:190 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R10","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"hashResult":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R53","tag":{"#class":"tac.Tag.UserDefined.UninterpretedSort","name":"skey"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1018}]}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
+		AssumeExpCmd Le(R118:55 0xff )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R118","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1009}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"linkableStorageReadId":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.LoadSnippet.None"}}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2135,"bytecodeCount":7,"sources":[{"source":1,"begin":8255,"end":8415},{"source":1,"begin":8321,"end":8326},{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8397,"end":8407}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1825,"bytecodeCount":11,"sources":[{"source":1,"begin":6065,"end":6167},{"source":1,"begin":6107,"end":6115},{"source":1,"begin":6154,"end":6159},{"source":1,"begin":6151,"end":6152},{"source":1,"begin":6147,"end":6160},{"source":1,"begin":6126,"end":6160}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2149,"bytecodeCount":3,"sources":[{"source":1,"begin":8374,"end":8408},{"source":1,"begin":8346,"end":8409}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2081,"bytecodeCount":11,"sources":[{"source":1,"begin":7877,"end":7975},{"source":1,"begin":7924,"end":7931},{"source":1,"begin":7964,"end":7968},{"source":1,"begin":7957,"end":7962},{"source":1,"begin":7953,"end":7969},{"source":1,"begin":7942,"end":7969}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2154,"bytecodeCount":7,"sources":[{"source":1,"begin":8346,"end":8409},{"source":1,"begin":8337,"end":8409},{"source":1,"begin":8255,"end":8415}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2419,"bytecodeCount":8,"sources":[{"source":1,"begin":11012,"end":11064},{"source":1,"begin":11077,"end":11136},{"source":1,"begin":11128,"end":11134},{"source":1,"begin":11123,"end":11126},{"source":1,"begin":11119,"end":11135},{"source":1,"begin":11105,"end":11117}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2120,"bytecodeCount":5,"sources":[{"source":1,"begin":8150,"end":8249},{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8236,"end":8241}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":1407,"bytecodeCount":11,"sources":[{"source":1,"begin":2851,"end":2941},{"source":1,"begin":2885,"end":2892},{"source":1,"begin":2928,"end":2933},{"source":1,"begin":2921,"end":2934},{"source":1,"begin":2914,"end":2935},{"source":1,"begin":2903,"end":2935}]}}
+		AssignExpCmd:144 R120:60 Ite(Eq(R118:55 0x0 ) 0x0 0x1 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2129,"bytecodeCount":6,"sources":[{"source":1,"begin":8221,"end":8242},{"source":1,"begin":8216,"end":8219},{"source":1,"begin":8209,"end":8243},{"source":1,"begin":8150,"end":8249}]}}
+		AssignExpCmd:164 tacMCANON0!!122:0 Store(tacMCANON0!!116:0 0x264 R120:60 )
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2433,"bytecodeCount":7,"sources":[{"source":1,"begin":11077,"end":11136},{"source":1,"begin":10911,"end":11146},{"source":1,"begin":10424,"end":11153},{"source":1,"begin":10315,"end":11153}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":2475,"bytecodeCount":7,"sources":[{"source":1,"begin":11456,"end":11571},{"source":1,"begin":11159,"end":11578}]}}
+		AnnotationCmd:165 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":269,"bytecodeCount":17,"sources":[{"source":0,"begin":367,"end":389}]}}
+		AssignExpCmd:164 R123:66 0x80
+		AssignExpCmd:164 R124:67 0x204
+		AssignExpCmd:164 R125:68 Select(tacExtcodesize!!4:9 Apply(to_skey:bif R28:191) )
+		AssumeExpCmd Ge(R125:68 0x1 )
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.RawStorageAccess.WithLocSym","isLoad":true,"loc":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R28","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.contract.sym.addr.name","type":"java.lang.String","erasureStrategy":"Erased"},"value":"TestContract"},{"key":{"name":"tac.contract.sym.addr","type":"java.math.BigInteger","erasureStrategy":"Erased"},"value":"ce4604a0000000000000000000000001"},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1021}]},"contractInstance":"ce4604a0000000000000000000000001","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R125","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.TACKeywordEntry","name":"L","maybeTACKeywordOrdinal":45}},{"key":{"name":"tac.stack.height","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":1012}]},"storageType":null,"range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}}}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":2,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"content":"this.workOnS1(x, m[0])"}}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":2}}
+		AnnotationCmd:164 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":295,"bytecodeCount":9,"sources":[{"source":0,"begin":367,"end":389}]}}
+		AssignHavocCmd:164 R126:68
+		AnnotationCmd:164 JSON{"key":{"name":"tac.decompiler.call-start","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
+		AssignHavocCmd:164 tacReturndata!!127:12
 		JumpCmd 2_0_0_2_0_1
 	}
 	Block 2_0_0_2_0_1 Succ [3_0_0_1_0_0] {
-		AnnotationCmd JSON{"key":{"name":"call.trace.external.summary.start","type":"analysis.icfg.SummaryStack$SummaryStart$External","erasureStrategy":"CallTrace"},"value":"rO0ABXNyADBhbmFseXNpcy5pY2ZnLlN1bW1hcnlTdGFjayRTdW1tYXJ5U3RhcnQkRXh0ZXJuYWyjNkk2r+9AZAIABUwADmFwcGxpZWRTdW1tYXJ5dAAsTGFuYWx5c2lzL2ljZmcvU3VtbWFyaXphdGlvbiRBcHBsaWVkU3VtbWFyeTtMAAhjYWxsTm9kZXQAFUx2Yy9kYXRhL0NhbGxTdW1tYXJ5O0wAF2NhbGxSZXNvbHV0aW9uVGFibGVJbmZvdAA2THJlcG9ydC9jYWxscmVzb2x1dGlvbi9DYWxsUmVzb2x1dGlvblRhYmxlU3VtbWFyeUluZm87TAALY2FsbFNpdGVTcmN0ABVMdmMvZGF0YS9UQUNNZXRhSW5mbztMAAdzdXBwb3J0dAAPTGphdmEvdXRpbC9TZXQ7eHIAJ2FuYWx5c2lzLmljZmcuU3VtbWFyeVN0YWNrJFN1bW1hcnlTdGFydM6P29O9R0c9AgAAeHBzcgA3YW5hbHlzaXMuaWNmZy5TdW1tYXJpemF0aW9uJEFwcGxpZWRTdW1tYXJ5JE1ldGhvZHNCbG9ja8QZaUG9nkK8AgACTAAMc3BlY0NhbGxTdW1tdAAuTHNwZWMvY3ZsYXN0L1NwZWNDYWxsU3VtbWFyeSRFeHByZXNzaWJsZUluQ1ZMO0wAEHN1bW1hcml6ZWRNZXRob2R0ABtMc3BlYy9DVkwkU3VtbWFyeVNpZ25hdHVyZTt4cHNyAB9zcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnkkRXhwiLXACP96VR8CAAdMAANleHB0ABRMc3BlYy9jdmxhc3QvQ1ZMRXhwO0wADGV4cGVjdGVkVHlwZXQAEExqYXZhL3V0aWwvTGlzdDtMAAlmdW5QYXJhbXNxAH4ADkwABXJhbmdldAANTHV0aWxzL1JhbmdlO0wABXNjb3BldAAWTHNwZWMvY3ZsYXN0L0NWTFNjb3BlO0wAEXN1bW1hcml6YXRpb25Nb2RldAAvTHNwZWMvY3ZsYXN0L1NwZWNDYWxsU3VtbWFyeSRTdW1tYXJpemF0aW9uTW9kZTtMAAp3aXRoQ2xhdXNldAAsTHNwZWMvY3ZsYXN0L1NwZWNDYWxsU3VtbWFyeSRFeHAkV2l0aENsYXVzZTt4cgAsc3BlYy5jdmxhc3QuU3BlY0NhbGxTdW1tYXJ5JEV4cHJlc3NpYmxlSW5DVkw5jBEFxNlONwIAAHhyABtzcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnmf4QieXcWlAQIAAHhwc3IAJ3NwZWMuY3ZsYXN0LkNWTEV4cCRBcHBseUV4cCRDVkxGdW5jdGlvbghf8sf20DA6AgAFWgAIbm9SZXZlcnRMAARhcmdzcQB+AA5MAAJpZHQAEkxqYXZhL2xhbmcvU3RyaW5nO0wAF21ldGhvZElkV2l0aENhbGxDb250ZXh0dAAdTHNwZWMvY3ZsYXN0L1NwZWNEZWNsYXJhdGlvbjtMAAN0YWd0ABdMc3BlYy9jdmxhc3QvQ1ZMRXhwVGFnO3hyABtzcGVjLmN2bGFzdC5DVkxFeHAkQXBwbHlFeHAF3JlNR+1SuwIAAHhyACFzcGVjLmN2bGFzdC5DVkxFeHAkQXBwbGljYXRpb25FeHAEe7zFegP5fQIAAHhyABJzcGVjLmN2bGFzdC5DVkxFeHAB+J/cNeGTiAIAAHhwAXNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHSHZnHYZ0DAAFJAARzaXpleHAAAAACdwQAAAACc3IAHnNwZWMuY3ZsYXN0LkNWTEV4cCRWYXJpYWJsZUV4cJ0ULkp52IKNAgAETAACaWRxAH4AF0wADG9yaWdpbmFsTmFtZXEAfgAXTAADdGFncQB+ABlMAA10d29TdGF0ZUluZGV4dAAbTHNwZWMvY3ZsYXN0L1R3b1N0YXRlSW5kZXg7eHEAfgAcdAABeHEAfgAjc3IAFXNwZWMuY3ZsYXN0LkNWTEV4cFRhZ9WLKphaC/tTAgAFWgAJaGFzUGFyZW5zTAAKYW5ub3RhdGlvbnQAIkxzcGVjL2N2bGFzdC9FeHByZXNzaW9uQW5ub3RhdGlvbjtMAAVyYW5nZXEAfgAPTAAFc2NvcGVxAH4AEEwABHR5cGV0ABVMc3BlYy9jdmxhc3QvQ1ZMVHlwZTt4cABwc3IAEXV0aWxzLlJhbmdlJFJhbmdlelevcoxEsQYCAANMAANlbmR0ABZMdXRpbHMvU291cmNlUG9zaXRpb247TAAIc3BlY0ZpbGVxAH4AF0wABXN0YXJ0cQB+ACl4cgALdXRpbHMuUmFuZ2XoA/TylWV/VwIAAHhwc3IAFHV0aWxzLlNvdXJjZVBvc2l0aW9ulfTn1OqZxI0CAAJJAA5jaGFyQnl0ZU9mZnNldEkABGxpbmV4cAAAAFUAAAADdAAJdGVzdC5zcGVjc3EAfgAsAAAAVAAAAANzcgAUc3BlYy5jdmxhc3QuQ1ZMU2NvcGUiyWBY1B1dVAIAA0wAFmhhc2hDb2RlQ2FjaGUkZGVsZWdhdGV0AA1Ma290bGluL0xhenk7TAAKaW5uZXJTY29wZXEAfgAQTAAKc2NvcGVTdGFja3EAfgAOeHBzcgAaa290bGluLkluaXRpYWxpemVkTGF6eUltcGx7x3/xICqBjQIAAUwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHBzcgARamF2YS5sYW5nLkludGVnZXIS4qCk94GHOAIAAUkABXZhbHVleHIAEGphdmEubGFuZy5OdW1iZXKGrJUdC5TgiwIAAHhwzPGoX3NxAH4AMHNxAH4AM3NxAH4ANk5njWFzcQB+ADBzcQB+ADNzcQB+ADYAAAAfcHNyABxrb3RsaW4uY29sbGVjdGlvbnMuRW1wdHlMaXN0mW/H0KfgYDICAAB4cHNyACNqYXZhLnV0aWwuQ29sbGVjdGlvbnMkU2luZ2xldG9uTGlzdCrvKRA8p5uXAgABTAAHZWxlbWVudHEAfgA0eHBzcgAmc3BlYy5jdmxhc3QuQ1ZMU2NvcGUkSXRlbSRBc3RTY29wZUl0ZW2Hm6f3BtWhkwIAAHhyABlzcGVjLmN2bGFzdC5DVkxTY29wZSRJdGVtLwOv/543VkUCAAB4cHNxAH4AHgAAAAJ3BAAAAAJxAH4ARXNyACtzcGVjLmN2bGFzdC5DVkxTY29wZSRJdGVtJEV4cHJlc3Npb25TdW1tYXJ5DzManVpfqWgCAAFJAAdzY29wZUlkeHIAKXNwZWMuY3ZsYXN0LkNWTFNjb3BlJEl0ZW0kQVNURWxlbWVudFNjb3BlUquPEVHkIpYCAAFMAAdlbGVtZW50dAAaTHNwZWMvY3ZsYXN0L0NyZWF0ZXNTY29wZTt4cQB+AERzcQB+AAxzcgAlc3BlYy5jdmxhc3QuQ1ZMRXhwJFVucmVzb2x2ZWRBcHBseUV4cDU+F4IbuX3IAgAIWgAMaW52b2tlSXNTYWZlWgANaW52b2tlSXNXaG9sZUwABGFyZ3NxAH4ADkwABGJhc2VxAH4ADUwADWludm9rZVN0b3JhZ2V0ACBMc3BlYy9jdmxhc3QvQ1ZMRXhwJFZhcmlhYmxlRXhwO0wACG1ldGhvZElkcQB+ABdMAAN0YWdxAH4AGUwADXR3b1N0YXRlSW5kZXhxAH4AIXhxAH4AGwEAc3EAfgAeAAAAAncEAAAAAnNxAH4AIHEAfgAjcQB+ACNzcQB+ACQAcHEAfgArcQB+ADJwfnIAGXNwZWMuY3ZsYXN0LlR3b1N0YXRlSW5kZXgAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAdORUlUSEVSc3EAfgAgdAABc3EAfgBXc3EAfgAkAHBzcQB+AChzcQB+ACwAAABYAAAAA3EAfgAuc3EAfgAsAAAAVwAAAANxAH4AMnBxAH4AVHhwc3EAfgAgdAALbGFzdFN0b3JhZ2VxAH4AXXNxAH4AJABwc3IAEXV0aWxzLlJhbmdlJEVtcHR5xIMekl54ldcCAAFMAAdjb21tZW50cQB+ABd4cQB+ACp0ABJlbXB0eSBzdG9yYWdlIHR5cGVxAH4AMnBxAH4AVHQAEXdvcmtPblNDb21wbGV4Q1ZMc3EAfgAkAHBzcQB+AChzcQB+ACwAAABZAAAAA3EAfgAuc3EAfgAsAAAAQgAAAANxAH4AMnBxAH4AVHBzcQB+AB4AAAACdwQAAAACc3IAGXNwZWMuY3ZsYXN0LlZNUGFyYW0kTmFtZWQAXezwjrrQjQIABEwABG5hbWVxAH4AF0wADG9yaWdpbmFsTmFtZXEAfgAXTAAFcmFuZ2VxAH4AD0wABnZtVHlwZXQALkxzcGVjL2N2bGFzdC90eXBlZGVzY3JpcHRvcnMvVk1UeXBlRGVzY3JpcHRvcjt4cgATc3BlYy5jdmxhc3QuVk1QYXJhbaA5qID7MF6/AgAAeHBxAH4AI3EAfgAjc3EAfgAoc3EAfgAsAAAAHAAAAANxAH4ALnNxAH4ALAAAABYAAAADc3IAM3NwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRVSW50S6h6LEsweg4lAgABSQAIYml0d2lkdGh4cgBEc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJEVWTUlzb21vcnBoaWNWYWx1ZVR5cGWW45V3at3xfwIAAHhyADpzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkRVZNVmFsdWVUeXBlEOTS9aivN+ECAAB4cgAtc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yXlYd3MaOPugCAAB4cAAAAQBzcQB+AGhxAH4AV3EAfgBXc3EAfgAoc3EAfgAsAAAANAAAAANxAH4ALnNxAH4ALAAAAB4AAAADc3IAQXNwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRFVk1TdHJ1Y3REZXNjcmlwdG9ypg3XjxMA4UoCAARMAAtjYW5vbmljYWxJZHEAfgAXTAAGZmllbGRzcQB+AA5MAAhsb2NhdGlvbnQAMkxzcGVjL2N2bGFzdC90eXBlZGVzY3JpcHRvcnMvRVZNTG9jYXRpb25TcGVjaWZpZXI7TAAEbmFtZXEAfgAXeHEAfgBydAAlVGVzdENvbnRyYWN0LnNvbHxUZXN0Q29udHJhY3QuQ29tcGxleHNxAH4AHgAAAAN3BAAAAANzcgBQc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJEVWTVN0cnVjdERlc2NyaXB0b3IkRVZNU3RydWN0RW50cnkfXd8E+GvhmwIAAkwACWZpZWxkTmFtZXEAfgAXTAAJZmllbGRUeXBldAAvTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9FVk1UeXBlRGVzY3JpcHRvcjt4cHQAAnMxc3EAfgB4dAAkVGVzdENvbnRyYWN0LnNvbHxUZXN0Q29udHJhY3QuU2ltcGxlc3EAfgAeAAAAB3cEAAAAB3NxAH4AfXEAfgAjc3EAfgBvAAABAHNxAH4AfXQAAXlzcgA1c3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJGFkZHJlc3PEsTBR9nlqCAIAAHhxAH4AcHNxAH4AfXQAAnoxc3EAfgBvAAAACHNxAH4AfXQAAnoyc3EAfgBvAAAACHNxAH4AfXQAAmIxc3IAMnNwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRib29sBUKy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bFN1bW1hcnlCLSM8Y2HMggIAEUkACXN1bW1hcnlJZEwADmNhbGxDb252ZW50aW9udAAmTGluc3RydW1lbnRhdGlvbi9jYWxscy9DYWxsQ29udmVudGlvbjtMAApjYWxsVGFyZ2V0cQB+AAVMAAhjYWxsVHlwZXQAFUx2Yy9kYXRhL1RBQ0NhbGxUeXBlO0wAD2Nhbm5vdEJlSW5saW5lZHQALUxhbmFseXNpcy9pY2ZnL0lubGluZXIkSWxsZWdhbElubGluaW5nUmVhc29uO0wABmdhc1ZhcnQAE0x2Yy9kYXRhL1RBQ1N5bWJvbDtMAAZpbkJhc2V0ABdMdmMvZGF0YS9UQUNTeW1ib2wkVmFyO0wACGluT2Zmc2V0cQB+AgBMAAZpblNpemVxAH4CAEwADG9yaWdDYWxsY29yZXQAIEx2Yy9kYXRhL1RBQ0NtZCRTaW1wbGUkQ2FsbENvcmU7TAAHb3V0QmFzZXEAfgIBTAAJb3V0T2Zmc2V0cQB+AgBMAAdvdXRTaXplcQB+AgBMAA1zaWdSZXNvbHV0aW9ucQB+AAVMABVzeW1ib2xpY1NpZ1Jlc29sdXRpb250ADNMYW5hbHlzaXMvcHRhL2FiaS9EZWNvZGVyQW5hbHlzaXMkQnVmZmVyQWNjZXNzUGF0aDtMAAV0b1ZhcnEAfgIATAAIdmFsdWVWYXJxAH4CAHhwAAAAAHNyACRpbnN0cnVtZW50YXRpb24uY2FsbHMuQ2FsbENvbnZlbnRpb2591riWaBgUXgIAA0kACGNhbGxlcklkTAAFaW5wdXR0ABlMYW5hbHlzaXMvaWNmZy9DYWxsSW5wdXQ7TAAGcmF3T3V0dAAiTGluc3RydW1lbnRhdGlvbi9jYWxscy9DYWxsT3V0cHV0O3hwAAAAAHNyABdhbmFseXNpcy5pY2ZnLkNhbGxJbnB1dAPz2322YQJyAgAHTAAHYmFzZVZhcnQAGUx2Yy9kYXRhL1RBQ0V4cHIkU3ltJFZhcjtMABBlbmNvZGVkQXJndW1lbnRzdAAjTGFuYWx5c2lzL2ljZmcvQUJJQXJndW1lbnRFbmNvZGluZztMABNpbnB1dFNpemVMb3dlckJvdW5kcQB+AOZMAAZvZmZzZXR0ABVMdmMvZGF0YS9UQUNFeHByJFN5bTtMABRyYW5nZVRvRGVjb21wb3NlZEFyZ3QAD0xqYXZhL3V0aWwvTWFwO0wAEHNpbXBsaWZpZWRPZmZzZXR0ABtMdmMvZGF0YS9UQUNFeHByJFN5bSRDb25zdDtMAARzaXplcQB+Agx4cHNyABd2Yy5kYXRhLlRBQ0V4cHIkU3ltJFZhcn3uZ6Lnk1XTAgACTAABc3EAfgIBTAADdGFndAAJTHRhYy9UYWc7eHIAE3ZjLmRhdGEuVEFDRXhwciRTeW2iVj0S4YSNUAIAAHhyAA92Yy5kYXRhLlRBQ0V4cHIF2oBG6eLQeQIAAHhwc3IANnZjLmRhdGEuVEFDU3ltYm9sJFZhciRXaXRoRGVmYXVsdENhbGxJbmRleCRXaXRoQnl0ZU1hcJQkZfdbh3knAgACTAAEbWV0YXQAHkxjb20vY2VydG9yYS9jb2xsZWN0L1RyZWFwTWFwO0wACm5hbWVQcmVmaXhxAH4AF3hyABV2Yy5kYXRhLlRBQ1N5bWJvbCRWYXL8SGvUvjBGEQIAAHhyABF2Yy5kYXRhLlRBQ1N5bWJvbBKTItjnrHLUAgAAeHBzcgAgY29tLmNlcnRvcmEuY29sbGVjdC5IYXNoVHJlYXBNYXDOJ/t6rqVynAIAA0wAA2tleXEAfgA0TAAEbmV4dHQAK0xjb20vY2VydG9yYS9jb2xsZWN0L0tleVZhbHVlUGFpckxpc3QkTW9yZTtMAAV2YWx1ZXEAfgA0eHIAJGNvbS5jZXJ0b3JhLmNvbGxlY3QuQWJzdHJhY3RUcmVhcE1hcC1u3UdoTQYZAgAAeHIAGWNvbS5jZXJ0b3JhLmNvbGxlY3QuVHJlYXD/3sPjttw/IwIAAkwABGxlZnR0ABtMY29tL2NlcnRvcmEvY29sbGVjdC9UcmVhcDtMAAVyaWdodHEAfgIeeHBwc3EAfgIacHNxAH4CGnBwc3IAC3RhYy5NZXRhS2V5avYXikOyot0CAANMAA9lcmFzdXJlU3RyYXRlZ3l0AB1MdGFjL01ldGFLZXkkRXJhc3VyZVN0cmF0ZWd5O0wABG5hbWVxAH4AF0wAA3R5cHQAEUxqYXZhL2xhbmcvQ2xhc3M7eHB+cgAbdGFjLk1ldGFLZXkkRXJhc3VyZVN0cmF0ZWd5AAAAAAAAAAASAAB4cQB+AFN0AAlDYW5vbmljYWx0ABR0YWMubWVtb3J5LnBhcnRpdGlvbnZyACNhbmFseXNpcy5wdGEuYWJpLlVuaW5kZXhlZFBhcnRpdGlvbjDC1l5m1rSBAgABSQACaWR4cHBzcQB+AioAAAAAc3EAfgIicQB+Aid0ABJUYWMuc3ltYm9sLmtleXdvcmR2cgAidmMuZGF0YS5UQUNTeW1ib2wkVmFyJEtleXdvcmRFbnRyeU7jwOQ0dtx2AgAAeHBwc3IAMnZjLmRhdGEuVEFDU3ltYm9sJFZhciRLZXl3b3JkRW50cnkkVEFDS2V5d29yZEVudHJ5uJkWjywELK0CAAJJABZtYXliZVRBQ0tleXdvcmRPcmRpbmFsTAAEbmFtZXEAfgAXeHEAfgIvAAAAAXQABHRhY01zcQB+AiJxAH4CJ3QADXRhYy5pcy5tZW1vcnl2cgAidGFjLk1ldGFNYXAkQ29tcGFuaW9uJE5vdGhpbmdWYWx1ZZZFj9hbs7zKAgAAeHBwc3EAfgI2dAAPdGFjTUNBTk9OMCEhMTIyc3IAD3RhYy5UYWckQnl0ZU1hcDW/0cuhg0YJAgAAeHIAC3RhYy5UYWckTWFwAScrcw1dz/0CAAB4cgAHdGFjLlRhZ3ol4madQcX1AgAAeHBwc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAgR4c3EAfgIQc3IANXZjLmRhdGEuVEFDU3ltYm9sJFZhciRXaXRoRGVmYXVsdENhbGxJbmRleCRXaXRoQml0MjU2nq3gkxche2QCAAJMAARtZXRhcQB+AhZMAApuYW1lUHJlZml4cQB+ABd4cQB+AhdzcQB+AhpzcQB+AhpwcHEAfgItcHNxAH4CMQAAAC10AAFMcHNxAH4CInEAfgIndAAQdGFjLnN0YWNrLmhlaWdodHZxAH4ANnBzcQB+ADYAAAP5dAAEUjEyM3NyAA50YWMuVGFnJEJpdDI1Ngwk+60L/KKgAgAAeHIADHRhYy5UYWckQml0c42WGHdpIwuYAgAGSQAIYml0d2lkdGhMAAltYXhTaWduZWRxAH4A5kwAC21heFVuc2lnbmVkcQB+AOZMAAttaW5TaWduZWQyc3EAfgDmTAANbWluU2lnbmVkTWF0aHEAfgDmTAAHbW9kdWx1c3EAfgDmeHEAfgI8AAABAHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIH//////////////////////////////////////////eHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIP//////////////////////////////////////////eHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeHNxAH4A6f///////////////v////7/////dXEAfgDsAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHhzcgAhZGF0YXN0cnVjdHVyZXMuTGlua2VkQXJyYXlIYXNoTWFwAAAAAAAAAAEDAAJGAApsb2FkRmFjdG9yTAAJaGFzaFRhYmxldAAuTGRhdGFzdHJ1Y3R1cmVzL2FycmF5aGFzaHRhYmxlL0FycmF5SGFzaFRhYmxlO3hwdwgAAAARQAAAAHNyAB5hbmFseXNpcy5pY2ZnLlNjcmF0Y2hCeXRlUmFuZ2VwFUg3dcKmRAIAAkwABGZyb21xAH4A5kwAAnRvcQB+AOZ4cHEAfgDrcQB+ASxzcgAtYW5hbHlzaXMuaWNmZy5EZWNvbXBvc2VkQ2FsbElucHV0QXJnJENvbnN0YW50X18M2Mnf2NUCAANMAAFjdAAZTHZjL2RhdGEvVEFDU3ltYm9sJENvbnN0O0wAEWNvbnRyYWN0UmVmZXJlbmNldAAvTGFuYWx5c2lzL2ljZmcvQ2FsbEdyYXBoQnVpbGRlciRDYWxsZWRDb250cmFjdDtMAAxzY3JhdGNoUmFuZ2V0ACBMYW5hbHlzaXMvaWNmZy9TY3JhdGNoQnl0ZVJhbmdlO3hyACRhbmFseXNpcy5pY2ZnLkRlY29tcG9zZWRDYWxsSW5wdXRBcmeBcxMNVEvJYQIAAHhwc3IAF3ZjLmRhdGEuVEFDU3ltYm9sJENvbnN0xvRJmiqWfKECAAJMAAN0YWdxAH4CEUwABXZhbHVlcQB+AOZ4cQB+AhhxAH4CTnNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIIcL85MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeHBxAH4CXXNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAQR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABI3hzcgAtYW5hbHlzaXMuaWNmZy5EZWNvbXBvc2VkQ2FsbElucHV0QXJnJFZhcmlhYmxlSJPDmQhdtk4CAANMABFjb250cmFjdFJlZmVyZW5jZXEAfgJgTAAMc2NyYXRjaFJhbmdlcQB+AmFMAAF2cQB+AgF4cQB+AmJzcgA7YW5hbHlzaXMuaWNmZy5DYWxsR3JhcGhCdWlsZGVyJENhbGxlZENvbnRyYWN0JFN5bWJvbGljSW5wdXTciiQIgh9yhQIAAkwACGlucHV0QXJncQB+AgFMAAZvZmZzZXRxAH4A5nhyAC1hbmFseXNpcy5pY2ZnLkNhbGxHcmFwaEJ1aWxkZXIkQ2FsbGVkQ29udHJhY3TTC3Ws38uh1wIAAHhwc3EAfgJBc3EAfgIac3EAfgIac3EAfgIacHBzcQB+AiJxAH4CJ3QAE3RhYy5pbW11dGFibGUuYXJyYXl2cgAWdmMuZGF0YS5JbW11dGFibGVCb3VuZOgccsQnXcifAgABTAADc3ltcQB+AgB4cHBzcQB+AnhzcQB+AkFzcQB+AhpwcHEAfgItcHNxAH4CMQAAAAx0AA90YWNDYWxsZGF0YXNpemVxAH4CfnNxAH4CGnNxAH4CGnBwc3EAfgIicQB+Aid0AA90YWMud29yZG1hcC1rZXl2cQB+AOlwcQB+Amlwc3EAfgIicQB+Aid0ABZ0YWMuc2NhbGFyaXphdGlvbi5zb3J0dnIAGXZjLmRhdGEuU2NhbGFyaXphdGlvblNvcnRWYnUNuJ4VyQIAAHhwcHNyAB92Yy5kYXRhLlNjYWxhcml6YXRpb25Tb3J0JFNwbGl0p31IzV7GnfUCAAFMAANpZHhxAH4A5nhxAH4ChnEAfgJpcQB+Ai1wc3EAfgIxAAAAD3QADnRhY0NhbGxkYXRhYnVmc3EAfgIacHNxAH4CGnBwc3EAfgIicQB+Aid0AA90YWMuaXMuY2FsbGRhdGFxAH4CN3BxAH4COHNxAH4CInEAfgIndAATdGFjLmNhbGxkYXRhLm9mZnNldHEAfgKDcHEAfgJpc3EAfgIicQB+Aid0ABV0YWMuc3RvcmFnZS5iaXQtd2lkdGhxAH4CSXBzcQB+ADYAAAEAdAAQdGFjQ2FsbGRhdGFidWYhNHEAfgJpcQB+AmhzcQB+AkFzcQB+AhpwcHNxAH4CInEAfgIndAAYdGFjLmRlY29tcC1pbnNjYWxhci5zb3J0dnIAHXRhYy5EZWNvbXBvc2VkSW5wdXRTY2FsYXJTb3J0JgH7OPoenk8CAAB4cHBzcgAkdGFjLkRlY29tcG9zZWRJbnB1dFNjYWxhclNvcnQkU2ltcGxlpXUzkThggPgCAAFMAApieXRlT2Zmc2V0cQB+AOZ4cQB+AppxAH4CaXQAA1I1NnNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAASR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABQ3hzcQB+Am1zcgA8YW5hbHlzaXMuaWNmZy5DYWxsR3JhcGhCdWlsZGVyJENhbGxlZENvbnRyYWN0JFVucmVzb2x2ZWRSZWFktaff5yABrV8CAAFJAA1zdG9yYWdlUmVhZElkeHEAfgJwAAAAAHEAfgKfc3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4CoHBxAH4CR3BzcQB+ADYAAAPrdAADUjU5c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABRHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAFjeHNxAH4CbXNxAH4CpQAAAAFxAH4CrnNxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+Aq9wcQB+AkdwcQB+Aqx0AANSNjNzcQB+AlxzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAFkeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAYN4c3EAfgJtcHEAfgK7c3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4CvHBxAH4CR3BxAH4CrHQAA1I2NHNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAYR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABo3hzcQB+Am1wcQB+AsdzcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgLIcHEAfgJHcHEAfgKsdAADUjY1c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABpHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAHDeHNxAH4CbXBxAH4C03NxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+AtRwcQB+Akdwc3EAfgA2AAAD5HQAA1I3NHNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAcR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAAB43hzcQB+Am1zcQB+AqUAAAACcQB+AuBzcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgLhcHEAfgJHcHEAfgKsdAADUjc4c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAAB5HhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBA3hzcQB+Am1wcQB+Au1zcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgLucHEAfgJHcHEAfgLedAADUjg0c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAQR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACASN4c3EAfgJtc3EAfgKlAAAAA3EAfgL5c3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4C+nBxAH4CR3BxAH4CrHQAA1I4OXNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgEkeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgFDeHNxAH4CbXNxAH4CpQAAAARxAH4DBnNxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+AwdwcQB+AkdwcQB+Aqx0AANSOTNzcQB+AlxzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBRHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBY3hzcQB+Am1wcQB+AxNzcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgMUcHEAfgJHcHEAfgKsdAADUjk0c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAWR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAYN4c3EAfgJtcHEAfgMfc3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4DIHBxAH4CR3BxAH4CrHQAA1I5NXNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgGEeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgGjeHNxAH4CbXBxAH4DK3NxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+AyxwcQB+AkdwcQB+At50AARSMTA0c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAaR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAcN4c3EAfgJtc3EAfgKlAAAABXEAfgM3c3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4DOHBxAH4CR3BxAH4CrHQABFIxMDhzcQB+AlxzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBxHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIB43hzcQB+Am1wcQB+A0RzcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgNFcHEAfgJHcHEAfgLedAAEUjExNHNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgHkeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgIDeHNxAH4CbXBxAH4DUHNxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+A1FwcQB+Akdwc3EAfgA2AAAD6nQABFIxMjB4cHNxAH4CEHNxAH4CQXNxAH4CGnNxAH4CGnBwcQB+Ai1wcQB+AkVwcQB+Akdwc3EAfgA2AAAD+HQABFIxMjRxAH4CTnNyACBpbnN0cnVtZW50YXRpb24uY2FsbHMuQ2FsbE91dHB1dBjHiQNSob3JAgADTAAEYmFzZXEAfgIBTAAGb2Zmc2V0cQB+AgBMAARzaXplcQB+AgB4cHNxAH4CFXNxAH4CGnBzcQB+Ahpwc3EAfgIacHBxAH4CJXBzcQB+AioAAAACcQB+Ai1wcQB+AjJxAH4CNHBxAH4COHQADXRhY01DQU5PTjEhITZzcQB+AkFzcQB+AhpzcQB+AhpwcHEAfgItcHEAfgJFcHEAfgJHcHEAfgJKcQB+AktzcQB+AmRxAH4CTnEAfgDrc3IAIWRhdGFzdHJ1Y3R1cmVzLkxpbmtlZEFycmF5SGFzaFNldAAAAAAAAAABAwACRgAKbG9hZEZhY3RvckwACWhhc2hUYWJsZXEAfgJaeHB3CAAAAAFAAAAAc3IARGFuYWx5c2lzLmljZmcuQ2FsbEdyYXBoQnVpbGRlciRDYWxsZWRDb250cmFjdCRGdWxseVJlc29sdmVkJFNlbGZMaW5rfWep8TEoO1ICAAFMAApjb250cmFjdElkcQB+AOZ4cgA7YW5hbHlzaXMuaWNmZy5DYWxsR3JhcGhCdWlsZGVyJENhbGxlZENvbnRyYWN0JEZ1bGx5UmVzb2x2ZWTu/nAxIW+obQIAAHhxAH4CcHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAEM5GBKAAAAAAAAAAAAAAAAF4eH5yABN2Yy5kYXRhLlRBQ0NhbGxUeXBlAAAAAAAAAAASAAB4cQB+AFN0AAxSRUdVTEFSX0NBTExwc3EAfgJBc3EAfgIac3EAfgIacHBxAH4CLXBxAH4CRXBxAH4CR3BzcQB+ADYAAAP0dAAEUjEyNnNxAH4CFXNxAH4CGnBzcQB+Ahpwc3EAfgIacHBxAH4CJXBxAH4CLHEAfgItcHEAfgIycQB+AjRwcQB+AjhxAH4COXNxAH4CQXEAfgJDcQB+AktzcQB+AmRxAH4CTnEAfgI+c3IAHnZjLmRhdGEuVEFDQ21kJFNpbXBsZSRDYWxsQ29yZSVks7ylOe8ZAgALTAAIY2FsbFR5cGVxAH4B/kwAA2dhc3EAfgIATAAGaW5CYXNlcQB+AgFMAAhpbk9mZnNldHEAfgIATAAGaW5TaXplcQB+AgBMAARtZXRhcQB+AhZMAAdvdXRCYXNlcQB+AgFMAAlvdXRPZmZzZXRxAH4CAEwAB291dFNpemVxAH4CAEwAAnRvcQB+AgBMAAV2YWx1ZXEAfgIAeHIAFXZjLmRhdGEuVEFDQ21kJFNpbXBsZU9DbfgHXXOhAgAAeHIAE3ZjLmRhdGEuVEFDQ21kJFNwZWN8MxDUuqEG3AIAAHhyAA52Yy5kYXRhLlRBQ0NtZNIaJZ/9W6P7AgAAeHBxAH4Dd3NxAH4CQXEAfgN6cQB+A31zcQB+AhVzcQB+Ahpwc3EAfgIacHNxAH4CGnBwcQB+AiVwcQB+AixxAH4CLXBxAH4CMnEAfgI0cHEAfgI4cQB+AjlzcQB+AkFxAH4CQ3EAfgJLc3EAfgJBcQB+A19xAH4DYnNxAH4CGnBwc3EAfgIifnEAfgImdAAJQ2FsbFRyYWNldAAIdGFjLm1ldGF2cgATdmMuZGF0YS5UQUNNZXRhSW5mb0W7USKtClXbAgAGSQAFYmVnaW5JAANsZW5JAAZzb3VyY2VMAAdhZGRyZXNzcQB+AOZMAAhqdW1wVHlwZXQAE0xjb21waWxlci9KdW1wVHlwZTtMAA1zb3VyY2VDb250ZXh0dAAYTGNvbXBpbGVyL1NvdXJjZUNvbnRleHQ7eHBwc3EAfgOVAAABbwAAABYAAAAAcQB+A3R+cgARY29tcGlsZXIuSnVtcFR5cGUAAAAAAAAAABIAAHhxAH4AU3QAB1JFR1VMQVJzcgAWY29tcGlsZXIuU291cmNlQ29udGV4dIN4td4RYtbLAgACTAAPaW5kZXhUb0ZpbGVQYXRocQB+Ag1MAAlzb3VyY2VEaXJxAH4AF3hwc3EAfgJZdwgAAAABQAAAAHNxAH4ANgAAAAB0ABBUZXN0Q29udHJhY3Quc29seHQAEy5wb3N0X2F1dG9maW5kZXJzLjBzcQB+AhVzcQB+Ahpwc3EAfgIacHNxAH4CGnBwcQB+AiVwc3EAfgIqAAAAAnEAfgItcHEAfgIycQB+AjRwcQB+AjhxAH4DanNxAH4CQXEAfgNscQB+AktxAH4DbnNxAH4CQXNxAH4CGnNxAH4CGnNxAH4CGnBzcQB+AhpwcHNxAH4CIn5xAH4CJnQABkVyYXNlZHQAGnRhYy5jb250cmFjdC5zeW0uYWRkci5uYW1ldnIAEGphdmEubGFuZy5TdHJpbmeg8KQ4ejuzQgIAAHhwcHEAfgH6cQB+Ai1wcQB+AkVwc3EAfgIicQB+A690ABV0YWMuY29udHJhY3Quc3ltLmFkZHJxAH4Cg3BxAH4DdHBxAH4CR3BzcQB+ADYAAAP9dAADUjI4c3EAfgJkcQB+Ak5xAH4A63NxAH4CFXNxAH4CGnBzcQB+Ahpwc3EAfgIacHBxAH4CJXBzcQB+AioAAAACcQB+Ai1wcQB+AjJxAH4CNHBxAH4COHEAfgNqc3EAfgJBcQB+A2xxAH4CS3EAfgNuc3IAImphdmEudXRpbC5Db2xsZWN0aW9ucyRTaW5nbGV0b25TZXQsUkGYKcCxvwIAAUwAB2VsZW1lbnRxAH4ANHhwcQB+AfBwc3EAfgJBc3EAfgIac3EAfgIac3EAfgIacHNxAH4CGnBwcQB+A65wcQB+AfpxAH4CLXBxAH4CRXBxAH4DtHBxAH4DdHBxAH4CR3BxAH4DtnEAfgO3c3EAfgJkcQB+Ak5xAH4A63NyAEByZXBvcnQuY2FsbHJlc29sdXRpb24uQ2FsbFJlc29sdXRpb25UYWJsZVN1bW1hcnlJbmZvJERlZmF1bHRJbmZv3XK/8JXJObUCAAFMABFhcHBsaWNhdGlvblJlYXNvbnQAKExhbmFseXNpcy9pY2ZnL1N1bW1hcnlBcHBsaWNhdGlvblJlYXNvbjt4cgA0cmVwb3J0LmNhbGxyZXNvbHV0aW9uLkNhbGxSZXNvbHV0aW9uVGFibGVTdW1tYXJ5SW5mbxq20EbaZsyGAgABTAANaW5mbyRkZWxlZ2F0ZXEAfgAxeHBzcQB+ADNzcQB+All3CAAAAAFAAAAAdAAac3VtbWFyeSBhcHBsaWNhdGlvbiByZWFzb250AD5kZWNsYXJlZCBhdCB0ZXN0LnNwZWM6NDo2NyB0byBhcHBseSB0byBhbGwgY2FsbHMgdG8gdGhlIGNhbGxlZXhzcgAvYW5hbHlzaXMuaWNmZy5TdW1tYXJ5QXBwbGljYXRpb25SZWFzb24kU3BlYyRBbGw1W33ZVBMA7QIAAkwAA2xvY3EAfgAPTAAPbWV0aG9kU2lnbmF0dXJlcQB+ABd4cgArYW5hbHlzaXMuaWNmZy5TdW1tYXJ5QXBwbGljYXRpb25SZWFzb24kU3BlY55PD9KbXiwdAgAAeHIAJmFuYWx5c2lzLmljZmcuU3VtbWFyeUFwcGxpY2F0aW9uUmVhc29uQpw/oqvoOJoCAAB4cHEAfgCsdAAnd29ya09uUzEodWludDI1NiwgVGVzdENvbnRyYWN0LkNvbXBsZXgpcQB+A5lzcgAgY29tLmNlcnRvcmEuY29sbGVjdC5IYXNoVHJlYXBTZXSOYUdAuyxd9AIAAkwAB2VsZW1lbnRxAH4ANEwABG5leHR0ACZMY29tL2NlcnRvcmEvY29sbGVjdC9FbGVtZW50TGlzdCRNb3JlO3hyACRjb20uY2VydG9yYS5jb2xsZWN0LkFic3RyYWN0VHJlYXBTZXSpoVKAlt/7dgIAAHhxAH4CHXNxAH4D1HNxAH4D1HBzcQB+A9RzcQB+A9RzcQB+A9RwcHEAfgPBcHNxAH4D1HBwcQB+AqdwcQB+ApZwc3EAfgPUc3EAfgPUc3EAfgPUcHBxAH4CwXBwcQB+As1wc3EAfgPUcHNxAH4D1HBzcQB+A9RwcHEAfgMAcHEAfgLzcHEAfgLncHEAfgLZcHEAfgK1cHEAfgO5cHBxAH4DDXBzcQB+A9RzcQB+A9Rwc3EAfgPUc3EAfgPUcHBxAH4DMXBwcQB+Az5wcQB+AyVwc3EAfgPUc3EAfgPUc3EAfgPUc3EAfgPUcHBxAH4DVnBwcQB+AkJwc3EAfgPUcHBxAH4DeXBxAH4DXnBwcQB+AhlwcQB+A0pwcQB+Axlw"}
-		AssignExpCmd calledContract:13 R28:111
-		AssignExpCmd executingContract:103 R28:111
-		AssignExpCmd CANON2!!128:8 R28:111
+		AnnotationCmd JSON{"key":{"name":"call.trace.external.summary.start","type":"analysis.icfg.SummaryStack$SummaryStart$External","erasureStrategy":"CallTrace"},"value":"rO0ABXNyADBhbmFseXNpcy5pY2ZnLlN1bW1hcnlTdGFjayRTdW1tYXJ5U3RhcnQkRXh0ZXJuYWyjNkk2r+9AZAIABUwADmFwcGxpZWRTdW1tYXJ5dAAsTGFuYWx5c2lzL2ljZmcvU3VtbWFyaXphdGlvbiRBcHBsaWVkU3VtbWFyeTtMAAhjYWxsTm9kZXQAFUx2Yy9kYXRhL0NhbGxTdW1tYXJ5O0wAF2NhbGxSZXNvbHV0aW9uVGFibGVJbmZvdAA2THJlcG9ydC9jYWxscmVzb2x1dGlvbi9DYWxsUmVzb2x1dGlvblRhYmxlU3VtbWFyeUluZm87TAALY2FsbFNpdGVTcmN0ABVMdmMvZGF0YS9UQUNNZXRhSW5mbztMAAdzdXBwb3J0dAAPTGphdmEvdXRpbC9TZXQ7eHIAJ2FuYWx5c2lzLmljZmcuU3VtbWFyeVN0YWNrJFN1bW1hcnlTdGFydM6P29O9R0c9AgAAeHBzcgA3YW5hbHlzaXMuaWNmZy5TdW1tYXJpemF0aW9uJEFwcGxpZWRTdW1tYXJ5JE1ldGhvZHNCbG9ja8QZaUG9nkK8AgACTAAMc3BlY0NhbGxTdW1tdAAuTHNwZWMvY3ZsYXN0L1NwZWNDYWxsU3VtbWFyeSRFeHByZXNzaWJsZUluQ1ZMO0wAEHN1bW1hcml6ZWRNZXRob2R0ABtMc3BlYy9DVkwkU3VtbWFyeVNpZ25hdHVyZTt4cHNyAB9zcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnkkRXhwiLXACP96VR8CAAdMAANleHB0ABRMc3BlYy9jdmxhc3QvQ1ZMRXhwO0wADGV4cGVjdGVkVHlwZXQAEExqYXZhL3V0aWwvTGlzdDtMAAlmdW5QYXJhbXNxAH4ADkwABXJhbmdldAANTHV0aWxzL1JhbmdlO0wABXNjb3BldAAWTHNwZWMvY3ZsYXN0L0NWTFNjb3BlO0wAEXN1bW1hcml6YXRpb25Nb2RldAAvTHNwZWMvY3ZsYXN0L1NwZWNDYWxsU3VtbWFyeSRTdW1tYXJpemF0aW9uTW9kZTtMAAp3aXRoQ2xhdXNldAAsTHNwZWMvY3ZsYXN0L1NwZWNDYWxsU3VtbWFyeSRFeHAkV2l0aENsYXVzZTt4cgAsc3BlYy5jdmxhc3QuU3BlY0NhbGxTdW1tYXJ5JEV4cHJlc3NpYmxlSW5DVkw5jBEFxNlONwIAAHhyABtzcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnmf4QieXcWlAQIAAHhwc3IAJ3NwZWMuY3ZsYXN0LkNWTEV4cCRBcHBseUV4cCRDVkxGdW5jdGlvbghf8sf20DA6AgAFWgAIbm9SZXZlcnRMAARhcmdzcQB+AA5MAAJpZHQAEkxqYXZhL2xhbmcvU3RyaW5nO0wAF21ldGhvZElkV2l0aENhbGxDb250ZXh0dAAdTHNwZWMvY3ZsYXN0L1NwZWNEZWNsYXJhdGlvbjtMAAN0YWd0ABdMc3BlYy9jdmxhc3QvQ1ZMRXhwVGFnO3hyABtzcGVjLmN2bGFzdC5DVkxFeHAkQXBwbHlFeHAF3JlNR+1SuwIAAHhyACFzcGVjLmN2bGFzdC5DVkxFeHAkQXBwbGljYXRpb25FeHAEe7zFegP5fQIAAHhyABJzcGVjLmN2bGFzdC5DVkxFeHAB+J/cNeGTiAIAAHhwAXNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHSHZnHYZ0DAAFJAARzaXpleHAAAAACdwQAAAACc3IAHnNwZWMuY3ZsYXN0LkNWTEV4cCRWYXJpYWJsZUV4cJ0ULkp52IKNAgAETAACaWRxAH4AF0wADG9yaWdpbmFsTmFtZXEAfgAXTAADdGFncQB+ABlMAA10d29TdGF0ZUluZGV4dAAbTHNwZWMvY3ZsYXN0L1R3b1N0YXRlSW5kZXg7eHEAfgAcdAABeHEAfgAjc3IAFXNwZWMuY3ZsYXN0LkNWTEV4cFRhZ9WLKphaC/tTAgAFWgAJaGFzUGFyZW5zTAAKYW5ub3RhdGlvbnQAIkxzcGVjL2N2bGFzdC9FeHByZXNzaW9uQW5ub3RhdGlvbjtMAAVyYW5nZXEAfgAPTAAFc2NvcGVxAH4AEEwABHR5cGV0ABVMc3BlYy9jdmxhc3QvQ1ZMVHlwZTt4cABwc3IAEXV0aWxzLlJhbmdlJFJhbmdlelevcoxEsQYCAANMAANlbmR0ABZMdXRpbHMvU291cmNlUG9zaXRpb247TAAIc3BlY0ZpbGVxAH4AF0wABXN0YXJ0cQB+ACl4cgALdXRpbHMuUmFuZ2XoA/TylWV/VwIAAHhwc3IAFHV0aWxzLlNvdXJjZVBvc2l0aW9ulfTn1OqZxI0CAAJJAA5jaGFyQnl0ZU9mZnNldEkABGxpbmV4cAAAAFUAAAADdAAJdGVzdC5zcGVjc3EAfgAsAAAAVAAAAANzcgAUc3BlYy5jdmxhc3QuQ1ZMU2NvcGUiyWBY1B1dVAIAA0wAFmhhc2hDb2RlQ2FjaGUkZGVsZWdhdGV0AA1Ma290bGluL0xhenk7TAAKaW5uZXJTY29wZXEAfgAQTAAKc2NvcGVTdGFja3EAfgAOeHBzcgAaa290bGluLkluaXRpYWxpemVkTGF6eUltcGx7x3/xICqBjQIAAUwABXZhbHVldAASTGphdmEvbGFuZy9PYmplY3Q7eHBzcgARamF2YS5sYW5nLkludGVnZXIS4qCk94GHOAIAAUkABXZhbHVleHIAEGphdmEubGFuZy5OdW1iZXKGrJUdC5TgiwIAAHhwzPGoX3NxAH4AMHNxAH4AM3NxAH4ANk5njWFzcQB+ADBzcQB+ADNzcQB+ADYAAAAfcHNyABxrb3RsaW4uY29sbGVjdGlvbnMuRW1wdHlMaXN0mW/H0KfgYDICAAB4cHNyACNqYXZhLnV0aWwuQ29sbGVjdGlvbnMkU2luZ2xldG9uTGlzdCrvKRA8p5uXAgABTAAHZWxlbWVudHEAfgA0eHBzcgAmc3BlYy5jdmxhc3QuQ1ZMU2NvcGUkSXRlbSRBc3RTY29wZUl0ZW2Hm6f3BtWhkwIAAHhyABlzcGVjLmN2bGFzdC5DVkxTY29wZSRJdGVtLwOv/543VkUCAAB4cHNxAH4AHgAAAAJ3BAAAAAJxAH4ARXNyACtzcGVjLmN2bGFzdC5DVkxTY29wZSRJdGVtJEV4cHJlc3Npb25TdW1tYXJ5DzManVpfqWgCAAFJAAdzY29wZUlkeHIAKXNwZWMuY3ZsYXN0LkNWTFNjb3BlJEl0ZW0kQVNURWxlbWVudFNjb3BlUquPEVHkIpYCAAFMAAdlbGVtZW50dAAaTHNwZWMvY3ZsYXN0L0NyZWF0ZXNTY29wZTt4cQB+AERzcQB+AAxzcgAlc3BlYy5jdmxhc3QuQ1ZMRXhwJFVucmVzb2x2ZWRBcHBseUV4cDU+F4IbuX3IAgAIWgAMaW52b2tlSXNTYWZlWgANaW52b2tlSXNXaG9sZUwABGFyZ3NxAH4ADkwABGJhc2VxAH4ADUwADWludm9rZVN0b3JhZ2V0ACBMc3BlYy9jdmxhc3QvQ1ZMRXhwJFZhcmlhYmxlRXhwO0wACG1ldGhvZElkcQB+ABdMAAN0YWdxAH4AGUwADXR3b1N0YXRlSW5kZXhxAH4AIXhxAH4AGwEAc3EAfgAeAAAAAncEAAAAAnNxAH4AIHEAfgAjcQB+ACNzcQB+ACQAcHEAfgArcQB+ADJwfnIAGXNwZWMuY3ZsYXN0LlR3b1N0YXRlSW5kZXgAAAAAAAAAABIAAHhyAA5qYXZhLmxhbmcuRW51bQAAAAAAAAAAEgAAeHB0AAdORUlUSEVSc3EAfgAgdAABc3EAfgBXc3EAfgAkAHBzcQB+AChzcQB+ACwAAABYAAAAA3EAfgAuc3EAfgAsAAAAVwAAAANxAH4AMnBxAH4AVHhwc3EAfgAgdAALbGFzdFN0b3JhZ2VxAH4AXXNxAH4AJABwc3IAEXV0aWxzLlJhbmdlJEVtcHR5xIMekl54ldcCAAFMAAdjb21tZW50cQB+ABd4cQB+ACp0ABJlbXB0eSBzdG9yYWdlIHR5cGVxAH4AMnBxAH4AVHQAEXdvcmtPblNDb21wbGV4Q1ZMc3EAfgAkAHBzcQB+AChzcQB+ACwAAABZAAAAA3EAfgAuc3EAfgAsAAAAQgAAAANxAH4AMnBxAH4AVHBzcQB+AB4AAAACdwQAAAACc3IAGXNwZWMuY3ZsYXN0LlZNUGFyYW0kTmFtZWQAXezwjrrQjQIABEwABG5hbWVxAH4AF0wADG9yaWdpbmFsTmFtZXEAfgAXTAAFcmFuZ2VxAH4AD0wABnZtVHlwZXQALkxzcGVjL2N2bGFzdC90eXBlZGVzY3JpcHRvcnMvVk1UeXBlRGVzY3JpcHRvcjt4cgATc3BlYy5jdmxhc3QuVk1QYXJhbaA5qID7MF6/AgAAeHBxAH4AI3EAfgAjc3EAfgAoc3EAfgAsAAAAHAAAAANxAH4ALnNxAH4ALAAAABYAAAADc3IAM3NwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRVSW50S6h6LEsweg4lAgABSQAIYml0d2lkdGh4cgBEc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJEVWTUlzb21vcnBoaWNWYWx1ZVR5cGWW45V3at3xfwIAAHhyADpzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkRVZNVmFsdWVUeXBlEOTS9aivN+ECAAB4cgAtc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yXlYd3MaOPugCAAB4cAAAAQBzcQB+AGhxAH4AV3EAfgBXc3EAfgAoc3EAfgAsAAAANAAAAANxAH4ALnNxAH4ALAAAAB4AAAADc3IAQXNwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRFVk1TdHJ1Y3REZXNjcmlwdG9ypg3XjxMA4UoCAARMAAtjYW5vbmljYWxJZHEAfgAXTAAGZmllbGRzcQB+AA5MAAhsb2NhdGlvbnQAMkxzcGVjL2N2bGFzdC90eXBlZGVzY3JpcHRvcnMvRVZNTG9jYXRpb25TcGVjaWZpZXI7TAAEbmFtZXEAfgAXeHEAfgBydAAlVGVzdENvbnRyYWN0LnNvbHxUZXN0Q29udHJhY3QuQ29tcGxleHNxAH4AHgAAAAN3BAAAAANzcgBQc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJEVWTVN0cnVjdERlc2NyaXB0b3IkRVZNU3RydWN0RW50cnkfXd8E+GvhmwIAAkwACWZpZWxkTmFtZXEAfgAXTAAJZmllbGRUeXBldAAvTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9FVk1UeXBlRGVzY3JpcHRvcjt4cHQAAnMxc3EAfgB4dAAkVGVzdENvbnRyYWN0LnNvbHxUZXN0Q29udHJhY3QuU2ltcGxlc3EAfgAeAAAAB3cEAAAAB3NxAH4AfXEAfgAjc3EAfgBvAAABAHNxAH4AfXQAAXlzcgA1c3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJGFkZHJlc3PEsTBR9nlqCAIAAHhxAH4AcHNxAH4AfXQAAnoxc3EAfgBvAAAACHNxAH4AfXQAAnoyc3EAfgBvAAAACHNxAH4AfXQAAmIxc3IAMnNwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRib29sBUKy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bFN1bW1hcnlCLSM8Y2HMggIAEUkACXN1bW1hcnlJZEwADmNhbGxDb252ZW50aW9udAAmTGluc3RydW1lbnRhdGlvbi9jYWxscy9DYWxsQ29udmVudGlvbjtMAApjYWxsVGFyZ2V0cQB+AAVMAAhjYWxsVHlwZXQAFUx2Yy9kYXRhL1RBQ0NhbGxUeXBlO0wAD2Nhbm5vdEJlSW5saW5lZHQALUxhbmFseXNpcy9pY2ZnL0lubGluZXIkSWxsZWdhbElubGluaW5nUmVhc29uO0wABmdhc1ZhcnQAE0x2Yy9kYXRhL1RBQ1N5bWJvbDtMAAZpbkJhc2V0ABdMdmMvZGF0YS9UQUNTeW1ib2wkVmFyO0wACGluT2Zmc2V0cQB+AgBMAAZpblNpemVxAH4CAEwADG9yaWdDYWxsY29yZXQAIEx2Yy9kYXRhL1RBQ0NtZCRTaW1wbGUkQ2FsbENvcmU7TAAHb3V0QmFzZXEAfgIBTAAJb3V0T2Zmc2V0cQB+AgBMAAdvdXRTaXplcQB+AgBMAA1zaWdSZXNvbHV0aW9ucQB+AAVMABVzeW1ib2xpY1NpZ1Jlc29sdXRpb250ADNMYW5hbHlzaXMvcHRhL2FiaS9EZWNvZGVyQW5hbHlzaXMkQnVmZmVyQWNjZXNzUGF0aDtMAAV0b1ZhcnEAfgIATAAIdmFsdWVWYXJxAH4CAHhwAAAAAHNyACRpbnN0cnVtZW50YXRpb24uY2FsbHMuQ2FsbENvbnZlbnRpb2591riWaBgUXgIAA0kACGNhbGxlcklkTAAFaW5wdXR0ABlMYW5hbHlzaXMvaWNmZy9DYWxsSW5wdXQ7TAAGcmF3T3V0dAAiTGluc3RydW1lbnRhdGlvbi9jYWxscy9DYWxsT3V0cHV0O3hwAAAAAHNyABdhbmFseXNpcy5pY2ZnLkNhbGxJbnB1dAPz2322YQJyAgAHTAAHYmFzZVZhcnQAGUx2Yy9kYXRhL1RBQ0V4cHIkU3ltJFZhcjtMABBlbmNvZGVkQXJndW1lbnRzdAAjTGFuYWx5c2lzL2ljZmcvQUJJQXJndW1lbnRFbmNvZGluZztMABNpbnB1dFNpemVMb3dlckJvdW5kcQB+AOZMAAZvZmZzZXR0ABVMdmMvZGF0YS9UQUNFeHByJFN5bTtMABRyYW5nZVRvRGVjb21wb3NlZEFyZ3QAD0xqYXZhL3V0aWwvTWFwO0wAEHNpbXBsaWZpZWRPZmZzZXR0ABtMdmMvZGF0YS9UQUNFeHByJFN5bSRDb25zdDtMAARzaXplcQB+Agx4cHNyABd2Yy5kYXRhLlRBQ0V4cHIkU3ltJFZhcn3uZ6Lnk1XTAgACTAABc3EAfgIBTAADdGFndAAJTHRhYy9UYWc7eHIAE3ZjLmRhdGEuVEFDRXhwciRTeW2iVj0S4YSNUAIAAHhyAA92Yy5kYXRhLlRBQ0V4cHIF2oBG6eLQeQIAAHhwc3IANnZjLmRhdGEuVEFDU3ltYm9sJFZhciRXaXRoRGVmYXVsdENhbGxJbmRleCRXaXRoQnl0ZU1hcJQkZfdbh3knAgACTAAEbWV0YXQAHkxjb20vY2VydG9yYS9jb2xsZWN0L1RyZWFwTWFwO0wACm5hbWVQcmVmaXhxAH4AF3hyABV2Yy5kYXRhLlRBQ1N5bWJvbCRWYXL8SGvUvjBGEQIAAHhyABF2Yy5kYXRhLlRBQ1N5bWJvbBKTItjnrHLUAgAAeHBzcgAgY29tLmNlcnRvcmEuY29sbGVjdC5IYXNoVHJlYXBNYXDOJ/t6rqVynAIAA0wAA2tleXEAfgA0TAAEbmV4dHQAK0xjb20vY2VydG9yYS9jb2xsZWN0L0tleVZhbHVlUGFpckxpc3QkTW9yZTtMAAV2YWx1ZXEAfgA0eHIAJGNvbS5jZXJ0b3JhLmNvbGxlY3QuQWJzdHJhY3RUcmVhcE1hcC1u3UdoTQYZAgAAeHIAGWNvbS5jZXJ0b3JhLmNvbGxlY3QuVHJlYXD/3sPjttw/IwIAAkwABGxlZnR0ABtMY29tL2NlcnRvcmEvY29sbGVjdC9UcmVhcDtMAAVyaWdodHEAfgIeeHBwc3EAfgIacHNxAH4CGnBwc3IAC3RhYy5NZXRhS2V5avYXikOyot0CAANMAA9lcmFzdXJlU3RyYXRlZ3l0AB1MdGFjL01ldGFLZXkkRXJhc3VyZVN0cmF0ZWd5O0wABG5hbWVxAH4AF0wAA3R5cHQAEUxqYXZhL2xhbmcvQ2xhc3M7eHB+cgAbdGFjLk1ldGFLZXkkRXJhc3VyZVN0cmF0ZWd5AAAAAAAAAAASAAB4cQB+AFN0AAlDYW5vbmljYWx0ABR0YWMubWVtb3J5LnBhcnRpdGlvbnZyACNhbmFseXNpcy5wdGEuYWJpLlVuaW5kZXhlZFBhcnRpdGlvbjDC1l5m1rSBAgABSQACaWR4cHBzcQB+AioAAAAAc3EAfgIicQB+Aid0ABJUYWMuc3ltYm9sLmtleXdvcmR2cgAidmMuZGF0YS5UQUNTeW1ib2wkVmFyJEtleXdvcmRFbnRyeU7jwOQ0dtx2AgAAeHBwc3IAMnZjLmRhdGEuVEFDU3ltYm9sJFZhciRLZXl3b3JkRW50cnkkVEFDS2V5d29yZEVudHJ5uJkWjywELK0CAAJJABZtYXliZVRBQ0tleXdvcmRPcmRpbmFsTAAEbmFtZXEAfgAXeHEAfgIvAAAAAXQABHRhY01zcQB+AiJxAH4CJ3QADXRhYy5pcy5tZW1vcnl2cgAidGFjLk1ldGFNYXAkQ29tcGFuaW9uJE5vdGhpbmdWYWx1Zb7nnRZfrFSQAgAAeHBwc3EAfgI2dAAPdGFjTUNBTk9OMCEhMTIyc3IAD3RhYy5UYWckQnl0ZU1hcDW/0cuhg0YJAgAAeHIAC3RhYy5UYWckTWFwAScrcw1dz/0CAAB4cgAHdGFjLlRhZ3ol4madQcX1AgAAeHBwc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAgR4c3EAfgIQc3IANXZjLmRhdGEuVEFDU3ltYm9sJFZhciRXaXRoRGVmYXVsdENhbGxJbmRleCRXaXRoQml0MjU2nq3gkxche2QCAAJMAARtZXRhcQB+AhZMAApuYW1lUHJlZml4cQB+ABd4cQB+AhdzcQB+AhpzcQB+AhpwcHEAfgItcHNxAH4CMQAAAC10AAFMcHNxAH4CInEAfgIndAAQdGFjLnN0YWNrLmhlaWdodHZxAH4ANnBzcQB+ADYAAAP5dAAEUjEyM3NyAA50YWMuVGFnJEJpdDI1Ngwk+60L/KKgAgAAeHIADHRhYy5UYWckQml0c42WGHdpIwuYAgAGSQAIYml0d2lkdGhMAAltYXhTaWduZWRxAH4A5kwAC21heFVuc2lnbmVkcQB+AOZMAAttaW5TaWduZWQyc3EAfgDmTAANbWluU2lnbmVkTWF0aHEAfgDmTAAHbW9kdWx1c3EAfgDmeHEAfgI8AAABAHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIH//////////////////////////////////////////eHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIP//////////////////////////////////////////eHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeHNxAH4A6f///////////////v////7/////dXEAfgDsAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHhzcgAhZGF0YXN0cnVjdHVyZXMuTGlua2VkQXJyYXlIYXNoTWFwAAAAAAAAAAEDAAJGAApsb2FkRmFjdG9yTAAJaGFzaFRhYmxldAAuTGRhdGFzdHJ1Y3R1cmVzL2FycmF5aGFzaHRhYmxlL0FycmF5SGFzaFRhYmxlO3hwdwgAAAARQAAAAHNyAB5hbmFseXNpcy5pY2ZnLlNjcmF0Y2hCeXRlUmFuZ2VwFUg3dcKmRAIAAkwABGZyb21xAH4A5kwAAnRvcQB+AOZ4cHEAfgDrcQB+ASxzcgAtYW5hbHlzaXMuaWNmZy5EZWNvbXBvc2VkQ2FsbElucHV0QXJnJENvbnN0YW50X18M2Mnf2NUCAANMAAFjdAAZTHZjL2RhdGEvVEFDU3ltYm9sJENvbnN0O0wAEWNvbnRyYWN0UmVmZXJlbmNldAAvTGFuYWx5c2lzL2ljZmcvQ2FsbEdyYXBoQnVpbGRlciRDYWxsZWRDb250cmFjdDtMAAxzY3JhdGNoUmFuZ2V0ACBMYW5hbHlzaXMvaWNmZy9TY3JhdGNoQnl0ZVJhbmdlO3hyACRhbmFseXNpcy5pY2ZnLkRlY29tcG9zZWRDYWxsSW5wdXRBcmeBcxMNVEvJYQIAAHhwc3IAF3ZjLmRhdGEuVEFDU3ltYm9sJENvbnN0xvRJmiqWfKECAAJMAAN0YWdxAH4CEUwABXZhbHVlcQB+AOZ4cQB+AhhxAH4CTnNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAIIcL85MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeHBxAH4CXXNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAQR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABI3hzcgAtYW5hbHlzaXMuaWNmZy5EZWNvbXBvc2VkQ2FsbElucHV0QXJnJFZhcmlhYmxlSJPDmQhdtk4CAANMABFjb250cmFjdFJlZmVyZW5jZXEAfgJgTAAMc2NyYXRjaFJhbmdlcQB+AmFMAAF2cQB+AgF4cQB+AmJzcgA7YW5hbHlzaXMuaWNmZy5DYWxsR3JhcGhCdWlsZGVyJENhbGxlZENvbnRyYWN0JFN5bWJvbGljSW5wdXTciiQIgh9yhQIAAkwACGlucHV0QXJncQB+AgFMAAZvZmZzZXRxAH4A5nhyAC1hbmFseXNpcy5pY2ZnLkNhbGxHcmFwaEJ1aWxkZXIkQ2FsbGVkQ29udHJhY3TTC3Ws38uh1wIAAHhwc3EAfgJBc3EAfgIac3EAfgIac3EAfgIacHBzcQB+AiJxAH4CJ3QAE3RhYy5pbW11dGFibGUuYXJyYXl2cgAWdmMuZGF0YS5JbW11dGFibGVCb3VuZOgccsQnXcifAgABTAADc3ltcQB+AgB4cHBzcQB+AnhzcQB+AkFzcQB+AhpwcHEAfgItcHNxAH4CMQAAAAx0AA90YWNDYWxsZGF0YXNpemVxAH4CfnNxAH4CGnNxAH4CGnBwc3EAfgIicQB+Aid0AA90YWMud29yZG1hcC1rZXl2cQB+AOlwcQB+Amlwc3EAfgIicQB+Aid0ABZ0YWMuc2NhbGFyaXphdGlvbi5zb3J0dnIAGXZjLmRhdGEuU2NhbGFyaXphdGlvblNvcnRWYnUNuJ4VyQIAAHhwcHNyAB92Yy5kYXRhLlNjYWxhcml6YXRpb25Tb3J0JFNwbGl0p31IzV7GnfUCAAFMAANpZHhxAH4A5nhxAH4ChnEAfgJpcQB+Ai1wc3EAfgIxAAAAD3QADnRhY0NhbGxkYXRhYnVmc3EAfgIacHNxAH4CGnBwc3EAfgIicQB+Aid0AA90YWMuaXMuY2FsbGRhdGFxAH4CN3BxAH4COHNxAH4CInEAfgIndAATdGFjLmNhbGxkYXRhLm9mZnNldHEAfgKDcHEAfgJpc3EAfgIicQB+Aid0ABV0YWMuc3RvcmFnZS5iaXQtd2lkdGhxAH4CSXBzcQB+ADYAAAEAdAAQdGFjQ2FsbGRhdGFidWYhNHEAfgJpcQB+AmhzcQB+AkFzcQB+AhpwcHNxAH4CInEAfgIndAAYdGFjLmRlY29tcC1pbnNjYWxhci5zb3J0dnIAHXRhYy5EZWNvbXBvc2VkSW5wdXRTY2FsYXJTb3J0JgH7OPoenk8CAAB4cHBzcgAkdGFjLkRlY29tcG9zZWRJbnB1dFNjYWxhclNvcnQkU2ltcGxlpXUzkThggPgCAAFMAApieXRlT2Zmc2V0cQB+AOZ4cQB+AppxAH4CaXQAA1I1NnNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAASR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABQ3hzcQB+Am1zcgA8YW5hbHlzaXMuaWNmZy5DYWxsR3JhcGhCdWlsZGVyJENhbGxlZENvbnRyYWN0JFVucmVzb2x2ZWRSZWFktaff5yABrV8CAAFJAA1zdG9yYWdlUmVhZElkeHEAfgJwAAAAAHEAfgKfc3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4CoHBxAH4CR3BzcQB+ADYAAAPrdAADUjU5c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABRHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAFjeHNxAH4CbXNxAH4CpQAAAAFxAH4CrnNxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+Aq9wcQB+AkdwcQB+Aqx0AANSNjNzcQB+AlxzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAFkeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAYN4c3EAfgJtcHEAfgK7c3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4CvHBxAH4CR3BxAH4CrHQAA1I2NHNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAYR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABo3hzcQB+Am1wcQB+AsdzcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgLIcHEAfgJHcHEAfgKsdAADUjY1c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAABpHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAHDeHNxAH4CbXBxAH4C03NxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+AtRwcQB+Akdwc3EAfgA2AAAD5HQAA1I3NHNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAcR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAAB43hzcQB+Am1zcQB+AqUAAAACcQB+AuBzcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgLhcHEAfgJHcHEAfgKsdAADUjc4c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAAB5HhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBA3hzcQB+Am1wcQB+Au1zcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgLucHEAfgJHcHEAfgLedAADUjg0c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAQR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACASN4c3EAfgJtc3EAfgKlAAAAA3EAfgL5c3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4C+nBxAH4CR3BxAH4CrHQAA1I4OXNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgEkeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgFDeHNxAH4CbXNxAH4CpQAAAARxAH4DBnNxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+AwdwcQB+AkdwcQB+Aqx0AANSOTNzcQB+AlxzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBRHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBY3hzcQB+Am1wcQB+AxNzcQB+AkFzcQB+AhpzcQB+Ahpwc3EAfgIacHBxAH4CLXBxAH4CRXEAfgKYcHNxAH4CnHEAfgMUcHEAfgJHcHEAfgKsdAADUjk0c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAWR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAYN4c3EAfgJtcHEAfgMfc3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4DIHBxAH4CR3BxAH4CrHQAA1I5NXNxAH4CXHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgGEeHNxAH4A6f///////////////v////4AAAABdXEAfgDsAAAAAgGjeHNxAH4CbXBxAH4DK3NxAH4CQXNxAH4CGnNxAH4CGnBzcQB+AhpwcHEAfgItcHEAfgJFcQB+Aphwc3EAfgKccQB+AyxwcQB+AkdwcQB+At50AARSMTA0c3EAfgJcc3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAaR4c3EAfgDp///////////////+/////gAAAAF1cQB+AOwAAAACAcN4c3EAfgJtc3EAfgKlAAAABXEAfgM3c3EAfgJBc3EAfgIac3EAfgIacHNxAH4CGnBwcQB+Ai1wcQB+AkVxAH4CmHBzcQB+ApxxAH4DOHBxAH4CR3BxAH4CrHQABFIxMDhzcQB+AlxzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIBxHhzcQB+AOn///////////////7////+AAAAAXVxAH4A7AAAAAIB43hzcQB+Am1wcQB+A0Rz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"}
+		AssignExpCmd calledContract:13 R28:117
+		AssignExpCmd executingContract:109 R28:117
+		AssignExpCmd CANON2!!128:8 R28:117
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLFunctionStart","callIndex":3,"name":"workOnSComplexCVL","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":3,"charByteOffset":66},"end":{"line":3,"charByteOffset":89}},"isNoRevert":true}}
-		LabelCmd "4: Move primitive value for variable x15191520:int..."
-		LabelCmd "...done 4"
-		AssignExpCmd CANON78:84 tacCalldatabufCANON0@1:186
+		LabelCmd "5: Move primitive value for variable x15231524:int..."
+		LabelCmd "...done 5"
+		AssignExpCmd CANON78:90 tacCalldatabufCANON0@1:192
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.PrimitiveArg","callIndex":3,"index":0,"sym":{"namePrefix":"CANON78","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":27},"end":{"line":7,"charByteOffset":33}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"x"}]},"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"id":"x","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":27},"end":{"line":7,"charByteOffset":33}}}}}
-		LabelCmd "130: Write struct..."
-		LabelCmd "68: Write field s1 for variable s15281529:TestContract.Complex..."
-		LabelCmd "64: Write struct..."
-		LabelCmd "13: Write field x for variable tacTmp!fields11786:TestContract.Simple..."
-		LabelCmd "9: Move primitive value for variable tacTmp!fieldx1801:int..."
-		LabelCmd "...done 9"
-		LabelCmd "...done 13"
-		LabelCmd "19: Write field y for variable tacTmp!fields11786:TestContract.Simple..."
-		LabelCmd "17: Move primitive value for variable tacTmp!fieldy1826:int..."
-		LabelCmd "...done 17"
+		LabelCmd "139: Write struct..."
+		LabelCmd "68: Write field s1 for variable s15271530:TestContract.Complex..."
+		LabelCmd "65: Write struct..."
+		LabelCmd "14: Write field x for variable tacTmp!fields11788:TestContract.Simple..."
+		LabelCmd "10: Move primitive value for variable tacTmp!fieldx1815:int..."
+		LabelCmd "...done 10"
+		LabelCmd "...done 14"
+		LabelCmd "22: Write field y for variable tacTmp!fields11788:TestContract.Simple..."
+		LabelCmd "19: Move primitive value for variable tacTmp!fieldy1826:int..."
 		LabelCmd "...done 19"
-		LabelCmd "26: Write field z1 for variable tacTmp!fields11786:TestContract.Simple..."
-		LabelCmd "23: Move primitive value for variable tacTmp!fieldz11845:int..."
-		LabelCmd "...done 23"
-		LabelCmd "...done 26"
-		LabelCmd "31: Write field z2 for variable tacTmp!fields11786:TestContract.Simple..."
-		LabelCmd "28: Move primitive value for variable tacTmp!fieldz21861:int..."
-		LabelCmd "...done 28"
-		LabelCmd "...done 31"
-		LabelCmd "45: Write field b1 for variable tacTmp!fields11786:TestContract.Simple..."
-		LabelCmd "41: Move primitive value for variable tacTmp!fieldb11875:bool..."
-		LabelCmd "...done 41"
-		LabelCmd "...done 45"
-		LabelCmd "51: Write field x2 for variable tacTmp!fields11786:TestContract.Simple..."
-		LabelCmd "48: Move primitive value for variable tacTmp!fieldx21927:int..."
-		LabelCmd "...done 48"
+		LabelCmd "...done 22"
+		LabelCmd "35: Write field z1 for variable tacTmp!fields11788:TestContract.Simple..."
+		LabelCmd "29: Move primitive value for variable tacTmp!fieldz11856:int..."
+		LabelCmd "...done 29"
+		LabelCmd "...done 35"
+		LabelCmd "37: Write field z2 for variable tacTmp!fields11788:TestContract.Simple..."
+		LabelCmd "36: Move primitive value for variable tacTmp!fieldz21883:int..."
+		LabelCmd "...done 36"
+		LabelCmd "...done 37"
+		LabelCmd "44: Write field b1 for variable tacTmp!fields11788:TestContract.Simple..."
+		LabelCmd "42: Move primitive value for variable tacTmp!fieldb11895:bool..."
+		LabelCmd "...done 42"
+		LabelCmd "...done 44"
+		LabelCmd "49: Write field x2 for variable tacTmp!fields11788:TestContract.Simple..."
+		LabelCmd "46: Move primitive value for variable tacTmp!fieldx21922:int..."
+		LabelCmd "...done 46"
+		LabelCmd "...done 49"
+		LabelCmd "55: Write field b2 for variable tacTmp!fields11788:TestContract.Simple..."
+		LabelCmd "51: Move primitive value for variable tacTmp!fieldb21936:bool..."
 		LabelCmd "...done 51"
-		LabelCmd "55: Write field b2 for variable tacTmp!fields11786:TestContract.Simple..."
-		LabelCmd "53: Move primitive value for variable tacTmp!fieldb21936:bool..."
-		LabelCmd "...done 53"
 		LabelCmd "...done 55"
-		LabelCmd "...done 64"
+		LabelCmd "...done 65"
 		LabelCmd "...done 68"
-		LabelCmd "117: Write field s2 for variable s15281529:TestContract.Complex..."
-		LabelCmd "112: Write struct..."
-		LabelCmd "73: Write field x for variable tacTmp!fields21981:TestContract.Simple..."
-		LabelCmd "71: Move primitive value for variable tacTmp!fieldx1986:int..."
-		LabelCmd "...done 71"
+		LabelCmd "131: Write field s2 for variable s15271530:TestContract.Complex..."
+		LabelCmd "125: Write struct..."
+		LabelCmd "75: Write field x for variable tacTmp!fields21977:TestContract.Simple..."
+		LabelCmd "73: Move primitive value for variable tacTmp!fieldx1988:int..."
 		LabelCmd "...done 73"
-		LabelCmd "78: Write field y for variable tacTmp!fields21981:TestContract.Simple..."
-		LabelCmd "75: Move primitive value for variable tacTmp!fieldy2011:int..."
 		LabelCmd "...done 75"
-		LabelCmd "...done 78"
-		LabelCmd "83: Write field z1 for variable tacTmp!fields21981:TestContract.Simple..."
-		LabelCmd "81: Move primitive value for variable tacTmp!fieldz12026:int..."
+		LabelCmd "81: Write field y for variable tacTmp!fields21977:TestContract.Simple..."
+		LabelCmd "79: Move primitive value for variable tacTmp!fieldy1997:int..."
+		LabelCmd "...done 79"
 		LabelCmd "...done 81"
-		LabelCmd "...done 83"
-		LabelCmd "87: Write field z2 for variable tacTmp!fields21981:TestContract.Simple..."
-		LabelCmd "85: Move primitive value for variable tacTmp!fieldz22036:int..."
+		LabelCmd "88: Write field z1 for variable tacTmp!fields21977:TestContract.Simple..."
+		LabelCmd "85: Move primitive value for variable tacTmp!fieldz12032:int..."
 		LabelCmd "...done 85"
-		LabelCmd "...done 87"
-		LabelCmd "91: Write field b1 for variable tacTmp!fields21981:TestContract.Simple..."
-		LabelCmd "90: Move primitive value for variable tacTmp!fieldb12046:bool..."
-		LabelCmd "...done 90"
-		LabelCmd "...done 91"
-		LabelCmd "96: Write field x2 for variable tacTmp!fields21981:TestContract.Simple..."
-		LabelCmd "93: Move primitive value for variable tacTmp!fieldx22064:int..."
-		LabelCmd "...done 93"
-		LabelCmd "...done 96"
-		LabelCmd "101: Write field b2 for variable tacTmp!fields21981:TestContract.Simple..."
-		LabelCmd "99: Move primitive value for variable tacTmp!fieldb22074:bool..."
-		LabelCmd "...done 99"
-		LabelCmd "...done 101"
+		LabelCmd "...done 88"
+		LabelCmd "97: Write field z2 for variable tacTmp!fields21977:TestContract.Simple..."
+		LabelCmd "94: Move primitive value for variable tacTmp!fieldz22057:int..."
+		LabelCmd "...done 94"
+		LabelCmd "...done 97"
+		LabelCmd "109: Write field b1 for variable tacTmp!fields21977:TestContract.Simple..."
+		LabelCmd "104: Move primitive value for variable tacTmp!fieldb12076:bool..."
+		LabelCmd "...done 104"
+		LabelCmd "...done 109"
+		LabelCmd "112: Write field x2 for variable tacTmp!fields21977:TestContract.Simple..."
+		LabelCmd "111: Move primitive value for variable tacTmp!fieldx22108:int..."
+		LabelCmd "...done 111"
 		LabelCmd "...done 112"
+		LabelCmd "120: Write field b2 for variable tacTmp!fields21977:TestContract.Simple..."
+		LabelCmd "117: Move primitive value for variable tacTmp!fieldb22132:bool..."
 		LabelCmd "...done 117"
-		LabelCmd "123: Write field b3 for variable s15281529:TestContract.Complex..."
-		LabelCmd "120: Move primitive value for variable tacTmp!fieldb32140:bool..."
 		LabelCmd "...done 120"
-		LabelCmd "...done 123"
-		LabelCmd "...done 130"
-		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"s1518"},"src":{"id":"s15281529"}}}
-		AssignExpCmd CANON89:85 R59:41
-		AssignExpCmd CANON90:86 R63:41
-		AssignExpCmd CANON91:87 R64:41
-		AssignExpCmd CANON92:88 R65:41
-		AssignExpCmd CANON93:89 LNot(Eq(R74:33 0x0 ) )
-		AssignExpCmd CANON94:90 R78:41
-		AssignExpCmd CANON95:91 LNot(Eq(R84:33 0x0 ) )
-		AssignExpCmd CANON96:92 R89:41
-		AssignExpCmd CANON97:93 R93:41
-		AssignExpCmd CANON98:94 R94:41
-		AssignExpCmd CANON99:95 R95:41
-		AssignExpCmd CANON100:14 LNot(Eq(R104:33 0x0 ) )
-		AssignExpCmd CANON101:15 R108:41
-		AssignExpCmd CANON102:16 LNot(Eq(R114:33 0x0 ) )
-		AssignExpCmd CANON103:17 LNot(Eq(R120:54 0x0 ) )
+		LabelCmd "...done 125"
+		LabelCmd "...done 131"
+		LabelCmd "137: Write field b3 for variable s15271530:TestContract.Complex..."
+		LabelCmd "135: Move primitive value for variable tacTmp!fieldb32169:bool..."
+		LabelCmd "...done 135"
+		LabelCmd "...done 137"
+		LabelCmd "...done 139"
+		AnnotationCmd JSON{"key":{"name":"cvl.trace.data.movement","type":"spec.CVLCompiler$Companion$TraceMeta$CVLMovement","erasureStrategy":"Erased"},"value":{"dst":{"id":"s1522"},"src":{"id":"s15271530"}}}
+		AssignExpCmd CANON89:91 R59:47
+		AssignExpCmd CANON90:92 R63:47
+		AssignExpCmd CANON91:93 R64:47
+		AssignExpCmd CANON92:94 R65:47
+		AssignExpCmd CANON93:95 LNot(Eq(R74:38 0x0 ) )
+		AssignExpCmd CANON94:96 R78:47
+		AssignExpCmd CANON95:97 LNot(Eq(R84:38 0x0 ) )
+		AssignExpCmd CANON96:98 R89:47
+		AssignExpCmd CANON97:99 R93:47
+		AssignExpCmd CANON98:100 R94:47
+		AssignExpCmd CANON99:101 R95:47
+		AssignExpCmd CANON100:14 LNot(Eq(R104:38 0x0 ) )
+		AssignExpCmd CANON101:15 R108:47
+		AssignExpCmd CANON102:16 LNot(Eq(R114:38 0x0 ) )
+		AssignExpCmd CANON103:17 LNot(Eq(R120:60 0x0 ) )
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLArg.StructArg","callIndex":3,"index":1,"symbols":[{"namePrefix":"CANON89","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s1.x"}]},{"namePrefix":"CANON90","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s1.y"}]},{"namePrefix":"CANON91","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s1.z1"}]},{"namePrefix":"CANON92","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s1.z2"}]},{"namePrefix":"CANON93","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s1.b1"}]},{"namePrefix":"CANON94","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s1.x2"}]},{"namePrefix":"CANON95","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s1.b2"}]},{"namePrefix":"CANON96","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s2.x"}]},{"namePrefix":"CANON97","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s2.y"}]},{"namePrefix":"CANON98","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s2.z1"}]},{"namePrefix":"CANON99","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s2.z2"}]},{"namePrefix":"CANON100","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s2.b1"}]},{"namePrefix":"CANON101","tag":{"#class":"tac.Tag.Int"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s2.x2"}]},{"namePrefix":"CANON102","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.s2.b2"}]},{"namePrefix":"CANON103","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.struct.path","type":"spec.cvlast.CVLStructPathNode","erasureStrategy":"CallTrace"},"value":{"rootStructType":{"name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"fields":[{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Function","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"s.b3"}]}],"param":{"Named_type":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Complex","fields":[{"fieldName":"s1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"s2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Struct","name":"TestContract.Simple","fields":[{"fieldName":"x","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"y","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"}},{"fieldName":"z1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"z2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":8}},{"fieldName":"b1","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}},{"fieldName":"x2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256}},{"fieldName":"b2","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]}},{"fieldName":"b3","cvlType":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"id":"s","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":7,"charByteOffset":35},"end":{"line":7,"charByteOffset":57}}}}}
-		AnnotationCmd:187 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Havoc","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":4},"end":{"line":8,"charByteOffset":34}},"targets":[{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":22}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":25},"end":{"line":8,"charByteOffset":26}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":27}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"s1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":30}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":33}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}}],"assumingExp":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:188 I139 0x0
-		AssertCmd:189 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
-		AssignExpCmd:190 R140:18 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
-		AssignExpCmd:190 R141:18 Apply(skey_add:bif R140:18 0x1)
-		AssignHavocCmd:190 B142:18
-		AssignExpCmd:190 R143:18 Ite(B142:18 0x1 0x0 )
-		AssignExpCmd:191 CANON53!!144:5 AnnotationExp(Store(CANON53!!14:5 R141:192 R143:18 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"36"}}]}})
-		AnnotationCmd:190 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageHavoc","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R143","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":33}}}}
-		AssignExpCmd:193 B145 true
-		AnnotationCmd:190 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":21}
-		AnnotationCmd:194 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.AssumeCmd.Assume","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":4},"end":{"line":9,"charByteOffset":47}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.EqExp","l":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":26}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":27},"end":{"line":9,"charByteOffset":28}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":29}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"s1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":32}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":35}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"r":{"#class":"spec.cvlast.CVLExp.RelopExp.ArithRelopExp.GtExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":40},"end":{"line":9,"charByteOffset":41}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"3"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":44},"end":{"line":9,"charByteOffset":45}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":40},"end":{"line":9,"charByteOffset":45}},"hasParens":true}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":46}}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:195 I146 0x0
-		AssertCmd:196 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
-		AssignExpCmd:197 R147:18 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
-		AssignExpCmd:197 R148:18 Apply(skey_add:bif R147:18 0x1)
-		AssignExpCmd:198 R149:18 AnnotationExp(Select(CANON53!!144:199 R148:200 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"36"}}]}})
-		AssumeExpCmd Eq(R149:18 0x0 )
-		AssignExpCmd:197 B150 false
-		AnnotationCmd:197 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"B150","tag":{"#class":"tac.Tag.Bool"},"callIndex":0},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":35}}}}
-		AssignExpCmd:201 I151 CANON78:84
-		AssignExpCmd:202 I152 0x3
-		AssignExpCmd:203 B153 false
-		AssignExpCmd:204 CANON118:21 true
-		AnnotationCmd:197 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":22}
-		AnnotationCmd:205 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Havoc","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":4},"end":{"line":10,"charByteOffset":31}},"targets":[{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":22}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":25},"end":{"line":10,"charByteOffset":26}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":27}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":30}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}}],"assumingExp":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:206 I154 0x0
-		AssertCmd:207 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
-		AssignExpCmd:208 R155:18 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
-		AssignExpCmd:208 R156:18 Apply(skey_add:bif R155:18 0x8)
-		AssignHavocCmd:208 B157:18
-		AssignExpCmd:208 R158:18 Ite(B157:18 0x1 0x0 )
-		AssignExpCmd:209 CANON76!!159:53 AnnotationExp(Store(CANON76!!24:53 R156:210 R158:18 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
-		AnnotationCmd:208 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageHavoc","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R158","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":30}}}}
-		AssignExpCmd:211 B160 true
-		AnnotationCmd:208 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":23}
-		AnnotationCmd:212 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.AssumeCmd.Assume","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":4},"end":{"line":11,"charByteOffset":44}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.EqExp","l":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":26}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":27},"end":{"line":11,"charByteOffset":28}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":29}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":32}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"r":{"#class":"spec.cvlast.CVLExp.RelopExp.ArithRelopExp.GtExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":37},"end":{"line":11,"charByteOffset":38}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"5","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"5"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":41},"end":{"line":11,"charByteOffset":42}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":37},"end":{"line":11,"charByteOffset":42}},"hasParens":true}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":43}}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:213 I161 0x0
-		AssertCmd:214 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
-		AssignExpCmd:215 R162:18 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
-		AssignExpCmd:215 R163:18 Apply(skey_add:bif R162:18 0x8)
-		AssignExpCmd:216 R164:18 AnnotationExp(Select(CANON76!!159:217 R163:218 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
-		AssumeExpCmd Eq(R164:18 0x0 )
-		AssignExpCmd:215 B165 false
-		AnnotationCmd:215 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"B165","tag":{"#class":"tac.Tag.Bool"},"callIndex":0},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":32}}}}
-		AssignExpCmd:219 I166 CANON78:84
-		AssignExpCmd:220 I167 0x5
-		AssignExpCmd:221 B168 false
-		AssignExpCmd:222 CANON133:21 true
-		AnnotationCmd:215 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":24}
+		AnnotationCmd:193 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Havoc","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":4},"end":{"line":8,"charByteOffset":34}},"targets":[{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":22}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":25},"end":{"line":8,"charByteOffset":26}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":27}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"s1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":30}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":33}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}}],"assumingExp":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:194 I139:18 0x0
+		AssertCmd:195 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
+		AssignExpCmd:196 R140:19 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
+		AssignExpCmd:196 R141:19 Apply(skey_add:bif R140:19 0x1)
+		AssignHavocCmd:196 B142:19
+		AssignExpCmd:196 R143:19 Ite(B142:19 0x1 0x0 )
+		AssignExpCmd:197 CANON53!!144:5 AnnotationExp(Store(CANON53!!14:5 R141:198 R143:19 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"36"}}]}})
+		AnnotationCmd:196 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageHavoc","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R143","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":8,"charByteOffset":10},"end":{"line":8,"charByteOffset":33}}}}
+		AssignExpCmd:199 B145:21 true
+		AnnotationCmd:196 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":21}
+		AnnotationCmd:200 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.AssumeCmd.Assume","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":4},"end":{"line":9,"charByteOffset":47}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.EqExp","l":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":26}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":27},"end":{"line":9,"charByteOffset":28}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":29}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"s1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":32}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b1","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":35}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"r":{"#class":"spec.cvlast.CVLExp.RelopExp.ArithRelopExp.GtExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":40},"end":{"line":9,"charByteOffset":41}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"3"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":44},"end":{"line":9,"charByteOffset":45}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":40},"end":{"line":9,"charByteOffset":45}},"hasParens":true}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":46}}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:201 I146:18 0x0
+		AssertCmd:202 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
+		AssignExpCmd:203 R147:19 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
+		AssignExpCmd:203 R148:19 Apply(skey_add:bif R147:19 0x1)
+		AssignExpCmd:204 R149:19 AnnotationExp(Select(CANON53!!144:205 R148:206 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"36"}}]}})
+		AssumeExpCmd Eq(R149:19 0x0 )
+		AssignExpCmd:203 B150:21 false
+		AnnotationCmd:203 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"B150","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b1","base":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"s1","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":9,"charByteOffset":12},"end":{"line":9,"charByteOffset":35}}}}
+		AssignExpCmd:207 I151:23 CANON78:90
+		AssignExpCmd:208 I152:24 0x3
+		AssignExpCmd:209 B153:21 false
+		AssignExpCmd:210 CANON118:25 true
+		AnnotationCmd:203 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":22}
+		AnnotationCmd:211 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Havoc","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":4},"end":{"line":10,"charByteOffset":31}},"targets":[{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":22}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":25},"end":{"line":10,"charByteOffset":26}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":27}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":30}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}}],"assumingExp":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:212 I154:18 0x0
+		AssertCmd:213 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
+		AssignExpCmd:214 R155:19 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
+		AssignExpCmd:214 R156:19 Apply(skey_add:bif R155:19 0x8)
+		AssignHavocCmd:214 B157:19
+		AssignExpCmd:214 R158:19 Ite(B157:19 0x1 0x0 )
+		AssignExpCmd:215 CANON76!!159:59 AnnotationExp(Store(CANON76!!24:59 R156:216 R158:19 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
+		AnnotationCmd:214 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageHavoc","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"R158","tag":{"#class":"tac.Tag.Bit256"},"callIndex":0,"meta":[{"key":{"name":"tac.is-temp-var","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":10,"charByteOffset":10},"end":{"line":10,"charByteOffset":30}}}}
+		AssignExpCmd:217 B160:21 true
+		AnnotationCmd:214 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":23}
+		AnnotationCmd:218 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.AssumeCmd.Assume","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":4},"end":{"line":11,"charByteOffset":44}},"exp":{"#class":"spec.cvlast.CVLExp.RelopExp.EqExp","l":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":24}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":26}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":27},"end":{"line":11,"charByteOffset":28}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":29}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":32}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"r":{"#class":"spec.cvlast.CVLExp.RelopExp.ArithRelopExp.GtExp","l":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"x","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.UIntK","k":256},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":37},"end":{"line":11,"charByteOffset":38}}},"twoStateIndex":"NEITHER"},"r":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"5","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"5"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":41},"end":{"line":11,"charByteOffset":42}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":37},"end":{"line":11,"charByteOffset":42}},"hasParens":true}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":43}}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.CVLFunctionScopeItem","scopeId":9}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:219 I161:18 0x0
+		AssertCmd:220 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
+		AssignExpCmd:221 R162:19 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
+		AssignExpCmd:221 R163:19 Apply(skey_add:bif R162:19 0x8)
+		AssignExpCmd:222 R164:19 AnnotationExp(Select(CANON76!!159:223 R163:224 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
+		AssumeExpCmd Eq(R164:19 0x0 )
+		AssignExpCmd:221 B165:21 false
+		AnnotationCmd:221 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"B165","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":11,"charByteOffset":12},"end":{"line":11,"charByteOffset":32}}}}
+		AssignExpCmd:225 I166:23 CANON78:90
+		AssignExpCmd:226 I167:28 0x5
+		AssignExpCmd:227 B168:21 false
+		AssignExpCmd:228 CANON133:25 true
+		AnnotationCmd:221 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":24}
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.CVLSnippetCmd.CVLFunctionEnd","callIndex":3,"name":"workOnSComplexCVL"}}
 		AnnotationCmd JSON{"key":{"name":"revert.confluence","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
 		LabelCmd "join point of revert handling"
-		AnnotationCmd JSON{"key":{"name":"call.trace.external.summary.end","type":"analysis.icfg.SummaryStack$SummaryEnd$External","erasureStrategy":"CallTrace"},"value":"rO0ABXNyAC5hbmFseXNpcy5pY2ZnLlN1bW1hcnlTdGFjayRTdW1tYXJ5RW5kJEV4dGVybmFsH6pYA2Le9wICAAJJAAlzdW1tYXJ5SWRMAA5hcHBsaWVkU3VtbWFyeXQALExhbmFseXNpcy9pY2ZnL1N1bW1hcml6YXRpb24kQXBwbGllZFN1bW1hcnk7eHIAJWFuYWx5c2lzLmljZmcuU3VtbWFyeVN0YWNrJFN1bW1hcnlFbmQVlCYDx9Zr6QIAAHhwAAAABHNyADdhbmFseXNpcy5pY2ZnLlN1bW1hcml6YXRpb24kQXBwbGllZFN1bW1hcnkkTWV0aG9kc0Jsb2NrxBlpQb2eQrwCAAJMAAxzcGVjQ2FsbFN1bW10AC5Mc3BlYy9jdmxhc3QvU3BlY0NhbGxTdW1tYXJ5JEV4cHJlc3NpYmxlSW5DVkw7TAAQc3VtbWFyaXplZE1ldGhvZHQAG0xzcGVjL0NWTCRTdW1tYXJ5U2lnbmF0dXJlO3hwc3IAH3NwZWMuY3ZsYXN0LlNwZWNDYWxsU3VtbWFyeSRFeHCItcAI/3pVHwIAB0wAA2V4cHQAFExzcGVjL2N2bGFzdC9DVkxFeHA7TAAMZXhwZWN0ZWRUeXBldAAQTGphdmEvdXRpbC9MaXN0O0wACWZ1blBhcmFtc3EAfgAKTAAFcmFuZ2V0AA1MdXRpbHMvUmFuZ2U7TAAFc2NvcGV0ABZMc3BlYy9jdmxhc3QvQ1ZMU2NvcGU7TAARc3VtbWFyaXphdGlvbk1vZGV0AC9Mc3BlYy9jdmxhc3QvU3BlY0NhbGxTdW1tYXJ5JFN1bW1hcml6YXRpb25Nb2RlO0wACndpdGhDbGF1c2V0ACxMc3BlYy9jdmxhc3QvU3BlY0NhbGxTdW1tYXJ5JEV4cCRXaXRoQ2xhdXNlO3hyACxzcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnkkRXhwcmVzc2libGVJbkNWTDmMEQXE2U43AgAAeHIAG3NwZWMuY3ZsYXN0LlNwZWNDYWxsU3VtbWFyeZ/hCJ5dxaUBAgAAeHBzcgAnc3BlYy5jdmxhc3QuQ1ZMRXhwJEFwcGx5RXhwJENWTEZ1bmN0aW9uCF/yx/bQMDoCAAVaAAhub1JldmVydEwABGFyZ3NxAH4ACkwAAmlkdAASTGphdmEvbGFuZy9TdHJpbmc7TAAXbWV0aG9kSWRXaXRoQ2FsbENvbnRleHR0AB1Mc3BlYy9jdmxhc3QvU3BlY0RlY2xhcmF0aW9uO0wAA3RhZ3QAF0xzcGVjL2N2bGFzdC9DVkxFeHBUYWc7eHIAG3NwZWMuY3ZsYXN0LkNWTEV4cCRBcHBseUV4cAXcmU1H7VK7AgAAeHIAIXNwZWMuY3ZsYXN0LkNWTEV4cCRBcHBsaWNhdGlvbkV4cAR7vMV6A/l9AgAAeHIAEnNwZWMuY3ZsYXN0LkNWTEV4cAH4n9w14ZOIAgAAeHABc3IAE2phdmEudXRpbC5BcnJheUxpc3R4gdIdmcdhnQMAAUkABHNpemV4cAAAAAJ3BAAAAAJzcgAec3BlYy5jdmxhc3QuQ1ZMRXhwJFZhcmlhYmxlRXhwnRQuSnnYgo0CAARMAAJpZHEAfgATTAAMb3JpZ2luYWxOYW1lcQB+ABNMAAN0YWdxAH4AFUwADXR3b1N0YXRlSW5kZXh0ABtMc3BlYy9jdmxhc3QvVHdvU3RhdGVJbmRleDt4cQB+ABh0AAF4cQB+AB9zcgAVc3BlYy5jdmxhc3QuQ1ZMRXhwVGFn1YsqmFoL+1MCAAVaAAloYXNQYXJlbnNMAAphbm5vdGF0aW9udAAiTHNwZWMvY3ZsYXN0L0V4cHJlc3Npb25Bbm5vdGF0aW9uO0wABXJhbmdlcQB+AAtMAAVzY29wZXEAfgAMTAAEdHlwZXQAFUxzcGVjL2N2bGFzdC9DVkxUeXBlO3hwAHBzcgARdXRpbHMuUmFuZ2UkUmFuZ2V6V69yjESxBgIAA0wAA2VuZHQAFkx1dGlscy9Tb3VyY2VQb3NpdGlvbjtMAAhzcGVjRmlsZXEAfgATTAAFc3RhcnRxAH4AJXhyAAt1dGlscy5SYW5nZegD9PKVZX9XAgAAeHBzcgAUdXRpbHMuU291cmNlUG9zaXRpb26V9OfU6pnEjQIAAkkADmNoYXJCeXRlT2Zmc2V0SQAEbGluZXhwAAAAVQAAAAN0AAl0ZXN0LnNwZWNzcQB+ACgAAABUAAAAA3NyABRzcGVjLmN2bGFzdC5DVkxTY29wZSLJYFjUHV1UAgADTAAWaGFzaENvZGVDYWNoZSRkZWxlZ2F0ZXQADUxrb3RsaW4vTGF6eTtMAAppbm5lclNjb3BlcQB+AAxMAApzY29wZVN0YWNrcQB+AAp4cHNyABprb3RsaW4uSW5pdGlhbGl6ZWRMYXp5SW1wbHvHf/EgKoGNAgABTAAFdmFsdWV0ABJMamF2YS9sYW5nL09iamVjdDt4cHNyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHDM8ahfc3EAfgAsc3EAfgAvc3EAfgAyTmeNYXNxAH4ALHNxAH4AL3NxAH4AMgAAAB9wc3IAHGtvdGxpbi5jb2xsZWN0aW9ucy5FbXB0eUxpc3SZb8fQp+BgMgIAAHhwc3IAI2phdmEudXRpbC5Db2xsZWN0aW9ucyRTaW5nbGV0b25MaXN0Ku8pEDynm5cCAAFMAAdlbGVtZW50cQB+ADB4cHNyACZzcGVjLmN2bGFzdC5DVkxTY29wZSRJdGVtJEFzdFNjb3BlSXRlbYebp/cG1aGTAgAAeHIAGXNwZWMuY3ZsYXN0LkNWTFNjb3BlJEl0ZW0vA6//njdWRQIAAHhwc3EAfgAaAAAAAncEAAAAAnEAfgBBc3IAK3NwZWMuY3ZsYXN0LkNWTFNjb3BlJEl0ZW0kRXhwcmVzc2lvblN1bW1hcnkPMxqdWl+paAIAAUkAB3Njb3BlSWR4cgApc3BlYy5jdmxhc3QuQ1ZMU2NvcGUkSXRlbSRBU1RFbGVtZW50U2NvcGVSq48RUeQilgIAAUwAB2VsZW1lbnR0ABpMc3BlYy9jdmxhc3QvQ3JlYXRlc1Njb3BlO3hxAH4AQHNxAH4ACHNyACVzcGVjLmN2bGFzdC5DVkxFeHAkVW5yZXNvbHZlZEFwcGx5RXhwNT4Xghu5fcgCAAhaAAxpbnZva2VJc1NhZmVaAA1pbnZva2VJc1dob2xlTAAEYXJnc3EAfgAKTAAEYmFzZXEAfgAJTAANaW52b2tlU3RvcmFnZXQAIExzcGVjL2N2bGFzdC9DVkxFeHAkVmFyaWFibGVFeHA7TAAIbWV0aG9kSWRxAH4AE0wAA3RhZ3EAfgAVTAANdHdvU3RhdGVJbmRleHEAfgAdeHEAfgAXAQBzcQB+ABoAAAACdwQAAAACc3EAfgAccQB+AB9xAH4AH3NxAH4AIABwcQB+ACdxAH4ALnB+cgAZc3BlYy5jdmxhc3QuVHdvU3RhdGVJbmRleAAAAAAAAAAAEgAAeHIADmphdmEubGFuZy5FbnVtAAAAAAAAAAASAAB4cHQAB05FSVRIRVJzcQB+ABx0AAFzcQB+AFNzcQB+ACAAcHNxAH4AJHNxAH4AKAAAAFgAAAADcQB+ACpzcQB+ACgAAABXAAAAA3EAfgAucHEAfgBQeHBzcQB+ABx0AAtsYXN0U3RvcmFnZXEAfgBZc3EAfgAgAHBzcgARdXRpbHMuUmFuZ2UkRW1wdHnEgx6SXniV1wIAAUwAB2NvbW1lbnRxAH4AE3hxAH4AJnQAEmVtcHR5IHN0b3JhZ2UgdHlwZXEAfgAucHEAfgBQdAARd29ya09uU0NvbXBsZXhDVkxzcQB+ACAAcHNxAH4AJHNxAH4AKAAAAFkAAAADcQB+ACpzcQB+ACgAAABCAAAAA3EAfgAucHEAfgBQcHNxAH4AGgAAAAJ3BAAAAAJzcgAZc3BlYy5jdmxhc3QuVk1QYXJhbSROYW1lZABd7PCOutCNAgAETAAEbmFtZXEAfgATTAAMb3JpZ2luYWxOYW1lcQB+ABNMAAVyYW5nZXEAfgALTAAGdm1UeXBldAAuTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9WTVR5cGVEZXNjcmlwdG9yO3hyABNzcGVjLmN2bGFzdC5WTVBhcmFtoDmogPswXr8CAAB4cHEAfgAfcQB+AB9zcQB+ACRzcQB+ACgAAAAcAAAAA3EAfgAqc3EAfgAoAAAAFgAAAANzcgAzc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJFVJbnRLqHosSzB6DiUCAAFJAAhiaXR3aWR0aHhyAERzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkRVZNSXNvbW9ycGhpY1ZhbHVlVHlwZZbjlXdq3fF/AgAAeHIAOnNwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRFVk1WYWx1ZVR5cGUQ5NL1qK834QIAAHhyAC1zcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3JeVh3cxo4+6AIAAHhwAAABAHNxAH4AZHEAfgBTcQB+AFNzcQB+ACRzcQB+ACgAAAA0AAAAA3EAfgAqc3EAfgAoAAAAHgAAAANzcgBBc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJEVWTVN0cnVjdERlc2NyaXB0b3KmDdePEwDhSgIABEwAC2Nhbm9uaWNhbElkcQB+ABNMAAZmaWVsZHNxAH4ACkwACGxvY2F0aW9udAAyTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9FVk1Mb2NhdGlvblNwZWNpZmllcjtMAARuYW1lcQB+ABN4cQB+AG50ACVUZXN0Q29udHJhY3Quc29sfFRlc3RDb250cmFjdC5Db21wbGV4c3EAfgAaAAAAA3cEAAAAA3NyAFBzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkRVZNU3RydWN0RGVzY3JpcHRvciRFVk1TdHJ1Y3RFbnRyeR9d3wT4a+GbAgACTAAJZmllbGROYW1lcQB+ABNMAAlmaWVsZFR5cGV0AC9Mc3BlYy9jdmxhc3QvdHlwZWRlc2NyaXB0b3JzL0VWTVR5cGVEZXNjcmlwdG9yO3hwdAACczFzcQB+AHR0ACRUZXN0Q29udHJhY3Quc29sfFRlc3RDb250cmFjdC5TaW1wbGVzcQB+ABoAAAAHdwQAAAAHc3EAfgB5cQB+AB9zcQB+AGsAAAEAc3EAfgB5dAABeXNyADVzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkYWRkcmVzc8SxMFH2eWoIAgAAeHEAfgBsc3EAfgB5dAACejFzcQB+AGsAAAAIc3EAfgB5dAACejJzcQB+AGsAAAAIc3EAfgB5dAACYjFzcgAyc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJGJvb2wFQrLgI3sfyQIAAHhxAH4AbHNxAH4AeXQAAngyc3EAfgBrAAABAHNxAH4AeXQAAmIycQB+AI94cHQAE1Rlc3RDb250cmFjdC5TaW1wbGVzcQB+AHl0AAJzMnNxAH4AdHEAfgB+c3EAfgAaAAAAB3cEAAAAB3NxAH4AeXEAfgAfc3EAfgBrAAABAHNxAH4AeXEAfgCDcQB+AIVzcQB+AHlxAH4Ah3NxAH4AawAAAAhzcQB+AHlxAH4AinNxAH4AawAAAAhzcQB+AHlxAH4AjXEAfgCPc3EAfgB5cQB+AJFzcQB+AGsAAAEAc3EAfgB5cQB+AJRxAH4Aj3hwcQB+AJVzcQB+AHl0AAJiM3EAfgCPeHB0ABRUZXN0Q29udHJhY3QuQ29tcGxleHhzcQB+ACRzcQB+ACgAAABZAAAAA3EAfgAqc3EAfgAoAAAAQgAAAANxAH4ALn5yAC1zcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnkkU3VtbWFyaXphdGlvbk1vZGUAAAAAAAAAABIAAHhxAH4AT3QAA0FMTHAAAAAAeHNyABZzcGVjLmN2bGFzdC5DVkxUeXBlJFZNo6s7LR18330CAAJMAAdjb250ZXh0dAArTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9Gcm9tVk1Db250ZXh0O0wACmRlc2NyaXB0b3JxAH4AZXhyABNzcGVjLmN2bGFzdC5DVkxUeXBldDETlbfBZVACAAB4cHNyAENzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRnJvbVZNQ29udGV4dCRFeHRlcm5hbFN1bW1hcnlBcmdCaW5kaW5nwnRM6fhMP3sCAAB4cgApc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkZyb21WTUNvbnRleHTF2vGG93fwZQIAAHhwcQB+AG9xAH4AUHNxAH4AHHEAfgBTcQB+AFNzcQB+ACAAcHEAfgBVcQB+AC5zcQB+AK5xAH4AtHEAfgB2cQB+AFB4cQB+AF5zcgAbc3BlYy5jdmxhc3QuU3BlY0RlY2xhcmF0aW9ujRb0DzyoobcCAAFMAAhtZXRob2RJZHEAfgATeHBxAH4AXnNxAH4AIABzcgAXc3BlYy5jdmxhc3QuQ1ZMRnVuY3Rpb24uWdWoiYfIYQIACUwABWJsb2NrcQB+AApMAA1kZWNsYXJhdGlvbklkcQB+ABNMABJmdW5jdGlvbklkZW50aWZpZXJxAH4AFEwACnBhcmFtVHlwZXNxAH4ACkwABnBhcmFtc3EAfgAKTAAFcmFuZ2VxAH4AC0wABHJldHN0ACFMc3BlYy9jdmxhc3QvQ1ZMVHlwZSRQdXJlQ1ZMVHlwZTtMAAVzY29wZXEAfgAMTAAPdHlwZURlc2NyaXB0aW9ucQB+ABN4cHNx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AH4AuHEAfgBec3EAfgAaAAAAAncEAAAAAnEAfgGPcQB+AZF4c3EAfgAaAAAAAncEAAAAAnEAfgG3cQB+Abt4cQB+Ab9xAH4Bw3EAfgDGcQB+AcRxAH4AYHEAfgAucQB+AcNwc3EAfgAaAAAAAncEAAAAAnEAfgBncQB+AHB4cQB+AKhxAH4ALnEAfgCscHNyABZzcGVjLkNWTCRFeHRlcm5hbEV4YWN05zCZO5TXQTgCAAJMAApzaWdoYXNoSW50dAAQTGV2bS9TaWdoYXNoSW50O0wACXNpZ25hdHVyZXQAL0xzcGVjL2N2bGFzdC9RdWFsaWZpZWRNZXRob2RQYXJhbWV0ZXJTaWduYXR1cmU7eHBzcgAOZXZtLlNpZ2hhc2hJbnQ9u2p6kPim1QIAAUwAAW5xAH4A4nhwc3EAfgDl///////////////+/////gAAAAF1cQB+AOgAAAAEhwvzk3hzcgA3c3BlYy5jdmxhc3QuUXVhbGlmaWVkTWV0aG9kU2lnbmF0dXJlJFF1YWxpZmllZE1ldGhvZFNpZ1AXK1Dt5GJsAgADTAAGcGFyYW1zcQB+AApMABNxdWFsaWZpZWRNZXRob2ROYW1ldAAoTHNwZWMvY3ZsYXN0L0NvbnRyYWN0RnVuY3Rpb25JZGVudGlmaWVyO0wAA3Jlc3EAfgAKeHBxAH4AY3NyAB1zcGVjLmN2bGFzdC5RdWFsaWZpZWRGdW5jdGlvbuUpTPLkOVGDAgACTAAEaG9zdHQAHkxzcGVjL2N2bGFzdC9Tb2xpZGl0eUNvbnRyYWN0O0wACG1ldGhvZElkcQB+ABN4cHNyABxzcGVjLmN2bGFzdC5Tb2xpZGl0eUNvbnRyYWN0I2l9dxqBPaICAAFMAARuYW1lcQB+ABN4cHQADFRlc3RDb250cmFjdHQACHdvcmtPblMxcQB+ADw="}
+		AnnotationCmd JSON{"key":{"name":"call.trace.external.summary.end","type":"analysis.icfg.SummaryStack$SummaryEnd$External","erasureStrategy":"CallTrace"},"value":"rO0ABXNyAC5hbmFseXNpcy5pY2ZnLlN1bW1hcnlTdGFjayRTdW1tYXJ5RW5kJEV4dGVybmFsH6pYA2Le9wICAAJJAAlzdW1tYXJ5SWRMAA5hcHBsaWVkU3VtbWFyeXQALExhbmFseXNpcy9pY2ZnL1N1bW1hcml6YXRpb24kQXBwbGllZFN1bW1hcnk7eHIAJWFuYWx5c2lzLmljZmcuU3VtbWFyeVN0YWNrJFN1bW1hcnlFbmQVlCYDx9Zr6QIAAHhwAAAAAHNyADdhbmFseXNpcy5pY2ZnLlN1bW1hcml6YXRpb24kQXBwbGllZFN1bW1hcnkkTWV0aG9kc0Jsb2NrxBlpQb2eQrwCAAJMAAxzcGVjQ2FsbFN1bW10AC5Mc3BlYy9jdmxhc3QvU3BlY0NhbGxTdW1tYXJ5JEV4cHJlc3NpYmxlSW5DVkw7TAAQc3VtbWFyaXplZE1ldGhvZHQAG0xzcGVjL0NWTCRTdW1tYXJ5U2lnbmF0dXJlO3hwc3IAH3NwZWMuY3ZsYXN0LlNwZWNDYWxsU3VtbWFyeSRFeHCItcAI/3pVHwIAB0wAA2V4cHQAFExzcGVjL2N2bGFzdC9DVkxFeHA7TAAMZXhwZWN0ZWRUeXBldAAQTGphdmEvdXRpbC9MaXN0O0wACWZ1blBhcmFtc3EAfgAKTAAFcmFuZ2V0AA1MdXRpbHMvUmFuZ2U7TAAFc2NvcGV0ABZMc3BlYy9jdmxhc3QvQ1ZMU2NvcGU7TAARc3VtbWFyaXphdGlvbk1vZGV0AC9Mc3BlYy9jdmxhc3QvU3BlY0NhbGxTdW1tYXJ5JFN1bW1hcml6YXRpb25Nb2RlO0wACndpdGhDbGF1c2V0ACxMc3BlYy9jdmxhc3QvU3BlY0NhbGxTdW1tYXJ5JEV4cCRXaXRoQ2xhdXNlO3hyACxzcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnkkRXhwcmVzc2libGVJbkNWTDmMEQXE2U43AgAAeHIAG3NwZWMuY3ZsYXN0LlNwZWNDYWxsU3VtbWFyeZ/hCJ5dxaUBAgAAeHBzcgAnc3BlYy5jdmxhc3QuQ1ZMRXhwJEFwcGx5RXhwJENWTEZ1bmN0aW9uCF/yx/bQMDoCAAVaAAhub1JldmVydEwABGFyZ3NxAH4ACkwAAmlkdAASTGphdmEvbGFuZy9TdHJpbmc7TAAXbWV0aG9kSWRXaXRoQ2FsbENvbnRleHR0AB1Mc3BlYy9jdmxhc3QvU3BlY0RlY2xhcmF0aW9uO0wAA3RhZ3QAF0xzcGVjL2N2bGFzdC9DVkxFeHBUYWc7eHIAG3NwZWMuY3ZsYXN0LkNWTEV4cCRBcHBseUV4cAXcmU1H7VK7AgAAeHIAIXNwZWMuY3ZsYXN0LkNWTEV4cCRBcHBsaWNhdGlvbkV4cAR7vMV6A/l9AgAAeHIAEnNwZWMuY3ZsYXN0LkNWTEV4cAH4n9w14ZOIAgAAeHABc3IAE2phdmEudXRpbC5BcnJheUxpc3R4gdIdmcdhnQMAAUkABHNpemV4cAAAAAJ3BAAAAAJzcgAec3BlYy5jdmxhc3QuQ1ZMRXhwJFZhcmlhYmxlRXhwnRQuSnnYgo0CAARMAAJpZHEAfgATTAAMb3JpZ2luYWxOYW1lcQB+ABNMAAN0YWdxAH4AFUwADXR3b1N0YXRlSW5kZXh0ABtMc3BlYy9jdmxhc3QvVHdvU3RhdGVJbmRleDt4cQB+ABh0AAF4cQB+AB9zcgAVc3BlYy5jdmxhc3QuQ1ZMRXhwVGFn1YsqmFoL+1MCAAVaAAloYXNQYXJlbnNMAAphbm5vdGF0aW9udAAiTHNwZWMvY3ZsYXN0L0V4cHJlc3Npb25Bbm5vdGF0aW9uO0wABXJhbmdlcQB+AAtMAAVzY29wZXEAfgAMTAAEdHlwZXQAFUxzcGVjL2N2bGFzdC9DVkxUeXBlO3hwAHBzcgARdXRpbHMuUmFuZ2UkUmFuZ2V6V69yjESxBgIAA0wAA2VuZHQAFkx1dGlscy9Tb3VyY2VQb3NpdGlvbjtMAAhzcGVjRmlsZXEAfgATTAAFc3RhcnRxAH4AJXhyAAt1dGlscy5SYW5nZegD9PKVZX9XAgAAeHBzcgAUdXRpbHMuU291cmNlUG9zaXRpb26V9OfU6pnEjQIAAkkADmNoYXJCeXRlT2Zmc2V0SQAEbGluZXhwAAAAVQAAAAN0AAl0ZXN0LnNwZWNzcQB+ACgAAABUAAAAA3NyABRzcGVjLmN2bGFzdC5DVkxTY29wZSLJYFjUHV1UAgADTAAWaGFzaENvZGVDYWNoZSRkZWxlZ2F0ZXQADUxrb3RsaW4vTGF6eTtMAAppbm5lclNjb3BlcQB+AAxMAApzY29wZVN0YWNrcQB+AAp4cHNyABprb3RsaW4uSW5pdGlhbGl6ZWRMYXp5SW1wbHvHf/EgKoGNAgABTAAFdmFsdWV0ABJMamF2YS9sYW5nL09iamVjdDt4cHNyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHDM8ahfc3EAfgAsc3EAfgAvc3EAfgAyTmeNYXNxAH4ALHNxAH4AL3NxAH4AMgAAAB9wc3IAHGtvdGxpbi5jb2xsZWN0aW9ucy5FbXB0eUxpc3SZb8fQp+BgMgIAAHhwc3IAI2phdmEudXRpbC5Db2xsZWN0aW9ucyRTaW5nbGV0b25MaXN0Ku8pEDynm5cCAAFMAAdlbGVtZW50cQB+ADB4cHNyACZzcGVjLmN2bGFzdC5DVkxTY29wZSRJdGVtJEFzdFNjb3BlSXRlbYebp/cG1aGTAgAAeHIAGXNwZWMuY3ZsYXN0LkNWTFNjb3BlJEl0ZW0vA6//njdWRQIAAHhwc3EAfgAaAAAAAncEAAAAAnEAfgBBc3IAK3NwZWMuY3ZsYXN0LkNWTFNjb3BlJEl0ZW0kRXhwcmVzc2lvblN1bW1hcnkPMxqdWl+paAIAAUkAB3Njb3BlSWR4cgApc3BlYy5jdmxhc3QuQ1ZMU2NvcGUkSXRlbSRBU1RFbGVtZW50U2NvcGVSq48RUeQilgIAAUwAB2VsZW1lbnR0ABpMc3BlYy9jdmxhc3QvQ3JlYXRlc1Njb3BlO3hxAH4AQHNxAH4ACHNyACVzcGVjLmN2bGFzdC5DVkxFeHAkVW5yZXNvbHZlZEFwcGx5RXhwNT4Xghu5fcgCAAhaAAxpbnZva2VJc1NhZmVaAA1pbnZva2VJc1dob2xlTAAEYXJnc3EAfgAKTAAEYmFzZXEAfgAJTAANaW52b2tlU3RvcmFnZXQAIExzcGVjL2N2bGFzdC9DVkxFeHAkVmFyaWFibGVFeHA7TAAIbWV0aG9kSWRxAH4AE0wAA3RhZ3EAfgAVTAANdHdvU3RhdGVJbmRleHEAfgAdeHEAfgAXAQBzcQB+ABoAAAACdwQAAAACc3EAfgAccQB+AB9xAH4AH3NxAH4AIABwcQB+ACdxAH4ALnB+cgAZc3BlYy5jdmxhc3QuVHdvU3RhdGVJbmRleAAAAAAAAAAAEgAAeHIADmphdmEubGFuZy5FbnVtAAAAAAAAAAASAAB4cHQAB05FSVRIRVJzcQB+ABx0AAFzcQB+AFNzcQB+ACAAcHNxAH4AJHNxAH4AKAAAAFgAAAADcQB+ACpzcQB+ACgAAABXAAAAA3EAfgAucHEAfgBQeHBzcQB+ABx0AAtsYXN0U3RvcmFnZXEAfgBZc3EAfgAgAHBzcgARdXRpbHMuUmFuZ2UkRW1wdHnEgx6SXniV1wIAAUwAB2NvbW1lbnRxAH4AE3hxAH4AJnQAEmVtcHR5IHN0b3JhZ2UgdHlwZXEAfgAucHEAfgBQdAARd29ya09uU0NvbXBsZXhDVkxzcQB+ACAAcHNxAH4AJHNxAH4AKAAAAFkAAAADcQB+ACpzcQB+ACgAAABCAAAAA3EAfgAucHEAfgBQcHNxAH4AGgAAAAJ3BAAAAAJzcgAZc3BlYy5jdmxhc3QuVk1QYXJhbSROYW1lZABd7PCOutCNAgAETAAEbmFtZXEAfgATTAAMb3JpZ2luYWxOYW1lcQB+ABNMAAVyYW5nZXEAfgALTAAGdm1UeXBldAAuTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9WTVR5cGVEZXNjcmlwdG9yO3hyABNzcGVjLmN2bGFzdC5WTVBhcmFtoDmogPswXr8CAAB4cHEAfgAfcQB+AB9zcQB+ACRzcQB+ACgAAAAcAAAAA3EAfgAqc3EAfgAoAAAAFgAAAANzcgAzc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJFVJbnRLqHosSzB6DiUCAAFJAAhiaXR3aWR0aHhyAERzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkRVZNSXNvbW9ycGhpY1ZhbHVlVHlwZZbjlXdq3fF/AgAAeHIAOnNwZWMuY3ZsYXN0LnR5cGVkZXNjcmlwdG9ycy5FVk1UeXBlRGVzY3JpcHRvciRFVk1WYWx1ZVR5cGUQ5NL1qK834QIAAHhyAC1zcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3JeVh3cxo4+6AIAAHhwAAABAHNxAH4AZHEAfgBTcQB+AFNzcQB+ACRzcQB+ACgAAAA0AAAAA3EAfgAqc3EAfgAoAAAAHgAAAANzcgBBc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJEVWTVN0cnVjdERlc2NyaXB0b3KmDdePEwDhSgIABEwAC2Nhbm9uaWNhbElkcQB+ABNMAAZmaWVsZHNxAH4ACkwACGxvY2F0aW9udAAyTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9FVk1Mb2NhdGlvblNwZWNpZmllcjtMAARuYW1lcQB+ABN4cQB+AG50ACVUZXN0Q29udHJhY3Quc29sfFRlc3RDb250cmFjdC5Db21wbGV4c3EAfgAaAAAAA3cEAAAAA3NyAFBzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkRVZNU3RydWN0RGVzY3JpcHRvciRFVk1TdHJ1Y3RFbnRyeR9d3wT4a+GbAgACTAAJZmllbGROYW1lcQB+ABNMAAlmaWVsZFR5cGV0AC9Mc3BlYy9jdmxhc3QvdHlwZWRlc2NyaXB0b3JzL0VWTVR5cGVEZXNjcmlwdG9yO3hwdAACczFzcQB+AHR0ACRUZXN0Q29udHJhY3Quc29sfFRlc3RDb250cmFjdC5TaW1wbGVzcQB+ABoAAAAHdwQAAAAHc3EAfgB5cQB+AB9zcQB+AGsAAAEAc3EAfgB5dAABeXNyADVzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRVZNVHlwZURlc2NyaXB0b3IkYWRkcmVzc8SxMFH2eWoIAgAAeHEAfgBsc3EAfgB5dAACejFzcQB+AGsAAAAIc3EAfgB5dAACejJzcQB+AGsAAAAIc3EAfgB5dAACYjFzcgAyc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkVWTVR5cGVEZXNjcmlwdG9yJGJvb2wFQrLgI3sfyQIAAHhxAH4AbHNxAH4AeXQAAngyc3EAfgBrAAABAHNxAH4AeXQAAmIycQB+AI94cHQAE1Rlc3RDb250cmFjdC5TaW1wbGVzcQB+AHl0AAJzMnNxAH4AdHEAfgB+c3EAfgAaAAAAB3cEAAAAB3NxAH4AeXEAfgAfc3EAfgBrAAABAHNxAH4AeXEAfgCDcQB+AIVzcQB+AHlxAH4Ah3NxAH4AawAAAAhzcQB+AHlxAH4AinNxAH4AawAAAAhzcQB+AHlxAH4AjXEAfgCPc3EAfgB5cQB+AJFzcQB+AGsAAAEAc3EAfgB5cQB+AJRxAH4Aj3hwcQB+AJVzcQB+AHl0AAJiM3EAfgCPeHB0ABRUZXN0Q29udHJhY3QuQ29tcGxleHhzcQB+ACRzcQB+ACgAAABZAAAAA3EAfgAqc3EAfgAoAAAAQgAAAANxAH4ALn5yAC1zcGVjLmN2bGFzdC5TcGVjQ2FsbFN1bW1hcnkkU3VtbWFyaXphdGlvbk1vZGUAAAAAAAAAABIAAHhxAH4AT3QAA0FMTHAAAAAAeHNyABZzcGVjLmN2bGFzdC5DVkxUeXBlJFZNo6s7LR18330CAAJMAAdjb250ZXh0dAArTHNwZWMvY3ZsYXN0L3R5cGVkZXNjcmlwdG9ycy9Gcm9tVk1Db250ZXh0O0wACmRlc2NyaXB0b3JxAH4AZXhyABNzcGVjLmN2bGFzdC5DVkxUeXBldDETlbfBZVACAAB4cHNyAENzcGVjLmN2bGFzdC50eXBlZGVzY3JpcHRvcnMuRnJvbVZNQ29udGV4dCRFeHRlcm5hbFN1bW1hcnlBcmdCaW5kaW5nwnRM6fhMP3sCAAB4cgApc3BlYy5jdmxhc3QudHlwZWRlc2NyaXB0b3JzLkZyb21WTUNvbnRleHTF2vGG93fwZQIAAHhwcQB+AG9xAH4AUHNxAH4AHHEAfgBTcQB+AFNzcQB+ACAAcHEAfgBVcQB+AC5zcQB+AK5xAH4AtHEAfgB2cQB+AFB4cQB+AF5zcgAbc3BlYy5jdmxhc3QuU3BlY0RlY2xhcmF0aW9ujRb0DzyoobcCAAFMAAhtZXRob2RJZHEAfgATeHBxAH4AXnNxAH4AIABzcgAXc3BlYy5jdmxhc3QuQ1ZMRnVuY3Rpb24uWdWoiYfIYQIACUwABWJsb2NrcQB+AApMAA1kZWNsYXJhdGlvbklkcQB+ABNMABJmdW5jdGlvbklkZW50aWZpZXJxAH4AFEwACnBhcmFtVHlwZXNxAH4ACkwABnBhcmFtc3EAfgAKTAAFcmFuZ2VxAH4AC0wABHJldHN0ACFMc3BlYy9jdmxhc3QvQ1ZMVHlwZSRQdXJlQ1ZMVHlwZTtMAAVzY29wZXEAfgAMTAAPdHlwZURlc2NyaXB0aW9ucQB+ABN4cHNx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AH4AuHEAfgBec3EAfgAaAAAAAncEAAAAAnEAfgGPcQB+AZF4c3EAfgAaAAAAAncEAAAAAnEAfgG3cQB+Abt4cQB+Ab9xAH4Bw3EAfgDGcQB+AcRxAH4AYHEAfgAucQB+AcNwc3EAfgAaAAAAAncEAAAAAnEAfgBncQB+AHB4cQB+AKhxAH4ALnEAfgCscHNyABZzcGVjLkNWTCRFeHRlcm5hbEV4YWN05zCZO5TXQTgCAAJMAApzaWdoYXNoSW50dAAQTGV2bS9TaWdoYXNoSW50O0wACXNpZ25hdHVyZXQAL0xzcGVjL2N2bGFzdC9RdWFsaWZpZWRNZXRob2RQYXJhbWV0ZXJTaWduYXR1cmU7eHBzcgAOZXZtLlNpZ2hhc2hJbnQ9u2p6kPim1QIAAUwAAW5xAH4A4nhwc3EAfgDl///////////////+/////gAAAAF1cQB+AOgAAAAEhwvzk3hzcgA3c3BlYy5jdmxhc3QuUXVhbGlmaWVkTWV0aG9kU2lnbmF0dXJlJFF1YWxpZmllZE1ldGhvZFNpZ1AXK1Dt5GJsAgADTAAGcGFyYW1zcQB+AApMABNxdWFsaWZpZWRNZXRob2ROYW1ldAAoTHNwZWMvY3ZsYXN0L0NvbnRyYWN0RnVuY3Rpb25JZGVudGlmaWVyO0wAA3Jlc3EAfgAKeHBxAH4AY3NyAB1zcGVjLmN2bGFzdC5RdWFsaWZpZWRGdW5jdGlvbuUpTPLkOVGDAgACTAAEaG9zdHQAHkxzcGVjL2N2bGFzdC9Tb2xpZGl0eUNvbnRyYWN0O0wACG1ldGhvZElkcQB+ABN4cHNyABxzcGVjLmN2bGFzdC5Tb2xpZGl0eUNvbnRyYWN0I2l9dxqBPaICAAFMAARuYW1lcQB+ABN4cHQADFRlc3RDb250cmFjdHQACHdvcmtPblMxcQB+ADw="}
 		LabelCmd "Inline CVL/Ghost Function 'workOnSComplexCVL(x,s)'"
 		JumpCmd 3_0_0_1_0_0
 	}
 	Block 3_0_0_1_0_0 Succ [4_0_0_0_0_0] {
-		AnnotationCmd:158 JSON{"key":{"name":"tac.decompiler.call-end","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":3,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"content":"this.workOnS1(x, m[0])"}}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":3}}
-		AnnotationCmd:158 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":315,"bytecodeCount":7,"sources":[{"source":0,"begin":367,"end":389},{"source":0,"begin":319,"end":396}]}}
-		AnnotationCmd:223 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":107,"bytecodeCount":2,"sources":[{"source":0,"begin":319,"end":396}]}}
-		AssignExpCmd:223 lastHasThrown!!169:63 false
-		AssignExpCmd:223 lastReverted!!170:7 false
-		AnnotationCmd:223 JSON{"key":{"name":"tac.return.path","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
-		AnnotationCmd:138 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.HaltSnippet.Return","range":{"specFile":"TestContract.sol","start":{"line":21,"charByteOffset":4},"end":{"line":23,"charByteOffset":5}}}}
-		LabelCmd:138 "End procedure TestContract-workOnS1Ext(uint256)"
-		AnnotationCmd:138 JSON{"key":{"name":"call.trace.pop","type":"analysis.icfg.Inliner$CallStack$PopRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"4166f100"},"attr":{"#class":"scene.MethodAttribute.Common"}},"calleeId":1}}
+		AnnotationCmd:164 JSON{"key":{"name":"tac.decompiler.call-end","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.StartBranchSnippet","branchIndex":3,"branchSource":{"range":{"specFile":"TestContract.sol","start":{"line":22,"charByteOffset":8},"end":{"line":22,"charByteOffset":30}},"content":"this.workOnS1(x, m[0])"}}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.BranchSnippet.EndBranchSnippet","branchIndex":3}}
+		AnnotationCmd:164 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":315,"bytecodeCount":7,"sources":[{"source":0,"begin":367,"end":389},{"source":0,"begin":319,"end":396}]}}
+		AnnotationCmd:229 JSON{"key":{"name":"block.source","type":"decompiler.Decompiler$BlockSourceInfo","erasureStrategy":"Canonical"},"value":{"contractName":"TestContract","contractAddress":"ce4604a0000000000000000000000001","contractBytecodeHash":"de50e2ae4804a7eb6a60b6d8b35d3af2a0ce02a09f983d075e9b14a5ae996032","pc":107,"bytecodeCount":2,"sources":[{"source":0,"begin":319,"end":396}]}}
+		AssignExpCmd:229 lastHasThrown!!169:69 false
+		AssignExpCmd:229 lastReverted!!170:7 false
+		AnnotationCmd:229 JSON{"key":{"name":"tac.return.path","type":"tac.MetaMap$Companion$NothingValue","erasureStrategy":"Canonical"},"value":{}}
+		AnnotationCmd:144 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.HaltSnippet.Return","range":{"specFile":"TestContract.sol","start":{"line":21,"charByteOffset":4},"end":{"line":23,"charByteOffset":5}}}}
+		LabelCmd:144 "End procedure TestContract-workOnS1Ext(uint256)"
+		AnnotationCmd:144 JSON{"key":{"name":"call.trace.pop","type":"analysis.icfg.Inliner$CallStack$PopRecord","erasureStrategy":"Canonical"},"value":{"callee":{"contractId":"ce4604a0000000000000000000000001","sigHash":{"n":"4166f100"},"attr":{"#class":"scene.MethodAttribute.Common"}},"calleeId":1}}
 	}
 	Block 4_0_0_0_0_0 Succ [] {
 		AnnotationCmd JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageGlobalChangeSnippet.StorageTakeSnapshot","lhs":{"namePrefix":"lastStorage","tag":{"#class":"tac.Tag.BlockchainState"},"callIndex":0,"meta":[{"key":{"name":"cvl.def.site","type":"spec.CVLDefinitionSite","erasureStrategy":"Canonical"},"value":{"#class":"spec.CVLDefinitionSite.Rule"}},{"key":{"name":"Tac.symbol.keyword","type":"vc.data.TACSymbol$Var$KeywordEntry","erasureStrategy":"Canonical"},"value":{"#class":"vc.data.TACSymbol.Var.KeywordEntry.NonTACKeywordEntry","name":"lastStorage"}},{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"}},{"key":{"name":"cvl","type":"java.lang.Boolean","erasureStrategy":"Canonical"},"value":true},{"key":{"name":"cvl.display","type":"java.lang.String","erasureStrategy":"CallTrace"},"value":"lastStorage"}]}}}
-		AnnotationCmd:138 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":20}
-		AnnotationCmd:224 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Assert","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":4},"end":{"line":33,"charByteOffset":32}},"exp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":23}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":25}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":26},"end":{"line":33,"charByteOffset":27}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":28}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":31}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
-		AssignExpCmd:225 I171 0x0
-		AssertCmd:226 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
-		AssignExpCmd:227 R172:18 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
-		AssignExpCmd:227 R173:18 Apply(skey_add:bif R172:18 0x8)
-		AssignExpCmd:228 R174:18 AnnotationExp(Select(CANON76!!159:217 R173:229 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
-		AssignExpCmd:227 B176 LNot(Eq(R174:18 0x0 ) )
-		AnnotationCmd:227 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"B176","tag":{"#class":"tac.Tag.Bool"},"callIndex":0},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":31}}}}
-		AssertCmd:230 B176 "testContract.m[0].b3"
+		AnnotationCmd:144 JSON{"key":{"name":"cvl.label.end","type":"java.lang.Integer","erasureStrategy":"Canonical"},"value":20}
+		AnnotationCmd:230 JSON{"key":{"name":"cvl.label.start","type":"report.calltrace.CVLReportLabel","erasureStrategy":"CallTrace"},"value":{"#class":"report.calltrace.CVLReportLabel.Cmd","cmd":{"cmd_type":"spec.cvlast.CVLCmd.Simple.Assert","range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":4},"end":{"line":33,"charByteOffset":32}},"exp":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.ArrayDerefExp","array":{"#class":"spec.cvlast.CVLExp.FieldSelectExp","structExp":{"#class":"spec.cvlast.CVLExp.VariableExp","id":"testContract","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.CodeContract","name":{"name":"TestContract"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":23}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.CVLExp$VariableExp$ContractInstanceId","instanceId":"ce4604a0000000000000000000000001"}},"twoStateIndex":"NEITHER"},"fieldName":"m","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMMappingDescriptor","keyType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256},"valueType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"location":null},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":25}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"index":{"#class":"spec.cvlast.CVLExp.Constant.NumberLit","n":"0","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral","n":"0"},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":26},"end":{"line":33,"charByteOffset":27}}}},"tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Complex","location":null,"fields":[{"fieldName":"s1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"s2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.EVMStructDescriptor","canonicalId":"TestContract.sol|TestContract.Simple","location":null,"fields":[{"fieldName":"x","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"y","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.address"}},{"fieldName":"z1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"z2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":8}},{"fieldName":"b1","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}},{"fieldName":"x2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK","bitwidth":256}},{"fieldName":"b2","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Simple"}},{"fieldName":"b3","fieldType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"}}],"name":"TestContract.Complex"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":28}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"fieldName":"b3","tag":{"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}},"type":{"#class":"spec.cvlast.CVLType.VM","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$bool"},"context":{"#class":"spec.cvlast.typedescriptors.FromVMContext.StateValue"}},"range":{"#class":"utils.Range.Range","specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":31}},"annotation":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.StorageAccessMarker"}}},"description":null,"scope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"},{"#class":"spec.cvlast.CVLScope.Item.RuleScopeItem","scopeId":3}],"innerScope":{"scopeStack":[{"#class":"spec.cvlast.CVLScope.Item.AstScopeItem"}],"innerScope":{"scopeStack":[],"innerScope":null}}}}}}
+		AssignExpCmd:231 I171:18 0x0
+		AssertCmd:232 true "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1$s failed"
+		AssignExpCmd:233 R172:19 Apply(hash_3_keccak:bif Apply(skey_basic:bif 0x40) Apply(skey_basic:bif 0x0) Apply(skey_basic:bif 0x0))
+		AssignExpCmd:233 R173:19 Apply(skey_add:bif R172:19 0x8)
+		AssignExpCmd:234 R174:19 AnnotationExp(Select(CANON76!!159:223 R173:235 ) JSON{"key":{"name":"tac.storage.access-paths","type":"analysis.storage.StorageAnalysisResult$AccessPaths","erasureStrategy":"Canonical"},"value":{"paths":[{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.StructAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.MapAccess","base":{"#class":"analysis.storage.StorageAnalysis.AnalysisPath.Root","slot":"0"},"key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"baseSlot":{"#class":"vc.data.TACSymbol.Const","value":"0"},"hashResult":{"#class":"vc.data.TACSymbol.Const","value":"0"}},"offset":{"#class":"analysis.storage.StorageAnalysis.Offset.Bytes","numBytes":"100"}}]}})
+		AssignExpCmd:233 B176:21 LNot(Eq(R174:19 0x0 ) )
+		AnnotationCmd:233 JSON{"key":{"name":"snippet.cmd","type":"vc.data.SnippetCmd","erasureStrategy":"CallTrace"},"value":{"#class":"vc.data.SnippetCmd.EVMSnippetCmd.StorageSnippet.DirectStorageLoad","value":{"#class":"vc.data.TACSymbol.Var.Full","namePrefix":"B176","tag":{"#class":"tac.Tag.Bool"},"callIndex":0,"meta":[{"key":{"name":"cvl.type","type":"spec.cvlast.CVLType$PureCVLType","erasureStrategy":"CallTrace"},"value":{"#class":"spec.cvlast.CVLType.PureCVLType.Primitive.Bool"}}]},"displayPath":{"#class":"analysis.storage.DisplayPath.FieldAccess","field":"b3","base":{"#class":"analysis.storage.DisplayPath.MapAccess","key":{"#class":"vc.data.TACSymbol.Const","value":"0"},"keyTyp":{"#class":"tac.TACStorageType.IntegralType","typeLabel":"uint256","numBytes":"20","descriptor":{"#class":"ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK","bitwidth":256},"lowerBound":null,"upperBound":null},"base":{"#class":"analysis.storage.DisplayPath.Root","name":"m"}}},"storageType":{"#class":"spec.cvlast.typedescriptors.EVMTypeDescriptor.bool"},"contractInstance":"ce4604a0000000000000000000000001","range":{"specFile":"test.spec","start":{"line":33,"charByteOffset":11},"end":{"line":33,"charByteOffset":31}}}}
+		AssertCmd:236 B176:21 "testContract.m[0].b3"
 	}
 }
 Axioms {
@@ -2529,11 +2529,13 @@ Metas {
   "18": [
     {
       "key": {
-        "name": "tac.is-temp-var",
-        "type": "tac.MetaMap$Companion$NothingValue",
-        "erasureStrategy": "Canonical"
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
       },
       "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+        "n": "0"
       }
     }
   ],
@@ -2545,47 +2547,6 @@ Metas {
         "erasureStrategy": "Canonical"
       },
       "value": {
-      }
-    },
-    {
-      "key": {
-        "name": "tac.storage.access-paths",
-        "type": "analysis.storage.StorageAnalysisResult$AccessPaths",
-        "erasureStrategy": "Canonical"
-      },
-      "value": {
-        "paths": [
-          {
-            "#class": "analysis.storage.StorageAnalysis.AnalysisPath.StructAccess",
-            "base": {
-              "#class": "analysis.storage.StorageAnalysis.AnalysisPath.MapAccess",
-              "base": {
-                "#class": "analysis.storage.StorageAnalysis.AnalysisPath.Root",
-                "slot": "0"
-              },
-              "key": {
-                "#class": "vc.data.TACSymbol.Var.Full",
-                "namePrefix": "CANON104",
-                "tag": {
-                  "#class": "tac.Tag.Int"
-                },
-                "callIndex": 0
-              },
-              "baseSlot": {
-                "#class": "vc.data.TACSymbol.Const",
-                "value": "0"
-              },
-              "hashResult": {
-                "#class": "vc.data.TACSymbol.Const",
-                "value": "0"
-              }
-            },
-            "offset": {
-              "#class": "analysis.storage.StorageAnalysis.Offset.Bytes",
-              "numBytes": "36"
-            }
-          }
-        ]
       }
     }
   ],
@@ -2617,11 +2578,24 @@ Metas {
               },
               "key": {
                 "#class": "vc.data.TACSymbol.Var.Full",
-                "namePrefix": "CANON110",
+                "namePrefix": "CANON104",
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -2644,6 +2618,119 @@ Metas {
   "21": [
     {
       "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+      }
+    }
+  ],
+  "22": [
+    {
+      "key": {
+        "name": "tac.is-temp-var",
+        "type": "tac.MetaMap$Companion$NothingValue",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+      }
+    },
+    {
+      "key": {
+        "name": "tac.storage.access-paths",
+        "type": "analysis.storage.StorageAnalysisResult$AccessPaths",
+        "erasureStrategy": "Canonical"
+      },
+      "value": {
+        "paths": [
+          {
+            "#class": "analysis.storage.StorageAnalysis.AnalysisPath.StructAccess",
+            "base": {
+              "#class": "analysis.storage.StorageAnalysis.AnalysisPath.MapAccess",
+              "base": {
+                "#class": "analysis.storage.StorageAnalysis.AnalysisPath.Root",
+                "slot": "0"
+              },
+              "key": {
+                "#class": "vc.data.TACSymbol.Var.Full",
+                "namePrefix": "CANON110",
+                "tag": {
+                  "#class": "tac.Tag.Int"
+                },
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
+              },
+              "baseSlot": {
+                "#class": "vc.data.TACSymbol.Const",
+                "value": "0"
+              },
+              "hashResult": {
+                "#class": "vc.data.TACSymbol.Const",
+                "value": "0"
+              }
+            },
+            "offset": {
+              "#class": "analysis.storage.StorageAnalysis.Offset.Bytes",
+              "numBytes": "36"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "23": [
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+        "k": 256
+      }
+    }
+  ],
+  "24": [
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+        "n": "3"
+      }
+    }
+  ],
+  "25": [
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+      }
+    },
+    {
+      "key": {
         "name": "cvl",
         "type": "java.lang.Boolean",
         "erasureStrategy": "Canonical"
@@ -2651,7 +2738,7 @@ Metas {
       "value": true
     }
   ],
-  "22": [
+  "26": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -2683,7 +2770,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -2703,7 +2803,7 @@ Metas {
       }
     }
   ],
-  "23": [
+  "27": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -2735,7 +2835,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -2755,7 +2868,20 @@ Metas {
       }
     }
   ],
-  "24": [
+  "28": [
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+        "n": "5"
+      }
+    }
+  ],
+  "29": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -2787,7 +2913,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -2807,7 +2946,7 @@ Metas {
       }
     }
   ],
-  "25": [
+  "30": [
     {
       "key": {
         "name": "tac.is.memory",
@@ -2849,7 +2988,7 @@ Metas {
       }
     }
   ],
-  "26": [
+  "31": [
     {
       "key": {
         "name": "tac.is.memory",
@@ -2882,7 +3021,7 @@ Metas {
       }
     }
   ],
-  "27": [
+  "32": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -2905,7 +3044,7 @@ Metas {
       }
     }
   ],
-  "28": [
+  "33": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -2987,7 +3126,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "29": [
+  "34": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -3070,7 +3209,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "30": [
+  "35": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -3153,7 +3292,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "31": [
+  "36": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -3232,7 +3371,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "32": [
+  "37": [
     {
       "key": {
         "name": "tac.immutable.array",
@@ -3286,7 +3425,7 @@ Metas {
       }
     }
   ],
-  "33": [
+  "38": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3308,7 +3447,157 @@ Metas {
       "value": 996
     }
   ],
-  "34": [
+  "39": [
+    {
+      "key": {
+        "name": "cvl.struct.path",
+        "type": "spec.cvlast.CVLStructPathNode",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "rootStructType": {
+          "name": "env",
+          "fields": [
+            {
+              "fieldName": "msg",
+              "cvlType": {
+                "#class": "spec.cvlast.CVLType.PureCVLType.Struct",
+                "name": "msg",
+                "fields": [
+                  {
+                    "fieldName": "sender",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                    }
+                  },
+                  {
+                    "fieldName": "value",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                      "k": 256
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "fieldName": "tx",
+              "cvlType": {
+                "#class": "spec.cvlast.CVLType.PureCVLType.Struct",
+                "name": "tx",
+                "fields": [
+                  {
+                    "fieldName": "origin",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "fieldName": "block",
+              "cvlType": {
+                "#class": "spec.cvlast.CVLType.PureCVLType.Struct",
+                "name": "block",
+                "fields": [
+                  {
+                    "fieldName": "basefee",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                      "k": 256
+                    }
+                  },
+                  {
+                    "fieldName": "blobbasefee",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                      "k": 256
+                    }
+                  },
+                  {
+                    "fieldName": "coinbase",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                    }
+                  },
+                  {
+                    "fieldName": "difficulty",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                      "k": 256
+                    }
+                  },
+                  {
+                    "fieldName": "gaslimit",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                      "k": 256
+                    }
+                  },
+                  {
+                    "fieldName": "number",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                      "k": 256
+                    }
+                  },
+                  {
+                    "fieldName": "timestamp",
+                    "cvlType": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                      "k": 256
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "fields": [
+          {
+            "fieldName": "msg",
+            "cvlType": {
+              "#class": "spec.cvlast.CVLType.PureCVLType.Struct",
+              "name": "msg",
+              "fields": [
+                {
+                  "fieldName": "sender",
+                  "cvlType": {
+                    "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                  }
+                },
+                {
+                  "fieldName": "value",
+                  "cvlType": {
+                    "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                    "k": 256
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "fieldName": "sender",
+            "cvlType": {
+              "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": {
+        "name": "cvl.type",
+        "type": "spec.cvlast.CVLType$PureCVLType",
+        "erasureStrategy": "CallTrace"
+      },
+      "value": {
+        "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+      }
+    }
+  ],
+  "40": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3337,7 +3626,7 @@ Metas {
       "value": "1"
     }
   ],
-  "35": [
+  "41": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3366,7 +3655,7 @@ Metas {
       "value": "2"
     }
   ],
-  "36": [
+  "42": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3395,7 +3684,7 @@ Metas {
       "value": "4"
     }
   ],
-  "37": [
+  "43": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3424,7 +3713,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "38": [
+  "44": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3446,7 +3735,7 @@ Metas {
       "value": 1021
     }
   ],
-  "39": [
+  "45": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3468,7 +3757,7 @@ Metas {
       "value": 1018
     }
   ],
-  "40": [
+  "46": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3481,7 +3770,7 @@ Metas {
       }
     }
   ],
-  "41": [
+  "47": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3503,7 +3792,7 @@ Metas {
       "value": 1003
     }
   ],
-  "42": [
+  "48": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3516,7 +3805,7 @@ Metas {
       }
     }
   ],
-  "43": [
+  "49": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3529,7 +3818,7 @@ Metas {
       }
     }
   ],
-  "44": [
+  "50": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3542,7 +3831,7 @@ Metas {
       }
     }
   ],
-  "45": [
+  "51": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3555,7 +3844,7 @@ Metas {
       }
     }
   ],
-  "46": [
+  "52": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3568,7 +3857,7 @@ Metas {
       }
     }
   ],
-  "47": [
+  "53": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3581,7 +3870,7 @@ Metas {
       }
     }
   ],
-  "48": [
+  "54": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3594,7 +3883,7 @@ Metas {
       }
     }
   ],
-  "49": [
+  "55": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3616,7 +3905,7 @@ Metas {
       "value": 1009
     }
   ],
-  "50": [
+  "56": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3629,7 +3918,7 @@ Metas {
       }
     }
   ],
-  "51": [
+  "57": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3642,7 +3931,7 @@ Metas {
       }
     }
   ],
-  "52": [
+  "58": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3655,7 +3944,7 @@ Metas {
       }
     }
   ],
-  "53": [
+  "59": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -3737,7 +4026,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "54": [
+  "60": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3759,7 +4048,7 @@ Metas {
       "value": 1002
     }
   ],
-  "55": [
+  "61": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3772,7 +4061,7 @@ Metas {
       }
     }
   ],
-  "56": [
+  "62": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3785,7 +4074,7 @@ Metas {
       }
     }
   ],
-  "57": [
+  "63": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3798,7 +4087,7 @@ Metas {
       }
     }
   ],
-  "58": [
+  "64": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3811,7 +4100,7 @@ Metas {
       }
     }
   ],
-  "59": [
+  "65": [
     {
       "key": {
         "name": "tac.decomp-inscalar.sort",
@@ -3824,7 +4113,7 @@ Metas {
       }
     }
   ],
-  "60": [
+  "66": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3846,7 +4135,7 @@ Metas {
       "value": 1017
     }
   ],
-  "61": [
+  "67": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3868,7 +4157,7 @@ Metas {
       "value": 1016
     }
   ],
-  "62": [
+  "68": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -3890,7 +4179,7 @@ Metas {
       "value": 1012
     }
   ],
-  "63": [
+  "69": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -3948,7 +4237,7 @@ Metas {
       "value": "lastHasThrown"
     }
   ],
-  "64": [
+  "70": [
     {
       "key": {
         "name": "tac.no.callindex",
@@ -3959,7 +4248,7 @@ Metas {
       }
     }
   ],
-  "65": [
+  "71": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -4089,7 +4378,7 @@ Metas {
       "value": 1003
     }
   ],
-  "66": [
+  "72": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -4219,7 +4508,7 @@ Metas {
       "value": 1003
     }
   ],
-  "67": [
+  "73": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -4301,7 +4590,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "68": [
+  "74": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -4380,7 +4669,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "69": [
+  "75": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -4570,7 +4859,7 @@ Metas {
       "value": "e.msg.value"
     }
   ],
-  "70": [
+  "76": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -4751,7 +5040,7 @@ Metas {
       "value": "e.tx.origin"
     }
   ],
-  "71": [
+  "77": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -4976,7 +5265,7 @@ Metas {
       "value": "e.block.basefee"
     }
   ],
-  "72": [
+  "78": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5201,7 +5490,7 @@ Metas {
       "value": "e.block.blobbasefee"
     }
   ],
-  "73": [
+  "79": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5424,7 +5713,7 @@ Metas {
       "value": "e.block.coinbase"
     }
   ],
-  "74": [
+  "80": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5649,7 +5938,7 @@ Metas {
       "value": "e.block.difficulty"
     }
   ],
-  "75": [
+  "81": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -5874,7 +6163,7 @@ Metas {
       "value": "e.block.gaslimit"
     }
   ],
-  "76": [
+  "82": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -6099,7 +6388,7 @@ Metas {
       "value": "e.block.number"
     }
   ],
-  "77": [
+  "83": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -6324,7 +6613,7 @@ Metas {
       "value": "e.block.timestamp"
     }
   ],
-  "78": [
+  "84": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -6406,7 +6695,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "79": [
+  "85": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -6489,7 +6778,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "80": [
+  "86": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -6572,7 +6861,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "81": [
+  "87": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -6654,7 +6943,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "82": [
+  "88": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -6733,7 +7022,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "83": [
+  "89": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -6815,7 +7104,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "84": [
+  "90": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -6866,7 +7155,7 @@ Metas {
       "value": "x"
     }
   ],
-  "85": [
+  "91": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -7111,7 +7400,7 @@ Metas {
       "value": "s.s1.x"
     }
   ],
-  "86": [
+  "92": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -7354,7 +7643,7 @@ Metas {
       "value": "s.s1.y"
     }
   ],
-  "87": [
+  "93": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -7599,7 +7888,7 @@ Metas {
       "value": "s.s1.z1"
     }
   ],
-  "88": [
+  "94": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -7844,7 +8133,7 @@ Metas {
       "value": "s.s1.z2"
     }
   ],
-  "89": [
+  "95": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -8087,7 +8376,7 @@ Metas {
       "value": "s.s1.b1"
     }
   ],
-  "90": [
+  "96": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -8332,7 +8621,7 @@ Metas {
       "value": "s.s1.x2"
     }
   ],
-  "91": [
+  "97": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -8575,7 +8864,7 @@ Metas {
       "value": "s.s1.b2"
     }
   ],
-  "92": [
+  "98": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -8820,7 +9109,7 @@ Metas {
       "value": "s.s2.x"
     }
   ],
-  "93": [
+  "99": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -9063,7 +9352,7 @@ Metas {
       "value": "s.s2.y"
     }
   ],
-  "94": [
+  "100": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -9308,7 +9597,7 @@ Metas {
       "value": "s.s2.z1"
     }
   ],
-  "95": [
+  "101": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -9553,7 +9842,7 @@ Metas {
       "value": "s.s2.z2"
     }
   ],
-  "96": [
+  "102": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -9683,7 +9972,7 @@ Metas {
       "value": 1003
     }
   ],
-  "97": [
+  "103": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -9813,7 +10102,7 @@ Metas {
       "value": 1003
     }
   ],
-  "98": [
+  "104": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -9943,7 +10232,7 @@ Metas {
       "value": 1003
     }
   ],
-  "99": [
+  "105": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -10073,7 +10362,7 @@ Metas {
       "value": 1003
     }
   ],
-  "100": [
+  "106": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -10203,7 +10492,7 @@ Metas {
       "value": 1003
     }
   ],
-  "101": [
+  "107": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -10333,7 +10622,7 @@ Metas {
       "value": 1003
     }
   ],
-  "102": [
+  "108": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -10459,7 +10748,7 @@ Metas {
       "value": 1009
     }
   ],
-  "103": [
+  "109": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -10508,7 +10797,7 @@ Metas {
       "value": "executingContract"
     }
   ],
-  "104": [
+  "110": [
     {
       "key": {
         "name": "cvl.type",
@@ -10548,7 +10837,7 @@ Metas {
       "value": "testContract"
     }
   ],
-  "105": [
+  "111": [
     {
       "key": {
         "name": "cvl.struct.path",
@@ -10736,7 +11025,7 @@ Metas {
       "value": "e.msg.sender"
     }
   ],
-  "106": [
+  "112": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -10750,7 +11039,7 @@ Metas {
       }
     }
   ],
-  "107": [
+  "113": [
     {
       "key": {
         "name": "cvl.def.site",
@@ -10801,7 +11090,7 @@ Metas {
       "value": "x"
     }
   ],
-  "108": [
+  "114": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10811,7 +11100,7 @@ Metas {
       "value": 0
     }
   ],
-  "109": [
+  "115": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10821,7 +11110,7 @@ Metas {
       "value": 1
     }
   ],
-  "110": [
+  "116": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10831,7 +11120,7 @@ Metas {
       "value": 2
     }
   ],
-  "111": [
+  "117": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -10869,7 +11158,7 @@ Metas {
       }
     }
   ],
-  "112": [
+  "118": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10879,7 +11168,7 @@ Metas {
       "value": 3
     }
   ],
-  "113": [
+  "119": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10889,7 +11178,7 @@ Metas {
       "value": 4
     }
   ],
-  "114": [
+  "120": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10899,7 +11188,7 @@ Metas {
       "value": 5
     }
   ],
-  "115": [
+  "121": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10909,7 +11198,7 @@ Metas {
       "value": 6
     }
   ],
-  "116": [
+  "122": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -10929,7 +11218,7 @@ Metas {
       }
     }
   ],
-  "117": [
+  "123": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -10969,7 +11258,7 @@ Metas {
       }
     }
   ],
-  "118": [
+  "124": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10979,7 +11268,7 @@ Metas {
       "value": 7
     }
   ],
-  "119": [
+  "125": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10989,7 +11278,7 @@ Metas {
       "value": 8
     }
   ],
-  "120": [
+  "126": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -10999,7 +11288,7 @@ Metas {
       "value": 9
     }
   ],
-  "121": [
+  "127": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11009,7 +11298,7 @@ Metas {
       "value": 10
     }
   ],
-  "122": [
+  "128": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11019,7 +11308,7 @@ Metas {
       "value": 11
     }
   ],
-  "123": [
+  "129": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11029,7 +11318,7 @@ Metas {
       "value": 12
     }
   ],
-  "124": [
+  "130": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11039,7 +11328,7 @@ Metas {
       "value": 13
     }
   ],
-  "125": [
+  "131": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11049,7 +11338,7 @@ Metas {
       "value": 14
     }
   ],
-  "126": [
+  "132": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11059,7 +11348,7 @@ Metas {
       "value": 15
     }
   ],
-  "127": [
+  "133": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11069,7 +11358,7 @@ Metas {
       "value": 16
     }
   ],
-  "128": [
+  "134": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11079,7 +11368,7 @@ Metas {
       "value": 17
     }
   ],
-  "129": [
+  "135": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11108,7 +11397,7 @@ Metas {
       }
     }
   ],
-  "130": [
+  "136": [
     {
       "key": {
         "name": "cvl.exp",
@@ -11185,7 +11474,7 @@ Metas {
       }
     }
   ],
-  "131": [
+  "137": [
     {
       "key": {
         "name": "cvl.exp",
@@ -11261,7 +11550,7 @@ Metas {
       }
     }
   ],
-  "132": [
+  "138": [
     {
       "key": {
         "name": "cvl.exp",
@@ -11411,7 +11700,20 @@ Metas {
             "tag": {
               "#class": "tac.Tag.Int"
             },
-            "callIndex": 0
+            "callIndex": 0,
+            "meta": [
+              {
+                "key": {
+                  "name": "cvl.type",
+                  "type": "spec.cvlast.CVLType$PureCVLType",
+                  "erasureStrategy": "CallTrace"
+                },
+                "value": {
+                  "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                  "k": 256
+                }
+              }
+            ]
           },
           "exp": {
             "#class": "spec.cvlast.CVLExp.VariableExp",
@@ -11533,7 +11835,7 @@ Metas {
       }
     }
   ],
-  "133": [
+  "139": [
     {
       "key": {
         "name": "cvl.range",
@@ -11554,7 +11856,7 @@ Metas {
       }
     }
   ],
-  "134": [
+  "140": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11583,7 +11885,7 @@ Metas {
       }
     }
   ],
-  "135": [
+  "141": [
     {
       "key": {
         "name": "cvl.range",
@@ -11604,7 +11906,7 @@ Metas {
       }
     }
   ],
-  "136": [
+  "142": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -11633,7 +11935,7 @@ Metas {
       }
     }
   ],
-  "137": [
+  "143": [
     {
       "key": {
         "name": "cvl.exp",
@@ -11710,7 +12012,7 @@ Metas {
       }
     }
   ],
-  "138": [
+  "144": [
     {
       "key": {
         "name": "cvl.range",
@@ -11731,7 +12033,7 @@ Metas {
       }
     }
   ],
-  "139": [
+  "145": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -11744,7 +12046,20 @@ Metas {
         "tag": {
           "#class": "tac.Tag.Int"
         },
-        "callIndex": 0
+        "callIndex": 0,
+        "meta": [
+          {
+            "key": {
+              "name": "cvl.type",
+              "type": "spec.cvlast.CVLType$PureCVLType",
+              "erasureStrategy": "CallTrace"
+            },
+            "value": {
+              "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+              "k": 256
+            }
+          }
+        ]
       }
     },
     {
@@ -11767,7 +12082,7 @@ Metas {
       }
     }
   ],
-  "140": [
+  "146": [
     {
       "key": {
         "name": "tac.immutable.array",
@@ -11856,7 +12171,7 @@ Metas {
       }
     }
   ],
-  "141": [
+  "147": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -11903,7 +12218,7 @@ Metas {
       }
     }
   ],
-  "142": [
+  "148": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -11950,7 +12265,7 @@ Metas {
       }
     }
   ],
-  "143": [
+  "149": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -11997,7 +12312,7 @@ Metas {
       }
     }
   ],
-  "144": [
+  "150": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12044,7 +12359,7 @@ Metas {
       }
     }
   ],
-  "145": [
+  "151": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12091,7 +12406,7 @@ Metas {
       }
     }
   ],
-  "146": [
+  "152": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12138,7 +12453,7 @@ Metas {
       }
     }
   ],
-  "147": [
+  "153": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12185,7 +12500,7 @@ Metas {
       }
     }
   ],
-  "148": [
+  "154": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12232,7 +12547,7 @@ Metas {
       }
     }
   ],
-  "149": [
+  "155": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12279,7 +12594,7 @@ Metas {
       }
     }
   ],
-  "150": [
+  "156": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12326,7 +12641,7 @@ Metas {
       }
     }
   ],
-  "151": [
+  "157": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12373,7 +12688,7 @@ Metas {
       }
     }
   ],
-  "152": [
+  "158": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -12420,7 +12735,7 @@ Metas {
       }
     }
   ],
-  "153": [
+  "159": [
     {
       "key": {
         "name": "tac.transfers.balance",
@@ -12450,7 +12765,7 @@ Metas {
       }
     }
   ],
-  "154": [
+  "160": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -12497,7 +12812,7 @@ Metas {
       }
     }
   ],
-  "155": [
+  "161": [
     {
       "key": {
         "name": "tac.meta",
@@ -12538,7 +12853,7 @@ Metas {
       }
     }
   ],
-  "156": [
+  "162": [
     {
       "key": {
         "name": "tac.meta",
@@ -12579,7 +12894,7 @@ Metas {
       }
     }
   ],
-  "157": [
+  "163": [
     {
       "key": {
         "name": "tac.meta",
@@ -12620,7 +12935,7 @@ Metas {
       }
     }
   ],
-  "158": [
+  "164": [
     {
       "key": {
         "name": "tac.meta",
@@ -12661,7 +12976,7 @@ Metas {
       }
     }
   ],
-  "159": [
+  "165": [
     {
       "key": {
         "name": "tac.meta",
@@ -12702,7 +13017,7 @@ Metas {
       }
     }
   ],
-  "160": [
+  "166": [
     {
       "key": {
         "name": "tac.immutable.array",
@@ -12791,7 +13106,7 @@ Metas {
       }
     }
   ],
-  "161": [
+  "167": [
     {
       "key": {
         "name": "tac.meta",
@@ -12880,7 +13195,7 @@ Metas {
       }
     }
   ],
-  "162": [
+  "168": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -13030,7 +13345,7 @@ Metas {
       "value": 1003
     }
   ],
-  "163": [
+  "169": [
     {
       "key": {
         "name": "tac.meta",
@@ -13119,7 +13434,7 @@ Metas {
       }
     }
   ],
-  "164": [
+  "170": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -13269,7 +13584,7 @@ Metas {
       "value": 1003
     }
   ],
-  "165": [
+  "171": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -13419,7 +13734,7 @@ Metas {
       "value": 1003
     }
   ],
-  "166": [
+  "172": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -13569,7 +13884,7 @@ Metas {
       "value": 1003
     }
   ],
-  "167": [
+  "173": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -13719,7 +14034,7 @@ Metas {
       "value": 1003
     }
   ],
-  "168": [
+  "174": [
     {
       "key": {
         "name": "tac.meta",
@@ -13808,7 +14123,7 @@ Metas {
       }
     }
   ],
-  "169": [
+  "175": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -13958,7 +14273,7 @@ Metas {
       "value": 1003
     }
   ],
-  "170": [
+  "176": [
     {
       "key": {
         "name": "tac.meta",
@@ -14039,7 +14354,7 @@ Metas {
       }
     }
   ],
-  "171": [
+  "177": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -14189,7 +14504,7 @@ Metas {
       "value": 1003
     }
   ],
-  "172": [
+  "178": [
     {
       "key": {
         "name": "tac.meta",
@@ -14278,7 +14593,7 @@ Metas {
       }
     }
   ],
-  "173": [
+  "179": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -14428,7 +14743,7 @@ Metas {
       "value": 1003
     }
   ],
-  "174": [
+  "180": [
     {
       "key": {
         "name": "tac.meta",
@@ -14517,7 +14832,7 @@ Metas {
       }
     }
   ],
-  "175": [
+  "181": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -14667,7 +14982,7 @@ Metas {
       "value": 1003
     }
   ],
-  "176": [
+  "182": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -14817,7 +15132,7 @@ Metas {
       "value": 1003
     }
   ],
-  "177": [
+  "183": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -14967,7 +15282,7 @@ Metas {
       "value": 1003
     }
   ],
-  "178": [
+  "184": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -15117,7 +15432,7 @@ Metas {
       "value": 1003
     }
   ],
-  "179": [
+  "185": [
     {
       "key": {
         "name": "tac.meta",
@@ -15206,7 +15521,7 @@ Metas {
       }
     }
   ],
-  "180": [
+  "186": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -15356,7 +15671,7 @@ Metas {
       "value": 1003
     }
   ],
-  "181": [
+  "187": [
     {
       "key": {
         "name": "tac.meta",
@@ -15437,7 +15752,7 @@ Metas {
       }
     }
   ],
-  "182": [
+  "188": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -15587,7 +15902,7 @@ Metas {
       "value": 1003
     }
   ],
-  "183": [
+  "189": [
     {
       "key": {
         "name": "tac.meta",
@@ -15668,7 +15983,7 @@ Metas {
       }
     }
   ],
-  "184": [
+  "190": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -15814,7 +16129,7 @@ Metas {
       "value": 1009
     }
   ],
-  "185": [
+  "191": [
     {
       "key": {
         "name": "Tac.symbol.keyword",
@@ -15861,7 +16176,7 @@ Metas {
       }
     }
   ],
-  "186": [
+  "192": [
     {
       "key": {
         "name": "tac.immutable.array",
@@ -15950,7 +16265,7 @@ Metas {
       }
     }
   ],
-  "187": [
+  "193": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -15979,7 +16294,7 @@ Metas {
       }
     }
   ],
-  "188": [
+  "194": [
     {
       "key": {
         "name": "cvl.exp",
@@ -16055,7 +16370,7 @@ Metas {
       }
     }
   ],
-  "189": [
+  "195": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -16087,7 +16402,7 @@ Metas {
       }
     }
   ],
-  "190": [
+  "196": [
     {
       "key": {
         "name": "cvl.range",
@@ -16108,7 +16423,7 @@ Metas {
       }
     }
   ],
-  "191": [
+  "197": [
     {
       "key": {
         "name": "tac.direct.storage.access",
@@ -16138,7 +16453,7 @@ Metas {
       }
     }
   ],
-  "192": [
+  "198": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -16170,7 +16485,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -16190,7 +16518,7 @@ Metas {
       }
     }
   ],
-  "193": [
+  "199": [
     {
       "key": {
         "name": "cvl.exp",
@@ -16257,7 +16585,7 @@ Metas {
       }
     }
   ],
-  "194": [
+  "200": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -16286,7 +16614,7 @@ Metas {
       }
     }
   ],
-  "195": [
+  "201": [
     {
       "key": {
         "name": "cvl.exp",
@@ -16362,7 +16690,7 @@ Metas {
       }
     }
   ],
-  "196": [
+  "202": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -16394,7 +16722,7 @@ Metas {
       }
     }
   ],
-  "197": [
+  "203": [
     {
       "key": {
         "name": "cvl.range",
@@ -16415,7 +16743,7 @@ Metas {
       }
     }
   ],
-  "198": [
+  "204": [
     {
       "key": {
         "name": "tac.direct.storage.access",
@@ -16445,7 +16773,7 @@ Metas {
       }
     }
   ],
-  "199": [
+  "205": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -16537,7 +16865,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "200": [
+  "206": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -16569,7 +16897,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -16589,7 +16930,7 @@ Metas {
       }
     }
   ],
-  "201": [
+  "207": [
     {
       "key": {
         "name": "cvl.exp",
@@ -16666,7 +17007,7 @@ Metas {
       }
     }
   ],
-  "202": [
+  "208": [
     {
       "key": {
         "name": "cvl.exp",
@@ -16742,7 +17083,7 @@ Metas {
       }
     }
   ],
-  "203": [
+  "209": [
     {
       "key": {
         "name": "cvl.exp",
@@ -16893,7 +17234,20 @@ Metas {
             "tag": {
               "#class": "tac.Tag.Int"
             },
-            "callIndex": 0
+            "callIndex": 0,
+            "meta": [
+              {
+                "key": {
+                  "name": "cvl.type",
+                  "type": "spec.cvlast.CVLType$PureCVLType",
+                  "erasureStrategy": "CallTrace"
+                },
+                "value": {
+                  "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                  "k": 256
+                }
+              }
+            ]
           },
           "exp": {
             "#class": "spec.cvlast.CVLExp.VariableExp",
@@ -17015,7 +17369,7 @@ Metas {
       }
     }
   ],
-  "204": [
+  "210": [
     {
       "key": {
         "name": "cvl.exp",
@@ -18611,7 +18965,7 @@ Metas {
       }
     }
   ],
-  "205": [
+  "211": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -18640,7 +18994,7 @@ Metas {
       }
     }
   ],
-  "206": [
+  "212": [
     {
       "key": {
         "name": "cvl.exp",
@@ -18716,7 +19070,7 @@ Metas {
       }
     }
   ],
-  "207": [
+  "213": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -18748,7 +19102,7 @@ Metas {
       }
     }
   ],
-  "208": [
+  "214": [
     {
       "key": {
         "name": "cvl.range",
@@ -18769,7 +19123,7 @@ Metas {
       }
     }
   ],
-  "209": [
+  "215": [
     {
       "key": {
         "name": "tac.direct.storage.access",
@@ -18799,7 +19153,7 @@ Metas {
       }
     }
   ],
-  "210": [
+  "216": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -18831,7 +19185,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -18851,7 +19218,7 @@ Metas {
       }
     }
   ],
-  "211": [
+  "217": [
     {
       "key": {
         "name": "cvl.exp",
@@ -18918,7 +19285,7 @@ Metas {
       }
     }
   ],
-  "212": [
+  "218": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -18947,7 +19314,7 @@ Metas {
       }
     }
   ],
-  "213": [
+  "219": [
     {
       "key": {
         "name": "cvl.exp",
@@ -19023,7 +19390,7 @@ Metas {
       }
     }
   ],
-  "214": [
+  "220": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -19055,7 +19422,7 @@ Metas {
       }
     }
   ],
-  "215": [
+  "221": [
     {
       "key": {
         "name": "cvl.range",
@@ -19076,7 +19443,7 @@ Metas {
       }
     }
   ],
-  "216": [
+  "222": [
     {
       "key": {
         "name": "tac.direct.storage.access",
@@ -19106,7 +19473,7 @@ Metas {
       }
     }
   ],
-  "217": [
+  "223": [
     {
       "key": {
         "name": "tac.storage.non-indexed-path.family",
@@ -19198,7 +19565,7 @@ Metas {
       "value": "ce4604a0000000000000000000000001"
     }
   ],
-  "218": [
+  "224": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -19230,7 +19597,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -19250,7 +19630,7 @@ Metas {
       }
     }
   ],
-  "219": [
+  "225": [
     {
       "key": {
         "name": "cvl.exp",
@@ -19327,7 +19707,7 @@ Metas {
       }
     }
   ],
-  "220": [
+  "226": [
     {
       "key": {
         "name": "cvl.exp",
@@ -19403,7 +19783,7 @@ Metas {
       }
     }
   ],
-  "221": [
+  "227": [
     {
       "key": {
         "name": "cvl.exp",
@@ -19554,7 +19934,20 @@ Metas {
             "tag": {
               "#class": "tac.Tag.Int"
             },
-            "callIndex": 0
+            "callIndex": 0,
+            "meta": [
+              {
+                "key": {
+                  "name": "cvl.type",
+                  "type": "spec.cvlast.CVLType$PureCVLType",
+                  "erasureStrategy": "CallTrace"
+                },
+                "value": {
+                  "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                  "k": 256
+                }
+              }
+            ]
           },
           "exp": {
             "#class": "spec.cvlast.CVLExp.VariableExp",
@@ -19676,7 +20069,7 @@ Metas {
       }
     }
   ],
-  "222": [
+  "228": [
     {
       "key": {
         "name": "cvl.exp",
@@ -21064,7 +21457,7 @@ Metas {
       }
     }
   ],
-  "223": [
+  "229": [
     {
       "key": {
         "name": "tac.meta",
@@ -21105,7 +21498,7 @@ Metas {
       }
     }
   ],
-  "224": [
+  "230": [
     {
       "key": {
         "name": "cvl.label.start.id",
@@ -21134,7 +21527,7 @@ Metas {
       }
     }
   ],
-  "225": [
+  "231": [
     {
       "key": {
         "name": "cvl.exp",
@@ -21210,7 +21603,7 @@ Metas {
       }
     }
   ],
-  "226": [
+  "232": [
     {
       "key": {
         "name": "assert.format.arg.1",
@@ -21242,7 +21635,7 @@ Metas {
       }
     }
   ],
-  "227": [
+  "233": [
     {
       "key": {
         "name": "cvl.range",
@@ -21263,7 +21656,7 @@ Metas {
       }
     }
   ],
-  "228": [
+  "234": [
     {
       "key": {
         "name": "tac.direct.storage.access",
@@ -21293,7 +21686,7 @@ Metas {
       }
     }
   ],
-  "229": [
+  "235": [
     {
       "key": {
         "name": "tac.is-temp-var",
@@ -21325,7 +21718,20 @@ Metas {
                 "tag": {
                   "#class": "tac.Tag.Int"
                 },
-                "callIndex": 0
+                "callIndex": 0,
+                "meta": [
+                  {
+                    "key": {
+                      "name": "cvl.type",
+                      "type": "spec.cvlast.CVLType$PureCVLType",
+                      "erasureStrategy": "CallTrace"
+                    },
+                    "value": {
+                      "#class": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                      "n": "0"
+                    }
+                  }
+                ]
               },
               "baseSlot": {
                 "#class": "vc.data.TACSymbol.Const",
@@ -21345,7 +21751,7 @@ Metas {
       }
     }
   ],
-  "230": [
+  "236": [
     {
       "key": {
         "name": "cvl.user.defined.assert",

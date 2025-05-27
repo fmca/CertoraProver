@@ -252,11 +252,7 @@ fun main(args: Array<String>) {
                     SpecFile.getOrNull() != null -> handleBytecodeFlow(BytecodeFiles.get(), SpecFile.get())
 
                 fileName == null && isCertoraScriptFlow(buildFileName, verificationFileName) -> {
-                    val cfgFileNames = File(getSourcesSubdirInInternal()).walk().filter {
-                        it.isFile
-                    }.map {
-                        getRelativeFileName(it.toString(), SOURCES_SUBDIR)
-                    }.toSet()
+                    val cfgFileNames = getFilesInSourcesDir()
                     val ruleCheckResults = handleCertoraScriptFlow(
                         buildFileName,
                         verificationFileName,
@@ -335,10 +331,10 @@ fun main(args: Array<String>) {
         )
         finalResult = FinalResult.ERROR
     } finally {
-        // bye bye to all thread pools
-        longProcessKiller.bye()
-        timePing.bye()
-        timeChecker?.bye()
+        // Interrupt all thread pools
+        longProcessKiller.interruptThread()
+        timePing.interruptThread()
+        timeChecker?.interruptThread()
         CVTAlertReporter().close()
         // always output stats, even if erroneous
         RunIDFactory.runId().reportRunEnd()
@@ -537,7 +533,7 @@ suspend fun handleBytecodeFlow(bytecodeFiles: Set<String>, specFilename: String)
 }
 
 suspend fun handleTACFlow(fileName: String) {
-    val (scene, reporter, treeView) = createSceneReporterAndTreeview(fileName)
+    val (scene, reporter, treeView) = createSceneReporterAndTreeview(fileName, "TACMainProgram")
 
     // Create a fake rule for the whole program although the program can have more than one assertion.
     // since `satisfy` is not a TAC statement, we handle it as an assert rule
@@ -562,17 +558,16 @@ suspend fun handleTACFlow(fileName: String) {
 }
 
 
-fun createSceneReporterAndTreeview(fileName: String): Triple<IScene, ReporterContainer, TreeViewReporter> {
+fun createSceneReporterAndTreeview(fileName: String, contractName: String): Triple<IScene, ReporterContainer, TreeViewReporter> {
     val scene = SceneFactory.getScene(DegenerateContractSource(fileName))
     val reporterContainer = ReporterContainer(
         listOf(
-            ConsoleReporter,
-            StatusReporter
+            ConsoleReporter
         )
     )
 
     val treeView = TreeViewReporter(
-        null,
+        contractName,
         "",
         scene,
     )
@@ -585,6 +580,10 @@ suspend fun handleGenericFlow(
     treeView: TreeViewReporter,
     rules: Iterable<Pair<EcosystemAgnosticRule, CoreTACProgram>>
 ): List<RuleCheckResult.Single> {
+
+    // Copy in `inputs` directory the contents of the `.certora_sources` directory.
+    val filesInSourceDir = getFilesInSourcesDir()
+    CertoraConf.backupFiles(filesInSourceDir)
 
     treeView.buildRuleTree(rules.map { it.first })
 
@@ -641,7 +640,7 @@ suspend fun handleGenericFlow(
 }
 
 suspend fun handleSorobanFlow(fileName: String) {
-    val (scene, reporterContainer, treeView) = createSceneReporterAndTreeview(fileName)
+    val (scene, reporterContainer, treeView) = createSceneReporterAndTreeview(fileName, "SorobanMainProgram")
     val wasmRules = WasmEntryPoint.webAssemblyToTAC(
         inputFile = File(fileName),
         selectedRules = Config.WasmEntrypoint.getOrNull().orEmpty(),
@@ -659,7 +658,7 @@ suspend fun handleSorobanFlow(fileName: String) {
 }
 
 suspend fun handleSolanaFlow(fileName: String): Pair<TreeViewReporter,List<RuleCheckResult.Single>> {
-    val (scene, reporterContainer, treeView) = createSceneReporterAndTreeview(fileName)
+    val (scene, reporterContainer, treeView) = createSceneReporterAndTreeview(fileName, "SolanaMainProgram")
     val solanaRules = sbf.solanaSbfToTAC(fileName)
     val result = handleGenericFlow(
         scene,
@@ -708,6 +707,14 @@ fun runBuildScript() {
             }
         }
     }
+}
+
+fun getFilesInSourcesDir(): Set<String> {
+    return File(getSourcesSubdirInInternal()).walk().filter {
+        it.isFile
+    }.map {
+        getRelativeFileName(it.toString(), SOURCES_SUBDIR)
+    }.toSet()
 }
 
 /**

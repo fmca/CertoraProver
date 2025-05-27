@@ -143,7 +143,6 @@ object Inliner {
 
         @GenerateRemapper
         @KSerializable
-        @Treapable
         data class PushRecord(
             val callee: MethodRef,
             val summary: CallSummary?,
@@ -161,7 +160,6 @@ object Inliner {
 
         @GenerateRemapper
         @KSerializable
-        @Treapable
         data class PopRecord(
             val callee: MethodRef,
             @GeneratedBy(Allocator.Id.CALL_ID)

@@ -101,6 +101,7 @@ sealed class TACBuiltInFunction : AmbiSerializable {
         is NoMulOverflowCheck -> "_${tag.bitwidth}"
         is TwosComplement.Unwrap -> "_${tag.bitwidth}"
         is TwosComplement.Wrap -> "_${tag.bitwidth}"
+        is NondetFunction -> "_${numArgs}"
 
         //the rest are objects and don't have params:
         DisjointSighashes,
@@ -187,6 +188,7 @@ sealed class TACBuiltInFunction : AmbiSerializable {
         to_storage_key,
         partition_init,
         transient_read,
+        nondet_function,
         ;
     }
 
@@ -807,9 +809,27 @@ sealed class TACBuiltInFunction : AmbiSerializable {
 
     }
 
-    data class BuiltinFunctionVar(val eName: BuiltInFuncName,
-                                  val paramSorts: List<Tag>,
-                                  val returnSort: Tag,){
-        fun getVar(): TACExpr.Sym.Var = TACSymbol.Var(eName.name, Tag.GhostMap(paramSorts, returnSort)).asSym()
+
+    @KSerializable
+    data class NondetFunction(val numArgs: Int): TACBuiltInFunction() {
+        override val eName: BuiltInFuncName
+            get() = BuiltInFuncName.nondet_function
+        override val paramSorts: List<Tag>
+            get() = List(numArgs) {
+                Tag.Bit256
+            }
+        override val returnSort: Tag
+            get() = Tag.Bit256
+
+        override fun getLExpressionBuilder(conv: ToLExpression.Conv, meta: MetaMap?): (List<TACExpr>) -> LExpression {
+            return { args ->
+                check(args.size == this.paramSorts.size)
+                val tag = Tag.GhostMap(paramSorts, returnSort)
+                conv.lxf {
+                    multiSelect(const(name, tag), args.map { conv(it, meta) }, tag)
+                }
+            }
+        }
+
     }
 }

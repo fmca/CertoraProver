@@ -205,7 +205,6 @@ sealed class SnippetCmd: AmbiSerializable {
         override fun hashCode() = hashObject(this)
         private fun readResolve(): Any = SnippetCreationDisabled
     }
-
     /**
      * Snippets which carry debug information from the EVM.
      */

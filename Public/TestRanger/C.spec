@@ -15,9 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- using C as c;
+using C as c;
 
-invariant nNonNegative() c.n >= 0;
+methods {
+    function getN() external returns (int8) envfree;
+}
+
+invariant nNonNegative() getN() >= 0;
+
+rule nNonNegativeRule {
+    assert c.n >= 0;
+}
 
 invariant mCurrentContractNonNegative() c.m[currentContract] >= 0 {
     preserved setM1(address a) with (env e) {

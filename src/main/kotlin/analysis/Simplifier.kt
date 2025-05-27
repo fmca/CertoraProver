@@ -1265,7 +1265,7 @@ object EthereumVariables {
     }
 
     fun simplifyMload(c: TACCmd.EVM.MloadCmd): CommandWithRequiredDecls<TACCmd.Simple> {
-        if (Mem0x0To0x40AsScalar.get() && c.loc is TACSymbol.Const && c.loc.value in setOf(
+        if (Mem0x0To0x40AsScalar && c.loc is TACSymbol.Const && c.loc.value in setOf(
                 BigInteger.valueOf(0),
                 BigInteger.valueOf(32)
             )
@@ -1302,7 +1302,7 @@ object EthereumVariables {
     }
 
     fun simplifyMstore(c: TACCmd.EVM.MstoreCmd): CommandWithRequiredDecls<TACCmd.Simple> {
-        if (Mem0x0To0x40AsScalar.get() && c.loc is TACSymbol.Const && c.loc.value in setOf(
+        if (Mem0x0To0x40AsScalar && c.loc is TACSymbol.Const && c.loc.value in setOf(
                 BigInteger.valueOf(0),
                 BigInteger.valueOf(32)
             )

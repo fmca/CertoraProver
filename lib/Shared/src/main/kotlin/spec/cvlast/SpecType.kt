@@ -20,6 +20,7 @@ package spec.cvlast
 import com.certora.collect.*
 import kotlinx.serialization.Serializable
 import spec.genericrulegenerators.BuiltInRuleId
+import spec.rules.CVLSingleRule
 import spec.rules.IRule
 import utils.*
 
@@ -347,7 +348,7 @@ sealed class SpecType: AmbiSerializable {
             data class Range(val len: Int) : BMC()
 
             @Serializable
-            data class Sequence(val inv: CVLInvariant) : BMC()
+            data class Sequence(val baseRule: CVLSingleRule) : BMC()
         }
     }
 

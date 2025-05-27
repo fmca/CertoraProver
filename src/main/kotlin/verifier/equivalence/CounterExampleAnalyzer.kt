@@ -18,30 +18,33 @@
 package verifier.equivalence
 
 import analysis.*
+import analysis.ip.INTERNAL_FUNC_EXIT
+import analysis.ip.INTERNAL_FUNC_START
 import datastructures.stdcollections.*
 import evm.DEFAULT_SIGHASH_SIZE
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
-import kotlin.streams.toList
+import evm.EVM_BITWIDTH256
+import evm.EVM_BYTES_IN_A_WORD
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import log.*
 import report.calltrace.CallInputsAndOutputs
 import report.calltrace.calldataMovement
-import report.calltrace.formatter.CallTraceValue
-import report.calltrace.formatter.CallTraceValueFormatter
-import report.calltrace.formatter.LayoutDecoderStrategy
+import report.calltrace.formatter.*
 import report.calltrace.registerCalldataMovement
 import rules.RuleCheckResult
-import scene.ContractClass
 import scene.TACMethod
 import solver.CounterexampleModel
-import tac.CallId
+import spec.cvlast.VMParam
+import spec.cvlast.typedescriptors.EVMTypeDescriptor
+import tac.NBId
 import utils.*
 import vc.data.*
-import verifier.equivalence.CEXUtils.withFailureString
 import verifier.equivalence.EquivalenceChecker.Companion.pp
 import verifier.equivalence.EquivalenceChecker.Companion.toList
 import verifier.equivalence.StaticBufferRefinement.fmtError
+import verifier.equivalence.summarization.CommonPureInternalFunction
 import java.math.BigInteger
 import java.util.stream.Collectors
+import kotlin.streams.toList
 
 private val logger = Logger(LoggerTypes.EQUIVALENCE)
 
@@ -59,10 +62,16 @@ internal class CounterExampleAnalyzer(
     private val vcProgram: CoreTACProgram,
     private val methodAContext: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODA>,
     private val methodBContext: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODB>,
-    private val instLevels: EquivalenceChecker.InstrumentationLevels,
+    private val instLevels: EquivalenceChecker.IInstrumentationLevels,
     override val context: QueryContext,
-    val pairwiseProofManager: EquivalenceChecker.PairwiseProofManager
+    val pairwiseProofManager: EquivalenceChecker.PairwiseProofManager,
 ) : WithQueryContext {
+
+    private val callTraceValueFormatter = CallTraceValueFormatter(
+        scene = scene,
+        model = theModel,
+        addrToContract = mapOf()
+    )
 
     fun interface CEXContinuation {
         suspend fun resume(): EquivalenceChecker.SatInterpretation
@@ -75,115 +84,39 @@ internal class CounterExampleAnalyzer(
         data class Found<T>(val what: T) : MatchingEventData<T>
         data object Missing : MatchingEventData<Nothing>
     }
-
-    /**
-     * Representation of selecting a value at [loc] out of [base].
-     */
-    private data class Sel(
-        val base: TACSymbol.Var,
-        val loc: TACExpr
-    )
-
-    private val selectorMatch = PatternMatcher.Pattern.AssigningPattern0(
-        klass = TACCmd.Simple.AssigningCmd.AssignExpCmd::class.java,
-        extract = ext@{ _, cmd ->
-            val r = cmd.rhs as? TACExpr.Select ?: return@ext PatternMatcher.ConstLattice.NoMatch
-            val baseSym = (r.base as? TACExpr.Sym.Var)?.s ?: return@ext PatternMatcher.ConstLattice.NoMatch
-            PatternMatcher.ConstLattice.Match(
-                Sel(
-                    base = baseSym,
-                    loc = r.loc
-                )
-            )
-        }
-    )
-
-    private val selectEqualityMatch = PatternDSL.build {
-        (selectorMatch.asBuildable() `==` selectorMatch.asBuildable()).withAction { where, o1, o2 ->
-            Triple(where, o1, o2)
-        }
-    }
-
-    /**
-     * Strip skey applications off of expressions
-     */
-    private fun stripSkey(e: TACExpr) : TACSymbol? {
-        return when(e) {
-            is TACExpr.Sym -> e.s
-            is TACExpr.Apply -> {
-                if(e.f != TACBuiltInFunction.ToStorageKey.toTACFunctionSym() || e.ops.size != 1) {
-                    return null
-                }
-
-                return stripSkey(e.ops[0])
-            }
-            else -> null
-        }
-    }
-
     private fun explainStorageDifference(
         failingAssert: LTACCmdView<TACCmd.Simple.AssertCmd>,
     ) : Either<EquivalenceChecker.MismatchExplanation.StorageExplanation, String> {
-        fun fail() : Either<Nothing, String> {
-            return "Couldn't explain storage difference".toRight()
+        fun Either<Nothing, String>.fail(): Either<Nothing, String> {
+            return "Couldn't explain storage difference: ${this.right()}".toRight()
         }
-        val sym = failingAssert.cmd.o as? TACSymbol.Var ?: return fail()
-        val comp = PatternMatcher.compilePattern(vcProgram.analysisCache.graph, selectEqualityMatch)
-        val (where, o1, o2) = comp.query(sym, failingAssert.wrapped).toNullableResult() ?: return fail()
-        val eq = vcProgram.analysisCache.graph.elab(where.ptr).maybeNarrow<TACCmd.Simple.AssigningCmd.AssignExpCmd>()?.cmd?.rhs?.let {
-            it as? TACExpr.BinRel.Eq
-        } ?: return fail()
+        val data = failingAssert.cmd.meta[EquivalenceChecker.STORAGE_EQUIVALENCE_ASSERTION]!!
 
-        val srcContract1 = o1.base.meta.get(TACMeta.STORAGE_KEY) ?: return fail()
-        val srcContract2 = o2.base.meta.get(TACMeta.STORAGE_KEY) ?: return fail()
-        val loc = stripSkey(o1.loc) ?: return fail()
-        val idx = theModel.valueAsBigInteger(loc).leftOr {
-            return fail()
-        }
-        val s1Val = theModel.evalExprByRhs(eq.o1).takeIf {
-            it.first && it.second != null
-        } ?: return fail()
-        val s2Val = theModel.evalExprByRhs(eq.o2).takeIf {
-            it.first && it.second != null
-        } ?: return fail()
+        val slot = data.skolemIndex.formatScalarAs(
+            bytes32Type
+        ).leftOr { return it.fail() }
+        val contractAValue = data.contractAValue.formatScalarAs(bytes32Type).leftOr { return it.fail() }
+        val contractBValue = data.contractBValue.formatScalarAs(bytes32Type).leftOr { return it.fail() }
         return EquivalenceChecker.MismatchExplanation.StorageExplanation(
-            slot = idx,
-            leftOp = EquivalenceChecker.MismatchExplanation.StorageExplanation.StorageRepr(
-                which = scene.getContract(srcContract1) as ContractClass,
-                slotValue = s1Val.second!!
-            ),
-            rightOp = EquivalenceChecker.MismatchExplanation.StorageExplanation.StorageRepr(
-                which = scene.getContract(srcContract2) as ContractClass,
-                slotValue = s2Val.second!!
-            )
+            slot = slot,
+            contractAValue = contractAValue,
+            contractBValue = contractBValue,
         ).toLeft()
     }
 
     /**
-     * From the [instrumentation.transformers.tracing.BufferTraceInstrumentation.CallEvent] object
+     * From the [BufferTraceInstrumentation.CallEvent] object
      * found at [where] in [graph], extract the [verifier.equivalence.EquivalenceChecker.ExternalCall] object
-     * describing the call, using the values in [model]. [maxOrd] indicates we are only interested in calls up to that index,
-     * if the ordinal of [ce] is greater or equal to this parameter, this function returns null. Otherwise, it returns the extracted
+     * describing the call. Otherwise, it returns the extracted
      * ordinal and the [verifier.equivalence.EquivalenceChecker.ExternalCall] object.
      */
     private fun extractEnvironment(
         graph: TACCommandGraph,
         where: LTACCmd,
         ce: BufferTraceInstrumentation.CallEvent,
-        model: CounterexampleModel,
-        maxOrd: Int?
-    ) : Pair<Int, EquivalenceChecker.ExternalCall>? {
-        val ord = model.valueAsBigInteger(ce.ordinal).leftOrNull()?.intValueExact() ?: return run {
-            logger.warn {
-                "Can't even resolve ordinal symbol at $where in $ce"
-            }
-            null
-        }
-        // save processing, if we don't want this, don't make it
-        if(maxOrd != null && ord >= maxOrd) {
-            return null
-        }
-        return ord to callEventDataToInteraction(where, ce, model, graph).toValue({ it }, {
+    ) : EquivalenceChecker.ExternalCall {
+        val model = theModel
+        return callEventDataToInteraction(where, ce, model, graph).toValue({ it }, {
             EquivalenceChecker.ExternalCall.Incomplete(
                 it
             )
@@ -192,7 +125,7 @@ internal class CounterExampleAnalyzer(
 
     /**
      * Try to extract the [verifier.equivalence.EquivalenceChecker.ExternalCall.Complete]
-     * from the [instrumentation.transformers.tracing.BufferTraceInstrumentation.CallEvent] [ce]
+     * from the [BufferTraceInstrumentation.CallEvent] [ce]
      * found at [where] in [graph] using the values in [model].
      */
     private fun callEventDataToInteraction(
@@ -241,39 +174,8 @@ internal class CounterExampleAnalyzer(
             callResult = returnResult,
             calleeCodesize = calleeCodesize,
             calldata = calldata,
-            value = value
+            value = value,
         ).toLeft()
-    }
-
-    /**
-     * Find all calls in the inlined method body with [callId], up to [maxOrd] if it is non-null.
-     * Returns a list of discovered [verifier.equivalence.EquivalenceChecker.ExternalCall], which
-     * may or may not include all of the requested events.
-     */
-    private fun getCallsBefore(
-        callId: CallId,
-        maxOrd: Int?
-    ) : List<EquivalenceChecker.ExternalCall> {
-        val trace = vcProgram.parallelLtacStream().mapNotNull {
-            it `to?` it.maybeAnnotation(BufferTraceInstrumentation.CallEvent.META_KEY)
-        }.filter { (where, _) ->
-            where.ptr.block.calleeIdx == callId && where.ptr.block in theModel.reachableNBIds
-        }.mapNotNull { (where, ce) ->
-            extractEnvironment(
-                graph = vcProgram.analysisCache.graph,
-                model = theModel,
-                where = where,
-                ce = ce,
-                maxOrd = maxOrd
-            )
-        }.collect(Collectors.toMap({ it.first }, { it.second }))
-        val toRet = mutableListOf<EquivalenceChecker.ExternalCall>()
-        for(i in 0 until (maxOrd ?: trace.takeIf { it.isNotEmpty() }?.keys?.max() ?: 0)) {
-            toRet.add(
-                trace[i] ?: EquivalenceChecker.ExternalCall.Incomplete("Could not find information on call number $i")
-            )
-        }
-        return toRet
     }
 
     /**
@@ -387,28 +289,42 @@ internal class CounterExampleAnalyzer(
      */
     private fun <T: EquivalenceChecker.METHOD_MARKER> extractEventData(
         context: EquivalenceChecker.InlinedInstrumentation<T>,
-        vcProgram: CoreTACProgram,
-        theModel: CounterexampleModel,
         eventIndex: BigInteger
     ) : MatchingEventData<EquivalenceChecker.LTraceEventMarker<T>> {
         return vcProgram.parallelLtacStream().filter {
             it.ptr.block.calleeIdx == context.methodCallId && it.ptr.block in theModel.reachableNBIds
         }.mapNotNull {
-            it `to?` it.maybeAnnotation(BufferTraceInstrumentation.TraceIndexMarker.META_KEY)
-        }.filter { (_, eventInfo) ->
-            theModel.valueAsBigInteger(eventInfo.indexVar).leftOrNull() == eventIndex
-        }.toList().singleOrNull()?.let { (vcWhere, eventInfo) ->
+            it.annotationView(BufferTraceInstrumentation.TraceIndexMarker.META_KEY)
+        }.filter { annot ->
+            theModel.valueAsBigInteger(annot.annotation.indexVar).leftOrNull() == eventIndex
+        }.toList().singleOrNull()?.let { la ->
             val origSite = context.instrumentation.useSiteInfo.keysMatching { _, info ->
-                info.id == eventInfo.id
+                info.id == la.annotation.id
             }.single()
             MatchingEventData.Found(
                 EquivalenceChecker.LTraceEventMarker(
                     origProgramSite = origSite,
-                    vcProgramSite = vcWhere.ptr,
-                    marker = eventInfo
+                    vcProgramSite = la.ptr,
+                    marker = la.annotation
                 )
             )
         } ?: MatchingEventData.Missing
+    }
+
+    private fun <T: EquivalenceChecker.METHOD_MARKER> extractEventData(
+        context: EquivalenceChecker.InlinedInstrumentation<T>,
+        annot: LTACAnnotation<BufferTraceInstrumentation.TraceIndexMarker>
+    ) : MatchingEventData<EquivalenceChecker.LTraceEventMarker<T>> {
+        val orig = context.instrumentation.useSiteInfo.keysMatching { _, info ->
+            info.id == annot.annotation.id
+        }.singleOrNull() ?: return MatchingEventData.Missing
+        return MatchingEventData.Found(
+            EquivalenceChecker.LTraceEventMarker(
+                origProgramSite = orig,
+                marker = annot.annotation,
+                vcProgramSite = annot.ptr
+            )
+        )
     }
 
     /**
@@ -419,14 +335,10 @@ internal class CounterExampleAnalyzer(
     ) : EquivalenceChecker.SatInterpretation {
         val methodAEvent = extractEventData(
             methodAContext,
-            vcProgram,
-            theModel,
             eventIdx
         )
         val methodBEvent = extractEventData(
             methodBContext,
-            vcProgram,
-            theModel,
             eventIdx
         )
         if(methodAEvent is MatchingEventData.Missing && methodBEvent is MatchingEventData.Missing) {
@@ -468,11 +380,18 @@ internal class CounterExampleAnalyzer(
         if(methodAEvent is MatchingEventData.Missing || methodBEvent is MatchingEventData.Missing) {
             check(instLevels.traceLevel != BufferTraceInstrumentation.TraceTargets.Results)
             return tryMissingInterpretation(
-                eventIdx, methodAEvent, methodAContext, methodBEvent, methodBContext
+                methodAEvent, methodAContext, methodBEvent, methodBContext
             )
         }
         val aDiff = (methodAEvent as MatchingEventData.Found).what
         val bDiff = (methodBEvent as MatchingEventData.Found).what
+
+        val aTraceWithContext = EquivalenceChecker.LTraceWithContext(
+            aDiff, methodAContext
+        )
+        val bTraceWithContext = EquivalenceChecker.LTraceWithContext(
+            bDiff, methodBContext
+        )
 
         /**
          * Did the buffer hashes differ in the mismatch?
@@ -499,16 +418,8 @@ internal class CounterExampleAnalyzer(
              */
             if(exactBuffersSame) {
                 StaticBufferRefinement.tryRefineBuffers(
-                    aTraceAndContext = EquivalenceChecker.LTraceWithContext(
-                        trace = aDiff,
-                        context = methodAContext,
-                        eventIndex = eventIdx
-                    ),
-                    bTraceAndContext = EquivalenceChecker.LTraceWithContext(
-                        trace = bDiff,
-                        context = methodBContext,
-                        eventIndex = eventIdx
-                    ),
+                    aTraceAndContext = aTraceWithContext,
+                    bTraceAndContext = bTraceWithContext,
                     scene = scene,
                     targetEvents = instLevels.traceLevel
                 )?.let { (aRefine, bRefine) ->
@@ -528,7 +439,7 @@ internal class CounterExampleAnalyzer(
                          * Couldn't actually resolve, never mind, keep analyzing the CEX
                          */
                         explainCounterExample(
-                            aDiff, bDiff
+                            aTraceWithContext, bTraceWithContext
                         )
                     }
                     return EquivalenceChecker.SatInterpretation.Refine(ref)
@@ -538,37 +449,39 @@ internal class CounterExampleAnalyzer(
         /**
          * No refinement attempted, go directly to [explainCounterExample]
          */
-        return explainCounterExample(aDiff, bDiff)
+        return explainCounterExample(aTraceWithContext, bTraceWithContext)
     }
 
     /**
      * Called when we are sure there is a CEX and mismatch.
      */
     private fun explainCounterExample(
-        aDiff: EquivalenceChecker.LTraceEventMarker<EquivalenceChecker.METHODA>,
-        bDiff: EquivalenceChecker.LTraceEventMarker<EquivalenceChecker.METHODB>
+        aDiff: EquivalenceChecker.LTraceWithContext<EquivalenceChecker.METHODA>,
+        bDiff: EquivalenceChecker.LTraceWithContext<EquivalenceChecker.METHODB>
     ) : EquivalenceChecker.SatInterpretation {
-        val aEvent = traceMarkerToEvent(aDiff).leftOr {
+        val aEvent = traceMarkerToEvent(aDiff.trace).leftOr {
             return EquivalenceChecker.SatInterpretation.GaveUp(
                 "Failed extracting explanation from ${methodA.pp()}: ${it.right()}",
                 ruleResult
             )
         }
-        val bEvent = traceMarkerToEvent(bDiff).leftOr {
+        val bEvent = traceMarkerToEvent(bDiff.trace).leftOr {
             return EquivalenceChecker.SatInterpretation.GaveUp(
                 "Failed extracting explanation from ${methodB.pp()}: ${it.right()}",
                 ruleResult
             )
         }
-        val priorCalls = theModel.valueAsBigInteger(
-            aDiff.marker.numCalls
-        ).leftOrNull()?.intValueExact()?.let { priorCalls ->
-            getCallsBefore(methodAContext.methodCallId, priorCalls)
+        val priorCallsA = getPriorTrace(aDiff.toSelector()) {
+            it
+        }
+        val priorCallsB = getPriorTrace(bDiff.toSelector()) {
+            EquivalenceChecker.SyncEvent
         }
 
         return EquivalenceChecker.SatInterpretation.RealCounterExample(
             inputExplanation = getInputExplanation(),
-            priorEvents = priorCalls,
+            priorEventsA = priorCallsA.leftOrNull(),
+            priorEventsB = priorCallsB.leftOrNull(),
             diffExplanation = EquivalenceChecker.MismatchExplanation.DifferentEvents(
                 eventInA = aEvent,
                 eventInB = bEvent
@@ -604,15 +517,47 @@ internal class CounterExampleAnalyzer(
             return explainStorageDifference(failingAssert).mapLeft {
                 val inputExplanation = getInputExplanation()
 
-                val callEnv = getCallsBefore(
-                    methodAContext.methodCallId,
-                    maxOrd = null
-                )
+                val callEnvA = getPriorTrace(
+                    object : TraceSelector<EquivalenceChecker.METHODA> {
+                        override val method: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODA>
+                            get() = methodAContext
+
+                        override fun stop(where: LTACCmd): Boolean {
+                            return where.ptr.block.calleeIdx == NBId.ROOT_CALL_ID
+                        }
+
+                        override fun filter(blk: NBId): Boolean {
+                            return blk.calleeIdx == NBId.ROOT_CALL_ID || blk.calleeIdx == methodAContext.methodCallId
+                        }
+
+                    }
+                ) {
+                    it
+                }.leftOrNull()
+
+                val callEnvB = getPriorTrace(
+                    object : TraceSelector<EquivalenceChecker.METHODB> {
+                        override val method: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODB>
+                            get() = methodBContext
+
+                        override fun stop(where: LTACCmd): Boolean {
+                            return where.ptr.block.calleeIdx == NBId.ROOT_CALL_ID
+                        }
+
+                        override fun filter(blk: NBId): Boolean {
+                            return blk.calleeIdx == NBId.ROOT_CALL_ID || blk.calleeIdx == methodBContext.methodCallId
+                        }
+
+                    }
+                ) {
+                    EquivalenceChecker.SyncEvent
+                }.leftOrNull()
                 EquivalenceChecker.SatInterpretation.RealCounterExample(
                     ruleCheckResult = ruleResult,
                     diffExplanation = it,
                     inputExplanation = inputExplanation,
-                    priorEvents = callEnv
+                    priorEventsA = callEnvA,
+                    priorEventsB = callEnvB
                 )
             }.toValue({ it }, { EquivalenceChecker.SatInterpretation.GaveUp(it, ruleResult) })
         }
@@ -686,8 +631,20 @@ internal class CounterExampleAnalyzer(
         val explain: (EquivalenceChecker.EventWithData) -> EquivalenceChecker.MismatchExplanation,
     )
 
+    private val bytes32Type = EVMTypeDescriptor.BytesK(EVM_BYTES_IN_A_WORD)
+
+    private fun TACSymbol.formatScalarAs(
+        ty: EVMTypeDescriptor.EVMValueType,
+        tooltip: String = ""
+    ) : Either<String, String> {
+
+        val tv = theModel.valueAsTACValue(this) ?: return "No value found for $this in model".toRight()
+        val valueType = FormatterType.Value.EVM(ty)
+        return callTraceValueFormatter.valueToSarif(tv, valueType, tooltip).flatten().toLeft()
+    }
+
     /**
-     * From the [instrumentation.transformers.tracing.BufferTraceInstrumentation.TraceIndexMarker],
+     * From the [BufferTraceInstrumentation.TraceIndexMarker],
      * extract the [verifier.equivalence.EquivalenceChecker.EventWithData] representation,
      * including sort information, parameter info, etc.
      */
@@ -695,42 +652,50 @@ internal class CounterExampleAnalyzer(
         lTraceEventMarker: EquivalenceChecker.LTraceEventMarker<*>
     ) : Either<EquivalenceChecker.EventWithData, String> {
         val event = BufferTraceInstrumentation.extractEvent(
-            theModel = theModel,
-            vcProgram = vcProgram,
-            where = lTraceEventMarker.vcProgramSite,
             marker = lTraceEventMarker.marker
         ).leftOr { return it }
         val sort = event.sort
         val params = when(event) {
-            is BufferTraceInstrumentation.RawEventParams.CallParams -> {
+            is BufferTraceInstrumentation.RawEventParams.ExternalCallParams -> {
                 listOf(
-                    EquivalenceChecker.ExternalEventParam(
-                        label = EquivalenceChecker.ContextLabel.CALLEE,
-                        value = event.callee.mapLeft {
-                            "0x${it.toString(16)}"
-                        }.leftOrNull()
+                    EquivalenceChecker.EventParam(
+                        label = EquivalenceChecker.ContextLabel.ExternalCallLabel.CALLEE,
+                        value = event.context.callee.formatScalarAs(EVMTypeDescriptor.address).leftOrNull()
                     ),
-                    EquivalenceChecker.ExternalEventParam(
-                        label = EquivalenceChecker.ContextLabel.CALL_VALUE,
-                        value = event.value.mapLeft {
-                            it.toString()
-                        }.leftOrNull()
+                    EquivalenceChecker.EventParam(
+                        label = EquivalenceChecker.ContextLabel.ExternalCallLabel.CALL_VALUE,
+                        value = event.context.value.formatScalarAs(EVMTypeDescriptor.UIntK(EVM_BITWIDTH256)).leftOrNull()
                     )
                 )
             }
+            is BufferTraceInstrumentation.RawEventParams.InternalSummaryParams -> {
+                if(event.context.args.size != event.context.signature.params.size) {
+                    return "Arity mismatch: have ${event.context.args.size} args but expected only ${event.context.signature.params.size}".toRight()
+                }
+                val argFmt = event.context.signature.params.zip(event.context.args).withIndex().monadicMap {
+                    it.format()
+                } ?: return "nah".toRight()
+                listOf(
+                    EquivalenceChecker.EventParam(
+                        label = EquivalenceChecker.ContextLabel.InternalCallLabel.Signature,
+                        value = event.context.signature.prettyPrintFullyQualifiedName()
+                    )
+                ) + argFmt
+
+            }
             is BufferTraceInstrumentation.RawEventParams.ExitParams -> listOf()
             is BufferTraceInstrumentation.RawEventParams.LogTopics -> {
-                event.params.mapIndexed { ind, either ->
+                event.params.topics.mapIndexed { ind, either ->
                     val t = when(ind) {
-                        0 -> EquivalenceChecker.ContextLabel.LOG_TOPIC1
-                        1 -> EquivalenceChecker.ContextLabel.LOG_TOPIC2
-                        2 -> EquivalenceChecker.ContextLabel.LOG_TOPIC3
-                        3 -> EquivalenceChecker.ContextLabel.LOG_TOPIC4
+                        0 -> EquivalenceChecker.ContextLabel.LogLabel.LOG_TOPIC1
+                        1 -> EquivalenceChecker.ContextLabel.LogLabel.LOG_TOPIC2
+                        2 -> EquivalenceChecker.ContextLabel.LogLabel.LOG_TOPIC3
+                        3 -> EquivalenceChecker.ContextLabel.LogLabel.LOG_TOPIC4
                         else -> error("implausible number of topics")
                     }
-                    EquivalenceChecker.ExternalEventParam(
+                    EquivalenceChecker.EventParam(
                         label = t,
-                        value = either.mapLeft { "0x${it.toString(16)}" }.leftOrNull()
+                        value = either.formatScalarAs(EVMTypeDescriptor.BytesK(EVM_BYTES_IN_A_WORD)).leftOrNull()
                     )
                 }
             }
@@ -739,82 +704,151 @@ internal class CounterExampleAnalyzer(
         return EquivalenceChecker.BasicEvent(
             params = params,
             sort = sort,
-            bufferRepr = buffer
+            bufferRepr = buffer,
         ).toLeft()
+    }
+
+    private fun IndexedValue<Pair<VMParam, TACSymbol>>.format(): EquivalenceChecker.EventParam? {
+        val (param, sym) = this.value
+        val ind = index
+        val ty = param.vmType
+        if(ty !is EVMTypeDescriptor.EVMValueType) {
+            return null
+        }
+        val fmt = sym.formatScalarAs(ty).leftOrNull() ?: return null
+        val name = when(param) {
+            is VMParam.Named -> param.name
+            is VMParam.Unnamed -> "Argument $ind"
+        }
+        return EquivalenceChecker.EventParam(
+            label = EquivalenceChecker.ContextLabel.InternalCallLabel.Arg(
+                name = name,
+                tooltip = if(param is VMParam.Unnamed) {
+                    "No name was found for this parameter"
+                } else {
+                    ""
+                }
+            ),
+            value = fmt
+        )
+    }
+
+    private interface TraceSelector<T: EquivalenceChecker.METHOD_MARKER> {
+        val method: EquivalenceChecker.InlinedInstrumentation<T>
+        fun stop(where: LTACCmd): Boolean
+        fun filter(blk: NBId): Boolean
     }
 
     /**
      * Before event at [reprMethod], find all prior calls/logs.
      */
-    private fun getPriorTrace(
-        reprMethod: EquivalenceChecker.LTraceWithContext<*>,
+    private fun <T: EquivalenceChecker.METHOD_MARKER> getPriorTrace(
+        reprMethod: TraceSelector<T>,
+        commonItemHandler: (EquivalenceChecker.IEvent) -> EquivalenceChecker.IEvent
     ) : Either<List<EquivalenceChecker.IEvent>, String> {
-        /**
-         * The prior calls are just those with ordinal < this event index
-         */
-        if(this.instLevels.traceLevel == BufferTraceInstrumentation.TraceTargets.Calls) {
-            return getCallsBefore(reprMethod.context.methodCallId, reprMethod.eventIndex.intValueExact()).toLeft()
+        val methodStartBlock = vcProgram.blockgraph.entries.singleOrNull { (blk,succ) ->
+            blk.calleeIdx == NBId.ROOT_CALL_ID && succ.singleOrNull()?.calleeIdx == reprMethod.method.methodCallId
+        }?.value?.single() ?: return "Couldn't deduce start of method ${reprMethod.method.orig.pp()}".toRight()
+        if(methodStartBlock !in theModel.reachableNBIds) {
+            return "No trace for ${reprMethod.method.orig.pp()}".toRight()
         }
-        /**
-         * Get the number of calls recorded in this event marker, and get those.
-         */
-        val callOrd = theModel.valueAsBigInteger(reprMethod.trace.marker.numCalls).withFailureString(
-            "Could not extract the number of prior calls before the event in question"
-        ).leftOr { return it }.intValueExact()
-        val priorCalls = getCallsBefore(reprMethod.context.methodCallId, callOrd)
-        /**
-         * We ignore logs when looking at results (maybe we shouldn't?)
-         */
-        if(this.instLevels.traceLevel == BufferTraceInstrumentation.TraceTargets.Results) {
-            return priorCalls.toLeft()
-        }
-        check(this.instLevels.traceLevel == BufferTraceInstrumentation.TraceTargets.Log)
-        /**
-         * Find the interleaving of calls/logs.
-         *
-         * We actually allow this interleaving to be different between implementations, so showing this
-         * as a unified trace is a little misleading.
-         */
-        val eventList = mutableListOf<EquivalenceChecker.IEvent>()
-        var currentCallCount = 0
-        var eventIt = BigInteger.ZERO
-        while(eventIt < reprMethod.eventIndex) {
-            val r = when(val repr = extractEventData(
-                reprMethod.context,
-                vcProgram, theModel, eventIt
-            )) {
-                is MatchingEventData.Missing -> {
-                    return "Failed to find event information for the $eventIt event".toRight()
+        val graph = vcProgram.analysisCache.graph
+        val toRet = mutableListOf<EquivalenceChecker.IEvent>()
+        var blockIt = methodStartBlock
+        var eventOrd = 0
+        while(true) {
+            val block = graph.elab(blockIt)
+            for(lc in block.commands) {
+                if(reprMethod.stop(lc)) {
+                    return toRet.toLeft()
                 }
-                is MatchingEventData.Found -> repr.what
-            }
+                if(instLevels.traceLevel != BufferTraceInstrumentation.TraceTargets.Calls) {
+                    val te = lc.annotationView(BufferTraceInstrumentation.TraceIndexMarker.META_KEY)
+                    if (te != null) {
+                        val toAdd = when (val ex = extractEventData(reprMethod.method, te)) {
+                            is MatchingEventData.Found -> traceMarkerToEvent(ex.what).toValue(
+                                { it },
+                                { EquivalenceChecker.Missing("Failed to resolve event ordinal $eventOrd: $it") })
 
-            val numCallsAtEvent = theModel.valueAsBigInteger(r.marker.numCalls).withFailureString(
-                "Failed to get number of calls at $eventIt event"
-            ).leftOr {
-                return it
-            }.intValueExact()
-            while(currentCallCount < numCallsAtEvent) {
-                eventList.add(priorCalls[currentCallCount])
-                currentCallCount++
+                            MatchingEventData.Missing -> EquivalenceChecker.Missing("Couldn't resolve event ordinal $eventOrd")
+                        }
+                        eventOrd++
+                        toRet.add(commonItemHandler(toAdd))
+                        continue
+                    }
+                }
+                val ce = lc.maybeAnnotation(BufferTraceInstrumentation.CallEvent.META_KEY)
+                if(ce != null) {
+                    val res = extractEnvironment(
+                        graph = graph,
+                        ce = ce,
+                        where = lc,
+                    )
+                    toRet.add(res.let(commonItemHandler))
+                    continue
+                }
+                val ie = lc.maybeAnnotation(CommonPureInternalFunction.ANNOTATION_META)
+                if(ie != null) {
+                    val params = ie.qualifiedMethodSignature.params.zip(ie.argSymbols).withIndex().monadicMap {
+                        it.format()
+                    }.orEmpty()
+                    val rets = ie.qualifiedMethodSignature.resType.zip(ie.rets).withIndex().monadicMap { (ind, pair) ->
+                        val (ty, sym) = pair
+                        val fmt = sym.formatScalarAs(ty as EVMTypeDescriptor.EVMValueType).leftOrNull() ?: return@monadicMap null
+                        EquivalenceChecker.EventParam(
+                            label = EquivalenceChecker.ContextLabel.InternalCallLabel.ReturnValue(
+                                ord =  ind
+                            ),
+                            value = fmt
+                        )
+                    }.orEmpty()
+                    toRet.add(EquivalenceChecker.BasicEvent(
+                        sort = BufferTraceInstrumentation.TraceEventSort.INTERNAL_SUMMARY_CALL,
+                        bufferRepr = null,
+                        params = listOf(
+                            EquivalenceChecker.EventParam(EquivalenceChecker.ContextLabel.InternalCallLabel.Signature, ie.qualifiedMethodSignature.prettyPrintFullyQualifiedName())
+                        ) + params + rets
+                    ).let(commonItemHandler))
+                    continue
+                }
+                val functionStart = lc.annotationView(INTERNAL_FUNC_START)
+                if(functionStart != null) {
+                    toRet.add(EquivalenceChecker.Elaboration(
+                        what = "Entering internal function ${functionStart.annotation.methodSignature.prettyPrintFullyQualifiedName()}"
+                    ))
+                }
+                val functionEnd = lc.annotationView(INTERNAL_FUNC_EXIT)
+                if(functionEnd != null) {
+                    toRet.add(EquivalenceChecker.Elaboration(
+                        what = "Leaving internal function ${functionEnd.annotation.methodSignature.prettyPrintFullyQualifiedName()}"
+                    ))
+                }
             }
-            val env = traceMarkerToEvent(r).leftOr {
-                return "Failed to extract data for $eventIt: ${it.right()}".toRight()
-            }
-            eventList.add(env)
-            eventIt++
+            blockIt = graph.succ(blockIt).singleOrNull {
+                reprMethod.filter(it) && it in theModel.reachableNBIds
+            } ?: return "Couldn't reach mismatch in ${reprMethod.method.orig.pp()}".toRight()
         }
-        while(currentCallCount < callOrd) {
-            eventList.add(priorCalls[currentCallCount++])
+    }
+
+    private fun <T: EquivalenceChecker.METHOD_MARKER> EquivalenceChecker.LTraceWithContext<T>.toSelector() = object : TraceSelector<T> {
+        override val method: EquivalenceChecker.InlinedInstrumentation<T>
+            get() = context
+
+        override fun stop(where: LTACCmd): Boolean {
+            return trace.vcProgramSite == where.ptr
         }
-        return eventList.toLeft()
+
+        override fun filter(blk: NBId): Boolean {
+            return blk.calleeIdx == context.methodCallId
+        }
+
+
     }
 
     /**
      * Try to explain what's missing and from which function.
      */
     private fun tryMissingInterpretation(
-        eventIndex: BigInteger,
         methodAEvent: MatchingEventData<EquivalenceChecker.LTraceEventMarker<EquivalenceChecker.METHODA>>,
         methodAContext: EquivalenceChecker.InlinedInstrumentation<EquivalenceChecker.METHODA>,
         methodBEvent: MatchingEventData<EquivalenceChecker.LTraceEventMarker<EquivalenceChecker.METHODB>>,
@@ -827,7 +861,7 @@ internal class CounterExampleAnalyzer(
                     missing = methodB,
                     found = methodA,
                     explain = EquivalenceChecker.MismatchExplanation::MissingInB,
-                    lt = EquivalenceChecker.LTraceWithContext(eventIndex, methodAEvent.what, methodAContext)
+                    lt = EquivalenceChecker.LTraceWithContext(methodAEvent.what, methodAContext)
                 )
             }
             MatchingEventData.Missing -> {
@@ -836,7 +870,7 @@ internal class CounterExampleAnalyzer(
                     missing = methodA,
                     found = methodB,
                     explain = EquivalenceChecker.MismatchExplanation::MissingInA,
-                    lt = EquivalenceChecker.LTraceWithContext(eventIndex, methodBEvent.what, methodBContext)
+                    lt = EquivalenceChecker.LTraceWithContext(methodBEvent.what, methodBContext)
                 )
             }
         }
@@ -851,12 +885,15 @@ internal class CounterExampleAnalyzer(
             )
         }
 
-        val priorEvents = getPriorTrace(event).leftOrNull()
+        val priorEventsPrime = getPriorTrace(event.toSelector()) {
+            it
+        }.leftOrNull()
 
         return EquivalenceChecker.SatInterpretation.RealCounterExample(
             ruleCheckResult = ruleResult,
             diffExplanation = mk(basicEvent),
-            priorEvents = priorEvents,
+            priorEventsA = priorEventsPrime,
+            priorEventsB = null,
             inputExplanation = inputExplanation
         )
 

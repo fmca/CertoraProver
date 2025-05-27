@@ -405,4 +405,14 @@ class TypeRuleTsets: CVLTestHarness() {
             )
         )
     }
+
+    @Test
+    fun testGhostArrayError() {
+        assertNotTypeChecksWithError(
+            """
+                ghost address[] contributors_ghost;
+            """.trimIndent(),
+            "The type address[] is not allowed as a ghost variable, consider using a mapping instead."
+        )
+    }
 }

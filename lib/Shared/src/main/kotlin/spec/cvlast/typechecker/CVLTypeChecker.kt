@@ -282,7 +282,8 @@ class CVLAstTypeChecker(
     ) : CollectingResult<CVLType.PureCVLType,CVLError> = collectingErrors {
         val type = bind(typeTypeChecker.typeCheck(type, range, scope))
         if (type !is CVLType.PureCVLType.GhostMappingKeyType) {
-            returnError(CVLError.General(range, "The type $type is not allowed $where"))
+            val alternative = if (type is CVLType.PureCVLType.CVLArrayType) { ", consider using a mapping instead."} else {""}
+            returnError(CVLError.General(range, "The type $type is not allowed $where$alternative"))
         }
         return@collectingErrors type
     }

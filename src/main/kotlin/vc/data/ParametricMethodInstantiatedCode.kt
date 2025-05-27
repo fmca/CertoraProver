@@ -22,7 +22,6 @@ import rules.CheckableTAC
 import scene.IScene
 import spec.CVLCompiler
 import spec.rules.CVLSingleRule
-import spec.rules.SingleRuleGenerationMeta
 import tac.NBId
 import vc.data.ParametricInstantiation.Companion.merge
 import vc.data.ParametricInstantiation.Companion.mergeMany
@@ -136,11 +135,10 @@ object ParametricMethodInstantiatedCode {
 
     fun ParametricInstantiation<CVLTACProgram>.toCheckableTACs(
         scene: IScene,
-        sanity: SingleRuleGenerationMeta.Sanity,
         subrule: CVLSingleRule
     ): List<CheckableTAC> {
         val compiler = CVLToSimpleCompiler(scene)
-        return withMethodParamInsts.map { CheckableTAC(compiler.compile(it.tacCode), it.instantiation, sanity, subrule) }
+        return withMethodParamInsts.map { CheckableTAC(compiler.compile(it.tacCode), it.instantiation, subrule) }
     }
 }
 

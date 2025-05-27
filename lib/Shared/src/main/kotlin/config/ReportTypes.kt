@@ -154,6 +154,7 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
     SIMPLE_SUMMARIES2(LoggerTypes.COMMON),
     SPLIT_STORAGE_VAR_HOISTER(LoggerTypes.STORAGE_SPLITTING),
     INLINED_HOOKS(LoggerTypes.HOOK_INSTRUMENTATION),
+    REQUIRE_INVARIANT_TRANSFORMER(LoggerTypes.REQUIRE_INVARIANT),
     STRONG_INVARIANT_INLINER(LoggerTypes.INLINER),
     GHOST_ANNOTATION(LoggerTypes.INSTRUMENTATION),
     CONSTANT_FOLDING(LoggerTypes.OPTIMIZE),
@@ -245,7 +246,8 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
     REWRITE_ASSERTS(LoggerTypes.WASM),
     MATERIALIZE_CONTROL_FLOW(LoggerTypes.WHOLE_CONTRACT_TRANSFORMATION),
     SCALARSET_INFERENCE(LoggerTypes.ALIAS_ANALYSIS),
-    MATERIALIZE_POST_UNROLL_ASSIGNMENTS(LoggerTypes.WHOLE_CONTRACT_TRANSFORMATION),
+    MATERIALIZE_SUMMARIES_PRE_OPTIMIZAITON(LoggerTypes.WHOLE_CONTRACT_TRANSFORMATION),
+    MATERIALIZE_SUMMARIES_POST_OPTIMIZAITON(LoggerTypes.WHOLE_CONTRACT_TRANSFORMATION),
     OPTIMIZE_SOROBAN_MEMORY(LoggerTypes.OPTIMIZE),
     SPURIOUS_FP_UPDATE_REMOVAL(LoggerTypes.PER_FUNCTION_SIMPLIFICATION),
     FP_READ_POST_CALL_REWRITES(LoggerTypes.PER_FUNCTION_SIMPLIFICATION),
@@ -268,17 +270,27 @@ enum class ReportTypes(val loggerCategory: LoggerTypes) : DumpType, CategoryName
     SIGHASH_READ_NORMALIZER(LoggerTypes.EQUIVALENCE),
     OPTIMIZE_WASM_BITOPS(LoggerTypes.OPTIMIZE),
     LOG_FP_REUSE_NORMALIZATION(LoggerTypes.ALLOC),
-    BMC_FUNC(LoggerTypes.BOUNDED_MODEL_CHECKER)
+    BMC_FUNC(LoggerTypes.BOUNDED_MODEL_CHECKER),
+    DEFINITE_BUFFER_ANALYSIS(LoggerTypes.EQUIVALENCE)
     ;
 
     override fun isEnabled(): Boolean = this == NONE || Config.isEnabledLogger(this.loggerCategory) || Config.isEnabledReport(this)
     open fun toFilenamePrefix(): String =
-        this.toString().split("_").map { it.lowercase().replaceFirstChar { it.uppercaseChar() } }.joinToString("")
+        this.toString().split("_").joinToString("") { it.lowercase().replaceFirstChar { it.uppercaseChar() } }
+
+    /**
+     * Returns `true` if this report types allows TAC dumps with internal functions.
+     */
+    fun allowsTacDumpsWithInternalFunctions() =
+        when (this) {
+            REPORT, PRESOLVER_RULE -> true
+            else -> false
+        }
 
     companion object {
         // using `get()` to save global memory (not claiming I fully know garbage collection, but making sure-er);
         // if you call either of these often, materialize them
-        val byLowerCaseName get() = values().associateBy { it.toString().lowercase() }
-        val byConfigName get() = values().associateBy { it.configName }
+        val byLowerCaseName get() = ReportTypes.entries.associateBy { it.toString().lowercase() }
+        val byConfigName get() = ReportTypes.entries.associateBy { it.configName }
     }
 }

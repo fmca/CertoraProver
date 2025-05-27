@@ -20,7 +20,7 @@ package cvl
 import analysis.abi.Traversal
 import analysis.abi.arbitraryPrimitive
 import analysis.abi.subTraversals
-import analysis.icfg.InternalSummarizer
+import analysis.icfg.InternalCVLSummarizer
 import analysis.icfg.Summarizer
 import annotation.SolidityVersion
 import annotations.PollutesGlobalState
@@ -396,10 +396,10 @@ class ComplexTypeRandomTests {
             val verification = try {
                 val cvl = (res.force().second as ProverQuery.CVLQuery.Single).cvl
                 val linking = Summarizer.LinkingState<Int>()
-                val withSummaries = InternalSummarizer.summarizeInternalFunctions(
+                val withSummaries = InternalCVLSummarizer.summarizeInternalFunctions(
                     code = check.tac,
                     summaries = cvl.internal,
-                    expressionSummaryHandler = InternalSummarizer.ExpressionSummaryMaterializer(
+                    summaryHandler = InternalCVLSummarizer.ExpressionSummaryMaterializer(
                         cvlCompiler = CVLCompiler(
                             scene = scene,
                             cvl = cvl,

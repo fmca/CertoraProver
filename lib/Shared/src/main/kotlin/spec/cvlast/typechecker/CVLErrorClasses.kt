@@ -923,11 +923,11 @@ class UndeclaredVariable private constructor(override val location: Range, overr
             }#
         }
         """,
-    exampleMessage = "`x` is defined in the `if` branch (on line 5) but not in the `else` branch.",
+    exampleMessage = "`x` is defined in the `if` branch (on line 5) but not in the `else` branch. Consider either assigning a value in both branches or using `require` instead of assignments.",
 )
 @CVLErrorExample(
     "function f() { mathint x; #if(_) {} else { x = 5; }# }", // defined in the else branch
-    "`x` is defined in the `else` branch (at position 1:43) but not in the `if` branch."
+    "`x` is defined in the `else` branch (at position 1:43) but not in the `if` branch. Consider either assigning a value in both branches or using `require` instead of assignments."
 )
 
 @CVLErrorExample("function f() { mathint x; #if(_) { x = 3; } else { mathint z = x; }# }")  // defined in if, used in else
@@ -940,7 +940,8 @@ class InconsistentVariableDefinition private constructor(override val location: 
         : this(
             ifLocation,
             "`$id` is defined in the `${ if (definedInThenBlock) { "if" } else { "else" } }` branch (${definitionLocation.relativeDescription(ifLocation)})" +
-            " but not in the `${         if (definedInThenBlock) { "else" } else { "if" } }` branch."
+            " but not in the `${         if (definedInThenBlock) { "else" } else { "if" } }` branch." +
+                " Consider either assigning a value in both branches or using `require` instead of assignments."
         )
 }
 

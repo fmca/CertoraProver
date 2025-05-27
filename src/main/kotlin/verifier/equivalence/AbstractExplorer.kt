@@ -20,7 +20,7 @@ package verifier.equivalence
 import allocator.Allocator
 import analysis.CommandWithRequiredDecls
 import datastructures.stdcollections.*
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import tac.MetaMap
 import tac.Tag
 import utils.letIf
@@ -35,13 +35,13 @@ import vc.data.tacexprutil.ExprUnfolder
  * [verifier.equivalence.EquivalenceChecker.PairwiseProofManager].
  */
 internal abstract class AbstractExplorer(
-    protected val traceLevel: EquivalenceChecker.InstrumentationLevels,
+    protected val traceLevel: EquivalenceChecker.IInstrumentationLevels,
     override val context: QueryContext
 ) : EquivalenceChecker.TraceExplorer, WithQueryContext {
 
     override fun getAConfig(pairwiseProofManager: EquivalenceChecker.PairwiseProofManager): BufferTraceInstrumentation.InstrumentationControl =
         BufferTraceInstrumentation.InstrumentationControl(
-            traceMode = traceLevel.inclusion,
+            traceMode = traceLevel.getAInclusion(),
             eventLoggingLevel = traceLevel.traceLevel,
             useSiteControl = pairwiseProofManager.getAUseSiteControl(),
             forceMloadInclusion = pairwiseProofManager.getAMloadOverrides(),
@@ -50,7 +50,7 @@ internal abstract class AbstractExplorer(
 
     override fun getBConfig(pairwiseProofManager: EquivalenceChecker.PairwiseProofManager): BufferTraceInstrumentation.InstrumentationControl =
         BufferTraceInstrumentation.InstrumentationControl(
-            traceMode = traceLevel.inclusion,
+            traceMode = traceLevel.getBInclusion(),
             eventLoggingLevel = traceLevel.traceLevel,
             useSiteControl = pairwiseProofManager.getBUseSiteControl(),
             forceMloadInclusion = pairwiseProofManager.getBMloadOverrides(),
@@ -62,7 +62,7 @@ internal abstract class AbstractExplorer(
      * the instrumentation data in [methodAInst] and [methodBInst]. If [traceIndex] is havoced, this is effectively
      * asserting traces are equal. However, callers (namely [TraceMinimizer]) can add constraints to narrow this check.
      *
-     * If [traceLevel] is for [instrumentation.transformers.tracing.BufferTraceInstrumentation.TraceTargets.Results],
+     * If [traceLevel] is for [BufferTraceInstrumentation.TraceTargets.Results],
      * this also generates an assertion of storage equality.
      */
     protected fun generateVC(
@@ -141,7 +141,11 @@ internal abstract class AbstractExplorer(
                 TACCmd.Simple.AssertCmd(
                     it.s,
                     "storage equal post execution",
-                    MetaMap(EquivalenceChecker.STORAGE_EQUIVALENCE_ASSERTION)
+                    MetaMap(EquivalenceChecker.STORAGE_EQUIVALENCE_ASSERTION to EquivalenceChecker.StorageComparison(
+                        contractAValue = reprA,
+                        contractBValue = reprB,
+                        skolemIndex = skolemInd
+                    ))
                 )
             }.merge(skolemInd, reprA, reprB, storageA, storageB)
             traceAssert andThen storageAssert

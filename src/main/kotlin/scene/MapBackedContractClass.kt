@@ -28,7 +28,6 @@ import parallel.pcompute
 import tac.ICoreTACProgram
 import tac.IStorageInfo
 import tac.TACStorageLayout
-import utils.hash
 import vc.data.TACSymbol
 import java.io.Serializable
 import java.math.BigInteger
@@ -53,11 +52,6 @@ abstract class MapBackedContractClass(
     protected abstract var storageInfoField : IStorageInfo
     protected abstract var transientStorageInfoField : IStorageInfo
     override val addressSym: TACSymbol.Var = createAddressVar(instanceId, name)
-
-    override fun hashCode() = hash {
-        it + instanceId + instanceIdIsStaticAddress + bytecode + constructorBytecode + name + storageLayout +
-        methods + wholeContractMethod + constructorMethod + addressSym
-    }
 
     override val storage: IStorageInfo
         get() = storageInfoField

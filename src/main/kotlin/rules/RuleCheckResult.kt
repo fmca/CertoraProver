@@ -33,8 +33,6 @@ import report.calltrace.formatter.*
 import report.calltrace.generator.generateCallTrace
 import report.dumps.UnsolvedSplitInfo
 import report.dumps.generateUnsolvedSplitCodeMap
-import rules.sanity.SanityCheckResult
-import rules.sanity.SanityCheckResultOrdinal
 import scene.ISceneIdentifiers
 import solver.CounterexampleModel
 import solver.SolverResult
@@ -129,6 +127,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
     }
 
     abstract fun consolePrint(satIsGood: Boolean): String
+    abstract fun copyWithResult(res: SolverResult): RuleCheckResult
 
     sealed class RuleFailureMeta {
 
@@ -171,12 +170,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
         abstract val ruleCheckInfo: RuleCheckInfo
         abstract val callResolutionTable: CallResolutionTable<*>
 
-        val ruleAlertsWithCallResolutionTableAlerts: RuleAlertReport<*>?
-            get() = ruleAlerts join callResolutionTable.alertReport join
-                RuleAlertReport((this as? WithCounterExamples)?.ruleCheckInfo?.examples?.mapNotNull { example ->
-                    example.callTrace?.alertReport
-                }.orEmpty())
-
         /**
          * A sample out of the [RuleCheckInfo]s, which is the first one.
          */
@@ -186,7 +179,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
             TREE_VIEW_PATH("treeViewPath"),
             GRAPH_LINK("graph_link"),
             JUMP_TO_DEFINITION("jumpToDefinition"),
-            RESULT("result"),
             ASSERT_MESSAGE("assertMessage"),
             VALUE_REPRESENTATIONS("valueRepresentations"),
             NAME("name"),
@@ -197,7 +189,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
             operator fun invoke(): String = repString
         }
-
         /**
          * Shared logic for building the JsonObject of both [WithCounterExamples]
          * and [Basic].
@@ -229,10 +220,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                         null
                     }
                 } else if (rule.ruleType is SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule.SpecFile) {
-                    /*
-                If the rule is not violated (e.g., ERROR, TIMEOUT, VERIFIED),
-                and it was generated for an assert statement that is originating from the spec
-                 */
+                    // If the rule is not violated (e.g., ERROR, TIMEOUT, VERIFIED),
+                    // and it was generated for an assert statement that is originating from the spec
                     val multiAssertRuleType =
                         rule.ruleType as SpecType.Single.GeneratedFromBasicRule.MultiAssertSubRule.SpecFile
                     if (multiAssertRuleType.assertMessage != "") {
@@ -305,6 +294,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                     },
                 )
             }
+
+            override fun copyWithResult(res: SolverResult): RuleCheckResult = this.copy(result = res)
         }
 
 
@@ -312,7 +303,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
          * A result with a basic data and at least one example attached.
          * Each example has its own basic data.
          */
-        data class WithCounterExamples constructor(
+        data class WithCounterExamples(
             override val rule: IRule,
             override val result: SolverResult,
             override val verifyTime: VerifyTime,
@@ -324,6 +315,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
             override val firstData: RuleCheckInfo.BasicDataContainer
                 get() = ruleCheckInfo.examples.head
+
+            override fun copyWithResult(res: SolverResult): RuleCheckResult = this.copy(result = res)
 
             fun toOutputReportView(
                 location: TreeViewLocation?,
@@ -528,7 +521,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
                     /**
                      * Generates and writes a CodeMap Htmls (aka tac dumps). Used when verification of [rule] returned
-                     * unsat and we made an unsat core ananalysis.
+                     * unsat and we made an unsat core analysis.
                      * Will make a dump for each unsat core.
                      * Returns the name of the written html file for the first of the unsat cores and
                      * the unsat core stats object.
@@ -565,8 +558,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                                 computeAndDumpUnsolvedSplitCodeMap(rule, unsolvedSplitsData)
                             } ?:
                                 // This is a fallback such that we don't crash and link to the PreSolver dump instead
-                                //  (which is always dumped), if anything weird happens. Currently, this case is
-                                //  statically unreachable, but we're staying on the safe side.
+                                // (which is always dumped), if anything weird happens. Currently, this case is
+                                // statically unreachable, but we're staying on the safe side.
                                 run {
                                     logger.warn { "vResponse for rule ${rule.declarationId} has no unsolvedSplitsData; reverting to " +
                                         "dumping / linking Presolver report instead of the colored graph with " +
@@ -876,8 +869,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
         override val rule: IRule,
         val results: List<RuleCheckResult>,
         val resultType: MultiResultType,
-        val details: String = "",
-        val parentSanityResult: SanityCheckResult? = null
+        val details: String = ""
     ) : RuleCheckResult(rule) {
 
         override fun toString(): String {
@@ -921,6 +913,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
                 }
             }
         }
+
+        override fun copyWithResult(res: SolverResult): RuleCheckResult = copy(results = this.results.map { it.copyWithResult(res) })
         private class FlattenedResultsCache(val flattenedResults: List<FlattenedResult>) {
 
             /**
@@ -945,11 +939,6 @@ sealed class RuleCheckResult(open val rule: IRule) {
              * All descendant [SolverResult]s that are [SolverResult.UNKNOWN]
              */
             val unknown: List<FlattenedResult> by lazy { flattenedResults.filter { it.solverResult == solver.SolverResult.UNKNOWN } }
-
-            /**
-             * All descendant [SolverResult]s that are [SolverResult.SANITY_FAIL]
-             */
-            val sanityFail: List<FlattenedResult> by lazy { flattenedResults.filter { it.solverResult == SolverResult.SANITY_FAIL } }
 
             /**
              * Whether all descendant [RuleCheckResult]s are the expected good result
@@ -1030,42 +1019,12 @@ sealed class RuleCheckResult(open val rule: IRule) {
         fun computeFinalResult(): SolverResult {
             // Result when taking only sanity results into account and ignoring results of original rules
             val resultFromSanity =
-                if (parentSanityResult != null) {
-                    when (parentSanityResult.ordinal) {
-                        /*
-                        We map each sanity check ordinal to a corresponding
-                        solver result ordinal, denoted SRO; the idea is to compute
-                        max { SRO, solver result ordinal of original rule } to
-                        obtain the final result.
-                        Timeouts and unknown results are ignored in this computation:
-                        In case of a passing rule with timeout/unknown results in
-                        sanity checks the rule is considered as passing and appropriate
-                        msgs should appear in the problems view.
-                        TODO: In the above case the status in the tree view won't be "verified" (this is a known bug,
-                              see CERT-3208).
-                         */
-                        SanityCheckResultOrdinal.ERROR -> {
-                            SolverResult.UNKNOWN
-                        }
-
-                        SanityCheckResultOrdinal.FAILED -> {
-                            SolverResult.SANITY_FAIL
-                        }
-
-                        SanityCheckResultOrdinal.TIMEOUT,
-                        SanityCheckResultOrdinal.UNKNOWN,
-                        SanityCheckResultOrdinal.PASSED -> {
-                            SolverResult.UNSAT
-                        }
-                    }
+                //  We determine SANITY_FAIL if one of the sub-rules has sanity failure, otherwise consider sanity
+                // check as passing.
+                if (anyChildResultFailedSanity) {
+                    SolverResult.SANITY_FAIL
                 } else {
-                    //  We determine SANITY_FAIL if one of the sub-rules has sanity failure, otherwise consider sanity
-                    // check as passing.
-                    if (anyChildResultFailedSanity) {
-                        SolverResult.SANITY_FAIL
-                    } else {
-                        SolverResult.UNSAT
-                    }
+                    SolverResult.UNSAT
                 }
 
             // Result when taking everything but sanity-results into account
@@ -1103,6 +1062,8 @@ sealed class RuleCheckResult(open val rule: IRule) {
         override fun consolePrint(satIsGood: Boolean): String {
             return "${rule.declarationId}: Rule-check skipped. Skipping reason: ${ruleAlerts.msg}."
         }
+
+        override fun copyWithResult(res: SolverResult): RuleCheckResult = this
     }
 
     data class Error(
@@ -1121,6 +1082,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
             return listOf(FlattenedResult(rule.declarationId, SolverResult.UNKNOWN, this))
         }
 
+        override fun copyWithResult(res: SolverResult): RuleCheckResult = this
 
         override fun consolePrint(satIsGood: Boolean): String =
             "${rule.declarationId}: Error: " +

@@ -1,26 +1,22 @@
 {
   "AddInternalFunctions": {
-    "Test-doThing(uint256,bool)": [
-      true,
-      true
-    ],
-    "Test-doOtherThing(uint256,bool)": [
-      true,
-      true
-    ],
-    "constructor_Test": [
-      true,
-      true
-    ]
+    "sanity-doOtherThing(uint256,bool)-Assertions": true,
+    "sanity-doThing(uint256,bool)-Assertions": true,
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true
   },
   "CALLGRAPH": {
     "constructor()": false,
-    "doThing(uint256,bool)": true,
-    "doOtherThing(uint256,bool)": true
+    "doOtherThing(uint256,bool)": true,
+    "doThing(uint256,bool)": true
   },
   "INIT": {
-    "Test-doThing(uint256,bool)": true,
-    "Test-doOtherThing(uint256,bool)": true
+    "Test-doOtherThing(uint256,bool)": true,
+    "Test-doThing(uint256,bool)": true
+  },
+  "NonLinearStats": {
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true],
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true]
   },
   "POINTSTO": {
     "Test-doThing(uint256,bool)": true,
@@ -29,13 +25,14 @@
     "doOtherThing(uint256,bool)": true,
     "doThing(uint256,bool)": true
   },
-  "SKeyDetection": {
-    "Test-doThing(uint256,bool)": true,
-    "Test-doOtherThing(uint256,bool)": true,
-    "constructor_Test": true
+  "PathCountStats": {
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true],
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true]
   },
-  "STORAGE": {
-    "Test-doThing(uint256,bool)": true,
-    "Test-doOtherThing(uint256,bool)": true
+  "SKeyDetection": {
+    "sanity-doOtherThing(uint256,bool)-Assertions": true,
+    "sanity-doThing(uint256,bool)-Assertions": true,
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true
   }
 }

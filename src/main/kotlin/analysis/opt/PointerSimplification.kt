@@ -398,11 +398,16 @@ object PointerSimplification {
                       something like a constant write or endPointer - elemStartPointer because the alloc is very
                       picky about the patterns it recognizes
                      */
-                    val potentialPackedLenComputation = altDefs matchesAny {
+                    val potentialPackedLenComputation = (altDefs matchesAny {
                         stmt.cmd.lhs `=` (v("end_ptr") - v("fp") { fpCand ->
                             fpCand is LVar.PVar && fpCand.v in g.cache.gvn.equivBefore(stmt.ptr, TACKeyword.MEM64.toVar())
-                        })
-                    } != null && (usedAsWriteToFreePointer(stmt.cmd.lhs, stmt.wrapped) || isWordSizeSubtractAnd(stmt.cmd.lhs, stmt.wrapped, ::usedAsWriteToFreePointer))
+                        } - 32)
+                    } != null && usedAsWriteToFreePointer(stmt.cmd.lhs, stmt.wrapped) ||
+                        (isWordSizeSubtractAnd(stmt.cmd.lhs, stmt.wrapped, ::usedAsWriteToFreePointer)) && altDefs matchesAny {
+                            stmt.cmd.lhs `=` v("end_ptr") - v("fp") { fpCand ->
+                                fpCand is LVar.PVar && fpCand.v in g.cache.gvn.equivBefore(stmt.ptr, TACKeyword.MEM64.toVar())
+                            }
+                        } != null)
 
                     if(potentialPackedLenComputation && altDefs matchesAny {
                             stmt.cmd.lhs `=` k("const")

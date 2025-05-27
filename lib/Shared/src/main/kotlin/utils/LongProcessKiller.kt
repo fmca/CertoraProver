@@ -49,7 +49,7 @@ class LongProcessKiller : Thread() {
         }
     }
 
-    fun bye() {
+    fun interruptThread() {
         try {
             this.interrupt()
         } catch (e: Exception) {

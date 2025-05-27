@@ -1088,8 +1088,8 @@ object Summarizer {
             Havocer.resolveHavocType(scene, caller, callSumm, appliedSummary.specCallSumm.default)
 
         val resolution = (callSumm.callTarget.map { (it as? CallGraphBuilder.CalledContract.CreatedReference.Resolved)?.tgtConntractId})
-        val callees = resolution.fold(setOf<ITACMethod>()){curr, res ->
-                curr + appliedSummary.specCallSumm.getMethods(scene, callSumm.sigResolution, res)
+        val callees = resolution.flatMapToSet { res ->
+                appliedSummary.specCallSumm.getMethods(scene, callSumm.sigResolution, res)
             }
             .letIf(callSumm.callType == TACCallType.DELEGATE) { methods ->
                 methods.filter { m ->

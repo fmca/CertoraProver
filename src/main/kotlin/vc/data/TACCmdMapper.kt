@@ -600,6 +600,10 @@ open class DefaultTACCmdMapper : AbstractDefaultTACCmdMapper() {
             }
         }
 
+        override fun transformVar(exp: TACExpr.Sym.Var): TACExpr {
+            return TACExpr.Sym.Var(this@DefaultTACCmdMapper.mapVar(exp.s))
+        }
+
         override fun <@Treapable T : Serializable> transformAnnotationExp(
             o: TACExpr, k: MetaKey<T>, v: T
         ) = TACExpr.AnnotationExp(transform(o), k, mapMetaPair(k, v))

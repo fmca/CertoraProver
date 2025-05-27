@@ -131,6 +131,13 @@ data class LTACSymbol(val ptr: CmdPointer, val symbol: TACSymbol) : Serializable
 @Treapable
 data class LTACVar(val ptr: CmdPointer, val v: TACSymbol.Var) : Serializable
 
+data class LTACAnnotation<T: Serializable>(
+    val annotation: T,
+    val cmd: LTACCmdView<TACCmd.Simple.AnnotationCmd>
+) {
+    val ptr: CmdPointer get() = cmd.ptr
+}
+
 data class LTACExp(val ptr: ExpPointer, val exp: TACExpr) : Serializable
 
 inline fun <reified T : TACCmd> LTACCmd.narrow(): LTACCmdView<T> {
@@ -183,6 +190,12 @@ fun <T : Serializable> LTACCmd.annotation(k: MetaKey<T>) : T? = this.narrow<TACC
 
 fun <T : Serializable> LTACCmd.maybeAnnotation(k: MetaKey<T>) : T? = this.maybeNarrow<TACCmd.Simple.AnnotationCmd>()?.cmd?.maybeAnnotation(k)
 fun LTACCmd.maybeAnnotation(k: MetaKey<Nothing>) : Boolean = this.maybeNarrow<TACCmd.Simple.AnnotationCmd>()?.cmd?.maybeAnnotation(k) == true
+
+inline fun <reified T: Serializable> LTACCmd.annotationView(k: MetaKey<T>) = this.maybeNarrow<TACCmd.Simple.AnnotationCmd>()?.annotationView(k)
+
+inline fun <reified T: Serializable> LTACCmdView<TACCmd.Simple.AnnotationCmd>.annotationView(k: MetaKey<T>) = this.cmd.maybeAnnotation(k)?.let { payload ->
+    LTACAnnotation(payload, this)
+}
 
 fun LTACCmd.asSnippetCmd(): SnippetCmd? = maybeAnnotation(TACMeta.SNIPPET)
 
@@ -615,6 +628,61 @@ class TACCommandGraph(
             "no command satisfied [predicate] while iterating the TACCommandGraph from the starting CmdPtr $start".toRight()
         }
     }
+
+    /**
+     * Starting from [start], iterate forward through the graph following single successors
+     * of basic blocks. In other words, iterate from [start] until the end of the block.
+     * Then, from [start]'s block, follow single successors through the graph, iterating through each
+     * such block's commands. The sequence terminates if there are no single successors to follow.
+     *
+     * [start] is included in the sequence depending on [excludeStart]; if true, then the sequence starts
+     * from the single, unique command immediately following [start].
+     */
+    fun interBlockForwardsFrom(start: CmdPointer, excludeStart: Boolean) : Sequence<LTACCmd> {
+        val blockGenerator = sequence<NBId> {
+            var currBlock: NBId? = start.block
+            while(currBlock != null) {
+                yield(currBlock)
+                currBlock = succ(currBlock).singleOrNull()
+            }
+        }.asIterable()
+        return sequence {
+            var started = false
+            for(lc in lcmdSequence(blockGenerator, reverse = false)) {
+                if(started || (!excludeStart && lc.ptr == start)) {
+                    yield(lc)
+                }
+                started = started || lc.ptr == start
+            }
+        }
+    }
+
+    /**
+     * the same as [interBlockForwardsFrom], but in reverse: starting from [start] we go back through the block.
+     * Afterwards, we follow single predecessor blocks, iterating through those blocks in reverse order.
+     *
+     * [start] is included in the sequence depending on [excludeStart]; if true, then the sequence starts
+     * from the unique predecessor command of [start].
+     */
+    fun interBlockBackwardsFrom(start: CmdPointer, excludeStart: Boolean = true) : Sequence<LTACCmd> {
+        val blockGenerator = sequence<NBId> {
+            var currBlock : NBId? = start.block
+            while(currBlock != null) {
+                yield(currBlock)
+                currBlock = pred(currBlock).singleOrNull()
+            }
+        }.asIterable()
+        return sequence {
+            var started = false
+            for(lc in lcmdSequence(blockGenerator, reverse = true)) {
+                if(started || (!excludeStart && lc.ptr == start)) {
+                    yield(lc)
+                }
+                started = started || lc.ptr == start
+            }
+        }
+    }
+
 
     private fun toExp(ep: ExpPointer): TACExpr {
         fun findInSubExp(path: ExpPointer.Path, subExp: TACExpr): TACExpr? {

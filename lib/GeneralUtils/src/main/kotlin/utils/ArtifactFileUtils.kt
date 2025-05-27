@@ -84,16 +84,6 @@ object ArtifactFileUtils {
         return path.subpath(cfgDirPathIdx, path.nameCount).toString()
     }
 
-    fun getFilesWithExtension(path: String, ext: String): List<String> {
-        val lsResult = File(path).list()
-        val relevantResults = lsResult.filter { fileName ->
-            ext.equals(File(fileName).extension)
-        }
-
-        logger.info("For path $path ls result is ${lsResult.asList()} and files matching extension $ext are $relevantResults")
-        return relevantResults
-    }
-
     fun isTAC(fileName: String): Boolean {
         return File(fileName).extension.equals("tac", ignoreCase = true)
     }

@@ -19,7 +19,7 @@ package verifier
 
 import analysis.CmdPointer
 import analysis.EthereumVariables.simplify
-import analysis.icfg.InternalSummarizer
+import analysis.icfg.InternalCVLSummarizer
 import analysis.ip.FunctionFlowAnnotator
 import analysis.ip.INTERNAL_FUNC_EXIT
 import analysis.ip.JUMP_SYM
@@ -169,7 +169,7 @@ object ContractUtils {
                     // Add opaque identify annotations to functions
                     CoreToCoreTransformer(
                         ReportTypes.INTERNAL_FUNCTION_FINDER,
-                        InternalSummarizer::addOpaqueIdentityAnnotations
+                        InternalCVLSummarizer::addOpaqueIdentityAnnotations
                     ),
                     CoreToCoreTransformer(
                         ReportTypes.TYPE_PEEPHOLE

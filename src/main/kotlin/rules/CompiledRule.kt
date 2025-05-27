@@ -73,6 +73,7 @@ import java.util.*
 import java.util.stream.Collectors
 import analysis.controlflow.checkIfAllPathsAreLastReverted
 import rules.genericrulecheckers.collectRequireWithoutReasonNotifications
+import rules.sanity.sorts.SanityCheckSort
 
 
 private val logger = Logger(LoggerTypes.COMMON)
@@ -89,19 +90,16 @@ val json = Json { allowStructuredMapKeys = true; prettyPrint = true; serializers
 sealed interface ICheckableTAC {
     val tac: CoreTACProgram
     val methodParameterInstantiation: MethodParameterInstantiation
-    val sanity: SingleRuleGenerationMeta.Sanity
     val subRule: CVLSingleRule
 
     operator fun component1() = tac
     operator fun component2() = methodParameterInstantiation
-    operator fun component3() = sanity
-    operator fun component4() = subRule
+    operator fun component3() = subRule
 }
 
 data class CheckableTAC(
     override val tac: CoreTACProgram,
     override val methodParameterInstantiation: MethodParameterInstantiation,
-    override val sanity: SingleRuleGenerationMeta.Sanity,
     override val subRule: CVLSingleRule
 ) : ICheckableTAC
 
@@ -111,7 +109,6 @@ data class CheckableTAC(
 data class CheckableTACWithSanity(
     override val tac: CoreTACProgram,
     override val methodParameterInstantiation: MethodParameterInstantiation,
-    override val sanity: SingleRuleGenerationMeta.Sanity,
     override val subRule: CVLSingleRule,
     val sanityChecks: NonEmptyList<CheckableTAC>
 ) : ICheckableTAC
@@ -120,7 +117,6 @@ fun ICheckableTAC.withSanity(sanityChecks: NonEmptyList<CheckableTAC>): Checkabl
     CheckableTACWithSanity(
         this.tac,
         this.methodParameterInstantiation,
-        this.sanity,
         this.subRule,
         sanityChecks
     )
@@ -165,8 +161,9 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             } else {
                 null
             }
+            val sanityAlerts = computeSanityAlerts(compiledRule.rule, res)
             val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule)
-            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts)
+            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts + sanityAlerts)
             if (generateReport && !Config.CoinbaseFeaturesMode.get()) {
                 generateSingleResult(scene, compiledRule.rule, res, time, isOptimizedRuleFromCache, isSolverResultFromCache, alerts)
             } else {
@@ -186,6 +183,14 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     callResolutionTable = CallResolutionTableBase.Empty
                 )
             }
+        }
+
+        private fun computeSanityAlerts(rule: CVLSingleRule, res: Verifier.JoinedResult): Iterable<RuleAlertReport.Single<*>> {
+            val ruleType = rule.ruleType
+            if (ruleType is SpecType.Single.GeneratedFromBasicRule.SanityRule) {
+                return listOf(SanityCheckSort(ruleType).getRuleNotificationForResult(res.finalResult))
+            }
+            return listOf()
         }
 
         companion object {
@@ -489,7 +494,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                 _rule,
                 c.CVLBasedFilter(_rule.ruleIdentifier)
             )
-                .toCheckableTACs(_scene, sanity, _rule)
+                .toCheckableTACs(_scene, _rule.copy(ruleGenerationMeta = _rule.ruleGenerationMeta.updateSanity(sanity)))
         }.transformError(_rule)
 
         /**
@@ -531,8 +536,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                         )
                             .toCheckableTACs(
                                 _scene,
-                                SingleRuleGenerationMeta.Sanity.BASIC_SANITY,
-                                sanityRule
+                                sanityRule.copy(ruleGenerationMeta = sanityRule.ruleGenerationMeta.updateSanity(SingleRuleGenerationMeta.Sanity.BASIC_SANITY))
                             )
                     }
                     baseRuleCheckableTAC.withSanity(
@@ -678,7 +682,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                     } catch (e: CancellationException) {
                         // do not interfere with the coroutine cancellation mechanism
                         throw e
-                    } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                    } catch (e: Exception) {
                         logger.warn(e) {
                             "WithExamplesData generation ended prematurely due to unexpected exception " +
                                 "(rule ${rule.ruleIdentifier.displayName})"

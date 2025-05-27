@@ -126,7 +126,7 @@ suspend fun <T> ParallelPool.rpcRace(
                             logger.warn { "Racer was cancelled more than 5 seconds after another solver had a full result: ${cancelTime.get()?.elapsedNow()}. The system is likely under heady load." }
                         }
                         RacerResult.LostRace(it.resultOnNoExit)
-                    } catch (@Suppress("TooGenericExceptionCaught") t: Throwable) {
+                    } catch (t: Throwable) {
                         cancellationGroup.cancel()
                         throw t
                     }.also {

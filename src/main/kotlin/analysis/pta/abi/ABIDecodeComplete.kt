@@ -31,7 +31,6 @@ import java.math.BigInteger
 
 @KSerializable
 @GenerateRemapper
-@Treapable
 /**
  * Representation of the completion of an ABI decode operation
  *

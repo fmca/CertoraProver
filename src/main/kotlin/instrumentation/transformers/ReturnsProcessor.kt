@@ -72,7 +72,7 @@ class ReturnsProcessor(
         }.filter {
             it.cmd.extract() !is TACCmd.Simple.RevertCmd
         }.map {
-            val standardScalars = if (Config.Mem0x0To0x40AsScalar.get()) {
+            val standardScalars = if (Config.Mem0x0To0x40AsScalar) {
                 mapOf(
                     BigInteger.ZERO to TACKeyword.MEM0.toVar().atSync(calleeTxId),
                     EVM_WORD_SIZE to TACKeyword.MEM32.toVar().atSync(calleeTxId)

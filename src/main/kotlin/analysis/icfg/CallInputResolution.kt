@@ -67,7 +67,6 @@ data class ScratchByteRange(val from: BigInteger, val to: BigInteger) : Serializ
  * encoded with a sighash, (via encodeCall, or encodeWithSelector et al), then the (normalized) sighash is encoded in [sighash].
  */
 @GenerateRemapper
-@Treapable
 data class EncodedElem(
     val sighash: BigInteger?,
     val encoding: ABIArgumentEncoding
@@ -83,7 +82,6 @@ data class EncodedElem(
         get() = encoding.support
 }
 
-@Treapable
 sealed class ABIValue : UniqueIdEntity<ABIValue>, Serializable, TransformableVarEntityWithSupport<ABIValue> {
     abstract val type : HeapType
     @KSerializable
@@ -157,7 +155,6 @@ sealed class ABIValue : UniqueIdEntity<ABIValue>, Serializable, TransformableVar
 
 @GenerateRemapper
 @KSerializable(with = ABIArgumentEncoding.Serializer::class)
-@Treapable
 data class ABIArgumentEncoding(
     @GeneratedBy(Allocator.Id.ABI)
     val encodeId: Int,

@@ -1,38 +1,39 @@
 {
   "AddInternalFunctions": {
-    "Test-doThing(uint256,bool)": [
-      true,
-      true
-    ],
-    "Test-doOtherThing(uint256,bool)": [
-      true,
-      true
-    ],
-    "constructor_Test": [
-      true,
-      true
-    ]
+    "sanity-doThing(uint256,bool)-Assertions": true,
+    "sanity-doOtherThing(uint256,bool)-Assertions": true,
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true
   },
   "CALLGRAPH": {
     "constructor()": false,
-    "doThing(uint256,bool)": true,
-    "doOtherThing(uint256,bool)": true
+    "doOtherThing(uint256,bool)": true,
+    "doThing(uint256,bool)": true
   },
   "INIT": {
     "Test-doThing(uint256,bool)": true,
     "Test-doOtherThing(uint256,bool)": true
   },
+  "NonLinearStats": {
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true],
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true]
+  },
   "POINTSTO": {
     "Test-doThing(uint256,bool)": true,
     "Test-doOtherThing(uint256,bool)": true,
     "constructor()": false,
-    "doOtherThing(uint256,bool)": true,
-    "doThing(uint256,bool)": true
+    "doThing(uint256,bool)": true,
+    "doOtherThing(uint256,bool)": true
+  },
+  "PathCountStats": {
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true],
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": [true, true]
   },
   "SKeyDetection": {
-    "Test-doThing(uint256,bool)": true,
-    "Test-doOtherThing(uint256,bool)": true,
-    "constructor_Test": true
+    "sanity-doOtherThing(uint256,bool)-Assertions": true,
+    "sanity-doThing(uint256,bool)-Assertions": true,
+    "sanity-doOtherThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true,
+    "sanity-doThing(uint256,bool)-Satisfy_Reaching_end_of_methods_code_(Dummy_spec_1_1)": true
   },
   "STORAGE": {
     "Test-doThing(uint256,bool)": false,

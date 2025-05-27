@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><SmellBaseline>
     <CurrentIssues>
-        <ID>BracesOnIfStatements:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer$else</ID>
-        <ID>BracesOnIfStatements:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer$if</ID>
         <ID>BracesOnIfStatements:AxiomatizedFunctionSymbol.kt$AxiomatizedFunctionSymbol$if</ID>
         <ID>BracesOnIfStatements:BitwiseAxiomGenerator.kt$BitwiseAxiomGenerator$else</ID>
         <ID>BracesOnIfStatements:BitwiseAxiomGenerator.kt$BitwiseAxiomGenerator$if</ID>
@@ -49,8 +47,6 @@
         <ID>BracesOnIfStatements:IndexTracking.kt$IndexTracking$if</ID>
         <ID>BracesOnIfStatements:IntValue.kt$IntValue$else</ID>
         <ID>BracesOnIfStatements:IntValue.kt$IntValue$if</ID>
-        <ID>BracesOnIfStatements:JSONReporter.kt$JSONReporter$else</ID>
-        <ID>BracesOnIfStatements:JSONReporter.kt$JSONReporter$if</ID>
         <ID>BracesOnIfStatements:LExpVCStatsLogger.kt$LExpVCStatsLogger$else</ID>
         <ID>BracesOnIfStatements:LExpVCStatsLogger.kt$LExpVCStatsLogger$if</ID>
         <ID>BracesOnIfStatements:LExpVcChecker.kt$LExpVcChecker$else</ID>
@@ -89,8 +85,6 @@
         <ID>BracesOnIfStatements:StridingQualifier.kt$StridingQualifier.Companion$else</ID>
         <ID>BracesOnIfStatements:SummarizeProgram.kt$SummarizeProgram$else</ID>
         <ID>BracesOnIfStatements:SummarizeProgram.kt$SummarizeProgram$if</ID>
-        <ID>BracesOnIfStatements:TACCmdMapper.kt$DefaultTACCmdMapper.&lt;no name provided&gt;$else</ID>
-        <ID>BracesOnIfStatements:TACCmdMapper.kt$DefaultTACCmdMapper.&lt;no name provided&gt;$if</ID>
         <ID>BracesOnIfStatements:TACCommandGraph.kt$ExpPointer$if</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr$else</ID>
         <ID>BracesOnIfStatements:TACExpr.kt$TACExpr$if</ID>
@@ -149,7 +143,6 @@
         <ID>ForEachOnRange:StorageHashAxiomGeneratorLegacy.kt$StorageHashAxiomGeneratorLegacy$0 until arity</ID>
         <ID>ForEachOnRange:StorageHashAxiomGeneratorPlainInjectivity.kt$StorageHashAxiomGeneratorPlainInjectivity$0 until arity</ID>
         <ID>ForbiddenComment:ABICallConvention.kt$ABICallConvention$* In some cases we read from calldata, but do so intentionally reading past the end of the array to fill * an array with zeroes. Find these patterns and mark them as fine (in which case the default initialization * of calldata _should_ be sufficient) * * FIXME(jtoman): make sure that the above is actually true???</ID>
-        <ID>ForbiddenComment:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer.Companion$// TODO: are we sure we don't change the type with this transformation?</ID>
         <ID>ForbiddenComment:AllocationAnalysis.kt$AllocationAnalysis.Alloc.ConstantArrayAlloc$// TODO(jtoman): refactor constarrayalloc and dynamic block into a common (sealed) class</ID>
         <ID>ForbiddenComment:ArrayLoopSummarization.kt$ArrayLoopSummarization$/* zero is handld with a special loop role for annoying reasons fixme(jtoman): it probably shouldn't be */</ID>
         <ID>ForbiddenComment:AxiomatizedFunctionSymbol.kt$AxiomatizedFunctionSymbol$* Function symbols that we introduce (and have to declare in the smt script) and provide with a meaning through axioms. * * Note that [ArraySelectFunctionSymbol.OneDim] fits the description of an [AxiomatizedFunctionSymbol] but we manage them separately. * * TODO: there are remainders of the multi-override pattern here; [AxiomatizedFunctionSymbol] should not override [name] * and [signature], but instead there should be a subclass grouping its direct descendants that then overrides those * fields.</ID>
@@ -247,8 +240,6 @@
         <ID>ForbiddenComment:IntegrativeChecker.kt$IntegrativeChecker$// adding state links? TODO</ID>
         <ID>ForbiddenComment:IntegrativeChecker.kt$IntegrativeChecker$//todo: seems like a bug (might affect the way things are reported in the --assert mode)</ID>
         <ID>ForbiddenComment:InterContractCallResolver.kt$InterContractCallResolver.CallGraphNode.CallNode$// TODO: maybe make this part of the canResolve check...?</ID>
-        <ID>ForbiddenComment:JSONReporter.kt$JSONReporter$// TODO: use rule types for more fine-grained control</ID>
-        <ID>ForbiddenComment:JSONReporter.kt$JSONReporter$// flatten multi results TODO: For multiple levels - currently will inline just one level (there's no case for that yet)</ID>
         <ID>ForbiddenComment:LExpVCSATResultPrettifier.kt$LExpVCSATResultPrettifier$* Variables whose value minimisation will be prioritized by the model post-processing. * The variables are either chosen by the user via `config.postProcessVariables` or * we collect and prioritise all variables in all assertions in the rule. Note that * there might be more assertions in the rule and in that case it would be probably better to collect just * variables from the violated assertion(s). * //TODO: collect vars just from the violated assert(s). Postponing for now since we plan further * architecture changes. In particular, we want to decouple the rule solving * and cex prettification (i.e. first report the cex to the user via the HTML interface, and then prettify * and improve the cex if possible (and update the HTML)).</ID>
         <ID>ForbiddenComment:LExpVCStats.kt$CEGARStatistic$// TODO: or enum?</ID>
         <ID>ForbiddenComment:LExpVcChecker.kt$LExpVcChecker$* Takes a list of pairs, each pair is a [LExpToSmtSetupInfo] and a list of [SolverConfig]. Creates a list * of [Executable]s and runs the race * * Duplicates are removed from the [SolverConfig], and [Executable]s are ordered in a mixed order, according * to solver name. * TODO: create an order according to real statistics (perhaps per project even).</ID>
@@ -358,7 +349,6 @@
         <ID>ForbiddenMethodCall:EntryPoint.kt$split("\n")</ID>
         <ID>ForbiddenMethodCall:EnvFreeMethodAnalysis.kt$EnvFreeMethodAnalysis$contains(".")</ID>
         <ID>ForbiddenMethodCall:GraphDrawer.kt$startsWith("&lt;svg")</ID>
-        <ID>ForbiddenMethodCall:JSONReporter.kt$JSONReporter$Regex("(?&lt;!\\\\)\"")</ID>
         <ID>ForbiddenMethodCall:SVGTools.kt$Regex("&lt;svg ")</ID>
         <ID>ForbiddenMethodCall:SVGTools.kt$Regex(pattern)</ID>
         <ID>ForbiddenMethodCall:SVGTools.kt$Regex(patternCalls)</ID>
@@ -385,13 +375,6 @@
         <ID>ImportStdCollections:ABIDecodeComplete.kt$ABIDecodeComplete$toSet</ID>
         <ID>ImportStdCollections:ABIDirectRead.kt$ABIDirectRead$+</ID>
         <ID>ImportStdCollections:AbstractSmtExpTermBuilder.kt$AbstractSmtExpTermBuilder$toList</ID>
-        <ID>ImportStdCollections:AccumulatingTACExprTransformer.kt$DefaultAccumulatingTACExprTransformer$mutableMapOf</ID>
-        <ID>ImportStdCollections:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer$toList</ID>
-        <ID>ImportStdCollections:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer.Companion$toList</ID>
-        <ID>ImportStdCollections:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer.Companion$toMap</ID>
-        <ID>ImportStdCollections:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer.QuantVars$+</ID>
-        <ID>ImportStdCollections:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformer.QuantVars.Companion$listOf</ID>
-        <ID>ImportStdCollections:AccumulatingTACExprTransformer.kt$QuantDefaultTACExprTransformerWithPointer$toList</ID>
         <ID>ImportStdCollections:ArrayLoopSummarization.kt$ArrayLoopSummarization$+</ID>
         <ID>ImportStdCollections:ArrayLoopSummarization.kt$ArrayLoopSummarization$-</ID>
         <ID>ImportStdCollections:ArrayLoopSummarization.kt$ArrayLoopSummarization$listOf</ID>
@@ -588,8 +571,6 @@
         <ID>ImportStdCollections:IntQualifier.kt$IntQualifier.MultipleOf$listOf</ID>
         <ID>ImportStdCollections:InterContractCallResolver.kt$InterContractCallResolver$forEach</ID>
         <ID>ImportStdCollections:InternalSummarizer.kt$InternalSummarizer$forEach</ID>
-        <ID>ImportStdCollections:JSONReporter.kt$JSONReporter$listOf</ID>
-        <ID>ImportStdCollections:JSONReporter.kt$JSONReporter$mutableSetOf</ID>
         <ID>ImportStdCollections:JumpConditionNormalizer.kt$JumpConditionNormalizer$listOf</ID>
         <ID>ImportStdCollections:JumpConditionNormalizer.kt$JumpConditionNormalizer$setOf</ID>
         <ID>ImportStdCollections:KleeneSolver.kt$KleeneSolver$mutableMapOf</ID>
@@ -823,39 +804,6 @@
         <ID>SwallowedException:TACProgram.kt$TACProgram$e: Exception</ID>
         <ID>ThrowingExceptionFromFinally:CEGARUtils.kt$throw dummyE!!</ID>
         <ID>ThrowingExceptionsWithoutMessageOrCause:EncoderAnalysis.kt$EncoderAnalysis.Companion$IllegalArgumentException()</ID>
-        <ID>TooGenericExceptionCaught:CEGARCoordinator.kt$CEGARCoordinator$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CEGARUtils.kt$closeE: Throwable</ID>
-        <ID>TooGenericExceptionCaught:CEGARUtils.kt$e: Throwable</ID>
-        <ID>TooGenericExceptionCaught:CEGARWorker.kt$CEGARWorker$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CVLExpToTACExpr.kt$CVLExpToTACExpr$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CacheManager.kt$CacheManager$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CallGraphBuilder.kt$CallGraphBuilder$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:CodeTransformers.kt$ChainedCoreTransformers$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:ConcreteTACStateSerializer.kt$ConcreteTACStateSerializer$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:ContractUtils.kt$ContractUtils$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:EntryPoint.kt$t: Exception</ID>
-        <ID>TooGenericExceptionCaught:EventStreams.kt$FileEventStream$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:EventStreams.kt$StdOutEventStream$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:ExactNIAWorker.kt$ExactNIAWorker$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:Executable.kt$Executable$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:GraphDrawer.kt$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:GraphDrawer.kt$interrupt: Exception</ID>
-        <ID>TooGenericExceptionCaught:HTMLReporter.kt$HTMLReporter$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:InitAnnotation.kt$InitAnnotation$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:LExpVCSATResultPrettifier.kt$LExpVCSATResultPrettifier$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:LogicalEquivalence.kt$LogicalEquivalence$x: Exception</ID>
-        <ID>TooGenericExceptionCaught:OutputReporter.kt$OutputReporter$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:OutputReporter.kt$ReporterContainer$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:ReachabilityFailureSourceFinder.kt$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:RustBlaster.kt$RustBlasterPool.RustWorker$e : Exception</ID>
-        <ID>TooGenericExceptionCaught:SolidityVerifier.kt$SolidityVerifier$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:SpecSource.kt$CVLSpecSource$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:StorageAnalysis.kt$StorageAnalysis$x: Throwable</ID>
-        <ID>TooGenericExceptionCaught:TACProgram.kt$CoreTACProgram$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:TACProgram.kt$CoreTACProgram.Companion$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:TACProgram.kt$EVMTACProgram$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:TACProgram.kt$TACProgram$e: Exception</ID>
-        <ID>TooGenericExceptionCaught:Z3BlasterPool.kt$Z3BlasterPool.Z3BlasterWorker$e: Exception</ID>
         <ID>TooGenericExceptionThrown:BlockMerger.kt$BlockMerger$throw Exception("Current chain node $b from $chain not in code")</ID>
         <ID>TooGenericExceptionThrown:BlockMerger.kt$BlockMerger$throw Exception("Start node $current is not in graph $newGraph")</ID>
         <ID>TooGenericExceptionThrown:BuiltInRuleCustomChecker.kt$BuiltInRuleCustomChecker.HasDelegateCallsChecker$throw Exception("Expected the compiled builtin rule ${rule.declarationId} to contain one method parameter, but got $currMethodInst")</ID>

@@ -598,6 +598,7 @@
                     }
                 }
             },
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {
@@ -769,7 +770,7 @@
                     }
                 }
             },
-            "description": "s1 == s2",
+            "description": null,
             "scope": {
                 "scopeStack": [
                     {

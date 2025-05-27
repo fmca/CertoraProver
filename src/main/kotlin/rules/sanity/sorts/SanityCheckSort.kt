@@ -18,6 +18,7 @@
 package rules.sanity.sorts
 
 import cli.SanityValues
+import report.RuleAlertReport
 import rules.RuleCheckResult
 import rules.dpgraph.SanityCheckNode
 import rules.dpgraph.SanityCheckNodeType
@@ -25,6 +26,7 @@ import rules.sanity.SanityDPResult
 import rules.sanity.*
 import solver.SolverResult
 import spec.cvlast.SpecType
+import utils.*
 
 
 /**
@@ -44,7 +46,7 @@ sealed interface SanityCheckSort<in S : RuleCheckResult.Single, G> {
         operator fun invoke(type: SpecType.Single.GeneratedFromBasicRule.SanityRule) =
             when (type) {
                 is SpecType.Single.GeneratedFromBasicRule.SanityRule.RedundantRequireCheck -> {
-                    RedundantRequires
+                    RedundantRequires(type.assumeCVLCmd)
                 }
                 is SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertTautologyCheck -> {
                     AssertsTautology
@@ -56,28 +58,21 @@ sealed interface SanityCheckSort<in S : RuleCheckResult.Single, G> {
                     Vacuity
                 }
                 is SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.LeftOperand-> {
-                    AssertionsStructureLeftOperand(type.expr)
+                    AssertionsStructureLeftOperand(type.assertCVLCmd, type.expr)
                 }
                 is SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.RightOperand -> {
-                    AssertionsStructureRightOperand(type.expr)
+                    AssertionsStructureRightOperand(type.assertCVLCmd, type.expr)
                 }
                 is SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.IFFBothTrue -> {
-                    AssertionsStructureIFFBothTrue(type.expr)
+                    AssertionsStructureIFFBothTrue(type.assertCVLCmd, type.expr)
                 }
                 is SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.IFFBothFalse -> {
-                    AssertionsStructureIFFBothFalse(type.expr)
+                    AssertionsStructureIFFBothFalse(type.assertCVLCmd, type.expr)
                 }
             }
     }
 
     val mode: SanityValues
-
-    val reportName: String
-
-    /**
-     * The [SanityCheckSeverity] level of this [SanityCheckSort].
-     */
-    val severityLevel: SanityCheckSeverity
 
     /**
      * Immediate dependencies (predecessors) of this [SanityCheckSort].
@@ -101,77 +96,37 @@ sealed interface SanityCheckSort<in S : RuleCheckResult.Single, G> {
      */
     fun concludeResultFromPredsOrNull(predsResults: Map<SanityCheckNode, SanityDPResult>): SolverResult?
 
-
     /**
-     * Extracts the corresponding "sanity sub-check group" from the given [RuleCheckResult].
-     * "sanity sub-check group" characterizes a subset of sanity checks whose results should
-     * be summarized or aggregated later into a single sanity-check result.
+     * Given the [SolverResult] of the computation generates a Notification that is
+     * displayed in the Rule Notifications tab.
      */
-    fun checkResultToSanitySubCheckGroup(r: SanityDPResult): G
-
-    /**
-     * Determines how sanity-check results ([S]) should be viewed (in terms of [SanityCheckResultOrdinal]s)
-     * in the context of this [SanityCheckSort].
-     */
-    fun checkResultToSanityResultOrd(s: DPSuccess<S>): SanityCheckResultOrdinal
-
-    /**
-     * Returns any extra details from the sanity-check results ([S]).
-     */
-    fun checkResultToDetailsStr(s: DPSuccess<S>): Result<String>
-
-    /**
-     * Determines the UI messages of non-error results used for checking
-     * this [SanityCheckSort].
-     */
-    val nonErrorUIMessageFormatter: SanityCheckNonErrorUIMessageFormatter<G>
-
-    /**
-     * Returns a (formatted) UI message for the given non-error sanity-check result ([sanityCheckNonErrorResult]).
-     */
-    fun nonErrorUIMessageOf(sanityCheckNonErrorResult: DPSuccess<S>): SanityCheckNonErrorUIMessage =
-        nonErrorUIMessageFormatter.nonErrorUIMessageOf(
-            sanityCheckNonErrorResult.computationalTyp,
-            severityLevel,
-            checkResultToSanityResultOrd(sanityCheckNonErrorResult),
-            checkResultToSanitySubCheckGroup(sanityCheckNonErrorResult),
-            checkResultToDetailsStr(sanityCheckNonErrorResult)
-        )
+    fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*>
 
     /**
      * A sort of sanity-check whose result may change when checked for different methods
      * in the case of parametric rules.
      */
     sealed interface FunctionDependent<S : RuleCheckResult.Single, G> :
-        SanityCheckSort<S, G> {
-
-        /**
-         * Given [_sanityCheckResults], a list of ALL sanity checks' results
-         * (which usually should originate from a [SanityResultsContainer]),
-         * and [_baseResults], a list of ALL the base rules (namely, all the rules whose sanity is being checked),
-         * returns a "view" ([SanityResultsView]) on this results' list w.r.t. this [SanityCheckSort].
-         */
-        fun toSanityResultsView(
-            _baseResults: List<SanityDPResult>,
-            _sanityCheckResults: List<SanityDPResult>
-        ): SanityResultsView.FunctionDependent<S>
-
-    }
-
+        SanityCheckSort<S, G>
     /**
      * A sort of sanity-check whose result can be obtained without checking it separately
      * for each method in the case of parametric rules.
      */
     sealed interface FunctionIndependent<S : RuleCheckResult.Single, G> :
-        SanityCheckSort<S, G> {
+        SanityCheckSort<S, G>
 
-        /**
-         * Given [_sanityCheckResults], a list of ALL sanity checks' results (which usually should originate from a [SanityResultsContainer]),
-         * returns a "view" ([SanityResultsView]) on this results' list w.r.t. this [SanityCheckSort].
-         */
-        fun toSanityResultsView(
-            _sanityCheckResults: List<SanityDPResult>
-        ): SanityResultsView.FunctionIndependent<S>
-
+    /**
+     * Returns the SolverResult in a human-readable string format that
+     * is used for Rule Notifications.
+     * Note that the String may depend on the actual sanity check type, i.e., UNSAT
+     * may not always mean a failure. Therefore, only use this string representation
+     * for creating a rule notification when appropriate.
+     */
+    fun SolverResult.toSanityStatusString() = when(this){
+        SolverResult.UNSAT -> "failed"
+        SolverResult.SAT -> "succeeded"
+        SolverResult.UNKNOWN -> "did not terminate as expected"
+        SolverResult.TIMEOUT -> "timed out"
+        SolverResult.SANITY_FAIL -> `impossible!`
     }
 }

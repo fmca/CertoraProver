@@ -1739,6 +1739,50 @@ class NumericAnalysis(
         val arrayHintPropagation = mutableListOf<ArrayHints>()
         val additional = mutableMapOf<TACSymbol.Var, MutableList<PathInformation.Qual<IntQualifier>>>()
         for((v, propagatedFacts) in propagation) {
+            for(ub in propagatedFacts.filterIsInstance<UpperBound>().filter {
+                it.sym != null
+            }) {
+
+                /**
+                 * If we have that v1 + v2 <= K (or `<` as we are only looking for [UpperBound]),
+                 * where K is some *lower* bound on the number of bytes remaining in an `array`
+                 * then we know that it is safe to copy v1 bytes starting at v2 in the element
+                 * block of `array` (and vice versa).
+                 *
+                 * Some candidates for K are another safe copy index of v2, the size of the element segment,
+                 * or (if the array has element size 1) the length of the array.
+                 */
+                fun TACSymbol.Var.elemSize() = pointerAnalysis.getElementSize(this, pState = pstate.pointsToState)
+                val ubAv = ub.sym!!.let(st::get)?.let { it as? QualifiedInt } ?: continue
+                val arrVars = ubAv.qual.mapNotNullToTreapSet {
+                    when(it) {
+                        is IntQualifier.LengthOfArray -> {
+                            it.arrayVar.takeIf { av ->
+                                av.elemSize() == BigInteger.ONE
+                            }
+                        }
+                        is IntQualifier.SizeOfElementSegment -> it.arrayVar
+                        is IntQualifier.ElementOffsetFor -> it.arrayVar
+                        is IntQualifier.SafeCopyOffset -> it.arrayVar
+                        else -> null
+                    }
+                }
+                for(match in pstate.invariants matches {
+                    v `=` v("v1") {
+                        it is LVar.PVar
+                    } + v("v2") {
+                        it is LVar.PVar
+                    }
+                }) {
+                    val tgt = match.symbols["v1"] as LVar.PVar
+                    val len = match.symbols["v2"] as LVar.PVar
+                    for(arrVar in arrVars) {
+                        additional.getOrPut(tgt.v) {
+                            mutableListOf()
+                        }.add(PathInformation.Qual(IntQualifier.SafeCopyOffset(arrayVar = arrVar, safeCopyLength = len.v)))
+                    }
+                }
+            }
             val valueQualifiers = st[v]?.tryResolve()?.let { it as? QualifiedInt }?.qual
             st[v]?.tryResolve()?.let { it as? QualifiedInt }?.qual?.filterIsInstance<IntQualifier.RemainingElementsProofFor>()?.takeIf {
                 it.isNotEmpty()

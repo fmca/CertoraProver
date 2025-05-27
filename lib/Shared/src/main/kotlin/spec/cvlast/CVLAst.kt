@@ -607,7 +607,7 @@ sealed class CVLSlotPattern : AmbiSerializable {
     @Serializable
     data class MapAccess(val base: CVLSlotPattern, val key: VMParam.Named) : CVLSlotPattern() {
         override fun getRoot(): Static = base.getRoot()
-        override fun toString(): String = "$base[KEY ${key.type} ${key.id}]"
+        override fun toString(): String = "$base[${mapAccessKeyword} ${key.type} ${key.id}]"
         override fun definedParams() = base.definedParams() + listOf(key)
     }
 
@@ -633,8 +633,13 @@ sealed class CVLSlotPattern : AmbiSerializable {
     @Serializable
     data class ArrayAccess(val base: CVLSlotPattern, val index: VMParam.Named) : CVLSlotPattern() {
         override fun getRoot(): Static = base.getRoot()
-        override fun toString(): String = "$base[INDEX ${index.type} ${index.id}]"
+        override fun toString(): String = "$base[${arrayAccessKeyword} ${index.type} ${index.id}]"
         override fun definedParams() = base.definedParams() + listOf(index)
+    }
+
+    companion object {
+        const val mapAccessKeyword = "KEY"
+        const val arrayAccessKeyword = "INDEX"
     }
 }
 

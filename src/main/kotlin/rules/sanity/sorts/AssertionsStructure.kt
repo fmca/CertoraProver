@@ -23,31 +23,31 @@ import rules.dpgraph.SanityCheckNode
 import rules.dpgraph.SanityCheckNodeType
 import rules.sanity.SanityDPResult
 import rules.sanity.*
-import rules.sanity.SanityCheckResultOrdinal.Companion.toDefaultSanityCheckResultOrdinal
 import solver.SolverResult
 import spec.cvlast.CVLCmd
 import spec.cvlast.CVLExp
-import spec.cvlast.SpecType
 import datastructures.stdcollections.*
+import report.RuleAlertReport
+import utils.*
 
 val assertionStructurePreds = listOf(SanityCheckNodeType.SanityCheck(Vacuity))
 
 sealed interface AssertionsStructure : SanityCheckSort.FunctionDependent<RuleCheckResult.Single, CVLCmd.Simple.Assert> {
     override val mode
         get() = SanityValues.ADVANCED
+    val assertCmd: CVLCmd.Simple.Assert
     val assertExp: CVLExp.BinaryExp
-    override val reportName: String
-        get()= "assertion structure check"
     override val preds: List<SanityCheckNodeType> get() = assertionStructurePreds
 
-    override fun checkResultToSanityResultOrd(s: DPSuccess<RuleCheckResult.Single>): SanityCheckResultOrdinal =
-        s.result.toDefaultSanityCheckResultOrdinal()
-
-    override fun checkResultToDetailsStr(s: DPSuccess<RuleCheckResult.Single>) =
-        s.result.firstData.details
-
-    override fun checkResultToSanitySubCheckGroup(r: SanityDPResult): CVLCmd.Simple.Assert =
-        r.result.rule.narrowType<SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck>().ruleType.assertCVLCmd
+    val severityLevel: SanityCheckSeverity
+    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*> {
+        val msg = "The assertion structure check of the `require` command at location ${assertCmd.range} ${solverResult.toSanityStatusString()}. See ${CheckedUrl.SANITY_ASSERTIONS_STRUCTURE}\""
+        return if(severityLevel is SanityCheckSeverity.Critical && solverResult == SolverResult.UNSAT) {
+            RuleAlertReport.Warning(msg)
+        } else {
+            RuleAlertReport.Info(msg)
+        }
+    }
 
     override fun concludeResultFromPredsOrNull(
         predsResults: Map<SanityCheckNode, SanityDPResult>
@@ -71,19 +71,9 @@ sealed interface AssertionsStructure : SanityCheckSort.FunctionDependent<RuleChe
             null
         }
     }
-
-    val rawMsgFormatter: (SanityCheckResultOrdinal, CVLCmd.Simple.Assert, String, String) -> String
-
-    override val nonErrorUIMessageFormatter: SanityCheckNonErrorUIMessageFormatter<CVLCmd.Simple.Assert>
-        get() =
-            SanityCheckNonErrorUIMessageFormatter(
-                rawMsg = reportName,
-                rawMsgFormatter = rawMsgFormatter
-            )
 }
 
-@JvmInline
-value class AssertionsStructureLeftOperand(override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
+class AssertionsStructureLeftOperand(override val assertCmd: CVLCmd.Simple.Assert, override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
     override val severityLevel: SanityCheckSeverity
         get() = if (assertExp is CVLExp.BinaryExp.ImpliesExp) {
             SanityCheckSeverity.Critical
@@ -91,87 +81,26 @@ value class AssertionsStructureLeftOperand(override val assertExp: CVLExp.Binary
             SanityCheckSeverity.Info
         }
 
-    override fun toSanityResultsView(
-        _baseResults: List<SanityDPResult>,
-        _sanityCheckResults: List<SanityDPResult>
-    ): SanityResultsView.FunctionDependent<RuleCheckResult.Single> =
-        SanityResultsView.FunctionDependent<RuleCheckResult.Single,
-                SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.LeftOperand,
-                CVLCmd.Simple.Assert>(
-            _baseResults, _sanityCheckResults, this
-        )
-
-    override val rawMsgFormatter
-        get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _: String, rawMsg: String ->
-            "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
-                if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.descriptionOrDefault
-                } else {
-                    "checked expression ${assertExp.l}"
-                }
-        }
 }
 
-@JvmInline
-value class AssertionsStructureRightOperand(override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
+class AssertionsStructureRightOperand(override val assertCmd: CVLCmd.Simple.Assert, override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
+    override val severityLevel: SanityCheckSeverity
+        get() = SanityCheckSeverity.Info
+}
+
+class AssertionsStructureIFFBothFalse(override val assertCmd: CVLCmd.Simple.Assert, override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
     override val severityLevel: SanityCheckSeverity
         get() = SanityCheckSeverity.Info
 
-    override fun toSanityResultsView(
-        _baseResults: List<SanityDPResult>,
-        _sanityCheckResults: List<SanityDPResult>
-    ): SanityResultsView.FunctionDependent<RuleCheckResult.Single> =
-        SanityResultsView.FunctionDependent<RuleCheckResult.Single,
-                SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.RightOperand,
-                CVLCmd.Simple.Assert>(
-            _baseResults, _sanityCheckResults, this
-        )
 
-    override val rawMsgFormatter: (SanityCheckResultOrdinal, CVLCmd.Simple.Assert, String, String) -> String
-        get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _, rawMsg: String ->
-            "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
-                if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.descriptionOrDefault
-                } else {
-                    "checked expression ${assertExp.r}"
-                }
-        }
 }
 
-@JvmInline
-value class AssertionsStructureIFFBothFalse(override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
-    override val severityLevel: SanityCheckSeverity
-        get() = SanityCheckSeverity.Info
-
-    override fun toSanityResultsView(
-        _baseResults: List<SanityDPResult>,
-        _sanityCheckResults: List<SanityDPResult>
-    ): SanityResultsView.FunctionDependent<RuleCheckResult.Single> =
-        SanityResultsView.FunctionDependent<RuleCheckResult.Single,
-                SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.IFFBothFalse,
-                CVLCmd.Simple.Assert>(
-            _baseResults, _sanityCheckResults, this
-        )
-
-    override val rawMsgFormatter: (SanityCheckResultOrdinal, CVLCmd.Simple.Assert, String, String) -> String
-        get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _, rawMsg: String ->
-            "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
-                if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.descriptionOrDefault
-                } else {
-                    "checks that both ${assertExp.l} and ${assertExp.r} are not false, because that would make " +
-                        "$assertExp always true"
-                }
-        }
-}
-
-@JvmInline
-value class AssertionsStructureIFFBothTrue(override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
+class AssertionsStructureIFFBothTrue(override val assertCmd: CVLCmd.Simple.Assert, override val assertExp: CVLExp.BinaryExp) : AssertionsStructure {
     override val severityLevel: SanityCheckSeverity
         get() = SanityCheckSeverity.Info
 
     override val preds: List<SanityCheckNodeType>
-        get() = listOf(SanityCheckNodeType.SanityCheck(AssertionsStructureIFFBothFalse(assertExp)))
+        get() = listOf(SanityCheckNodeType.SanityCheck(AssertionsStructureIFFBothFalse(assertCmd, assertExp)))
 
     override fun concludeResultFromPredsOrNull(
         predsResults: Map<SanityCheckNode, SanityDPResult>
@@ -207,24 +136,4 @@ value class AssertionsStructureIFFBothTrue(override val assertExp: CVLExp.Binary
         }
     }
 
-    override fun toSanityResultsView(
-        _baseResults: List<SanityDPResult>,
-        _sanityCheckResults: List<SanityDPResult>
-    ): SanityResultsView.FunctionDependent<RuleCheckResult.Single> =
-        SanityResultsView.FunctionDependent<RuleCheckResult.Single,
-                SpecType.Single.GeneratedFromBasicRule.SanityRule.AssertionStructureCheck.IFFBothTrue,
-                CVLCmd.Simple.Assert>(
-            _baseResults, _sanityCheckResults, this
-        )
-
-    override val rawMsgFormatter: (SanityCheckResultOrdinal, CVLCmd.Simple.Assert, String, String) -> String
-        get() = { sanityOrdinalValue: SanityCheckResultOrdinal, assertCmd: CVLCmd.Simple.Assert, _, rawMsg: String ->
-            "$rawMsg ${sanityOrdinalValue.reportString()}: ${assertCmd.range}" +
-                if (sanityOrdinalValue == SanityCheckResultOrdinal.FAILED) {
-                    assertCmd.descriptionOrDefault
-                } else {
-                    "checks that both ${assertExp.l} and ${assertExp.r} are not true, because that would make " +
-                        "$assertExp always true"
-                }
-        }
 }

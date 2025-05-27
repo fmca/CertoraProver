@@ -142,7 +142,6 @@ class ParallelPool private constructor(forkJoinPool: ForkJoinPool, internal val 
             val d = v.queueSchedule(ioPool)
             if(d.isNotEmpty()) {
                 checkCancellation()
-                @Suppress("TooGenericExceptionCaught")
                 try {
                     invokeAll(
                         d.map { SchedulingTask(it, cancelFlag || v is CancellableJob) }

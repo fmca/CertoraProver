@@ -541,7 +541,7 @@ object FreePointerScalarizer {
         bytecode: DisassembledEVMBytecode,
         isConstructor: Boolean = false
     ): CoreTACProgram {
-        if(!Config.Mem0x0To0x40AsScalar.get()) {
+        if(!Config.Mem0x0To0x40AsScalar) {
             return code
         }
         val graph = code.analysisCache.graph

@@ -268,7 +268,6 @@ internal fun createTempDir(): Path {
 }
 
 @OptIn(ExperimentalPathApi::class)
-@Suppress("TooGenericExceptionCaught")
 sealed class CertoraBuildSource {
     class TempDir(
         override val buildDir: Path,

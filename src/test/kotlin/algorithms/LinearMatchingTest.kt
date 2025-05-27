@@ -117,6 +117,12 @@ class LinearMatchingTest {
                 it > BigInteger.ZERO
             }
         }
+
+        match {
+            !v1 `=` !v2 + 32
+        } failsOn {
+            v("v1") `=` v("v2")
+        }
     }
 
     @Test

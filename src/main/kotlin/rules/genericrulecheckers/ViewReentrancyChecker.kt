@@ -84,7 +84,7 @@ data object ViewReentrancyChecker : BuiltInRuleCustomChecker<ViewReentrancyGener
                 "There are view functions and functions to check but Codes to check list in ${rule.declarationId} " +
                     "is empty"
             }
-            val checkableTACs = codesToCheck.map { (currCode, currMethodInst, sanity, singleRule) ->
+            val checkableTACs = codesToCheck.map { (currCode, currMethodInst, singleRule) ->
                 val methodNames = currMethodInst.values.map { it.toExternalABIName() }
                 check(methodNames.isNotEmpty()) {
                     "Expected the compiled builtin rule ${rule.declarationId} " +
@@ -117,7 +117,7 @@ data object ViewReentrancyChecker : BuiltInRuleCustomChecker<ViewReentrancyGener
                 StatusReporter.registerSubrule(singleRule)
                 CheckableTAC(
                     injected,
-                    currMethodInst, sanity, singleRule
+                    currMethodInst, singleRule
                 )
             }
             val result = ruleChecker.compiledSingleRuleCheck(rule, checkableTACs)

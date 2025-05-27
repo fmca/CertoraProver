@@ -24,10 +24,7 @@ import analysis.alloc.AllocationAnalysis
 import analysis.alloc.AllocationInformation
 import analysis.numeric.IntValue
 import datastructures.stdcollections.*
-import utils.hashObject
-import utils.monadicFold
-import utils.monadicMap
-import utils.uniqueOrNull
+import utils.*
 import vc.data.TACCmd
 import vc.data.TACKeyword
 import vc.data.TACMeta
@@ -37,6 +34,7 @@ import java.util.*
 import java.util.stream.Collector
 import java.util.stream.Collectors
 import java.util.stream.Stream
+import kotlin.collections.mapNotNull
 
 /**
  * The encapsulation of the points to information computed by the [PointsToAnalysis].
@@ -218,6 +216,28 @@ class FlowPointsToInformation(
                             }
                         }
                         val cmd = (graph.elab(where).cmd as? TACCmd.Simple.LongAccesses)?.accesses ?: return@inner null
+                        cmd.singleOrNull {
+                            it.isWrite && TACMeta.EVM_MEMORY in it.base.meta
+                        }?.let { la ->
+                            pta.pointerAnalysis.isSafeLongCopy(
+                                la.offset,
+                                la.length,
+                                dom
+                            )
+                        }?.let { arrVar ->
+                            dom.pointsToState.store[arrVar]?.let {
+                                it as? Pointer.ArrayPointer
+                            }
+                        }?.v?.filterIsInstance<ArrayAbstractLocation.A>()?.let {
+                            return arrayElementNodes(
+                                seq = it,
+                                heap = dom.pointsToState.h,
+                                where = where,
+                                v = null,
+                                indAbstraction = IntValue.Nondet
+                            )
+                        }
+
                         val readAmount = cmd.singleOrNull {
                             it.offset == v && !it.isWrite && TACMeta.EVM_MEMORY in it.base.meta
                         } ?: return@inner null
@@ -338,7 +358,7 @@ class FlowPointsToInformation(
         seq: Iterable<ArrayAbstractLocation.A>,
         indAbstraction: IntValue,
         heap: AbstractHeap,
-        v: TACSymbol.Var,
+        v: TACSymbol.Var?,
         where: CmdPointer
     ): IndexableSet? {
         data class IntermediateNode(val node: Nodes.Field.ArrayElement, val strong: Boolean)

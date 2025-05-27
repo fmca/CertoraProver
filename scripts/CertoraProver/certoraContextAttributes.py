@@ -998,6 +998,24 @@ class EvmAttributes(AttrUtil.Attributes):
         disables_build_cache=False
     )
 
+    STORAGE_EXTENSION_ANNOTATION = AttrUtil.AttributeDefinition(
+        arg_type=AttrUtil.AttrArgType.BOOLEAN,
+        argparse_args={
+            'action': AttrUtil.STORE_TRUE
+        },
+        affects_build_cache_key=True,
+        disables_build_cache=False
+    )
+
+    EXTRACT_STORAGE_EXTENSION_ANNOTATION = AttrUtil.AttributeDefinition(
+        arg_type=AttrUtil.AttrArgType.BOOLEAN,
+        argparse_args={
+            'action': AttrUtil.STORE_TRUE
+        },
+        affects_build_cache_key=False,
+        disables_build_cache=False
+    )
+
     OPTIMISTIC_HASHING = AttrUtil.AttributeDefinition(
         arg_type=AttrUtil.AttrArgType.BOOLEAN,
         help_msg="Bound the length of data (with potentially unbounded length) to the value given in "
@@ -1124,6 +1142,21 @@ class EvmAttributes(AttrUtil.Attributes):
         help_msg="Once this number of violations are found, no new Ranger call sequence checks will be started. Checks already in progress will continue.",
         default_desc=f"Once {Util.DEFAULT_RANGER_FAILURE_LIMIT} violations are found, no new Ranger call sequence checks will be started.",
         jar_flag="-boundedModelCheckingFailureLimit",
+        affects_build_cache_key=False,
+        disables_build_cache=False,
+    )
+
+    MAX_CONCURRENT_RULES = AttrUtil.AttributeDefinition(
+        attr_validation_func=Vf.validate_non_negative_integer,
+        argparse_args={
+            'action': AttrUtil.UniqueStore
+        },
+        help_msg="Set the maximum number of parallel rule evaluations. "
+                 "Lower values (e.g., 1, 2, or 4) may reduce memory usage in large runs. "
+                 "This can sometimes help to mitigate out of memory problems.",
+        default_desc="Number of available CPU cores.",
+        temporary_jar_invocation_allowed=True,
+        jar_flag="-maxConcurrentRules",
         affects_build_cache_key=False,
         disables_build_cache=False,
     )

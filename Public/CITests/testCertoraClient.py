@@ -263,10 +263,6 @@ class TestClient(unittest.TestCase):
                              run_flags=[f"{_p('A.sol')}:B", '--verify', f"B:{_p('spec1.spec')}"])
         suite.expect_success(description='multiple files single assert',
                              run_flags=[_p('A.sol'), _p('B.sol'), '--verify', f"A:{_p('spec1.spec')}"])
-        suite.expect_success(description='multiple files multiple assert',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', 'B'])
-        suite.expect_success(description='multiple files multiple assert repeated flag',
-                             run_flags=[_p('A.sol'), _p('B.sol'), '--assert_contracts', 'A', '--assert_contracts', 'B'])
         suite.expect_success(description='file is repeated',
                              run_flags=[f"{_p('A.sol')}:B", f"{_p('A.sol')}:B", '--verify', f"B:{_p('spec1.spec')}"])
         suite.expect_success(description='2 contracts in a single file',
@@ -479,11 +475,8 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description='not valid contract name',
                              run_flags=[f"{_p('A.sol')}:El-Paso", '--verify', f"A:{_p('spec1.spec')}"],
                              expected='El-Paso should be a valid contract name')
-        suite.expect_failure(description="'assert_contracts' cannot be used with a .tac file",
-                             run_flags=[f"{_p('A.sol')}:tmp.tac", '--assert_contracts', 'A'],
-                             expected="'assert_contracts' cannot be used with a .tac file")
         suite.expect_failure(description="--bytecode_spec' instead of 'prover_args' with -spec",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--prover_args', '-spec XXX'],
+                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--prover_args', '-spec XXX'],
                              expected='Use CLI flag ')
         suite.expect_failure(description='bad link',
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--link', 'A::1=2'],
@@ -494,9 +487,6 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="unrecognized contract in 'address'",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--address', 'C:2', 'A:3'],
                              expected="unrecognized contract in 'address'")
-        suite.expect_failure(description="only one option of 'assert_contracts', 'verify', 'equivalence' can be used",
-                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--assert_contracts', 'A'],
-                             expected="only one option of 'assert_contracts', 'verify', 'equivalence' can be used")
         suite.expect_failure(description="Must use 'bytecode' together with 'bytecode_spec'",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--bytecode_jsons',
                                         f"{_p('empty.json')}"],
@@ -507,10 +497,7 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="Must use 'bytecode' together with 'bytecode_spec' - 3",
                              run_flags=[_p('A.sol'), '--bytecode_jsons', f"{_p('empty.json')}"],
                              expected="Must use 'bytecode' together with 'bytecode_spec'")
-        suite.expect_failure(description="'assert_contracts' cannot be used with a .tac file",
-                             run_flags=[_p('empty.tac'), '--assert_contracts', 'A'],
-                             expected="Option 'assert_contracts' cannot be used with a .tac file")
-        suite.expect_failure(description="must use either 'assert_contracts' or 'verify' or 'bytecode_jsons'",
+        suite.expect_failure(description="must use either 'verify' or 'bytecode_jsons'",
                              run_flags=[_p('A.sol')],
                              expected="You must use 'verify' when running the Certora Prover")
         suite.expect_failure(description="package a was given two paths",
@@ -569,9 +556,6 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="--rule with tac",
                              run_flags=[_p('empty.tac'), '--rule', 'always_true'],
                              expected="rules flag/attributes such as --rule, --exclude_rule or --split_rules are only")
-        suite.expect_failure(description="--rule with assert",
-                             run_flags=[_p('A.sol'), '--assert_contracts', 'A', '--rule', 'always_true'],
-                             expected="rules flag/attributes such as --rule, --exclude_rule or --split_rules are only ")
         suite.expect_failure(description="compilation_steps_only with build_only",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--compilation_steps_only',
                                         '--build_only'],
@@ -613,9 +597,6 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="other files with conf file",
                              run_flags=[_p('tac_file.conf'), _p('empty.tac')],
                              expected="No other files are allowed when using a config file")
-        suite.expect_failure(description="'assert_contracts' with a .tac file",
-                             run_flags=[_p('empty.tac'), '--assert_contracts', 'A'],
-                             expected="Option 'assert_contracts' cannot be used with a .tac file ")
         suite.expect_failure(description="illegal contract in verify",
                              run_flags=[_p('empty.tac'), '--verify', f"A:{_p('spec1.spec')}"],
                              expected="'verify' argument, A, doesn't match any contract name")
@@ -623,9 +604,6 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('empty.tac'), '--bytecode_jsons', _p('erc20.json'),
                                         '--bytecode_spec', _p('spec1.spec')],
                              expected="Cannot use 'bytecode_jsons' with other files")
-        suite.expect_failure(description="'assert_contracts' with a .tac file",
-                             run_flags=[_p('tac_file.conf'), '--assert_contracts', 'A'],
-                             expected="Option 'assert_contracts' cannot be used with a .tac file")
         suite.expect_failure(description="illegal contract in verify (conf file)",
                              run_flags=[_p('tac_file.conf'), '--verify', f"A:{_p('spec1.spec')}"],
                              expected="'verify' argument, A, doesn't match any contract name")
@@ -674,12 +652,6 @@ class TestClient(unittest.TestCase):
                              run_flags=[f"{_p('A.sol')}:A", f"{_p('B.sol')}", '--verify', f"A:{_p('spec1.spec')}",
                                         '--link', 'A:0=A', 'A:0=B'],
                              expected="slot A:0 was defined multiple times")
-        suite.expect_failure(description="'assert_contracts' with a conf file",
-                             run_flags=[_p('tac_file.conf'), '--assert_contracts', 'A'],
-                             expected="Option 'assert_contracts' cannot be used with a .tac file")
-        suite.expect_failure(description="'assert_contracts' with a tac file",
-                             run_flags=[_p('empty.tac'), '--assert_contracts', 'A'],
-                             expected="Option 'assert_contracts' cannot be used with a .tac file")
         suite.expect_failure(description="bad contract in verify",
                              run_flags=[f"{_p('A.sol')}:A", '--verify', f"D:{_p('spec1.spec')}"],
                              expected="doesn't match any contract name")
@@ -689,9 +661,6 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="duplicate contracts with assert",
                              run_flags=[f"{_p('A.sol')}:B", f"{_p('B.sol')}", '--verify', f"B:{_p('spec1.spec')}"],
                              expected="A contract named B was declared twice")
-        suite.expect_failure(description="illegal contract in assert",
-                             run_flags=[f"{_p('A.sol')}:B", '--assert_contracts', 'A'],
-                             expected="'assert' argument, A, doesn't match any contract name")
         suite.expect_failure(description="illegal parametric contracts",
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--parametric_contracts', 'C'],
                              expected="Cannot find parametric contracts {'C'} in the project contract list")
@@ -1235,7 +1204,6 @@ class TestClient(unittest.TestCase):
         self.__test_main_spec([_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}"], _p('spec1.spec'))
         self.__test_main_spec(['--bytecode_jsons', _p('erc20.json'), '--bytecode_spec',
                                _p('erc20.spec')], _p('erc20.spec'))
-        self.__test_main_spec([_p('A.sol'), '--assert_contracts', "A", '--solc', 'solc6.11'], None)
 
     def __test_main_spec(self, args: List[str], expected_main_spec: Optional[str]) -> None:
         """
@@ -1293,6 +1261,46 @@ class TestClient(unittest.TestCase):
         suite.expect_failure(description="Overwrite an existing extension field name",
                              run_flags=['--storage_extension_harnesses', 'Test=Spec1', 'Test=Spec2'],
                              expected="Var 'b1' added to Test")
+
+    def test_automatic_storage_extension_harnesses(self) -> None:
+        # Test the no storage extension flow (no extracted storage extension from the contract)
+        with Util.change_working_directory('Public/TestEVM/Counter'):
+            suite = ProverTestSuite(conf_file_template='counter.conf',
+                                    test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+            suite.expect_success(description="ERC7201 storage extension harnesses no flow",
+                                 run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+            result = suite.expect_checkpoint(description="Expecting empty mapping",
+                                             run_flags=['--disable_local_typechecking', "--storage_extension_annotation"])
+            assert result == {}, "test_automatic_storage_extension_harnesses: expected empty mapping"
+
+        # Test the normal flow (extracted storage extension from the contract)
+        with Util.change_working_directory('Public/TestEVM/StorageExtensions'):
+            suite = ProverTestSuite(conf_file_template='ERC7201.conf',
+                                    test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+            suite.expect_success(description="ERC7201 storage extension harnesses normal flow",
+                                 run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+            result = suite.expect_checkpoint(description="test_automatic_storage_extension_harnesses:  mapping",
+                                             run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+            assert len(result) == 1, "test_automatic_storage_extension_harnesses: expected only one mapping"
+            assert list(result.keys())[0][1] == 'Test_ERC7201'
+
+        # Test 2 structs but only one storage extension
+        suite = ProverTestSuite(conf_file_template=f'{CITests_path}/test_data/automatic_storage_extensions/single_struct/single_struct.conf',
+                                test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+        suite.expect_success(description="Single struct with storage extension out of 2",
+                            run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+        result = suite.expect_checkpoint(description="Expecting mapping",
+                                         run_flags=['--disable_local_typechecking', '--storage_extension_annotation'])
+        added_fields = list(result.values())[0][0]
+        assert len(added_fields) == 1, "test_automatic_storage_extension_harnesses: expected only one added field"
+        assert added_fields[0]["label"] == "ext_test_book1"
+
+        # Test 2 structs with the same storage extension variable
+        suite = ProverTestSuite(conf_file_template=f'{CITests_path}/test_data/automatic_storage_extensions/same_extension/same_extension.conf',
+                                test_attribute=str(Util.TestValue.STORAGE_EXTENSION_LAYOUT))
+        suite.expect_failure(description="Same extension for 2 structs",
+                             run_flags=['--disable_local_typechecking', '--storage_extension_annotation'],
+                             expected="DeclarationError: Identifier already declared.")
 
     @staticmethod
     def get_card_object(parent, nested):

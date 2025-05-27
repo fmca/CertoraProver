@@ -25,6 +25,8 @@ import tac.generation.*
 import tac.Tag
 import utils.*
 import vc.data.*
+import wasm.WasmPipelinePhase
+import wasm.WasmPostUnrollSummary
 import wasm.analysis.memory.StaticMemoryAnalysis
 import wasm.host.soroban.*
 
@@ -138,7 +140,7 @@ object SymbolType : BufferType() {
         val sym: TACSymbol,
         val slicesPos: TACSymbol,
         val len: TACSymbol
-    ): PostUnrollAssignmentSummary() {
+    ): WasmPostUnrollSummary(phase = WasmPipelinePhase.PostOptimization) {
         override val inputs
             get() = listOf(sym, slicesPos, len)
 
@@ -212,7 +214,7 @@ object SymbolType : BufferType() {
         val newHandle: TACSymbol.Var,
         val strPtr: TACSymbol,
         val len: TACSymbol,
-    ): PostUnrollAssignmentSummary() {
+    ): WasmPostUnrollSummary(phase = WasmPipelinePhase.PreOptimization) {
         override val inputs get() = listOf(
             strPtr,
             len,

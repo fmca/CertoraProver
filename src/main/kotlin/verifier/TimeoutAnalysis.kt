@@ -89,7 +89,7 @@ object TimeoutCoreAnalysis {
                     if (unsolvedSplits.size > 1) {
                         logger.warn { "got more than one timing-out split -- only computing timeout core for the first one" }
                     }
-                    @Suppress("SwallowedException", "TooGenericExceptionCaught")
+                    @Suppress("SwallowedException")
                     val timeoutCoreInfo = try {
                         val res = analyzeUnsolvedSplit(unsolvedSplits.first(), Config.TimeoutCoreTimeout)
                         logger.debug { "timeout core computation finished without exception" }

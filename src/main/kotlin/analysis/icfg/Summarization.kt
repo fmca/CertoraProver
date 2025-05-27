@@ -84,7 +84,7 @@ object Summarization {
                     logger.debug {
                         "Outer loop round $i: external pass modified the program? $externalModified"
                     }
-                    val (withInternalSummarization, internalModified) = InternalSummarizer.summarizeInternalFunctions(updatedCode, internalSummaries, InternalSummarizer.ExpressionSummaryMaterializer(
+                    val (withInternalSummarization, internalModified) = InternalCVLSummarizer.summarizeInternalFunctions(updatedCode, internalSummaries, InternalCVLSummarizer.ExpressionSummaryMaterializer(
                         scene = scene,
                         cvlCompiler = cvlCompiler,
                         internalLinking = internalLinking

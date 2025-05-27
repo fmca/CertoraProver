@@ -2,7 +2,7 @@
     "ptr": {
         "block": {
             "type": "tac.BlockIdentifier",
-            "origStartPc": 15,
+            "origStartPc": 40,
             "stkTop": 0,
             "decompCopy": 0,
             "calleeIdx": 0,
@@ -37,7 +37,7 @@
                     "type": "java.lang.Integer",
                     "erasureStrategy": "Canonical"
                 },
-                "value": 4
+                "value": 2
             },
             {
                 "key": {

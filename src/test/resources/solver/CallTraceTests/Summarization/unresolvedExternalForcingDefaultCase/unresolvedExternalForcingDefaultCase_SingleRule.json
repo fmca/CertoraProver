@@ -1,0 +1,1542 @@
+{
+    "type": "spec.rules.CVLSingleRule",
+    "ruleIdentifier": {
+        "parentIdentifier": null,
+        "displayName": "unresolvedExternalForcingDefaultCase",
+        "counter": 6
+    },
+    "range": {
+        "type": "utils.Range.Range",
+        "specFile": "Summarization.spec",
+        "start": {
+            "line": 45,
+            "charByteOffset": 0
+        },
+        "end": {
+            "line": 52,
+            "charByteOffset": 1
+        }
+    },
+    "params": [
+    ],
+    "description": "",
+    "goodDescription": "",
+    "block": [
+        {
+            "cmd_type": "spec.cvlast.CVLCmd.Simple.Declaration",
+            "range": {
+                "type": "utils.Range.Range",
+                "specFile": "Summarization.spec",
+                "start": {
+                    "line": 46,
+                    "charByteOffset": 4
+                },
+                "end": {
+                    "line": 46,
+                    "charByteOffset": 10
+                }
+            },
+            "cvlType": {
+                "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                "name": "env",
+                "fields": [
+                    {
+                        "fieldName": "msg",
+                        "cvlType": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                            "name": "msg",
+                            "fields": [
+                                {
+                                    "fieldName": "sender",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                    }
+                                },
+                                {
+                                    "fieldName": "value",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                        "k": 256
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "fieldName": "tx",
+                        "cvlType": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                            "name": "tx",
+                            "fields": [
+                                {
+                                    "fieldName": "origin",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "fieldName": "block",
+                        "cvlType": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                            "name": "block",
+                            "fields": [
+                                {
+                                    "fieldName": "basefee",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                        "k": 256
+                                    }
+                                },
+                                {
+                                    "fieldName": "blobbasefee",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                        "k": 256
+                                    }
+                                },
+                                {
+                                    "fieldName": "coinbase",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                    }
+                                },
+                                {
+                                    "fieldName": "difficulty",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                        "k": 256
+                                    }
+                                },
+                                {
+                                    "fieldName": "gaslimit",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                        "k": 256
+                                    }
+                                },
+                                {
+                                    "fieldName": "number",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                        "k": 256
+                                    }
+                                },
+                                {
+                                    "fieldName": "timestamp",
+                                    "cvlType": {
+                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                        "k": 256
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "id": "e",
+            "scope": {
+                "scopeStack": [
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                        "scopeId": 5
+                    }
+                ],
+                "innerScope": {
+                    "scopeStack": [
+                        {
+                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                        }
+                    ],
+                    "innerScope": {
+                        "scopeStack": [
+                        ],
+                        "innerScope": null
+                    }
+                }
+            }
+        },
+        {
+            "cmd_type": "spec.cvlast.CVLCmd.Simple.Declaration",
+            "range": {
+                "type": "utils.Range.Range",
+                "specFile": "Summarization.spec",
+                "start": {
+                    "line": 47,
+                    "charByteOffset": 4
+                },
+                "end": {
+                    "line": 47,
+                    "charByteOffset": 19
+                }
+            },
+            "cvlType": {
+                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+            },
+            "id": "target",
+            "scope": {
+                "scopeStack": [
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                        "scopeId": 5
+                    }
+                ],
+                "innerScope": {
+                    "scopeStack": [
+                        {
+                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                        }
+                    ],
+                    "innerScope": {
+                        "scopeStack": [
+                        ],
+                        "innerScope": null
+                    }
+                }
+            }
+        },
+        {
+            "cmd_type": "spec.cvlast.CVLCmd.Simple.Declaration",
+            "range": {
+                "type": "utils.Range.Range",
+                "specFile": "Summarization.spec",
+                "start": {
+                    "line": 48,
+                    "charByteOffset": 4
+                },
+                "end": {
+                    "line": 48,
+                    "charByteOffset": 12
+                }
+            },
+            "cvlType": {
+                "type": "spec.cvlast.CVLType.PureCVLType.DynamicArray.PackedBytes"
+            },
+            "id": "b",
+            "scope": {
+                "scopeStack": [
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                        "scopeId": 5
+                    }
+                ],
+                "innerScope": {
+                    "scopeStack": [
+                        {
+                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                        }
+                    ],
+                    "innerScope": {
+                        "scopeStack": [
+                        ],
+                        "innerScope": null
+                    }
+                }
+            }
+        },
+        {
+            "cmd_type": "spec.cvlast.CVLCmd.Simple.AssumeCmd.Assume",
+            "range": {
+                "type": "utils.Range.Range",
+                "specFile": "Summarization.spec",
+                "start": {
+                    "line": 49,
+                    "charByteOffset": 4
+                },
+                "end": {
+                    "line": 49,
+                    "charByteOffset": 52
+                }
+            },
+            "exp": {
+                "type": "spec.cvlast.CVLExp.RelopExp.NeExp",
+                "l": {
+                    "type": "spec.cvlast.CVLExp.ApplyExp.ContractFunction.Concrete",
+                    "methodIdWithCallContext": {
+                        "type": "spec.cvlast.ConcreteMethod",
+                        "signature": {
+                            "type": "spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig",
+                            "wrapped": {
+                                "type": "spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig",
+                                "qualifiedMethodName": {
+                                    "type": "spec.cvlast.QualifiedFunction",
+                                    "host": {
+                                        "name": "Test"
+                                    },
+                                    "methodId": "getToSummarizeFunctionSelector"
+                                },
+                                "params": [
+                                ],
+                                "res": [
+                                    {
+                                        "type": "spec.cvlast.VMParam.Unnamed",
+                                        "vmType": {
+                                            "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$PackedBytes",
+                                            "location": "memory"
+                                        },
+                                        "range": {
+                                            "type": "utils.Range.Empty"
+                                        }
+                                    }
+                                ]
+                            },
+                            "sighashInt": {
+                                "n": "533f47cf"
+                            }
+                        }
+                    },
+                    "args": [
+                        {
+                            "type": "spec.cvlast.CVLExp.VariableExp",
+                            "id": "e",
+                            "tag": {
+                                "scope": {
+                                    "scopeStack": [
+                                        {
+                                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                        },
+                                        {
+                                            "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                            "scopeId": 5
+                                        }
+                                    ],
+                                    "innerScope": {
+                                        "scopeStack": [
+                                            {
+                                                "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                            }
+                                        ],
+                                        "innerScope": {
+                                            "scopeStack": [
+                                            ],
+                                            "innerScope": null
+                                        }
+                                    }
+                                },
+                                "type": {
+                                    "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                    "name": "env",
+                                    "fields": [
+                                        {
+                                            "fieldName": "msg",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                                "name": "msg",
+                                                "fields": [
+                                                    {
+                                                        "fieldName": "sender",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                        }
+                                                    },
+                                                    {
+                                                        "fieldName": "value",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "tx",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                                "name": "tx",
+                                                "fields": [
+                                                    {
+                                                        "fieldName": "origin",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "fieldName": "block",
+                                            "cvlType": {
+                                                "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                                "name": "block",
+                                                "fields": [
+                                                    {
+                                                        "fieldName": "basefee",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    },
+                                                    {
+                                                        "fieldName": "blobbasefee",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    },
+                                                    {
+                                                        "fieldName": "coinbase",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                        }
+                                                    },
+                                                    {
+                                                        "fieldName": "difficulty",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    },
+                                                    {
+                                                        "fieldName": "gaslimit",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    },
+                                                    {
+                                                        "fieldName": "number",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    },
+                                                    {
+                                                        "fieldName": "timestamp",
+                                                        "cvlType": {
+                                                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                            "k": 256
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                "range": {
+                                    "type": "utils.Range.Range",
+                                    "specFile": "Summarization.spec",
+                                    "start": {
+                                        "line": 49,
+                                        "charByteOffset": 43
+                                    },
+                                    "end": {
+                                        "line": 49,
+                                        "charByteOffset": 44
+                                    }
+                                }
+                            },
+                            "twoStateIndex": "NEITHER"
+                        }
+                    ],
+                    "noRevert": true,
+                    "storage": {
+                        "id": "lastStorage",
+                        "tag": {
+                            "scope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    },
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                        "scopeId": 5
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                        {
+                                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                        }
+                                    ],
+                                    "innerScope": {
+                                        "scopeStack": [
+                                        ],
+                                        "innerScope": null
+                                    }
+                                }
+                            },
+                            "type": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"
+                            },
+                            "range": {
+                                "type": "utils.Range.Empty",
+                                "comment": "empty storage type"
+                            }
+                        },
+                        "twoStateIndex": "NEITHER"
+                    },
+                    "isWhole": false,
+                    "tag": {
+                        "scope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                },
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                    "scopeId": 5
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                    ],
+                                    "innerScope": null
+                                }
+                            }
+                        },
+                        "type": {
+                            "type": "spec.cvlast.CVLType.VM",
+                            "descriptor": {
+                                "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$PackedBytes",
+                                "location": "memory"
+                            },
+                            "context": {
+                                "type": "spec.cvlast.typedescriptors.FromVMContext.ReturnValue"
+                            }
+                        },
+                        "range": {
+                            "type": "utils.Range.Range",
+                            "specFile": "Summarization.spec",
+                            "start": {
+                                "line": 49,
+                                "charByteOffset": 12
+                            },
+                            "end": {
+                                "line": 49,
+                                "charByteOffset": 45
+                            }
+                        },
+                        "annotation": {
+                            "type": "ReflectivePolymorphicSerializer::spec.cvlast.CallResolution$DirectPassing",
+                            "target": {
+                                "methodSignature": {
+                                    "type": "spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig",
+                                    "wrapped": {
+                                        "type": "spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig",
+                                        "qualifiedMethodName": {
+                                            "type": "spec.cvlast.QualifiedFunction",
+                                            "host": {
+                                                "name": "Test"
+                                            },
+                                            "methodId": "getToSummarizeFunctionSelector"
+                                        },
+                                        "params": [
+                                        ],
+                                        "res": [
+                                            {
+                                                "type": "spec.cvlast.VMParam.Unnamed",
+                                                "vmType": {
+                                                    "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$PackedBytes",
+                                                    "location": "memory"
+                                                },
+                                                "range": {
+                                                    "type": "utils.Range.Empty"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "sighashInt": {
+                                        "n": "533f47cf"
+                                    }
+                                },
+                                "definitelyNonPayable": true,
+                                "annotation": {
+                                    "visibility": "EXTERNAL",
+                                    "envFree": false,
+                                    "library": false,
+                                    "virtual": false
+                                },
+                                "stateMutability": "nonpayable",
+                                "evmExternalMethodInfo": {
+                                    "sigHash": "533f47cf",
+                                    "name": "getToSummarizeFunctionSelector",
+                                    "argTypes": [
+                                    ],
+                                    "resultTypes": [
+                                        {
+                                            "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.PackedBytes",
+                                            "location": "memory"
+                                        }
+                                    ],
+                                    "stateMutability": "nonpayable",
+                                    "isConstant": false,
+                                    "isLibrary": false,
+                                    "contractName": "Test",
+                                    "contractInstanceId": "ce4604a000000000000000000000000b",
+                                    "sourceSegment": {
+                                        "range": {
+                                            "specFile": "Test.sol",
+                                            "start": {
+                                                "line": 72,
+                                                "charByteOffset": 4
+                                            },
+                                            "end": {
+                                                "line": 74,
+                                                "charByteOffset": 5
+                                            }
+                                        },
+                                        "content": "function getToSummarizeFunctionSelector() external returns (bytes memory) {\n        return abi.encodeWithSignature(\"toSummarize()\");\n    }"
+                                    }
+                                }
+                            },
+                            "hasEnv": true
+                        }
+                    }
+                },
+                "r": {
+                    "type": "spec.cvlast.CVLExp.VariableExp",
+                    "id": "b",
+                    "tag": {
+                        "scope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                },
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                    "scopeId": 5
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                    ],
+                                    "innerScope": null
+                                }
+                            }
+                        },
+                        "type": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.DynamicArray.PackedBytes"
+                        },
+                        "range": {
+                            "type": "utils.Range.Range",
+                            "specFile": "Summarization.spec",
+                            "start": {
+                                "line": 49,
+                                "charByteOffset": 49
+                            },
+                            "end": {
+                                "line": 49,
+                                "charByteOffset": 50
+                            }
+                        }
+                    },
+                    "twoStateIndex": "NEITHER"
+                },
+                "tag": {
+                    "scope": {
+                        "scopeStack": [
+                            {
+                                "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                            },
+                            {
+                                "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                "scopeId": 5
+                            }
+                        ],
+                        "innerScope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                ],
+                                "innerScope": null
+                            }
+                        }
+                    },
+                    "type": {
+                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                    },
+                    "range": {
+                        "type": "utils.Range.Range",
+                        "specFile": "Summarization.spec",
+                        "start": {
+                            "line": 49,
+                            "charByteOffset": 12
+                        },
+                        "end": {
+                            "line": 49,
+                            "charByteOffset": 50
+                        }
+                    },
+                    "hasParens": true
+                }
+            },
+            "description": null,
+            "scope": {
+                "scopeStack": [
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                        "scopeId": 5
+                    }
+                ],
+                "innerScope": {
+                    "scopeStack": [
+                        {
+                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                        }
+                    ],
+                    "innerScope": {
+                        "scopeStack": [
+                        ],
+                        "innerScope": null
+                    }
+                }
+            }
+        },
+        {
+            "cmd_type": "spec.cvlast.CVLCmd.Simple.Definition",
+            "range": {
+                "type": "utils.Range.Range",
+                "specFile": "Summarization.spec",
+                "start": {
+                    "line": 50,
+                    "charByteOffset": 4
+                },
+                "end": {
+                    "line": 50,
+                    "charByteOffset": 62
+                }
+            },
+            "type": {
+                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                "k": 256
+            },
+            "idL": [
+                {
+                    "type": "spec.cvlast.CVLLhs.Id",
+                    "range": {
+                        "type": "utils.Range.Range",
+                        "specFile": "Summarization.spec",
+                        "start": {
+                            "line": 50,
+                            "charByteOffset": 4
+                        },
+                        "end": {
+                            "line": 50,
+                            "charByteOffset": 12
+                        }
+                    },
+                    "id": "res",
+                    "tag": {
+                        "scope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                },
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                    "scopeId": 5
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                    ],
+                                    "innerScope": null
+                                }
+                            }
+                        },
+                        "type": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                            "k": 256
+                        },
+                        "range": {
+                            "type": "utils.Range.Range",
+                            "specFile": "Summarization.spec",
+                            "start": {
+                                "line": 50,
+                                "charByteOffset": 4
+                            },
+                            "end": {
+                                "line": 50,
+                                "charByteOffset": 12
+                            }
+                        }
+                    }
+                }
+            ],
+            "exp": {
+                "type": "spec.cvlast.CVLExp.ApplyExp.ContractFunction.Concrete",
+                "methodIdWithCallContext": {
+                    "type": "spec.cvlast.ConcreteMethod",
+                    "signature": {
+                        "type": "spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig",
+                        "wrapped": {
+                            "type": "spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig",
+                            "qualifiedMethodName": {
+                                "type": "spec.cvlast.QualifiedFunction",
+                                "host": {
+                                    "name": "Test"
+                                },
+                                "methodId": "unresolvedExternalSummaryDefault"
+                            },
+                            "params": [
+                                {
+                                    "type": "spec.cvlast.VMParam.Named",
+                                    "name": "target",
+                                    "vmType": {
+                                        "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$address"
+                                    },
+                                    "range": {
+                                        "type": "utils.Range.Empty"
+                                    }
+                                },
+                                {
+                                    "type": "spec.cvlast.VMParam.Named",
+                                    "name": "data",
+                                    "vmType": {
+                                        "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$PackedBytes",
+                                        "location": "memory"
+                                    },
+                                    "range": {
+                                        "type": "utils.Range.Empty"
+                                    }
+                                }
+                            ],
+                            "res": [
+                                {
+                                    "type": "spec.cvlast.VMParam.Unnamed",
+                                    "vmType": {
+                                        "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK",
+                                        "bitwidth": 256
+                                    },
+                                    "range": {
+                                        "type": "utils.Range.Empty"
+                                    }
+                                }
+                            ]
+                        },
+                        "sighashInt": {
+                            "n": "2ac913e1"
+                        }
+                    }
+                },
+                "args": [
+                    {
+                        "type": "spec.cvlast.CVLExp.VariableExp",
+                        "id": "e",
+                        "tag": {
+                            "scope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    },
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                        "scopeId": 5
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                        {
+                                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                        }
+                                    ],
+                                    "innerScope": {
+                                        "scopeStack": [
+                                        ],
+                                        "innerScope": null
+                                    }
+                                }
+                            },
+                            "type": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                "name": "env",
+                                "fields": [
+                                    {
+                                        "fieldName": "msg",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                            "name": "msg",
+                                            "fields": [
+                                                {
+                                                    "fieldName": "sender",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                    }
+                                                },
+                                                {
+                                                    "fieldName": "value",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                        "k": 256
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "fieldName": "tx",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                            "name": "tx",
+                                            "fields": [
+                                                {
+                                                    "fieldName": "origin",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "fieldName": "block",
+                                        "cvlType": {
+                                            "type": "spec.cvlast.CVLType.PureCVLType.Struct",
+                                            "name": "block",
+                                            "fields": [
+                                                {
+                                                    "fieldName": "basefee",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                        "k": 256
+                                                    }
+                                                },
+                                                {
+                                                    "fieldName": "blobbasefee",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                        "k": 256
+                                                    }
+                                                },
+                                                {
+                                                    "fieldName": "coinbase",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                                                    }
+                                                },
+                                                {
+                                                    "fieldName": "difficulty",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                        "k": 256
+                                                    }
+                                                },
+                                                {
+                                                    "fieldName": "gaslimit",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                        "k": 256
+                                                    }
+                                                },
+                                                {
+                                                    "fieldName": "number",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                        "k": 256
+                                                    }
+                                                },
+                                                {
+                                                    "fieldName": "timestamp",
+                                                    "cvlType": {
+                                                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                                                        "k": 256
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "range": {
+                                "type": "utils.Range.Range",
+                                "specFile": "Summarization.spec",
+                                "start": {
+                                    "line": 50,
+                                    "charByteOffset": 48
+                                },
+                                "end": {
+                                    "line": 50,
+                                    "charByteOffset": 49
+                                }
+                            }
+                        },
+                        "twoStateIndex": "NEITHER"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLExp.VariableExp",
+                        "id": "target",
+                        "tag": {
+                            "scope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    },
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                        "scopeId": 5
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                        {
+                                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                        }
+                                    ],
+                                    "innerScope": {
+                                        "scopeStack": [
+                                        ],
+                                        "innerScope": null
+                                    }
+                                }
+                            },
+                            "type": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.Primitive.AccountIdentifier"
+                            },
+                            "range": {
+                                "type": "utils.Range.Range",
+                                "specFile": "Summarization.spec",
+                                "start": {
+                                    "line": 50,
+                                    "charByteOffset": 51
+                                },
+                                "end": {
+                                    "line": 50,
+                                    "charByteOffset": 57
+                                }
+                            }
+                        },
+                        "twoStateIndex": "NEITHER"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLExp.VariableExp",
+                        "id": "b",
+                        "tag": {
+                            "scope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    },
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                        "scopeId": 5
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                        {
+                                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                        }
+                                    ],
+                                    "innerScope": {
+                                        "scopeStack": [
+                                        ],
+                                        "innerScope": null
+                                    }
+                                }
+                            },
+                            "type": {
+                                "type": "spec.cvlast.CVLType.PureCVLType.DynamicArray.PackedBytes"
+                            },
+                            "range": {
+                                "type": "utils.Range.Range",
+                                "specFile": "Summarization.spec",
+                                "start": {
+                                    "line": 50,
+                                    "charByteOffset": 59
+                                },
+                                "end": {
+                                    "line": 50,
+                                    "charByteOffset": 60
+                                }
+                            }
+                        },
+                        "twoStateIndex": "NEITHER"
+                    }
+                ],
+                "noRevert": true,
+                "storage": {
+                    "id": "lastStorage",
+                    "tag": {
+                        "scope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                },
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                    "scopeId": 5
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                    ],
+                                    "innerScope": null
+                                }
+                            }
+                        },
+                        "type": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.VMInternal.BlockchainState"
+                        },
+                        "range": {
+                            "type": "utils.Range.Empty",
+                            "comment": "empty storage type"
+                        }
+                    },
+                    "twoStateIndex": "NEITHER"
+                },
+                "isWhole": false,
+                "tag": {
+                    "scope": {
+                        "scopeStack": [
+                            {
+                                "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                            },
+                            {
+                                "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                "scopeId": 5
+                            }
+                        ],
+                        "innerScope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                ],
+                                "innerScope": null
+                            }
+                        }
+                    },
+                    "type": {
+                        "type": "spec.cvlast.CVLType.VM",
+                        "descriptor": {
+                            "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK",
+                            "bitwidth": 256
+                        },
+                        "context": {
+                            "type": "spec.cvlast.typedescriptors.FromVMContext.ReturnValue"
+                        }
+                    },
+                    "range": {
+                        "type": "utils.Range.Range",
+                        "specFile": "Summarization.spec",
+                        "start": {
+                            "line": 50,
+                            "charByteOffset": 15
+                        },
+                        "end": {
+                            "line": 50,
+                            "charByteOffset": 61
+                        }
+                    },
+                    "annotation": {
+                        "type": "ReflectivePolymorphicSerializer::spec.cvlast.CallResolution$DirectPassing",
+                        "target": {
+                            "methodSignature": {
+                                "type": "spec.cvlast.ExternalQualifiedMethodSignature.ExternalQualifiedMethodSig",
+                                "wrapped": {
+                                    "type": "spec.cvlast.QualifiedMethodSignature.QualifiedMethodSig",
+                                    "qualifiedMethodName": {
+                                        "type": "spec.cvlast.QualifiedFunction",
+                                        "host": {
+                                            "name": "Test"
+                                        },
+                                        "methodId": "unresolvedExternalSummaryDefault"
+                                    },
+                                    "params": [
+                                        {
+                                            "type": "spec.cvlast.VMParam.Named",
+                                            "name": "target",
+                                            "vmType": {
+                                                "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$address"
+                                            },
+                                            "range": {
+                                                "type": "utils.Range.Empty"
+                                            }
+                                        },
+                                        {
+                                            "type": "spec.cvlast.VMParam.Named",
+                                            "name": "data",
+                                            "vmType": {
+                                                "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$PackedBytes",
+                                                "location": "memory"
+                                            },
+                                            "range": {
+                                                "type": "utils.Range.Empty"
+                                            }
+                                        }
+                                    ],
+                                    "res": [
+                                        {
+                                            "type": "spec.cvlast.VMParam.Unnamed",
+                                            "vmType": {
+                                                "type": "ReflectivePolymorphicSerializer::spec.cvlast.typedescriptors.EVMTypeDescriptor$UIntK",
+                                                "bitwidth": 256
+                                            },
+                                            "range": {
+                                                "type": "utils.Range.Empty"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "sighashInt": {
+                                    "n": "2ac913e1"
+                                }
+                            },
+                            "definitelyNonPayable": true,
+                            "annotation": {
+                                "visibility": "EXTERNAL",
+                                "envFree": false,
+                                "library": false,
+                                "virtual": false
+                            },
+                            "stateMutability": "nonpayable",
+                            "evmExternalMethodInfo": {
+                                "sigHash": "2ac913e1",
+                                "name": "unresolvedExternalSummaryDefault",
+                                "argTypes": [
+                                    {
+                                        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.address"
+                                    },
+                                    {
+                                        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.PackedBytes",
+                                        "location": "memory"
+                                    }
+                                ],
+                                "resultTypes": [
+                                    {
+                                        "type": "spec.cvlast.typedescriptors.EVMTypeDescriptor.UIntK",
+                                        "bitwidth": 256
+                                    }
+                                ],
+                                "stateMutability": "nonpayable",
+                                "isConstant": false,
+                                "paramNames": [
+                                    "target",
+                                    "data"
+                                ],
+                                "isLibrary": false,
+                                "contractName": "Test",
+                                "contractInstanceId": "ce4604a000000000000000000000000b",
+                                "sourceSegment": {
+                                    "range": {
+                                        "specFile": "Test.sol",
+                                        "start": {
+                                            "line": 59,
+                                            "charByteOffset": 4
+                                        },
+                                        "end": {
+                                            "line": 66,
+                                            "charByteOffset": 5
+                                        }
+                                    },
+                                    "content": "function unresolvedExternalSummaryDefault(address target, bytes memory data) external returns (uint256) {\n        (bool success, bytes memory x) = address(target).call(data);\n        if(success){\n            return bytesToUint(x);\n        } else {\n            return 0;\n        }\n    }"
+                                }
+                            }
+                        },
+                        "hasEnv": true
+                    }
+                }
+            },
+            "scope": {
+                "scopeStack": [
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                        "scopeId": 5
+                    }
+                ],
+                "innerScope": {
+                    "scopeStack": [
+                        {
+                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                        }
+                    ],
+                    "innerScope": {
+                        "scopeStack": [
+                        ],
+                        "innerScope": null
+                    }
+                }
+            }
+        },
+        {
+            "cmd_type": "spec.cvlast.CVLCmd.Simple.Assert",
+            "range": {
+                "type": "utils.Range.Range",
+                "specFile": "Summarization.spec",
+                "start": {
+                    "line": 51,
+                    "charByteOffset": 4
+                },
+                "end": {
+                    "line": 51,
+                    "charByteOffset": 35
+                }
+            },
+            "exp": {
+                "type": "spec.cvlast.CVLExp.RelopExp.EqExp",
+                "l": {
+                    "type": "spec.cvlast.CVLExp.VariableExp",
+                    "id": "res",
+                    "tag": {
+                        "scope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                },
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                    "scopeId": 5
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                    ],
+                                    "innerScope": null
+                                }
+                            }
+                        },
+                        "type": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.UIntK",
+                            "k": 256
+                        },
+                        "range": {
+                            "type": "utils.Range.Range",
+                            "specFile": "Summarization.spec",
+                            "start": {
+                                "line": 51,
+                                "charByteOffset": 11
+                            },
+                            "end": {
+                                "line": 51,
+                                "charByteOffset": 14
+                            }
+                        }
+                    },
+                    "twoStateIndex": "NEITHER"
+                },
+                "r": {
+                    "type": "spec.cvlast.CVLExp.Constant.NumberLit",
+                    "n": "5",
+                    "tag": {
+                        "scope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                },
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                    "scopeId": 5
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                    {
+                                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                    }
+                                ],
+                                "innerScope": {
+                                    "scopeStack": [
+                                    ],
+                                    "innerScope": null
+                                }
+                            }
+                        },
+                        "type": {
+                            "type": "spec.cvlast.CVLType.PureCVLType.Primitive.NumberLiteral",
+                            "n": "5"
+                        },
+                        "range": {
+                            "type": "utils.Range.Range",
+                            "specFile": "Summarization.spec",
+                            "start": {
+                                "line": 51,
+                                "charByteOffset": 18
+                            },
+                            "end": {
+                                "line": 51,
+                                "charByteOffset": 19
+                            }
+                        }
+                    }
+                },
+                "tag": {
+                    "scope": {
+                        "scopeStack": [
+                            {
+                                "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                            },
+                            {
+                                "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                                "scopeId": 5
+                            }
+                        ],
+                        "innerScope": {
+                            "scopeStack": [
+                                {
+                                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                                }
+                            ],
+                            "innerScope": {
+                                "scopeStack": [
+                                ],
+                                "innerScope": null
+                            }
+                        }
+                    },
+                    "type": {
+                        "type": "spec.cvlast.CVLType.PureCVLType.Primitive.Bool"
+                    },
+                    "range": {
+                        "type": "utils.Range.Range",
+                        "specFile": "Summarization.spec",
+                        "start": {
+                            "line": 51,
+                            "charByteOffset": 11
+                        },
+                        "end": {
+                            "line": 51,
+                            "charByteOffset": 19
+                        }
+                    }
+                }
+            },
+            "description": "\"should fail\"",
+            "scope": {
+                "scopeStack": [
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                    },
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                        "scopeId": 5
+                    }
+                ],
+                "innerScope": {
+                    "scopeStack": [
+                        {
+                            "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                        }
+                    ],
+                    "innerScope": {
+                        "scopeStack": [
+                        ],
+                        "innerScope": null
+                    }
+                }
+            }
+        }
+    ],
+    "ruleType": {
+        "type": "spec.cvlast.SpecType.Single.FromUser.SpecFile"
+    },
+    "scope": {
+        "scopeStack": [
+            {
+                "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+            },
+            {
+                "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                "scopeId": 5
+            }
+        ],
+        "innerScope": {
+            "scopeStack": [
+                {
+                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                }
+            ],
+            "innerScope": {
+                "scopeStack": [
+                ],
+                "innerScope": null
+            }
+        }
+    },
+    "methodParamFilters": {
+        "range": {
+            "type": "utils.Range.Range",
+            "specFile": "Summarization.spec",
+            "start": {
+                "line": 45,
+                "charByteOffset": 0
+            },
+            "end": {
+                "line": 52,
+                "charByteOffset": 1
+            }
+        },
+        "scope": {
+            "scopeStack": [
+                {
+                    "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                },
+                {
+                    "type": "spec.cvlast.CVLScope.Item.RuleScopeItem",
+                    "scopeId": 5
+                }
+            ],
+            "innerScope": {
+                "scopeStack": [
+                    {
+                        "type": "spec.cvlast.CVLScope.Item.AstScopeItem"
+                    }
+                ],
+                "innerScope": {
+                    "scopeStack": [
+                    ],
+                    "innerScope": null
+                }
+            }
+        },
+        "methodParamToFilter": {
+        }
+    },
+    "ruleGenerationMeta": {
+        "type": "spec.rules.SingleRuleGenerationMeta.Empty"
+    }
+}

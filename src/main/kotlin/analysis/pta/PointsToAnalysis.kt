@@ -922,7 +922,7 @@ class PointsToAnalysis(
                     logger.trace { "After stepping $command, at state $stateIt" }
                 } catch(_: PruneInfeasible) {
                     return mapOf()
-                } catch(@Suppress("TooGenericExceptionCaught") x: Exception) {
+                } catch(x: Exception) {
                     logger.warn(x) { "While stepping $command" }
                     logger.debug { stateIt.toString() }
                     logger.debug { "Block dump" }
@@ -947,7 +947,7 @@ class PointsToAnalysis(
                         invariants = stateIt.invariants, thisBlock.commands.last(), live
                     ),
                 )
-            } catch(@Suppress("TooGenericExceptionCaught") x: Exception) {
+            } catch(x: Exception) {
                 logger.warn { "While propagating end block of $block, with $stateIt" }
                 throw PointsToAnalysisFailedException("Saturating at end block of $block", finalCmd, x)
             }
@@ -1046,7 +1046,7 @@ class PointsToAnalysis(
                             }
                         }
                     }
-                } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                } catch (e: Exception) {
                     logger.warn(e) {
                         "Propagating with $cond to $dst: $ppNextState"
                     }
@@ -1230,7 +1230,7 @@ class PointsToAnalysis(
             }
         } catch (x: PointsToAnalysisFailedException) {
             return continueError(x)
-        } catch (@Suppress("TooGenericExceptionCaught") x: Exception) {
+        } catch (x: Exception) {
             return continueError(
                 PointsToAnalysisFailedException("While transforming block $block", thisBlock.commands.first(), x)
             )
@@ -1555,7 +1555,7 @@ class PointsToAnalysis(
                                     encoderState = encoderAnalysis.join(s.encoderState, s, v.encoderState, v),
                                     invariants = s.invariants.fastJoin(v.invariants),
                                 )
-                            } catch(@Suppress("TooGenericExceptionCaught") x: Exception) {
+                            } catch(x: Exception) {
                                 logger.warn {
                                     "Widening ${v.boundsAnalysis} with ${s.boundsAnalysis}"
                                 }
@@ -1585,7 +1585,7 @@ class PointsToAnalysis(
                                     objectPath = s.objectPath.join(v.objectPath),
                                     invariants = s.invariants.fastJoin(v.invariants),
                                 )
-                            } catch(@Suppress("TooGenericExceptionCaught") x: Exception) {
+                            } catch(x: Exception) {
                                 logger.warn(x) {
                                     "During join at $k after processing $it"
                                 }
@@ -1635,7 +1635,7 @@ class PointsToAnalysis(
                                 results += cmd.ptr to cmdState
                                 try {
                                     cmdState = transformCommand(cmd, cmdState, tacBlock.commands.getOrNull(cmd.ptr.pos + 1))
-                                } catch(@Suppress("TooGenericExceptionCaught") x: Exception) {
+                                } catch(x: Exception) {
                                     val e = x as? PointsToAnalysisFailedException
                                         ?: PointsToAnalysisFailedException("While stepping $cmd", cmd, x)
                                     logger.warn(e) { "While stepping $cmd: $cmdState" }
@@ -1651,7 +1651,7 @@ class PointsToAnalysis(
             /**
              * Finalize the unification in the concrete allocation manager
              */
-            pointerAnalysis.finalize()
+            pointerAnalysis.finalizeAnalysis()
         }
 
         this.results = results

@@ -107,7 +107,6 @@ sealed class TACCmd : Serializable, ITACCmd {
     }
 
     @KSerializable
-    @Treapable
     sealed class Spec: TACCmd(), HasKSerializable {
         abstract fun withMeta(metaMap: MetaMap) : Spec
     }
@@ -236,10 +235,6 @@ sealed class TACCmd : Serializable, ITACCmd {
                 // TODO: check value tag, we should really have real type checking here
             }
             override fun withMeta(metaMap: MetaMap) = this.copy(meta = metaMap)
-
-            override fun hashCode() = hash {
-                it + target + physicalIndex + value + useEncoding + meta + outputPath
-            }
         }
 
         /**
@@ -261,7 +256,6 @@ sealed class TACCmd : Serializable, ITACCmd {
                 check(physicalIndex.tag is Tag.Bit256)
             }
 
-            override fun hashCode() = hash { it + lhs + base + physicalIndex + useEncoding + meta + dataPath }
             override fun withMeta(metaMap: MetaMap) = this.copy(meta = metaMap)
         }
 
@@ -296,7 +290,6 @@ sealed class TACCmd : Serializable, ITACCmd {
          * and some data path (a list of [DataField].
          */
         @KSerializable
-        @Treapable
         sealed interface Buffer : AmbiSerializable {
             @KSerializable
             data class EVMBuffer(val t: TACSymbol.Var) : Buffer
@@ -308,7 +301,6 @@ sealed class TACCmd : Serializable, ITACCmd {
          * A buffer pointer is simply a [Buffer] and some [offset] within that [buffer].
          */
         @KSerializable
-        @Treapable
         data class BufferPointer(
             val offset: TACSymbol,
             val buffer: Buffer
@@ -563,7 +555,7 @@ sealed class TACCmd : Serializable, ITACCmd {
             }
 
         companion object {
-            fun <@Treapable T: Serializable> AnnotationCmd(metaKey: MetaKey<T>, d : T, meta: MetaMap = MetaMap()) = AnnotationCmd(AnnotationCmd.Annotation(metaKey, d), meta)
+            fun <T: Serializable> AnnotationCmd(metaKey: MetaKey<T>, d : T, meta: MetaMap = MetaMap()) = AnnotationCmd(AnnotationCmd.Annotation(metaKey, d), meta)
         }
 
         abstract override fun withMeta(metaMap: MetaMap) : Simple
@@ -1075,8 +1067,7 @@ sealed class TACCmd : Serializable, ITACCmd {
             constructor(metaKey: MetaKey<Nothing>) : this(annot = Annotation(metaKey))
 
             @KSerializable(with = Annotation.Serializer::class)
-            @Treapable
-            data class Annotation<@Treapable T: Serializable>(val k: MetaKey<T>, val v: T) : Serializable {
+            data class Annotation<T: Serializable>(val k: MetaKey<T>, val v: T) : Serializable {
                 @OptIn(ExperimentalSerializationApi::class)
                 object Serializer : KSerializer<Annotation<*>> {
                     private val entrySerializer = MetaMap.EntrySerializationSurrogate.serializer()
@@ -1105,12 +1096,11 @@ sealed class TACCmd : Serializable, ITACCmd {
             }
 
             companion object {
-                @Suppress("Treapability") // enforced by MetaKey
                 fun Annotation(k: MetaKey<Nothing>) = Annotation(k.uncheckedAs<MetaKey<Serializable>>(), MetaMap.nothing)
 
                 val ELLIDED = MetaKey.Nothing("tac.cmd.filtered")
 
-                fun <@Treapable T: Serializable> Pair<MetaKey<T>, T>.toAnnotation(b: Boolean) = if(b) {
+                fun <T: Serializable> Pair<MetaKey<T>, T>.toAnnotation(b: Boolean) = if(b) {
                     AnnotationCmd(this.first, this.second)
                 } else {
                     AnnotationCmd(ELLIDED)
@@ -1166,10 +1156,6 @@ sealed class TACCmd : Serializable, ITACCmd {
 
             override fun toString(): String = super.toString() // opt out of generated toString
             override fun withMeta(metaMap: MetaMap) = this.copy(meta = metaMap)
-
-            override fun hashCode(): Int = hash {
-                it + to + gas + inOffset + inSize + inBase + outOffset + outSize + outBase + callType + value + meta
-            }
 
             /**
              * Returns an expression for the whole 32 bytes word containing the sigHash in the first 4 bytes
@@ -1266,7 +1252,6 @@ sealed class TACCmd : Serializable, ITACCmd {
             override val length: TACSymbol
                 get() = o2
 
-            override fun hashCode() = hash { it + o1 + o2 + revertType + base + meta }
             override fun argString(): String = "$o1 $o2 $revertType $base"
             override fun toString(): String = super.toString() // opt out of generated toString
             override fun withMeta(metaMap: MetaMap) = this.copy(meta = metaMap)
@@ -1354,12 +1339,6 @@ sealed class TACCmd : Serializable, ITACCmd {
                 if (this.length > MAX_ASSERT_LENGTH) {
                     this.setLength(MAX_ASSERT_LENGTH)
                     this.append("...")
-                }
-
-                /** this meta might be absent for manually-generated asserts */
-                val range = meta.find(TACMeta.CVL_RANGE)
-                if (range is Range.Range) {
-                    this.append(" - ${range.specFile} line ${range.start.lineForIDE}")
                 }
             }
 

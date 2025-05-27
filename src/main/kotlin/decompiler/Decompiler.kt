@@ -261,7 +261,7 @@ class Decompiler private constructor(
             jimpleResult.logStats("Jimpled", logger)
             try {
                 ArtifactManagerFactory().dumpCodeArtifacts(jimpleResult, ReportTypes.JIMPLE, DumpTime.POST_TRANSFORM)
-            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+            } catch (e: Exception) {
                 logger.error(e, "Failed to output jimple report")
             }
             return jimpleResult

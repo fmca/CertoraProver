@@ -30,7 +30,12 @@ enum class CheckedUrl(val url: java.net.URL) {
     CVL_OVERVIEW("https://docs.certora.com/en/latest/docs/cvl/overview.html"),
     SUMMARIES("https://docs.certora.com/en/latest/docs/cvl/methods.html#summaries"),
     ENVFREE_ANNOTATIONS("https://docs.certora.com/en/latest/docs/cvl/methods.html#envfree-annotations"),
-    TRIVIAL_INVARIANT_CHECKS("https://docs.certora.com/en/latest/docs/prover/checking/sanity.html#trivial-invariant-checks"),
+
+    SANITY_TRIVIAL_INVARIANT_CHECKS("https://docs.certora.com/en/latest/docs/prover/checking/sanity.html#trivial-invariant-checks"),
+    SANITY_REDUNDANT_REQUIRES("https://docs.certora.com/en/latest/docs/prover/checking/sanity.html#redundant-require-checks"),
+    SANITY_ASSERTS_TAUTOLOGY("https://docs.certora.com/en/latest/docs/prover/checking/sanity.html#assert-tautology-checks"),
+    SANITY_VACUITY("https://docs.certora.com/en/latest/docs/prover/checking/sanity.html#vacuity-checks"),
+    SANITY_ASSERTIONS_STRUCTURE("https://docs.certora.com/en/latest/docs/prover/checking/sanity.html#assertion-structure-checks"),
 
     PROVER_TECHNIQUES("https://docs.certora.com/en/latest/docs/prover/techniques/index.html"),
     ANALYSIS_OF_STORAGE("https://docs.certora.com/en/latest/docs/prover/techniques/index.html#analysis-of-evm-storage-and-evm-memory"),

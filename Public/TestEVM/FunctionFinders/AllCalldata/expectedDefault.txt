@@ -1,0 +1,1 @@
+Got assert command with message: Trying to hash a non-constant length array whose length may exceed the bound (set in option "--hashing_length_bound", current value is 224). Optimistic unbounded hashing is currently deactivated (can be activated via option "--optimistic_hashing").

@@ -82,7 +82,7 @@ object MemoryOverlapFixer {
                     base,
                     meta = MetaMap(EVM_MEMORY)
                 )
-                if (!Config.Mem0x0To0x40AsScalar.get() &&
+                if (!Config.Mem0x0To0x40AsScalar &&
                     (writeLoc == BigInteger.ZERO || writeLoc == BigInteger.valueOf(32))) {
                     return defaultStore()
                 }
@@ -102,7 +102,7 @@ object MemoryOverlapFixer {
                     base,
                     meta = MetaMap(EVM_MEMORY)
                 )
-                if (!Config.Mem0x0To0x40AsScalar.get() &&
+                if (!Config.Mem0x0To0x40AsScalar &&
                     (readLoc == BigInteger.ZERO || readLoc == BigInteger.valueOf(32))) {
                     return defaultLoad()
                 }

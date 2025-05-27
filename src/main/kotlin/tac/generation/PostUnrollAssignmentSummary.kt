@@ -22,16 +22,28 @@ import config.*
 import datastructures.stdcollections.*
 import instrumentation.transformers.TACDSA
 import kotlin.streams.*
-import tac.generation.*
 import utils.*
 import vc.data.*
 import verifier.*
 
 /**
+ * Captures platform-specific dependencies between phases in a pipeline.
+ */
+interface MaterializePhase<T> {
+    /** @return true when [next] is a legal next phase of [this] */
+    fun validNextPhase(next: T): Boolean
+}
+
+/** Expected to be thrown when an expansion fails to validate */
+class ValidationFailure(msg: String): Exception(msg)
+
+/**
     Base class for assigning summaries that run after unrolling.  We materialize all of these in [materialize].
 */
 @KSerializable
-public abstract class PostUnrollAssignmentSummary : AssignmentSummary() {
+public abstract class PostUnrollAssignmentSummary<T: MaterializePhase<T>> : AssignmentSummary() {
+    abstract val phase: T
+
     override val annotationDesc get() = "post-unroll assignment"
 
     override val mayWriteVars = listOf<TACSymbol.Var>()
@@ -43,19 +55,35 @@ public abstract class PostUnrollAssignmentSummary : AssignmentSummary() {
     ): CommandWithRequiredDecls<TACCmd.Simple>
 
     companion object {
-        fun materialize(prog: CoreTACProgram) =
+        /** Validate that all remaining summaries can follow [afterPhase] as defined by [T] */
+        private fun<T: MaterializePhase<T>> validateAfter(ctp: CoreTACProgram, afterPhase: T) {
+            ctp.parallelLtacStream().mapNotNull {
+                it.snarrowOrNull<PostUnrollAssignmentSummary<T>>()
+            }.forEach { unrollSummary ->
+                if (unrollSummary.phase.validNextPhase(afterPhase)) {
+                    throw ValidationFailure(
+                        "Materialized summary in phase $afterPhase contains earlier phase $unrollSummary"
+                    )
+                }
+            }
+        }
+
+        fun<T: MaterializePhase<T>> materialize(prog: CoreTACProgram, phase: T) =
             prog.patching { patch ->
                 val constAnalysis = MustBeConstantAnalysis(
                     prog.analysisCache.graph,
                     NonTrivialDefAnalysis(prog.analysisCache.graph)
                 )
+
                 fun TACSymbol.simplifyAt(where: CmdPointer) =
                     constAnalysis.mustBeConstantAt(where, this)?.let { it.asTACExpr } ?: this.asSym()
 
                 // Note: it's important not to use a parallel stream here, as it can create recursion issues with the
                 // analysis cache.
                 val replacements = prog.ltacStream().mapNotNull { lcmd ->
-                    lcmd.snarrowOrNull<PostUnrollAssignmentSummary>()?.let { op ->
+                    lcmd.snarrowOrNull<PostUnrollAssignmentSummary<T>>()?.takeIf {
+                        it.phase == phase
+                    }?.let { op ->
                         lcmd.ptr to op.gen(
                             op.inputs.map { it.simplifyAt(lcmd.ptr) },
                             prog.analysisCache
@@ -67,6 +95,7 @@ public abstract class PostUnrollAssignmentSummary : AssignmentSummary() {
                     patch.replaceCommand(ptr, impl)
                 }
             }.let {
+                validateAfter(it, phase)
                 // We introduce new variables, so we should re-run DSA.
                 CoreToCoreTransformer(ReportTypes.DSA, TACDSA::simplify).applyTransformer(it)
             }

@@ -20,7 +20,6 @@ package vc.data
 import com.certora.collect.*
 import utils.*
 
-@Treapable
 interface RemapperEntity<T> : UniqueIdEntity<T>, ExtensionGetter where T: java.io.Serializable, T : UniqueIdEntity<T> {
     override fun mapId(f: (Any, Int, () -> Int) -> Int): T {
         return this.getExtensionMethod("Remapper").invoke(null, this, f).uncheckedAs<T>()

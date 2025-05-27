@@ -220,7 +220,11 @@ abstract class Verifier : AbstractTACChecker() {
             if (examplesInfo != null && rule != null) {
                 // We produce two reports: one with, and one without internal functions.
                 writeExamplesToHtml(rule, name, examplesInfo, addInternalFunctions = false)
-                writeExamplesToHtml(rule, name, examplesInfo, addInternalFunctions = true)
+                if (Config.TacDumpsWithInternalFunctions.get()) {
+                    // If dumping internal functions is enabled, proceed with the operation.
+                    // We do not check the report type, since we are going to generate a [ReportTypes.REPORT].
+                    writeExamplesToHtml(rule, name, examplesInfo, addInternalFunctions = true)
+                }
             }
 
             // Rules may either contain satisfy or assert commands

@@ -24,6 +24,7 @@ import config.Config.TreeViewReportUpdateInterval
 import datastructures.mutableMultiMapOf
 import datastructures.stdcollections.*
 import kotlinx.coroutines.*
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.*
 import log.*
 import org.jetbrains.annotations.TestOnly
@@ -44,6 +45,7 @@ import utils.*
 import verifier.RuleAndSplitIdentifier
 import java.io.IOException
 import java.math.BigInteger
+import java.util.SortedMap
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -142,16 +144,18 @@ enum class NodeType {
  * Each rule should be registered when its check begins via [TreeViewReporter.signalStart], and once its results ([RuleCheckResult])
  * are available they should be added using [TreeViewReporter.addResults].
  *
- * The reporter is linked to a single verification query of ([contract], [specFile]).
+ * The reporter is linked to a single verification query of ([contractName], [specFile]).
+ * [contractName] is the optional string representing the name of the main contract, and it is used in the Certora
+ * Prover web interface.
  *
  */
 class TreeViewReporter(
-    contract: SolidityContract?,
+    contractName: String?,
     specFile: String,
     scene: IScene,
 ) {
     // XXX: this path used to configurable, but I believe it's now hardcoded in some of our infrastructure.
-    private val versionedFIle get() = VersionedFile("treeViewStatus.json")
+    private val versionedFile get() = VersionedFile("treeViewStatus.json")
 
     init {
         instance = this
@@ -176,8 +180,8 @@ class TreeViewReporter(
 
     init {
         // set up the files we'll dump
-        ArtifactManagerFactory().registerArtifact(versionedFIle, StaticArtifactLocation.TreeViewReports)
-        ArtifactManagerFactory().registerArtifact(Config.OutputJSONFile.get())
+        ArtifactManagerFactory().registerArtifact(versionedFile, StaticArtifactLocation.TreeViewReports)
+        ArtifactManagerFactory().registerArtifact(Config.OutputJSONFile)
     }
 
     companion object {
@@ -391,9 +395,11 @@ class TreeViewReporter(
      * The underlying forest of trees that is built and maintained by this [TreeViewReporter].
      * In this forest, each tree consists of [TreeViewNode]s. The root of each tree is a [TreeViewNode.Rule], whereas
      * the leaves may be either [TreeViewNode.Rule] or [TreeViewNode.Assert].
+     *
+     * [contractName] is used to build [treeViewRepBuilder].
      */
     class TreeViewTree(
-        val contract: SolidityContract?,
+        val contractName: String?,
         val specFile: String,
         val contractsTable: ContractsTable,
         val globalCallResolutionBuilder: GlobalCallResolutionReportView.Builder,
@@ -577,16 +583,20 @@ class TreeViewReporter(
                 getChildren(curr)
                     .map { childDI -> childDI to getResultForNode(childDI) }
                     .filter { (_, treeViewResult) -> treeViewResult.status != TreeViewStatusEnum.BENIGN_SKIPPED }
-                    .filter { (_, treeViewResult) ->
+                    .filter { (childDI, treeViewResult) ->
                         // In BMC mode we want to show only:
                         // * The "initial state rule" (has type SpecType.Single.BMC.Range(0))
                         // * The vacuity of the initial state rule if it's vacuous (has the same type but is marked as a sanity check)
-                        // * All the Range N rules
+                        // * All the Range N rules that already have some child
                         // * Sequences that failed in some way
                         treeViewResult.rule?.let { rule ->
                             when (val type = rule.ruleType) {
                                 is SpecType.Single.BMC.Sequence -> !treeViewResult.status.isRunning() && treeViewResult.status != TreeViewStatusEnum.VERIFIED
-                                is SpecType.Single.BMC.Range -> type.len != 0 || !(rule as CVLSingleRule).isSanityCheck() || treeViewResult.status != TreeViewStatusEnum.VERIFIED
+                                is SpecType.Single.BMC.Range ->
+                                    when (type.len) {
+                                        0 -> !(rule as CVLSingleRule).isSanityCheck() || treeViewResult.status != TreeViewStatusEnum.VERIFIED
+                                        else -> getChildren(childDI).isNotEmpty()
+                                    }
                                 else -> true
                             }
                         } ?: true
@@ -600,8 +610,8 @@ class TreeViewReporter(
             val duration = currTreeViewResult.verifyTime.timeSeconds
             val isRunning = currTreeViewResult.isRunning
 
-            val displayName = (getResultForNode(curr).rule?.ruleType as? SpecType.Single.BMC.Sequence)?.inv?.let { inv ->
-                val count = bmcDisplayedSequencesCounter.compute(inv.id) { _, m ->
+            val displayName = (getResultForNode(curr).rule?.ruleType as? SpecType.Single.BMC.Sequence)?.baseRule?.let { baseRule ->
+                val count = bmcDisplayedSequencesCounter.compute(baseRule.declarationId) { _, m ->
                     val mapping = m ?: mapOf()
                     mapping.update(curr, mapping.size + 1) { it }
                 }!![curr]!!
@@ -632,7 +642,7 @@ class TreeViewReporter(
                 getTopLevelNodes().sortedBy { it.displayName }.map { toJson(it) }
             )
             put(key = TreeViewReportAttribute.TIMESTAMP(), value = timestamp())
-            put(key = TreeViewReportAttribute.CONTRACT(), value = contract?.name)
+            put(key = TreeViewReportAttribute.CONTRACT(), value = contractName)
             put(key = TreeViewReportAttribute.SPEC(), value = specFile)
             put(key = TreeViewReportAttribute.AVAILABLE_CONTRACTS(), value = contractsTable)
             put(
@@ -715,7 +725,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
     }
 
     private val tree: TreeViewTree =
-        TreeViewTree(contract, specFile, ContractsTable(scene), GlobalCallResolutionReportView.Builder())
+        TreeViewTree(contractName, specFile, ContractsTable(scene), GlobalCallResolutionReportView.Builder())
 
 
     private fun mapRuleToNodeType(child: IRule): NodeType {
@@ -794,7 +804,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
 
     private fun writeToFile(jsond: String) {
         logger.info { "Writing version $fileVersion of treeView json" }
-        ArtifactManagerFactory().useArtifact(versionedFIle, fileVersion) { handle ->
+        ArtifactManagerFactory().useArtifact(versionedFile, fileVersion) { handle ->
             ArtifactFileUtils.getWriterForFile(handle, overwrite = true).use { i ->
                 i.append(jsond)
             }
@@ -847,7 +857,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             delay(HOT_UPDATE_TIME_RATE.inWholeMilliseconds)
             try {
                 hotUpdate()
-            } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+            } catch (e: Throwable) {
                 logger.error { "Tree view reporting failed: $e" }
             }
         }
@@ -1163,6 +1173,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     fun writeOutputJson() {
         /**
          * The output.json groups nodes by their results, i.e. for invariants or parametric rules on method f
@@ -1178,13 +1189,13 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
          *
          * This method swaps key / values and performs the grouping.
          */
-        fun Map<String, JsonElement>.groupByStatus(): Map<String, JsonElement> {
+        fun SortedMap<String, JsonElement>.groupByStatus(): SortedMap<String, JsonElement> {
             val thisVal = this;
-            return buildMap {
+            return buildSortedMap {
                 thisVal.keys.forEach {
                     val value = thisVal[it]!!
                     if (value is JsonPrimitive) {
-                        val existing = this[value.content] ?: JsonArray(listOf())
+                        val existing: JsonElement = this[value.content] ?: JsonArray(listOf())
                         val new = JsonArray((existing as JsonArray).toList() + JsonPrimitive(it))
                         this[value.content] = new
                     } else {
@@ -1194,15 +1205,15 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             }
         }
 
-        fun computeOutputJsonResult(node: DisplayableIdentifier): Map<String, JsonElement> {
-            val currRes = tree.getResultForNode(node)
+        fun computeOutputJsonResult(node: DisplayableIdentifier): SortedMap<String, JsonElement> {
             val children = tree.getChildren(node).associateWith { tree.getResultForNode(it) }
                 // Filter out all children generated as of sanity and multi assert splitting
                 .filterValues { it.rule?.ruleType !is SpecType.Single.GeneratedFromBasicRule }
                 // Filter out expanded child for a failing assert
                 .filterValues { it.nodeType != NodeType.VIOLATED_ASSERT }
             return if (children.isEmpty()) {
-                buildMap {
+                val currRes = tree.getResultForNode(node)
+                buildSortedMap {
                     if (currRes.status != TreeViewStatusEnum.SKIPPED) {
                         val outputJsonKey = if(currRes.rule?.ruleType is SpecType.Single.BMC){
                             // In BMC mode we use the full rule identifier to identify nodes as the
@@ -1217,21 +1228,21 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
             } else {
                 val mergedChildren = children.map { computeOutputJsonResult(it.key) }.fold(mapOf<String, JsonElement>()) { acc, curr ->
                     acc.merge(curr)
-                }
+                }.toSortedMap()
                 val grouped = if (children.any { it.value.rule is StaticRule || it.value.nodeType in listOf(NodeType.METHOD_INSTANTIATION, NodeType.INDUCTION_STEPS, NodeType.CUSTOM_INDUCTION_STEP) }) {
                     mergedChildren.groupByStatus()
                 } else {
                     mergedChildren
                 }
 
-                if (node == ROOT_NODE_IDENTIFIER || currRes.nodeType == NodeType.CONTRACT) {
+                if (node == ROOT_NODE_IDENTIFIER || tree.getResultForNode(node).nodeType == NodeType.CONTRACT) {
                     /**
                      * For the case of currRes.nodeType == NodeType.CONTRACT the TreeView adds an extra nesting
                      * by the contract name. This nesting doesn't appear in output.json, therefore skipping this level.
                      */
                     return grouped
                 } else {
-                    buildMap {
+                    buildSortedMap {
                         this[node.displayName] = JsonObject(grouped)
                     }
                 }
@@ -1244,6 +1255,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
         }
         val prettyJson = Json {
             prettyPrint = true
+            prettyPrintIndent = "\t"
         }
         ArtifactManagerFactory().useArtifact(Config.OutputJSONFile.get()) { handle ->
             ArtifactFileUtils.getWriterForFile(handle, overwrite = true).use { i ->

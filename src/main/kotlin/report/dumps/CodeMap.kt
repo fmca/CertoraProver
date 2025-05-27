@@ -48,7 +48,6 @@ import smtlibutils.data.ProcessDifficultiesResult
 import solver.CounterexampleModel
 import solver.SMTCounterexampleModel
 import spec.CVLExpToTACExprMeta
-import utils.Range
 import statistics.data.CallIdWithName
 import tac.*
 import utils.*
@@ -1667,7 +1666,7 @@ fun decomposeCodeToCalls(code1: CoreTACProgram, addInternalFunctions: Boolean): 
 
     val callIdToProcedureId = code.procedures.associate { it.callId to it.procedureId }
 
-    val procedureToSourceLocation = computeProcedureToSourceLocation(callIdToProcedureId, allCodesDecomposed)
+    val procedureToSourceLocation = code.procedures.associateNotNull { p -> p.procedureId.range?.let{ p.procedureId to it }}
 
     // fills up the names that couldn't be determined with just the call number
     callIdsToBlocks.keys.forEach { id ->
@@ -1686,50 +1685,6 @@ fun decomposeCodeToCalls(code1: CoreTACProgram, addInternalFunctions: Boolean): 
         wholeProgWithInternalFunctions = code,
         internalFunctionsBlockMapping = internalFunctionsBlockMapping,
     )
-}
-
-/** Computes an appropriate [TreeViewJumpToDefinition]/"source location" for each [ProcedureId] that belongs to some
- * [CallId] in our the call graph. */
-private fun computeProcedureToSourceLocation(
-    callIdToProcedureId: Map<CallId, ProcedureId>,
-    allCodesDecomposed: Map<CallId, CoreTACProgram>,
-): Map<ProcedureId, TreeViewLocation> {
-    val procedureToSourceLocation = mutableMapOf<ProcedureId, TreeViewLocation>()
-    callIdToProcedureId.entries.forEach { (callId, procId) ->
-        if (procedureToSourceLocation[procId] != null) {
-            // nothing to do if we don't have a source location for the procedure
-            return@forEach
-        }
-
-        val subCfgForCall = allCodesDecomposed[callId]
-            ?: return@forEach
-        val entryBlockId =
-            @Suppress("SwallowedException")
-            try {
-                subCfgForCall.entryBlockId
-            } catch (e: IllegalStateException) {
-                // might demote this to `info` if it gets annoying
-                // (if it's rare to happen and/or we can fix the bugs quickly `warn` is good though)
-                logger.warn {
-                    "Failed to get entry block for sub-program \"${subCfgForCall.name}\" while " +
-                        "computing CodeMap-based call graph info."
-                }
-                return@forEach
-            }
-        val entryBlockCmds = subCfgForCall.code[entryBlockId]
-            ?: return@forEach
-
-        entryBlockCmds.forEach { cmd ->
-            // NB: if anybody has a good idea on how to get the source pointer for a sol/cvl function, I'd be glad to
-            // hear it --> this here is just looking for the first command in the entry block that has a source pointer
-            // and takes it .. (if it exists..)
-            val srcMeta: TreeViewLocation? = cmd.meta[TACMeta.CVL_RANGE] as? Range.Range ?: cmd.metaSrcInfo?.getSourceDetails()
-            if (srcMeta != null) {
-                procedureToSourceLocation[procId] = srcMeta
-            }
-        }
-    }
-    return procedureToSourceLocation
 }
 
 private fun generateDot(code: TACProgram<*>, name: String): DotDigraph = convertProgramGraphToDot(code, name)

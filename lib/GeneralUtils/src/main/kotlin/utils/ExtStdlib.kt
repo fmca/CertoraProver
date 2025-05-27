@@ -40,6 +40,7 @@ import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.stream.Collector
+import java.util.stream.Collectors
 import java.util.stream.Stream
 import kotlin.collections.ArrayDeque
 import kotlin.contracts.*
@@ -1099,7 +1100,7 @@ public inline suspend fun <T : SuspendCloseable?, R> T.use(block: (T) -> R): R {
     var exception: Throwable? = null
     try {
         return block(this)
-    } catch (@Suppress("TooGenericExceptionCaught") e: Throwable) {
+    } catch (e: Throwable) {
         exception = e
         throw e
     } finally {
@@ -1109,7 +1110,7 @@ public inline suspend fun <T : SuspendCloseable?, R> T.use(block: (T) -> R): R {
             else ->
                 try {
                     close()
-                } catch (@Suppress("TooGenericExceptionCaught") _: Throwable) {
+                } catch (_: Throwable) {
                     // ignore; `e` is still propagating
                 }
         }
@@ -1217,3 +1218,5 @@ infix fun <T: Comparable<T>> ClosedRange<T>.overlaps(that: ClosedRange<T>): Bool
 infix fun <T: Comparable<T>> ClosedRange<T>.subsumes(that: ClosedRange<T>): Boolean {
     return this.start <= that.start && this.endInclusive >= that.endInclusive
 }
+
+fun <K, V> Stream<Pair<K, V>>.toMap(): Map<K, V> = this.collect(Collectors.toMap({it.first}, {it.second}))

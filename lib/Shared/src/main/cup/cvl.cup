@@ -38,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import kotlin.UInt;
 import com.certora.certoraprover.cvl.CallSummary.*;
 import spec.cvlast.SpecCallSummary;
+import spec.cvlast.CVLSlotPattern;
 /*
   Handy tip: when debugging parser conflicts and looking at the result of -dump,
   the documentation here: https://web.stanford.edu/class/cs143/javadoc/java_cup/java_cup/lalr_state.html
@@ -1032,12 +1033,12 @@ static_slot_pattern ::=
 
 slot_pattern_break_dots ::=
   static_slot_pattern:sp LSQB ID:key_or_index named_vm_param_no_loc:p RSQB {:
-      if (key_or_index.equals("KEY")) {
+      if (key_or_index.equals(CVLSlotPattern.mapAccessKeyword)) {
           RESULT = new MapAccessSlotPattern(sp, p);
-      } else if (key_or_index.equals("INDEX")) {
+      } else if (key_or_index.equals(CVLSlotPattern.arrayAccessKeyword)) {
           RESULT = new ArrayAccessSlotPattern(sp, p);
       } else {
-          RESULT = new SlotPatternError(reportUnexpectedToken(key_or_index, key_or_indexxleft, key_or_indexxright, append(append(emptyList(), "KEY"), "INDEX")));
+          RESULT = new SlotPatternError(reportUnexpectedToken(key_or_index, key_or_indexxleft, key_or_indexxright, append(append(emptyList(), CVLSlotPattern.mapAccessKeyword), CVLSlotPattern.arrayAccessKeyword)));
       }
   :}
 ;
@@ -1046,12 +1047,12 @@ slot_pattern_nested ::=
     slot_pattern_break_dots:sp {: RESULT = sp; :}
 
   | slot_pattern_nested:sp LSQB ID:key_or_index named_vm_param_no_loc:p RSQB {:
-        if (key_or_index.equals("KEY")) {
+        if (key_or_index.equals(CVLSlotPattern.mapAccessKeyword)) {
             RESULT = new MapAccessSlotPattern(sp, p);
-        } else if (key_or_index.equals("INDEX")) {
+        } else if (key_or_index.equals(CVLSlotPattern.arrayAccessKeyword)) {
             RESULT = new ArrayAccessSlotPattern(sp, p);
         } else {
-            RESULT = new SlotPatternError(reportUnexpectedToken(key_or_index, key_or_indexxleft, key_or_indexxright, append(append(emptyList(), "KEY"), "INDEX")));
+            RESULT = new SlotPatternError(reportUnexpectedToken(key_or_index, key_or_indexxleft, key_or_indexxright, append(append(emptyList(), CVLSlotPattern.mapAccessKeyword), CVLSlotPattern.arrayAccessKeyword)));
         }
     :}
 

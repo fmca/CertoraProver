@@ -18,7 +18,7 @@
 package verifier.equivalence
 
 import datastructures.NonEmptyList
-import instrumentation.transformers.tracing.BufferTraceInstrumentation
+import verifier.equivalence.tracing.BufferTraceInstrumentation
 import log.*
 import rules.RuleCheckResult
 import tac.Tag
@@ -35,7 +35,7 @@ private val logger = Logger(LoggerTypes.EQUIVALENCE)
  */
 internal class TraceMinimizer(
     val idx: BigInteger,
-    traceLevel: EquivalenceChecker.InstrumentationLevels,
+    traceLevel: EquivalenceChecker.IInstrumentationLevels,
     context: QueryContext,
     val continuation: CounterExampleAnalyzer.CEXContinuation,
 ) : AbstractExplorer(traceLevel, context) {

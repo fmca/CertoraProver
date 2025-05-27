@@ -350,11 +350,11 @@
                                 "text": "sumNew ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0x8",
+                                        "value": "0x0",
                                         "values": [
-                                            "0x8",
-                                            "8",
-                                            "0x8"
+                                            "0x0",
+                                            "0",
+                                            "0x0"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -381,11 +381,11 @@
                                 "text": "require_uint256(sumOld + newVal - oldVal) ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0x8",
+                                        "value": "0x0",
                                         "values": [
-                                            "0x8",
-                                            "8",
-                                            "0x8"
+                                            "0x0",
+                                            "0",
+                                            "0x0"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -454,11 +454,11 @@
                                 "text": "sumOld + newVal - oldVal ↪ '{0}'",
                                 "arguments": [
                                     {
-                                        "value": "0x8",
+                                        "value": "0x0",
                                         "values": [
-                                            "0x8",
-                                            "8",
-                                            "0x8"
+                                            "0x0",
+                                            "0",
+                                            "0x0"
                                         ],
                                         "tooltip": "value of expression",
                                         "truncatable": true
@@ -472,11 +472,11 @@
                                         "text": "sumOld + newVal ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0xb",
+                                                "value": "0xa",
                                                 "values": [
-                                                    "0xb",
-                                                    "11",
-                                                    "0xb"
+                                                    "0xa",
+                                                    "10",
+                                                    "0xa"
                                                 ],
                                                 "tooltip": "value of expression",
                                                 "truncatable": true
@@ -521,11 +521,11 @@
                                                 "text": "newVal ↪ '{0}'",
                                                 "arguments": [
                                                     {
-                                                        "value": "0x7",
+                                                        "value": "0x6",
                                                         "values": [
-                                                            "0x7",
-                                                            "7",
-                                                            "0x7"
+                                                            "0x6",
+                                                            "6",
+                                                            "0x6"
                                                         ],
                                                         "tooltip": "value of expression",
                                                         "truncatable": true
@@ -565,11 +565,11 @@
                                         "text": "oldVal ↪ '{0}'",
                                         "arguments": [
                                             {
-                                                "value": "0x3",
+                                                "value": "0xa",
                                                 "values": [
-                                                    "0x3",
-                                                    "3",
-                                                    "0x3"
+                                                    "0xa",
+                                                    "10",
+                                                    "0xa"
                                                 ],
                                                 "tooltip": "value of expression",
                                                 "truncatable": true

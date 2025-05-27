@@ -21,6 +21,8 @@ import bridge.SourceLanguage
 import config.Config
 import evm.EVM_WORD_SIZE
 import spec.cvlast.*
+import spec.cvlast.CVLSlotPattern.Companion.arrayAccessKeyword
+import spec.cvlast.CVLSlotPattern.Companion.mapAccessKeyword
 import spec.cvlast.typedescriptors.*
 import utils.CollectingResult
 import utils.CollectingResult.Companion.asError
@@ -138,10 +140,17 @@ class CVLHookTypeChecker(
                                     nxt(tacStorageType.elementType)
                                 }
                             }
-                            else -> CVLError.General(
-                                hook.range,
-                                "Expected an array-like object at ${pattern.base}, found ${tacStorageType.toErrorString()}"
+                            else -> {
+                                val hint = if (tacStorageType is VMMappingDescriptor) {
+                                    ". Did you mean to use $mapAccessKeyword instead of $arrayAccessKeyword?"
+                                } else {
+                                    ""
+                                }
+                                CVLError.General(
+                                    hook.range,
+                                    "Expected an array-like object at ${pattern.base}, found ${tacStorageType.toErrorString()}$hint"
                                 ).asError()
+                            }
                         }
                     })
                 }
@@ -176,9 +185,14 @@ class CVLHookTypeChecker(
                 is CVLSlotPattern.MapAccess -> {
                     typeCheckPattern(pattern.base, true, seenFields, checkCont.extend { ty, nxt ->
                         if (ty !is VMMappingDescriptor) {
+                            val hint = if (ty is VMArrayTypeDescriptor) {
+                                ". Did you mean to use $arrayAccessKeyword instead of $mapAccessKeyword?"
+                            } else {
+                                ""
+                            }
                             return@extend CVLError.General(
                                 hook.range,
-                                "Expected mapping type at ${pattern.base}, found ${ty.toErrorString()}"
+                                "Expected mapping type at ${pattern.base}, found ${ty.toErrorString()}$hint"
                             ).asError()
                         }
                         val keyType = ty.keyType

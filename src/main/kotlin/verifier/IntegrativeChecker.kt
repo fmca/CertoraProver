@@ -161,9 +161,8 @@ object IntegrativeChecker {
                             )
                         },
                         CoreToCoreTransformer(
-                            ReportTypes.PATH_OPTIMIZE_FOR_ASSERTIONS_PASS,
-                            { c: CoreTACProgram -> Pruner(c).prune() }
-                        ).lift()
+                            ReportTypes.PATH_OPTIMIZE_FOR_ASSERTIONS_PASS
+                        ) { c: CoreTACProgram -> Pruner(c).prune() }.lift()
                     )
                 )
                 ContractUtils.transformMethodInPlace(_method, transformers)
@@ -174,9 +173,9 @@ object IntegrativeChecker {
         val assertionChecks = mutableListOf<AssertionCheck>()
         assertions.contractsToCheckAssert.forEach { contract ->
             Logger.always("Checking assertions for ${contract}...", respectQuiet = false)
-                if (contract.name !in contractNames) {
-                    throw Exception("No contract $contract in ${contractNames}")
-                }
+            if (contract.name !in contractNames) {
+                throw IllegalStateException("No contract $contract in $contractNames")
+            }
 
             val inlinedCodes = scene.getContract(contract)
             inlinedCodes.getDeclaredMethods().forEach { inlinedCode ->
@@ -203,7 +202,7 @@ object IntegrativeChecker {
             val contract = inlinedCode.getContainingContract().name
             val funcName = inlinedCode.soliditySignature
 
-            //  Add check AssertNot lastHasThrown as sink - added during inlinization
+            //  Add check AssertNot lastHasThrown as sink - added during inlining
 
             // adding state links? TODO
 
@@ -326,7 +325,7 @@ object IntegrativeChecker {
         if (contract.name !in scene.getContracts().map { it.name }) {
             throw Exception(
                 "Did not process contract $contract out of ${scene.getContracts().map { it.name }}"
-            ) // baa
+            )
         }
 
         Logger.always("Checking CVL ${cvl.name} for contract $contract", respectQuiet = false)
@@ -347,7 +346,7 @@ object IntegrativeChecker {
         AutosummarizedMonitor.reportSummarizedMethods(cvl)
 
         if (Config.BoundedModelChecking.getOrNull() != null) {
-            return BoundedModelChecker(cvl, scene, contract, treeViewReporter, reporter).checkAllInvariants()
+            return BoundedModelChecker(cvl, scene, contract, treeViewReporter, reporter).checkAll()
         }
 
         HTMLReporter.expectedNumberOfRules = cvl.rules.flatMap { it.getAllSingleRules() }.size
@@ -782,12 +781,16 @@ object IntegrativeChecker {
                 )
             is ProverQuery.CVLQuery.Single -> query.cvl.let {
                 TreeViewReporter(
-                    it.getContractNameFromContractId(SolidityContract.Current),
+                    it.getContractNameFromContractId(SolidityContract.Current)?.name,
                     it.name,
                     scene,
                 )
             }
-            is ProverQuery.EquivalenceQuery -> `impossible!`
+            is ProverQuery.EquivalenceQuery -> TreeViewReporter(
+                null,
+                "",
+                scene
+            )
         }
     }
 
@@ -805,7 +808,9 @@ object IntegrativeChecker {
         val result = if (!Config.SceneConstructionOnly.get()) { // works thanks to logSceneInfo above which triggers the lazy computation
             // run initial transformations, before checking specs or assertions
             if(query is ProverQuery.EquivalenceQuery) {
-                return handleEquivalence(query, scene, reporterContainer).also {
+                return handleEquivalence(query, scene, reporterContainer, treeView).also {
+                    treeView.hotUpdate() // v hot
+                    treeView.writeOutputJson()
                     reporterContainer.toFile(scene)
                 }
             }
@@ -848,8 +853,13 @@ object IntegrativeChecker {
         return result
     }
 
-    private suspend fun handleEquivalence(query: ProverQuery.EquivalenceQuery, scene: IScene, reporter: OutputReporter): List<RuleCheckResult> {
-        return EquivalenceChecker.handleEquivalence(query, scene, reporter)
+    private suspend fun handleEquivalence(
+        query: ProverQuery.EquivalenceQuery,
+        scene: IScene,
+        reporter: OutputReporter,
+        treeViewReporter: TreeViewReporter
+    ): List<RuleCheckResult> {
+        return EquivalenceChecker.handleEquivalence(query, scene, reporter, treeViewReporter)
     }
 
     // sets up the status reporter, tree view reporter and reporter container
@@ -875,9 +885,7 @@ object IntegrativeChecker {
 
     private fun logSceneInfo(scene: IScene) {
         Logger.always("The scene contains ${scene.getContracts().size} contracts:\n" +
-            scene.getContracts()
-                .map { "${it.name} : 0x${it.instanceId.toString(16)}" }
-                .joinToString(",\n"),
+            scene.getContracts().joinToString(",\n") { "${it.name} : 0x${it.instanceId.toString(16)}" },
             respectQuiet = false
         )
         scene.getContracts().forEach { c ->

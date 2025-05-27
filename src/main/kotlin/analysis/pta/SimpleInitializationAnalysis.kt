@@ -21,6 +21,7 @@ import algorithms.dominates
 import algorithms.strictlyDominates
 import analysis.*
 import analysis.alloc.AllocationAnalysis
+import analysis.alloc.AllocationAnalysis.roundUp
 import analysis.alloc.AllocationInformation
 import analysis.alloc.StorageArrayLengthFinder
 import analysis.loop.*
@@ -723,6 +724,16 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
     private val blockScheduler = graph.cache.naturalBlockScheduler
     private val visited = newKeySet<NBId>()
 
+    private val roundUpAt = PatternDSL.build {
+        roundUp {
+            Var { v, where ->
+                PatternMatcher.VariableMatch.Match(v to where.ptr)
+            }
+        }
+    }.let {
+        PatternMatcher.compilePattern(graph, it)
+    }
+
     private fun doInnerAnalysis(
         thisLoc: AllocationAnalysis.AbstractLocation,
         start: AnalysisResult.Suspend,
@@ -1130,7 +1141,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                             pathCondition = path, l = graph.elab(succ), w = stepped
                     )?.let { prop ->
                         unreachable.remove(succ)
-                        val sat = stepped.inv.propagateConstant { it ->
+                        val sat = stepped.inv.propagateEqualities(listOf(), listOf()) { it ->
                             prop[it]?.let {
                                 if(it.x.isConstant) {
                                     it.x.c
@@ -1176,7 +1187,53 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
                                 lVar.x.ub < m.factors["write"]
                             } == true
                         }
-                        if((matchWithSlippage || matchWithBound) && (stepped.elemSize == null || stepped.seenLengthWrite == true)) {
+
+                        fun roundedUpLength(v: TACSymbol.Var) = roundUpAt.query(v, graph.elab(it)).toNullableResult()?.let { (v, where) ->
+                            /**
+                             * If so, is the variable we're rouding up equal to the length of the array?
+                             */
+                            graph.cache.gvn.findCopiesAt(it, where to v).any { lenAlias ->
+                                state.num[lenAlias]?.qual.orEmpty().contains(Roles.LENGTH)
+                            }
+                        } == true
+
+                        /**
+                         * Check whether
+                         * WRITE + len - V = END
+                         * where V is the length rounded up. The initialization is complete.
+                         */
+                        val matchWithRounding = (sat matchesAny {
+                            WRITE + v("len") {
+                                it is LVar.PVar && state.num[it.v]?.qual.orEmpty().contains(Roles.LENGTH)
+                            } - v("over-write") { ow ->
+                                /**
+                                 * Is this a round up? Either check whether ow.v is itself a rounded up length (the first
+                                 * disjunct) OR there is some variable y st ow.v = y and where y is a rounded up length.
+                                 */
+                                ow is LVar.PVar && (roundedUpLength(ow.v) || sat.containsAny { saturatingEq ->
+                                    if(!saturatingEq.relates(ow.v) || saturatingEq.k != BigInteger.ZERO || saturatingEq.term.size != 2) {
+                                        return@containsAny false
+                                    }
+                                    val scale = saturatingEq.term[ow]!!
+                                    if(scale.abs() != BigInteger.ONE) {
+                                        return@containsAny false
+                                    }
+                                    val other = saturatingEq.term.entries.singleOrNull {
+                                        it.key != ow && it.key is LVar.PVar
+                                    } ?: return@containsAny false
+                                    if(other.value != scale.negate()) {
+                                        return@containsAny false
+                                    }
+                                    /**
+                                     * We thus have that [saturatingEq] represents k1 * ow.v + k2 * other = 0,
+                                     * where |k1| = 1 and k1 = -k2. We thus have that ow.v = other, and thus if other is
+                                     * a rounded up length, then ow.v is too.
+                                     */
+                                    roundedUpLength((other.key as LVar.PVar).v)
+                                })
+                            } `=` END_BLOCK
+                        }) != null
+                        if((matchWithSlippage || matchWithBound || matchWithRounding) && (stepped.elemSize == null || stepped.seenLengthWrite == true)) {
                             logger.debug { "Have that the written bytes have reached the end of the block. completing $thisLoc" }
                             /*
                                 special check to see if we do ye olde extra write 0 trick
@@ -1477,16 +1534,7 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
             return state.num[x]?.x?.takeIf { it.isConstant }?.c
         }
 
-        private val saturatedInv = state.inv.filter {
-            it.k == BigInteger.ZERO && setOf(BigInteger.ONE, BigInteger.ONE.negate()) == it.term.values.toSet() &&
-                it.term.size == 2 && it.term.keys.all { it is LVar.PVar }
-        }.map {
-            it.term.keys.map {
-                (it as LVar.PVar).v
-            }.let {
-                it[0] to it[1]
-            }
-        }.let { equalities ->
+        private val saturatedInv = state.inv.getEqualities().let { equalities ->
             val lengthEqualities = state.inv.matches {
                 v("scaled") {
                     it is LVar.PVar
@@ -2185,6 +2233,16 @@ private class SimpleInitializationAnalysisWorker(private val graph: TACCommandGr
         private val END_BLOCK = LVar.Instrumentation("END_BLOCK")
         private val WRITE = LVar.Instrumentation("WRITE")
         private val LENGTH = LVar.Instrumentation("LENGTH")
+
+        private fun LinearInvariants.getEqualities() = (this matches {
+            v("v1") {
+                it is LVar.PVar
+            } `=` v("v2") {
+                it is LVar.PVar
+            }
+        }).mapToSet {
+            (it.symbols["v1"] as LVar.PVar).v to (it.symbols["v2"] as LVar.PVar).v
+        }
     }
 
     private val mustBeConstantAnalysis = MustBeConstantAnalysis(graph = graph, wrapped = NonTrivialDefAnalysis(graph))

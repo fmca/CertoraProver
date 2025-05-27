@@ -78,6 +78,7 @@ enum class LoggerTypes : LoggerName {
     INTERNAL_TYPE_CHECKER,
     DSA,
     PATTERN,
+    REQUIRE_INVARIANT,
     STORAGE_ANALYSIS,
     STORAGE_SPLITTING,
     TIMEOUT_REPORTING,
@@ -131,7 +132,8 @@ enum class LoggerTypes : LoggerName {
     DEBUG_SYMBOLS,
     EQUIVALENCE,
     OVERFLOW_PATTERN_REWRITER,
-    BOUNDED_MODEL_CHECKER
+    BOUNDED_MODEL_CHECKER,
+    REQUIRE_REASON_CHECKER
     ;
 }
 
@@ -234,7 +236,6 @@ class KotlinLoggingLogger(val type: LoggerName) : Logger() {
  */
 fun Logger.reportOnEventInCode(eventInCodeName: String) {
     if (isTraceEnabled) {
-        @Suppress("TooGenericExceptionCaught")
         try {
             throw object : Exception(eventInCodeName) {}
         } catch (e: Exception) {

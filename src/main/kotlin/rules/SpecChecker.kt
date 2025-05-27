@@ -129,7 +129,6 @@ class SpecChecker(
      * Reports/UnsatCoreVisualisation.html.
      */
     fun visualiseUnsatCores(results: List<RuleCheckResult>) {
-        @Suppress("TooGenericExceptionCaught")
         try {
             val unsatCoresStats = mutableMapOf<IRule,UnsatCoresStats>()
             fun addUcStats(res: RuleCheckResult.Single.Basic) {

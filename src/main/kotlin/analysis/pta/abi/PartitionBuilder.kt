@@ -31,7 +31,6 @@ import vc.data.UniqueIdEntity
 import java.math.BigInteger
 
 @KSerializable
-@Treapable
 data class UnindexedPartitionInfo(
     val info: Map<UnindexedPartition, Map<PartitionField, UnindexedPartition>>
 ): AmbiSerializable, UniqueIdEntity<UnindexedPartitionInfo> {

@@ -26,6 +26,8 @@ import tac.*
 import tac.generation.*
 import utils.*
 import vc.data.*
+import wasm.WasmPipelinePhase
+import wasm.WasmPostUnrollSummary
 import wasm.host.soroban.*
 
 /**
@@ -45,7 +47,7 @@ object VecType : ArrayType() {
         val handle: TACSymbol.Var,
         val pos: TACSymbol,
         val len: TACSymbol
-    ) : PostUnrollAssignmentSummary() {
+    ) : WasmPostUnrollSummary(WasmPipelinePhase.PreOptimization) {
 
         override fun gen(
             simplifiedInputs: List<TACExpr>,

@@ -219,7 +219,7 @@ class ParallelSplitter(
                         }
                     )
                 }
-            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+            } catch (e: Exception) {
                 return executables.map {
                     ParallelRacerResult.Basic(
                         subProblem = it.subProblem,

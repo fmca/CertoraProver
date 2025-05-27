@@ -25,6 +25,7 @@ import analysis.icfg.Inliner
 import analysis.split.StorageTypeBounder
 import analysis.storage.DisplayPaths
 import analysis.storage.StorageAnalysisResult
+import com.certora.collect.*
 import instrumentation.StoragePathAnnotation
 import instrumentation.transformers.FoundryCheatcodes
 import report.calltrace.CVLReportLabel
@@ -35,7 +36,7 @@ import spec.cvlast.typedescriptors.EVMTypeDescriptor
 import spec.cvlast.typedescriptors.VMTypeDescriptor
 import tac.MetaKey
 import tac.NBId
-import utils.Range
+import utils.*
 import vc.data.TACCmd.Simple.AssigningCmd
 import java.math.BigInteger
 
@@ -323,6 +324,12 @@ object TACMeta {
     val CVL_LABEL_START_ID: MetaKey<Int> = MetaKey<Int>("cvl.label.start.id")
     @GeneratedBy(Allocator.Id.CVL_EVENT, source = false)
     val CVL_LABEL_END: MetaKey<Int> = MetaKey<Int>("cvl.label.end")
+    @KSerializable
+    @Treapable
+    data class RequireInvariant(val id: Int, val name: String): AmbiSerializable
+    val CVL_ASSUME_INVARIANT_TARGET = MetaKey.Nothing("cvl.assume.invariant.target")
+    val CVL_ASSUME_INVARIANT_CMD_START = MetaKey<RequireInvariant>("cvl.assume.invariant.start", erased = true)
+    val CVL_ASSUME_INVARIANT_CMD_END = MetaKey<RequireInvariant>("cvl.assume.invariant.end",  erased = true)
 
     /**
      * VC generation related.

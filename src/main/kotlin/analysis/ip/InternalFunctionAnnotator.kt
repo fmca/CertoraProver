@@ -126,9 +126,18 @@ data class InternalFunctionHint(val id: Int, val flag: Int, val sym: TACSymbol)
 
 interface InternalFunctionStartInfo {
     val methodSignature : QualifiedMethodSignature
+    val args: List<InternalFuncArg>
+
+    /**
+     * The source range of the call site that calls the function
+     */
     val callSiteSrc: TACMetaInfo?
 
-    val args: List<InternalFuncArg>
+    /**
+     * The source range pointing to the implementation of the function that
+     * is being called at the call site.
+     */
+    val calleeSrc: TACMetaInfo?
 }
 
 /**
@@ -142,7 +151,8 @@ data class InternalFuncStartAnnotation(
     @GeneratedBy(Allocator.Id.INTERNAL_FUNC, source = true) val id: Int, val startPc: Int,
     override val args: List<InternalFuncArg>, override val methodSignature: QualifiedMethodSignature,
     val stackOffsetToArgPos: Map<Int, Int>,
-    override val callSiteSrc: TACMetaInfo?
+    override val callSiteSrc: TACMetaInfo?,
+    override val calleeSrc: TACMetaInfo?
 ) : TransformableVarEntityWithSupport<InternalFuncStartAnnotation>, RemapperEntity<InternalFuncStartAnnotation>, Serializable, InternalFunctionStartInfo {
     fun isSummarizable() = args.all { it.sort == InternalArgSort.SCALAR }
 
@@ -189,6 +199,7 @@ sealed class InternalFuncValueLocation : AmbiSerializable, TransformableVarEntit
      * the layout info for its fields.
      */
     @KSerializable
+    @Treapable
     sealed interface PointerLayoutInfo : TransformableVarEntityWithSupport<PointerLayoutInfo>, HasKSerializable {
         val partitionVariable: TACSymbol.Var
     }

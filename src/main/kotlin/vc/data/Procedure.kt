@@ -60,12 +60,12 @@ data class Procedure(@GeneratedBy(Allocator.Id.CALL_ID) val callId: CallId, val 
     )
 
     constructor(_callId: CallId, _method: ITACMethod, _name: String) : this(
-        _callId, _method.getContainingContract(), _name
+        _callId, _method.getContainingContract(), _name, _method.evmExternalMethodInfo?.sourceSegment?.range
     )
 
-    constructor(_callId: CallId, _contract: IContractClass, _name: String) : this(
+    constructor(_callId: CallId, _contract: IContractClass, _name: String, range: Range.Range?) : this(
         _callId,
-        ProcedureId.Standard(_contract, _name)
+        ProcedureId.Standard(_contract, _name, range)
     )
 
     constructor(_callId: CallId, _summary: SpecCallSummary) : this(
@@ -121,6 +121,8 @@ sealed class ProcedureId : AmbiSerializable {
 
     abstract val address: ContractOfProcedure
 
+    open val range: Range.Range?
+        get() = null
     @KSerializable
     data class CVLFunction(
         override val address: ContractOfProcedure,
@@ -137,19 +139,22 @@ sealed class ProcedureId : AmbiSerializable {
     data class Standard(
         override val address: ContractOfProcedure,
         val contract: NamedContractIdentifier,
-        val procedureName: String
+        val procedureName: String,
+        override val range: Range.Range?
     ) : ProcedureId() {
 
         constructor(m: ITACMethod) : this(
             ContractOfProcedure.withContractId(m.getContainingContract().instanceId),
             SolidityContract(m.getContainingContract().name),
-            m.name
+            m.name,
+            m.evmExternalMethodInfo?.sourceSegment?.range
         )
 
-        constructor(contract: IContractClass, name: String) : this(
+        constructor(contract: IContractClass, name: String, range: Range.Range?) : this(
             ContractOfProcedure.withContractId(contract.instanceId),
             SolidityContract(contract.name),
-            name
+            name,
+            range
         )
 
         override fun toString(): String =
@@ -174,11 +179,13 @@ sealed class ProcedureId : AmbiSerializable {
     @KSerializable
     data class Constructor(
             override val address: ContractOfProcedure,
-            val contract: ContractIdentifier
+            val contract: ContractIdentifier,
+            override val range: Range.Range?
     ) : ProcedureId() {
         constructor(m: ITACMethod) : this(
-                ContractOfProcedure.withContractId(m.getContainingContract().instanceId),
-                SolidityContract(m.getContainingContract().name)
+            ContractOfProcedure.withContractId(m.getContainingContract().instanceId),
+            SolidityContract(m.getContainingContract().name),
+            m.evmExternalMethodInfo?.sourceSegment?.range
         )
 
         override fun toString(): String =
@@ -210,10 +217,13 @@ sealed class ProcedureId : AmbiSerializable {
 
     /**
      * Used in CodeMap context -- when adding internal functions to the TAC program.
+     *
+     * Please note that the range of an internal function currently points to one of the
+     * call sites of this internal function and does not contain the range of the method body.
      */
     @KSerializable
     @SuppressRemapWarning
-    data class Internal(val name: String, val externalProc: Procedure) : ProcedureId() {
+    data class Internal(val name: String, val externalProc: Procedure, override val range: Range.Range?) : ProcedureId() {
         init {
             check(externalProc.procedureId !is Internal) {
                 "externalProc arg must not point to an internal procedure, got: name: $name, externalProc: $externalProc "
@@ -221,11 +231,11 @@ sealed class ProcedureId : AmbiSerializable {
         }
         override val address: ContractOfProcedure
             get() = externalProc.procedureId.address
-        override fun toString() = when (externalProc.procedureId) {
+        override fun toString() = "(internal) " + when (externalProc.procedureId) {
             is Standard -> "${externalProc.procedureId.contract}.$name"
             is Constructor, is WholeContract -> "${externalProc.procedureId}.$name"
             else -> "${externalProc.procedureId.address}.$name"
-        }.sanitizeProcName() + "(internal)"
+        }.sanitizeProcName()
 
         /** E.g. spaces in the procedure name make problems in [CodeMap] / tac dump land (wrong html, very annoying to
          * debug..), so we sanitize the names here. */

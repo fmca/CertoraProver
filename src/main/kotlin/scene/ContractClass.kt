@@ -20,7 +20,7 @@ package scene
 import analysis.EthereumVariables
 import analysis.ExternalMapGetterSummarization
 import analysis.alloc.*
-import analysis.icfg.InternalSummarizer
+import analysis.icfg.InternalCVLSummarizer
 import analysis.icfg.Summarizer
 import analysis.icfg.Summarizer.resolveCandidates
 import analysis.ip.InternalFunctionHint
@@ -44,7 +44,6 @@ import diagnostics.*
 import disassembler.DisassembledEVMBytecode
 import evm.EVM_WORD_SIZE
 import instrumentation.ImmutableInstrumenter
-//import instrumentation.ReturnBufferInstrumentation
 import instrumentation.StoragePackedLengthSummarizer
 import instrumentation.constructor.ConstructorInstrumentation
 import instrumentation.createEmptyProgram
@@ -63,8 +62,7 @@ import spec.CVL
 import spec.CVLReservedVariables
 import spec.cvlast.SpecCallSummary
 import tac.*
-import utils.letIf
-import utils.mapNotNull
+import utils.*
 import vc.data.*
 import verifier.*
 import verifier.ContractUtils.computeMethodsInCode
@@ -225,7 +223,7 @@ class ContractClass(
             if(internalSummaries != null) {
                 // if we have internal summaries, let's apply those early on and save time
                 transforms.add(ReportTypes.EARLY_SUMMARIZATION) { c: CoreTACProgram ->
-                    InternalSummarizer.EarlySummarization.applyEarlyInternalSummarization(c, cvl)
+                    InternalCVLSummarizer.EarlySummarization.applyEarlyInternalSummarization(c, cvl)
                 }
             }
 
@@ -312,7 +310,12 @@ class ContractClass(
             transforms.add(ReportTypes.REWRITE_ALLOCATIONS, InlineArrayAllocationRewriter::rewriteAllocations)
             transforms.add(ReportTypes.REWRITE_ALLOCATIONS_FROM_LOOP_INTERPOLATION, LoopInterpolationAllocationRewriter::rewrite)
             transforms.add(ReportTypes.NORMALIZE_TRY_CATCH, TryCatchNormalization::normalizeTryCatch)
-            transforms.add(ReportTypes.OPTIMIZE_REVERT_STRINGS, RevertStringsOptimizer::optimizeRevertStrings)
+            // this analysis is known to be problematic with the equivalence checker,
+            // it will only sometimes fire for some hard to predict subset of reverts, leading to spurious mismatches
+            // in revert reasons
+            if(!Config.EquivalenceCheck.get()) {
+                transforms.add(ReportTypes.OPTIMIZE_REVERT_STRINGS, RevertStringsOptimizer::optimizeRevertStrings)
+            }
 
             transforms.add(ReportTypes.SCRATCH_COPY_NORMALIZATION) { c: CoreTACProgram ->
                 c.parallelLtacStream().mapNotNull {
@@ -443,7 +446,7 @@ class ContractClass(
                         perContract.load(ContractLoad.Component.MethodLoad(entry.key.name, entry.key.sigHash)) {
                             val contract = this@ContractClass
                             TACMethod(
-                                entry.value.copy(procedures = setOf(Procedure(0, contract, entry.key.name))),
+                                entry.value.copy(procedures = setOf(Procedure(0, contract, entry.key.name, entry.key.sourceSegment?.range))),
                                 contract,
                                 MetaMap(),
                                 if (entry.key.isFallback) {

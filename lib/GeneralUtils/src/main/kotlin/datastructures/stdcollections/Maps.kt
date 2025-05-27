@@ -22,6 +22,7 @@ package datastructures.stdcollections
 import com.certora.collect.*
 import datastructures.*
 import utils.*
+import java.util.SortedMap
 
 //
 // Make it easy to convert Java maps to ArrayHashMap
@@ -227,6 +228,8 @@ fun <K, V> Map<K, V>?.orEmpty() = this ?: mapOf()
 inline fun <K, V> buildMap(@BuilderInference builderAction: MutableMap<K, V>.() -> Unit): Map<K, V> =
     LinkedArrayHashMap<K, V>().apply(builderAction)
 
+inline fun <K: Comparable<K>, V> buildSortedMap(@BuilderInference builderAction: MutableMap<K, V>.() -> Unit): SortedMap<K, V> =
+    LinkedArrayHashMap<K, V>().apply(builderAction).toSortedMap()
+
 inline fun <K, V> buildMap(capacity: Int, builderAction: MutableMap<K, V>.() -> Unit): Map<K, V> =
     LinkedArrayHashMap<K, V>(capacity).apply(builderAction)
-

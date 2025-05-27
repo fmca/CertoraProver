@@ -2,7 +2,6 @@
     "type": "spec.rules.CVLSingleRule",
     "ruleIdentifier": {
         "parentIdentifier": {
-            "type": "spec.cvlast.RuleIdentifier",
             "parentIdentifier": null,
             "displayName": "foo",
             "counter": 1

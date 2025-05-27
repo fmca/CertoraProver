@@ -296,6 +296,15 @@ object Config {
         return prependInternalDir(SOURCES_SUBDIR)
     }
 
+    val TacDumpsWithInternalFunctions : ConfigType.BooleanCmdLine = object : ConfigType.BooleanCmdLine(
+        false,
+        Option(
+            "tacDumpsWithInternalFunctions",
+            true,
+            "When generating HTML reports of type Report or Presolver_Rule, also generate reports with internal " +
+                "functions folded. The reports have suffix '_with_internal' [default:false]"
+        )
+    ) {}
     val LowFootprint = object : ConfigType.BooleanCmdLine(
         false,
         Option(
@@ -414,7 +423,8 @@ object Config {
             "maxConcurrentRules",
             true,
             "The maximum number of concurrent rule evaluations.  Default: number of processors."
-        )
+        ),
+        pythonName = "--max_concurrent_rules"
     ), RuleCacheAgnosticConfig {
         override fun check(newValue: Int): Boolean = newValue > 0
     }
@@ -1175,7 +1185,17 @@ object Config {
                 }
             }
 
-    val Mem0x0To0x40AsScalar = object : ConfigType.BooleanCmdLine(
+    val EquivalenceCheck = object : ConfigType.BooleanCmdLine(
+        false,
+        Option(
+            "equivalenceCheck",
+            true,
+            "Magic flag that must be set if equivalence checker is run"
+        )
+    ) {}
+
+
+    private val _Mem0x0To0x40AsScalar = object : ConfigType.BooleanCmdLine(
         true,
         Option(
             "mem0x0To0x40AsScalar",
@@ -1183,6 +1203,8 @@ object Config {
             "Treats all accesses to hash scratch space [0x0-0x40) in memory as scalars, ignoring any conflicting aliases from unresolved locations"
         )
     ) {}
+
+    val Mem0x0To0x40AsScalar get() = _Mem0x0To0x40AsScalar.get() && !EquivalenceCheck.get()
 
     val HavocInitEVMMemory = object : ConfigType.BooleanCmdLine(
         false,
@@ -1471,13 +1493,23 @@ object Config {
         )
     ) {}
 
-    val defaultInvariantType = ConfigType.CmdLine(
+    val DefaultInvariantType = ConfigType.CmdLine(
         converter = InvariantTypeConverter,
         default = InvariantType.WEAK,
         option = Option(
             "defaultInvariantType",
             true,
             "The type of an invariant to use when declaring an invariant without weak or strong keyword.  [default: weak]"
+        )
+    )
+
+    val RequireInvariantsPreRuleSemantics = ConfigType.BooleanCmdLine(
+        default = false,
+        option = Option(
+            "requireInvariantsPreRuleSemantics",
+            true,
+            "Collect all requireInvariant commands used in a rule and assume them in the rule setup " +
+                "instead of assuming them at the location where they are in the spec [default: false]."
         )
     )
 
@@ -2886,17 +2918,6 @@ object Config {
             )
         ), TransformationAgnosticConfig {}
 
-        val AddSafeMathAxioms : ConfigType.BooleanCmdLine = object : ConfigType.BooleanCmdLine(
-            false,
-            Option(
-                "smt_safeMathAxioms",
-                true,
-                "Generate LIA axioms for safe math axioms. This is needed only if static analysis misses these" +
-                    "patterns. These originate from the old safe-math library, and since solc8, solidity's auto " +
-                    "generated overflow detection patterns. [default:false]"
-            )
-        ), TransformationAgnosticConfig {}
-
         val MaxPreciseConstantExponent : ConfigType.IntCmdLine = object : ConfigType.IntCmdLine(
             5,
             Option(
@@ -3219,7 +3240,6 @@ object Config {
 
     fun isEnabledReport(reportName: ReportTypes) = System.getProperty(reportName.withPrefix("report")) != null
 
-    @Suppress("HashCodeStability")
     fun isEnabledReport(reportName: String): Boolean {
         val onByDefault = if (BoundedModelChecking.getOrNull() == null) {
             setOf(
