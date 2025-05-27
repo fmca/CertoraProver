@@ -147,7 +147,8 @@ object CertoraConf {
      * Backups the file without the relative path. For example, `mydir/file.txt` will be backed up as `inputs/file.txt`.
      */
     private fun IArtifactsManager.backupFileWithoutRelativePath(fileName: String) {
-        this.backupRetainRelativePath(ArtifactFileUtils.getNameFromPath(fileName))
+        val backupFileName = "${this.inputsDir}${File.separator}${ArtifactFileUtils.getNameFromPath(fileName)}"
+        this.backup(fileName, backupFileName)
     }
 
     /**
