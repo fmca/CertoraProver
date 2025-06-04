@@ -93,7 +93,7 @@ object Contract {
 
     fun assertValidStorageType(storageType: TACSymbol, module: String, func: String) =
         mergeMany(
-            Trap.assert("Expected %1\$s to be a valid StorageType, in $module/$func", storageType) {
+            Trap.assert("Expected sym to be a valid StorageType, in $module/$func") {
                 (storageType.asSym() eq STORAGE_TYPE_TEMPORARY) or
                 (storageType.asSym() eq STORAGE_TYPE_PERSISTENT) or
                 (storageType.asSym() eq STORAGE_TYPE_INSTANCE)

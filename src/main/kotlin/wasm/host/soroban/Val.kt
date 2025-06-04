@@ -259,7 +259,7 @@ object Val {
 
     /** Assert [sym] is a valid boolean (0 or 1) */
     fun assertIsBool(sym: TACSymbol, module: String, func: String) =
-        Trap.assert("Expected %1\$s to be a valid boolean, in $module/$func", sym) { isBool(sym.asSym()) }
+        Trap.assert("Expected sym to be a valid boolean, in $module/$func") { isBool(sym.asSym()) }
 
     private fun isBool(v: TACExpr) = expr {
         (v eq 0.asTACExpr) or (v eq 1.asTACExpr)
@@ -343,7 +343,7 @@ object Val {
 
     fun assertValid(sym: TACSymbol, module: String, func: String, vararg validTags: Tag) =
         withValidity(sym.asSym(), true, validTags) { valid ->
-            Trap.assert("Expected %1\$s to be a valid Val, in $module/$func", sym) { valid }
+            Trap.assert("Expected sym to be a valid Val, in $module/$func") { valid }
         }
 
     fun assumeValid(sym: TACSymbol, checkAlloc: Boolean, vararg validTags: Tag) =

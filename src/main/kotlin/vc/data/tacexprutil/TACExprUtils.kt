@@ -297,18 +297,13 @@ data class CastToUnsignedInt(val bitWidth: Int) : TACFunForCastExpression() {
     fun compileAssertCast(
         outVar: TACSymbol.Var,
         inVar: TACSymbol.Var,
-        msg: (outVar: TACSymbol, inVar: TACSymbol) -> Pair<String, TACSymbol?> = { _, _ ->
-            "sanity bounds check on int to bitvector conversion of %1\$s failed" to inVar
-        }
+        msg: String = "sanity bounds check on int to bitvector conversion failed",
     ): CommandWithRequiredDecls<TACCmd.Simple> =
         compileCast(outVar, inVar) { toConstrain ->
-            msg(outVar, inVar).let { (message, arg) ->
-                TACCmd.Simple.AssertCmd(
-                    toConstrain,
-                    message,
-                    meta = arg?.let { MetaMap(TACCmd.Simple.AssertCmd.FORMAT_ARG1 to it) } ?: MetaMap()
-                )
-            }
+            TACCmd.Simple.AssertCmd(
+                toConstrain,
+                msg,
+            )
         }
 }
 

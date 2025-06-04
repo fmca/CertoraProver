@@ -32,7 +32,6 @@ import spec.toProg
 import tac.ITACCmd
 import tac.ITACSymbol
 import tac.ITACSymbolVar
-import tac.MetaMap
 import tac.Tag
 import utils.SignUtilities
 import utils.toValue
@@ -151,8 +150,7 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
                                 TACCmd.Simple.AssigningCmd.AssignExpCmd(sanityVar, CastToSignedInt(Config.VMConfig.registerBitwidth).safeCastExpr(src)),
                                 TACCmd.Simple.AssertCmd(
                                     sanityVar,
-                                    "sanity bounds check on cvl to vm encoding (signed int elements of a user array) of %1\$s failed",
-                                    meta = MetaMap(TACCmd.Simple.AssertCmd.FORMAT_ARG1 to src)
+                                    "sanity bounds check on cvl to vm encoding failed (signed int elements of a user array)",
                                 ),
                                 TACCmd.Simple.AssigningCmd.AssignExpCmd(
                                     dest, f.toTACFunctionSym(), listOf(src.asSym())
@@ -170,8 +168,9 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
                 }
                 Tag.CVLArray.UserArray.ElementEncoding.Unsigned -> {
                     return numericCases(src = src, dest = dest, sameTag = ::identityTransfer, intToBit = {
-                        CastToUnsignedInt(Config.VMConfig.registerBitwidth).compileAssertCast(dest, src
-                        ) { _, inVar -> "sanity bounds check on cvl to vm encoding (unsigned int elements of a user array) of %1\$s failed" to inVar }
+                        CastToUnsignedInt(Config.VMConfig.registerBitwidth).compileAssertCast(dest, src,
+                            "sanity bounds check on cvl to vm encoding failed (unsigned int elements of a user array)"
+                        )
                     }, err = ::err, bitToInt = ::identityTransfer)
                 }
                 Tag.CVLArray.UserArray.ElementEncoding.Boolean -> {
@@ -239,8 +238,7 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
                             TACCmd.Simple.AssigningCmd.AssignExpCmd(sanityVar, CastToSignedInt(destType.bitwidth).safeCastExpr(src)),
                             TACCmd.Simple.AssertCmd(
                                 sanityVar,
-                                "sanity bounds check on cvl to vm encoding (signed numeric value) of %1\$s failed",
-                                meta = MetaMap(TACCmd.Simple.AssertCmd.FORMAT_ARG1 to src)
+                                "sanity bounds check on cvl to vm encoding failed (signed numeric value)",
                             ),
                             TACCmd.Simple.AssigningCmd.AssignExpCmd(
                                 dest, f.toTACFunctionSym(), listOf(src.asSym())
@@ -250,9 +248,9 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
                 }
                 is EVMTypeDescriptor.BytesK -> {
                     if(destType.bytewidth == Config.VMConfig.registerByteWidth && src.tag == Tag.Int) {
-                        CastToUnsignedInt(Config.VMConfig.registerBitwidth).compileAssertCast(dest, src) { _, inVar ->
-                            "sanity bounds check on cvl to vm encoding (bytesK) of %1\$s failed" to inVar
-                        }
+                        CastToUnsignedInt(Config.VMConfig.registerBitwidth).compileAssertCast(dest, src,
+                            "sanity bounds check on cvl to vm encoding failed (bytesK)",
+                        )
                     } else {
                         check(src.tag == Tag.Bit256 && dest.tag == Tag.Bit256) { "bytesk conversion got bad tags src: ${src.tag}, dest: ${dest.tag}" }
                         CommandWithRequiredDecls(
@@ -279,8 +277,9 @@ object EVMMoveSemantics : EVMTypeDescriptor.ConverstionSemantics, SafeMathCodeGe
                     } else if(srcType is CVLType.PureCVLType.UserDefinedValueType) {
                         convertValueTypeToEVM(dest, destType, src, srcType.base)
                     } else {
-                        CastToUnsignedInt(Config.VMConfig.registerBitwidth).compileAssertCast(dest, src
-                        ) { _, inVar -> "sanity bounds check on cvl to vm encoding (unsigned int) of %1\$s failed" to inVar }
+                        CastToUnsignedInt(Config.VMConfig.registerBitwidth).compileAssertCast(dest, src,
+                            "sanity bounds check on cvl to vm encoding failed (unsigned int)"
+                        )
                     }
                 }
             }

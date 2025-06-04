@@ -1291,10 +1291,6 @@ sealed class TACCmd : Serializable, ITACCmd {
         @KSerializable
         data class AssertCmd(
             val o: TACSymbol,
-            /**
-                To reference a TACSymbol.Var from [description], add a FORMAT_ARG1 item to [meta], and reference it with
-                "%1\$s"
-             */
             internal val description: String,
             override val meta: MetaMap = MetaMap()
         ) : Simple() {
@@ -1316,39 +1312,30 @@ sealed class TACCmd : Serializable, ITACCmd {
             }
 
             val msg: String get() {
-                val formatArgs = meta[FORMAT_ARG1]?.let { arrayOf(it) }
                 return if (meta.containsKey(TACMeta.CVL_USER_DEFINED_ASSERT)) {
-                    check(formatArgs == null) { "User defined assert with format args?" }
-                    formatDescription()
-                } else if (formatArgs != null) {
-                    java.lang.String.format(description, *formatArgs)
+                    trim(description)
                 } else {
                     description
                 }
             }
 
-            private fun formatDescription() = buildString {
-                /**
-                 * this double quote removal should eventually be done by the compiler
-                 * (by simply not adding them to the assert comment)
-                 */
-                val trimmed = description.removeSurrounding("\"").trim()
-                this.append(trimmed)
-
-                /** mind the ordering here - we want to truncate the assert message, not the entire string */
-                if (this.length > MAX_ASSERT_LENGTH) {
-                    this.setLength(MAX_ASSERT_LENGTH)
-                    this.append("...")
-                }
-            }
-
             companion object {
-                private const val MAX_ASSERT_LENGTH = 40
+                private fun trim(description: String) = buildString {
+                    /**
+                     * this double quote removal should eventually be done by the compiler
+                     * (by simply not adding them to the assert comment)
+                     */
+                    val trimmed = description.removeSurrounding("\"").trim()
+                    this.append(trimmed)
 
-                /**
-                    In [description], reference this value with "%1\$s"
-                */
-                val FORMAT_ARG1 = MetaKey<TACSymbol>("assert.format.arg.1")
+                    /** mind the ordering here - we want to truncate the assert message, not the entire string */
+                    if (this.length > MAX_ASSERT_LENGTH) {
+                        this.setLength(MAX_ASSERT_LENGTH)
+                        this.append("...")
+                    }
+                }
+
+                private const val MAX_ASSERT_LENGTH = 40
             }
         }
 
