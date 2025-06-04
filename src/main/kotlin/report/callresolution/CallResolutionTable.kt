@@ -52,7 +52,7 @@ sealed interface CallResolutionTableRow {
 
     fun toBase(): CallResolutionTableBase.Row
 
-    val alertReport: RuleAlertReport.Single<*>?
+    val alertReport: RuleAlertReport?
         get() = status.alertReport
 
     /**
@@ -61,7 +61,7 @@ sealed interface CallResolutionTableRow {
      */
     sealed class Status {
 
-        abstract val alertReport: RuleAlertReport.Single<*>?
+        abstract val alertReport: RuleAlertReport?
         /**
          * Whether this [Status] should be shown as a warning
          * in the [CallResolutionTable].
@@ -69,7 +69,7 @@ sealed interface CallResolutionTableRow {
         abstract fun isWarning(): Boolean
 
         object Ok : Status() {
-            override val alertReport: RuleAlertReport.Single<*>?
+            override val alertReport: RuleAlertReport?
                 get() = null
             override fun isWarning(): Boolean = false
             fun readResolve(): Any = Ok
@@ -123,8 +123,8 @@ sealed interface CallResolutionTableRow {
 sealed interface CallResolutionTable<T : CallResolutionTableRow> {
 
     val rows: Set<T>
-    val alertReport: RuleAlertReport<*>?
-        get() = RuleAlertReport(rows.mapNotNull { it.alertReport })
+    val alertReport: List<RuleAlertReport>
+        get() = rows.mapNotNull { it.alertReport }
 
     fun toCallResTableReporterView(
         exampleMeta: ExampleMeta = ExampleMeta.None

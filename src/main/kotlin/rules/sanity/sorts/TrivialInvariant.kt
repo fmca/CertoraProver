@@ -36,7 +36,7 @@ object TrivialInvariant :
     override val preds: List<SanityCheckNodeType> =
         listOf(SanityCheckNodeType.None)
 
-    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*> {
+    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport {
         if(solverResult == SolverResult.UNSAT){
             return RuleAlertReport.Warning("The trivial invariant sanity check failed. " +
                 "The invariant condition is trivially true - it's verified also without assuming it first, or calling any contract function. " +

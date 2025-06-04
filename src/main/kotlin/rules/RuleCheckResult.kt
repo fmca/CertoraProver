@@ -26,7 +26,6 @@ import datastructures.stdcollections.*
 import kotlinx.serialization.json.*
 import log.*
 import report.*
-import report.RuleAlertReport.Companion.join
 import report.callresolution.*
 import report.calltrace.*
 import report.calltrace.formatter.*
@@ -68,7 +67,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
      */
     sealed class Leaf(rule: IRule): RuleCheckResult(rule) {
 
-        abstract val ruleAlerts: RuleAlertReport<*>?
+        abstract val ruleAlerts: List<RuleAlertReport>
 
     }
 
@@ -271,7 +270,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
             override val verifyTime: VerifyTime,
             override val ruleCheckInfo: RuleCheckInfo.BasicInfo,
             override val callResolutionTable: CallResolutionTableBase = CallResolutionTableBase.Empty,
-            override val ruleAlerts: RuleAlertReport<RuleAlertReport.Single<*>>?,
+            override val ruleAlerts: List<RuleAlertReport>,
             val unsatCoreStats: UnsatCoresStats? = null
         ) : Single(rule) {
 
@@ -308,7 +307,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
             override val result: SolverResult,
             override val verifyTime: VerifyTime,
             override val ruleCheckInfo: RuleCheckInfo.WithExamplesData,
-            override val ruleAlerts: RuleAlertReport<RuleAlertReport.Single<*>>? = null,
+            override val ruleAlerts: List<RuleAlertReport> = listOf(),
             override val callResolutionTable: CallResolutionTableWithExampleMeta = CallResolutionTableWithExampleMeta.Empty
         ) : Single(rule) {
 
@@ -1012,7 +1011,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
                     isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                     isSolverResultFromCache = IsFromCache.INAPPLICABLE
                 ),
-                ruleAlerts = null
+                ruleAlerts = emptyList()
             )
         }
 
@@ -1052,15 +1051,16 @@ sealed class RuleCheckResult(open val rule: IRule) {
      */
     data class Skipped(
         override val rule: IRule,
-        override val ruleAlerts: RuleAlertReport.Single<*>
+        override val ruleAlerts: List<RuleAlertReport>
     ) : Leaf(rule) {
+        constructor(rule: IRule, ruleAlert: RuleAlertReport) : this(rule, listOf(ruleAlert))
 
         override fun getAllFlattened(): List<FlattenedResult> {
             return listOf() // skipped is not taken into account!
         }
 
         override fun consolePrint(satIsGood: Boolean): String {
-            return "${rule.declarationId}: Rule-check skipped. Skipping reason: ${ruleAlerts.msg}."
+            return "${rule.declarationId}: Rule-check skipped. Skipping reason: ${ruleAlerts.firstOrNull()?.msg}."
         }
 
         override fun copyWithResult(res: SolverResult): RuleCheckResult = this
@@ -1068,15 +1068,15 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
     data class Error(
         override val rule: IRule,
-        override val ruleAlerts: RuleAlertReport<RuleAlertReport.Error>,
+        override val ruleAlerts: List<RuleAlertReport.Error>,
     ) : Leaf(rule) {
         constructor(
             rule: IRule,
             error: Throwable,
-        ): this(rule, RuleAlertReport.Error(
+        ): this(rule, listOf(RuleAlertReport.Error(
             error.message ?: "Unknown error, please report to Certora",
             error
-        ))
+        )))
 
         override fun getAllFlattened(): List<FlattenedResult> {
             return listOf(FlattenedResult(rule.declarationId, SolverResult.UNKNOWN, this))
@@ -1086,7 +1086,7 @@ sealed class RuleCheckResult(open val rule: IRule) {
 
         override fun consolePrint(satIsGood: Boolean): String =
             "${rule.declarationId}: Error: " +
-                ruleAlerts.asList.map { it.reason ?: it.msg }.joinToString(
+                ruleAlerts.map { it.reason ?: it.msg }.joinToString(
                     separator = "${System.lineSeparator()}${System.lineSeparator()}"
                 )
     }

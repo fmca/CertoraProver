@@ -244,7 +244,7 @@ open class SolidityVerifier(val scene: IScene) : Verifier() {
                         rule = assertRule,
                         result = finalResult,
                         verifyTime = verifyTime,
-                        ruleAlerts = null,
+                        ruleAlerts = emptyList(),
                         ruleCheckInfo = RuleCheckResult.Single.RuleCheckInfo.WithExamplesData(
                             verifierResult.examplesInfo.map { exampleInfo ->
                                 RuleCheckResult.Single.RuleCheckInfo.WithExamplesData.CounterExample(
@@ -286,7 +286,7 @@ open class SolidityVerifier(val scene: IScene) : Verifier() {
                             isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                             isSolverResultFromCache = IsFromCache.INAPPLICABLE,
                         ),
-                       ruleAlerts = null
+                       ruleAlerts = emptyList()
                     )
                 }
             )

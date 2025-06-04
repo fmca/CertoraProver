@@ -327,7 +327,8 @@ class TreeViewReporter(
         val liveCheckFileName: String? = null,
         val splitProgress: Int? = null,
         val outputFiles: List<String> = listOf(),
-        val ruleAlerts: List<RuleAlertReport.Single<*>> = listOf(),
+        val ruleAlerts: List<RuleAlertReport> = listOf(),
+        val highestNotificationLevel: RuleAlertReport? = null,
         val location: TreeViewLocation? = null,
         val displayName: String,
         val childrenTotalNum: Int? = null,
@@ -354,7 +355,8 @@ class TreeViewReporter(
         val output: JsonArrayBuilder.() -> Unit,
         val uiId: Int,
         val liveCheckFileName: String?,
-        val errors: List<RuleAlertReport.Single<*>>,
+        val errors: List<RuleAlertReport>,
+        val highestNotificationLevel: RuleAlertReport?,
         val jumpToDefinition: TreeViewLocation?,
         val nodeType: String,
         val splitProgress: Int?,
@@ -375,6 +377,7 @@ class TreeViewReporter(
             put(TreeViewReportAttribute.UI_ID(), uiId)
             put(TreeViewReportAttribute.LIVE_CHECK_INFO(), liveCheckFileName)
             putJsonArray(TreeViewReportAttribute.ERRORS(), errors)
+            put(TreeViewReportAttribute.HIGHEST_NOTIFICATION_LEVEL(), highestNotificationLevel?.severity ?: "none")
 
             //If location has not been explicitly set (in the case we have a counter example for an assert) - use the rule's location if available.
             put(TreeViewReportAttribute.JUMP_TO_DEFINITION(), jumpToDefinition)
@@ -495,7 +498,7 @@ class TreeViewReporter(
                         treeViewNodeResult.copy(
                             status = computeFinalStatus(solverResult.result, solverResult.rule),
                             verifyTime = solverResult.verifyTime,
-                            ruleAlerts = solverResult.ruleAlerts?.asList ?: listOf(),
+                            ruleAlerts = solverResult.ruleAlerts,
                             outputFiles = ruleOutput
                         ).letIf(solverResult.result != SolverResult.TIMEOUT) {
                             it.copy(splitProgress = null) // should have been propagated at this point, but making sure
@@ -504,13 +507,13 @@ class TreeViewReporter(
                     is RuleCheckResult.Error ->
                         treeViewNodeResult.copy(
                             status = TreeViewStatusEnum.ERROR,
-                            ruleAlerts = solverResult.ruleAlerts.asList
+                            ruleAlerts = solverResult.ruleAlerts
                         )
 
                     is RuleCheckResult.Skipped ->
                         treeViewNodeResult.copy(
                             status = TreeViewStatusEnum.SKIPPED,
-                            ruleAlerts = solverResult.ruleAlerts.asList
+                            ruleAlerts = solverResult.ruleAlerts
                         )
                 }
             }
@@ -625,6 +628,7 @@ class TreeViewReporter(
                 uiId = currTreeViewResult.uuid,
                 liveCheckFileName = currTreeViewResult.liveCheckFileName,
                 errors = currTreeViewResult.ruleAlerts,
+                highestNotificationLevel = currTreeViewResult.highestNotificationLevel,
                 jumpToDefinition = jumpToDefinition,
                 nodeType = currTreeViewResult.nodeType.name,
                 splitProgress = currTreeViewResult.splitProgress,
@@ -677,7 +681,7 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
 
         /**
          * Some state is propagated from the leafs upwards in the tree, including the [TreeViewStatusEnum], the
-         * `isRunningField`, and the consumed time.
+         * `isRunningField`, the consumed time and the `highestNotificationLevel`.
          * This propagation is done on every [hotUpdate] by triggering this method.
          *
          * Background on what the UI does with this information:
@@ -696,13 +700,13 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                 val children = getChildren(di)
 
                 children.forEach { rec(it) } // update state recursively, starting from the leafs
-
+                val currTreeViewResult = getResultForNode(di)
                 val childrenTreeViewResults = children.map { getResultForNode(it) }.toList()
+                val highestNotificationLevel = (childrenTreeViewResults.mapNotNull { it.highestNotificationLevel } + currTreeViewResult.ruleAlerts).maxOrNull()
 
                 if (children.isEmpty()) {
-                    updateStatus(di) { res -> res.copy(isRunning = res.status.isRunning()) }
+                    updateStatus(di) { res -> res.copy(isRunning = res.status.isRunning(), highestNotificationLevel = highestNotificationLevel) }
                 } else if (childrenTreeViewResults.any { it.nodeType == NodeType.SANITY }) {
-                    val currTreeViewResult = getResultForNode(di)
                     val newStatus = (childrenTreeViewResults + currTreeViewResult).maxOf { it.status }
                     val newIsRunning = currTreeViewResult.status.isRunning() ||
                         childrenTreeViewResults.any { it.isRunning }
@@ -710,14 +714,14 @@ ${getTopLevelNodes().joinToString("\n") { nodeToString(it, 0) }}
                         (childrenTreeViewResults + currTreeViewResult)
                             .map { it.verifyTime }
                             .reduce { acc, y -> acc.join(y) }
-                    updateStatus(di) { res -> res.copy(status = newStatus, isRunning = newIsRunning, verifyTime = newVerifyTime) }
+                    updateStatus(di) { res -> res.copy(status = newStatus, isRunning = newIsRunning, verifyTime = newVerifyTime, highestNotificationLevel = highestNotificationLevel) }
                 } else {
                     val newStatus = childrenTreeViewResults.maxBy { it.status }.status
                     val newIsRunning = childrenTreeViewResults.any { it.isRunning }
                     val newVerifyTime =
                         childrenTreeViewResults.map { it.verifyTime }.reduce { acc, y -> acc.join(y) }
 
-                    updateStatus(di) { res -> res.copy(status = newStatus, isRunning = newIsRunning, verifyTime = newVerifyTime) }
+                    updateStatus(di) { res -> res.copy(status = newStatus, isRunning = newIsRunning, verifyTime = newVerifyTime, highestNotificationLevel = highestNotificationLevel) }
                 }
             }
             getChildren(ROOT_NODE_IDENTIFIER).forEach { rec(it) }

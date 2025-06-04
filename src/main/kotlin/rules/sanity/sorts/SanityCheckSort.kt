@@ -100,7 +100,7 @@ sealed interface SanityCheckSort<in S : RuleCheckResult.Single, G> {
      * Given the [SolverResult] of the computation generates a Notification that is
      * displayed in the Rule Notifications tab.
      */
-    fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*>
+    fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport
 
     /**
      * A sort of sanity-check whose result may change when checked for different methods

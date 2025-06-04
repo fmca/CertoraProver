@@ -84,14 +84,14 @@ enum class CallTraceAttribute(private val repString: String) {
  */
 sealed class CallTrace {
     abstract val callHierarchyRoot: CVLRootInstance
-    abstract val alertReport: RuleAlertReport.Single<*>?
+    abstract val alertReport: RuleAlertReport?
 
     /** For usage in JUnit tests (for now at least). */
     val formatter get() = callHierarchyRoot.formatter
 
     data class ViolationFound(override val callHierarchyRoot: CVLRootInstance, val violatedAssert: LTACCmd) : CallTrace() {
 
-        override val alertReport: RuleAlertReport.Single<*>?
+        override val alertReport: RuleAlertReport?
             get() = null
 
         val violatedAssertCond: TACExpr

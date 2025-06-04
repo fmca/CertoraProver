@@ -113,7 +113,7 @@ object ConsoleReporter : OutputReporter {
                             ruleId = ruleId,
                             resultString = SMTResultInterpreter.getResultString(SolverResult.UNKNOWN, normalizedResult.rule),
                             time = "?",
-                            description = normalizedResult.ruleAlerts.asList.map { it.reason }.toString(),
+                            description = normalizedResult.ruleAlerts.map { it.reason }.toString(),
                             localVars = ""
                         )
                     }
@@ -177,7 +177,7 @@ object ConsoleReporter : OutputReporter {
                     }
                     is RuleCheckResult.Multi -> throw AssertionError("Must summarize $result before fetching the description")
                     is RuleCheckResult.Skipped -> throw AssertionError("Should have skipped this result $result")
-                    is RuleCheckResult.Error -> result.ruleAlerts.asList.map { it.reason }.toString()
+                    is RuleCheckResult.Error -> result.ruleAlerts.map { it.reason }.toString()
                 }
 
                 // If this is a rule that contains Satisfy commands,

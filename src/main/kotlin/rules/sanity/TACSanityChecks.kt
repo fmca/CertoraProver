@@ -130,7 +130,7 @@ object TACSanityChecks {
                 verifyTime = VerifyTime.WithInterval(startTime, endTime),
                 isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                 isSolverResultFromCache = IsFromCache.INAPPLICABLE,
-                ruleAlerts = null,
+                ruleAlerts = emptyList(),
             )
 
             treeViewReporter.signalEnd(sanityRule, ruleCheckResult)

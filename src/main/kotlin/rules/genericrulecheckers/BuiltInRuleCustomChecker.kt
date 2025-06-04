@@ -170,7 +170,7 @@ sealed class BuiltInRuleCustomChecker<G : BuiltInRuleGenerator> {
                                 isSolverResultFromCache = IsFromCache.INAPPLICABLE,
 
                             ),
-                            ruleAlerts = null,
+                            ruleAlerts = emptyList(),
                             callResolutionTable = CallResolutionTableBase.Empty,
                         )
                     } else {
@@ -184,7 +184,7 @@ sealed class BuiltInRuleCustomChecker<G : BuiltInRuleGenerator> {
                                 isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                                 isSolverResultFromCache = IsFromCache.INAPPLICABLE
                             ),
-                            ruleAlerts = null,
+                            ruleAlerts = emptyList(),
                             callResolutionTable = CallResolutionTableBase.Empty,
                         )
                     }.also { ruleChecker.treeViewReporter.signalEnd(newRule, it) }

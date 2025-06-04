@@ -61,7 +61,7 @@ data class SanityCheckNode(override val payload: CompiledRule, val type: SanityC
                         result = it,
                         verifyTime = VerifyTime.None,
                         ruleCheckInfo = RuleCheckResult.Single.RuleCheckInfo.BasicInfo(dumpGraphLink = null, isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE, isSolverResultFromCache = IsFromCache.INAPPLICABLE),
-                        ruleAlerts = null
+                        ruleAlerts = emptyList()
                     )
                 }
             }
