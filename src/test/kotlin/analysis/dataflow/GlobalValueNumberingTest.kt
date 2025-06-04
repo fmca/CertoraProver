@@ -21,10 +21,12 @@ import analysis.MockStackVarMixin
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import testing.ttl.TACMockLanguage
+import vc.data.TACBuilderAuxiliaries
 import vc.data.TACKeyword
+import vc.data.TACProgramBuilder
 import vc.data.TACSymbol
 
-class GlobalValueNumberingTest : MockStackVarMixin, CommandFinderMixin {
+class GlobalValueNumberingTest : MockStackVarMixin, CommandFinderMixin, TACBuilderAuxiliaries() {
 
     @Test
     fun testBasicEquivalence() {
@@ -213,5 +215,86 @@ class GlobalValueNumberingTest : MockStackVarMixin, CommandFinderMixin {
         val join = graph.findCommandOrFail("join")
         val end = graph.findCommandOrFail("end")
         Assertions.assertEquals(setOf(L1023, L1021), gvn.findCopiesAt(end, (join to L1024)))
+    }
+
+    /**
+     * This simulates:
+     * ```
+     * if *:
+     *   if *:
+     *     X := ...
+     *   else:
+     *     X := ...
+     * else:
+     *   if *:
+     *     X := ...
+     *   else:
+     *     X := ...
+     * ```
+     */
+    @Test
+    fun dominationFrontiers() {
+        val prog = TACProgramBuilder {
+            b assign d
+            label("atB")
+            jump(1) { // outer then branch
+                jump(11) { // inner then branch
+                    a assign 1
+                    jump(100) { // inner then branch confluence
+                        jump(3) { // outer then branch confluence
+                            c assign Add(aS, bS)
+                            label("query")
+                            assert(False)
+                        }
+                    }
+                }
+                jump(12) { // inner else branch
+                    a assign 2
+                    jump(100) // goto inner then branch confluence
+                }
+            }
+            jump(2) {
+                jump(21) {
+                    a assign 3
+                    jump(200) {
+                        label("atA")
+                        jump(3)
+                    }
+                }
+                jump(22) {
+                    a assign 4
+                    jump(200)
+                }
+            }
+        }
+        val gvn = GlobalValueNumbering(prog.code.analysisCache.graph)
+        val resultA = gvn.findCopiesAt(
+            prog.ptr("query"),
+            prog.ptr("atA") to a
+        )
+        val resultB = gvn.findCopiesAt(
+            prog.ptr("query"),
+            prog.ptr("atB") to b
+        )
+        Assertions.assertEquals(setOf<TACSymbol.Var>(), resultA)
+        Assertions.assertEquals(setOf(b, d), resultB)
+    }
+
+
+    @Test
+    fun gottaCheck() {
+        val prog = TACProgramBuilder {
+            label("source")
+            b assign a
+            label("query")
+            c assign b
+
+        }
+        val gvn = GlobalValueNumbering(prog.code.analysisCache.graph)
+        val resultA = gvn.findCopiesAt(
+            prog.ptr("query"),
+            prog.ptr("source") to a
+        )
+        println(resultA)
     }
 }
