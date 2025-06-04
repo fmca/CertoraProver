@@ -435,8 +435,6 @@ class TestClient(unittest.TestCase):
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_via_ir'])
         suite.expect_success(description='valid --solc_experimental_via_ir',
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--solc_experimental_via_ir'])
-        suite.expect_success(description='valid --process',
-                             run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--process', 'verify'])
         suite.expect_success(description='valid --rule',
                              run_flags=[_p('A.sol'), '--verify', f"A:{_p('spec1.spec')}", '--rule', 'always_true'])
         suite.expect_success(description='valid --loop_iter',
