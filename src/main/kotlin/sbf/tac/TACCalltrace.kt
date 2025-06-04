@@ -122,7 +122,7 @@ object Calltrace {
     private fun <TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> getFilepathAndLineNumber(locInst: LocatedSbfInstruction): Pair<String, UInt> {
         val filepath = getString(locInst, SbfRegister.R1_ARG)
         // The first two registers are for the filepath (pointer + length), the third is for the line number.
-        val value = (regTypes.typeAtInstruction(locInst, SbfRegister.R3_ARG) as? SbfType.NumType)?.value?.get()
+        val value = (regTypes.typeAtInstruction(locInst, SbfRegister.R3_ARG) as? SbfType.NumType)?.value?.toLongOrNull()
         val lineNumber = if (value == null) {
             sbfLogger.warn {
                 "Cannot identify statically the line number associated with ${locInst.inst}. " +

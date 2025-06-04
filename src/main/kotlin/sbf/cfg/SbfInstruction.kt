@@ -224,7 +224,7 @@ data class Deref(val width: Short,
 
         if (baseRegType != null) {
             if (baseRegType is SbfRegisterType.PointerType.Stack) {
-                val baseOffset = baseRegType.offset.get()
+                val baseOffset = baseRegType.offset.toLongOrNull()
                 if (baseOffset != null) {
                     val newBaseRegType = baseRegType.copy(offset = baseRegType.offset.add(offset.toLong()))
                     return "*(u${width * 8} *) ($baseReg + $offset)${toString(newBaseRegType)}"

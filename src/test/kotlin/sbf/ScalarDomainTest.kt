@@ -33,20 +33,34 @@ class ScalarDomainTest {
     @Test
     fun test01() {
         println( "====== TEST 1: StackEnvironment.overlap  =======")
-        // check [20,28) is included [4,28)
-        Assertions.assertEquals(true, env.overlap(ByteRange(20, 8), 4, 24, true))
-        // check [24,32) is included in [4,28)
-        Assertions.assertEquals(false, env.overlap(ByteRange(24, 8), 4, 24, true))
-        // check [24,32) overlaps with [4,28)
-        Assertions.assertEquals(true, env.overlap(ByteRange(24, 8), 4, 24, false))
-        // check [28,36) overlaps with [4,28)
-       Assertions.assertEquals(false, env.overlap(ByteRange(28, 8), 4, 24, false))
-        // check [4,12) is included in [12,44]
-        Assertions.assertEquals(false, env.overlap(ByteRange(4, 8), 12, 32, true))
-        // check [8,16) overlaps with [12,44]
-        Assertions.assertEquals(true, env.overlap(ByteRange(8, 8), 12, 32, false))
-        // check [8,16) is included in [12,44]
-        Assertions.assertEquals(false, env.overlap(ByteRange(8, 8), 12, 32, true))
+        run {
+            val onlyPartial = false /// any overlap
+            // check [20,28) and [4,28)
+            Assertions.assertEquals(true, env.overlap(ByteRange(20, 8), 4, 24, onlyPartial))
+            // check [24,32) and [4,28)
+            Assertions.assertEquals(true, env.overlap(ByteRange(24, 8), 4, 24, onlyPartial))
+            // check [24,32) and [4,28)
+            Assertions.assertEquals(true, env.overlap(ByteRange(24, 8), 4, 24, onlyPartial))
+            // check [28,36) and [4,28)
+            Assertions.assertEquals(false, env.overlap(ByteRange(28, 8), 4, 24, onlyPartial))
+            // check [4,12) and [12,44]
+            Assertions.assertEquals(false, env.overlap(ByteRange(4, 8), 12, 32, onlyPartial))
+            // check [8,16) and [12,44]
+            Assertions.assertEquals(true, env.overlap(ByteRange(8, 8), 12, 32, onlyPartial))
+            // check [8,16) and [12,44]
+            Assertions.assertEquals(true, env.overlap(ByteRange(8, 8), 12, 32, onlyPartial))
+        }
+
+
+        run {
+            val onlyPartial = true /// exclude the case where first interval is included in the second one
+            // check X= [20,28) and Y=[4,28)
+            Assertions.assertEquals(false, env.overlap(ByteRange(20, 8), 4, 24, onlyPartial))
+            // check [16, 24) and [4, 36)
+            Assertions.assertEquals(false, env.overlap(ByteRange(16, 8), 4, 32, onlyPartial))
+            // check [16, 24) and [20, 52)
+            Assertions.assertEquals(true, env.overlap(ByteRange(16, 8), 20, 32, onlyPartial))
+        }
     }
 
     @Test
@@ -82,7 +96,7 @@ class ScalarDomainTest {
         }
         println("$cfg")
         val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
-        for (check in prover.checks) {
+        for (check in prover.getChecks()) {
             Assertions.assertEquals(true, check.result)
         }
     }
@@ -111,7 +125,7 @@ class ScalarDomainTest {
         check (b0 != null)
         val addInst = b0.getLocatedInstructions().drop(1).first()
         val type = regTypes.typeAtInstruction(addInst, SbfRegister.R1_ARG)
-        Assertions.assertEquals(true, type is SbfType.NumType && type.value.get() == 5L)
+        Assertions.assertEquals(true, type is SbfType.NumType && type.value.toLongOrNull() == 5L)
     }
 
     @Test
@@ -130,7 +144,7 @@ class ScalarDomainTest {
         }
         println("$cfg")
         val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
-        for (check in prover.checks) {
+        for (check in prover.getChecks()) {
             Assertions.assertEquals(true, check.result)
         }
     }
@@ -155,7 +169,7 @@ class ScalarDomainTest {
         }
         println("$cfg")
         val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
-        for (check in prover.checks) {
+        for (check in prover.getChecks()) {
             Assertions.assertEquals(true, check.result)
         }
     }
@@ -244,7 +258,7 @@ class ScalarDomainTest {
         }
         println("$cfg")
         val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
-        for (check in prover.checks) {
+        for (check in prover.getChecks()) {
             Assertions.assertEquals(true, check.result)
         }
     }
@@ -272,7 +286,7 @@ class ScalarDomainTest {
         }
         println("$cfg")
         val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
-        for (check in prover.checks) {
+        for (check in prover.getChecks()) {
             Assertions.assertEquals(false, check.result)
         }
     }
@@ -299,7 +313,7 @@ class ScalarDomainTest {
         }
         println("$cfg")
         val prover = ScalarAnalysisProver(cfg, sbfTypesFac)
-        for (check in prover.checks) {
+        for (check in prover.getChecks()) {
             Assertions.assertEquals(true, check.result)
         }
     }

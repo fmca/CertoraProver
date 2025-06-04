@@ -199,7 +199,7 @@ class TrustedMethodChecker :
                                     isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                                     isSolverResultFromCache = IsFromCache.INAPPLICABLE,
                             ),
-                            ruleAlerts = RuleAlertReport.flatten(ruleAlerts.map { it.first }),
+                            ruleAlerts = ruleAlerts.map { it.first },
                             callResolutionTable = CallResolutionTableBase.Empty,
                     )
                 } else {
@@ -213,7 +213,7 @@ class TrustedMethodChecker :
                                     isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                                     isSolverResultFromCache = IsFromCache.INAPPLICABLE
                             ),
-                            ruleAlerts = RuleAlertReport.flatten(ruleAlerts.map { it.first }),
+                            ruleAlerts = ruleAlerts.map { it.first },
                             callResolutionTable = CallResolutionTableBase.Empty,
                     )
                 }.also { ruleChecker.treeViewReporter.signalEnd(newRule, it) }

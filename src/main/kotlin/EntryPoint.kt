@@ -31,6 +31,7 @@ import config.Config.DoSanityChecksForRules
 import config.Config.SpecFile
 import config.Config.getSourcesSubdirInInternal
 import config.component.EventConfig
+import datastructures.stdcollections.*
 import dependencyinjection.setupDependencyInjection
 import diagnostics.JavaFlightRecorder
 import event.CacheEvent
@@ -626,7 +627,7 @@ suspend fun handleGenericFlow(
             verifyTime = VerifyTime.WithInterval(startTime, endTime),
             isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
             isSolverResultFromCache = IsFromCache.INAPPLICABLE,
-            ruleAlerts = null,
+            ruleAlerts = emptyList(),
         )
 
         reporterContainer.addResults(rcrs)

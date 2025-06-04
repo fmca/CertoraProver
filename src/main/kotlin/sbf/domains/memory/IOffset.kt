@@ -18,8 +18,17 @@
 package sbf.domains
 
 interface IOffset<V> {
-    // Return null if the offset cannot be expressed as a signed long
-    fun get(): Long?
+    /**
+     * Attempts to convert this offset value to a signed [Long].
+     * Returns `null` if the conversion is not possible.
+     */
+    fun toLongOrNull(): Long?
+
+    /**
+     * Returns a [List] of all possible [Long] representations of this value.
+     * Could be empty if there are no long representations.
+     */
+    fun toLongList(): List<Long>
 
     /* Numerical operations */
     fun add(other: V): V

@@ -36,12 +36,12 @@ fun <D, TNum, TOffset>
     D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val regType = regTypes.typeAtInstruction(locatedInst, base.r)
     return if (regType is SbfType.PointerType.Stack) {
-        val regOffset = regType.offset.get() ?: return null
+        val regOffset = regType.offset.toLongOrNull() ?: return null
         val derefOffset = regOffset + offset
         val r10 = SbfRegister.R10_STACK_POINTER
         val r10Type = regTypes.typeAtInstruction(locatedInst, r10)
         check(r10Type is SbfType.PointerType.Stack) { "normalizeStackAccess: scalar analysis lost track of r10 at $locatedInst (1)" }
-        val stackPtr = r10Type.offset.get()
+        val stackPtr = r10Type.offset.toLongOrNull()
         check(stackPtr != null) { "normalizeStackAccess: scalar analysis lost track of r10 at $locatedInst (2)" }
         -(stackPtr - derefOffset)
     } else {

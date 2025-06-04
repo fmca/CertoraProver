@@ -367,7 +367,7 @@ sealed class PTASymCell(
     }
 
     private fun resolve() {
-        val concreteOffset = _offset.get()
+        val concreteOffset = _offset.toLongOrNull()
         if (concreteOffset != null) {
             val c = Cell(_node, concreteOffset)()
             _node = c.getNode()
@@ -388,13 +388,13 @@ sealed class PTASymCell(
         return _offset
     }
 
-    fun isConcrete() = _offset.get() != null
+    fun isConcrete() = _offset.toLongOrNull() != null
 
     // Return a concrete cell where the node is summarized if the offset is top
     fun concretize(): PTACell {
         resolve()
 
-        val concreteOffset = _offset.get()
+        val concreteOffset = _offset.toLongOrNull()
         return if (concreteOffset != null) {
             _node.createCell(concreteOffset)
         } else {
@@ -566,10 +566,10 @@ open class PTANode constructor(val id: ULong, val nodeAllocator: PTANodeAllocato
     open fun addOffsets(o1: PTAOffset, o2: PTASymOffset): PTASymOffset {
         check(!o2.isBottom()) {"offset cannot be bottom"}
         return if (!isForwarding()) {
-            if (o2.get() == null) {
+            if (o2.toLongOrNull() == null) {
                 PTASymOffset.makeTop()
             } else {
-                PTASymOffset(addOffsets(o1, o2.get()!!))
+                PTASymOffset(addOffsets(o1, o2.toLongOrNull()!!))
             }
         } else {
             getNode().addOffsets(o1,o2)
@@ -1485,7 +1485,7 @@ class GlobalAllocation(private val allocator: PTANodeAllocator) {
     fun alloc(gv: SbfGlobalVariable, offset: Constant): PTASymCell {
         val c = allocator.mkCell(gv)
         c.getNode().isMayGlobal = true
-        val o = offset.get()
+        val o = offset.toLongOrNull()
         return if (o != null) {
             c.getNode().createSymCell(PTAGraph.mkAbstractOffset(o + c.getOffset()))
         } else {
@@ -1516,7 +1516,7 @@ class HeapAllocation(private val allocator: PTANodeAllocator) {
             throw PointerDomainError("Cannot use both low-level and high-level heap allocation APIs")
         }
         usedLowLevel = true
-        val o = offset.get()
+        val o = offset.toLongOrNull()
         return if (o != null) {
             val c = allocator.mkCell(SBF_HEAP_START.toULong())
             c.getNode().isMayHeap = true
@@ -1917,7 +1917,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
         return if (scalar.isTop() || scalar.isBottom()) {
             null
         } else {
-            scalar.get()
+            scalar.type()
         }
     }
 
@@ -1925,7 +1925,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
         return if (scalar !is SbfType.NumType) {
             null
         } else {
-            scalar.value.get()
+            scalar.value.toLongOrNull()
         }
     }
 
@@ -2422,18 +2422,18 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
                     if (!o.isTop()) {
                         val r10C = getRegCell(Value.Reg(SbfRegister.R10_STACK_POINTER))
                         if (r10C != null) {
-                            sc = r10C.getNode().createSymCell(PTASymOffset(o.get()!!))
+                            sc = r10C.getNode().createSymCell(PTASymOffset(o.toLongOrNull()!!))
                             setRegCell(reg, sc)
                         }
                     }
                 }
                 is SbfType.PointerType.Global -> {
                     val gv = pointerType.global ?: throw UnknownGlobalDerefError(DevErrorInfo(locInst, PtrExprErrReg(reg),""))
-                    sc = globalAlloc.alloc(gv, pointerType.offset.get().let {Constant(it)})
+                    sc = globalAlloc.alloc(gv, pointerType.offset.toLongOrNull().let {Constant(it)})
                     setRegCell(reg, sc)
                 }
                 is SbfType.PointerType.Heap -> {
-                    sc = heapAlloc.lowLevelAlloc(pointerType.offset.get().let {Constant(it)})
+                    sc = heapAlloc.lowLevelAlloc(pointerType.offset.toLongOrNull().let {Constant(it)})
                     setRegCell(reg, sc)
                 }
                 is SbfType.PointerType.Input -> {
@@ -2441,7 +2441,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
                 }
             }
         } else if (type is SbfType.NumType) {
-                val address = type.value.get()
+                val address = type.value.toLongOrNull()
                 if (address != null) {
                     if (!stopIfError) {
                         // allocate fresh memory
@@ -2533,7 +2533,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
                                             op2: Value.Reg,
                                             op2Type: SbfType.NumType<TNum, TOffset>) {
 
-        val o = op2Type.value.get()
+        val o = op2Type.value.toLongOrNull()
         if (o != null && o == 0L) {
             doPointerAssign(dst, op1)
         } else {
@@ -2973,7 +2973,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
                         val gv = valueType.global
                         if (gv != null) {
                             // Create a fresh cell for the global variable
-                            globalAlloc.alloc(gv, valueType.offset.get().let {Constant(it)}).concretize()
+                            globalAlloc.alloc(gv, valueType.offset.toLongOrNull().let {Constant(it)}).concretize()
                         } else {
                             null
                         }
@@ -3324,13 +3324,13 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
-        val length = (scalars.getValue(r3).get() as? SbfType.NumType)?.value?.get()
+        val length = (scalars.getValue(r3).type() as? SbfType.NumType)?.value?.toLongOrNull()
         // For instance, RawVec can call memcpy with length == 0 and destination being a small number
         // (alignment of the data type being transferred)
         // https://github.com/anza-xyz/rust/blob/solana-1.79.0/library/alloc/src/raw_vec.rs#L148
-        val dstSc = getRegCell(r1, scalars.getValue(r1).get(), globals, locInst, stopIfError = length != 0L)
+        val dstSc = getRegCell(r1, scalars.getValue(r1).type(), globals, locInst, stopIfError = length != 0L)
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r1), "memcpy: r1 does not point to a graph node in $this"))
-        val srcSc = getRegCell(r2, scalars.getValue(r2).get(), globals, locInst, stopIfError = true)
+        val srcSc = getRegCell(r2, scalars.getValue(r2).type(), globals, locInst, stopIfError = true)
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r2),"memcpy: r2 does not point to a graph node in $this"))
 
         srcSc.getNode().setRead()
@@ -3409,11 +3409,11 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
 
-        val sc1 = getRegCell(r1, scalars.getValue(r1).get(), globals, locInst)
+        val sc1 = getRegCell(r1, scalars.getValue(r1).type(), globals, locInst)
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r1), "memcmp: r1 does not point to a graph node in $this"))
-        val sc2 = getRegCell(r2, scalars.getValue(r2).get(), globals, locInst)
+        val sc2 = getRegCell(r2, scalars.getValue(r2).type(), globals, locInst)
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r2),"memcmp: r2 does not point to a graph node in $this"))
-        val len = (scalars.getValue(r3).get() as? SbfType.NumType)?.value?.get()
+        val len = (scalars.getValue(r3).type() as? SbfType.NumType)?.value?.toLongOrNull()
         if (len != null) {
             val c1 = concretizeCell(sc1, "concretization of r1 in memcmp", locInst)
             val c2 = concretizeCell(sc2, "concretization of r2 in memcmp", locInst)
@@ -3430,9 +3430,9 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
 
-        val sc1 = getRegCell(r1, scalars.getValue(r1).get(), globals, locInst)
+        val sc1 = getRegCell(r1, scalars.getValue(r1).type(), globals, locInst)
             ?: throw UnknownPointerDerefError(DevErrorInfo(locInst, PtrExprErrReg(r1),"memset: r1 does not point to a graph node in $this"))
-        val len = (scalars.getValue(r3).get() as? SbfType.NumType)?.value?.get()
+        val len = (scalars.getValue(r3).type() as? SbfType.NumType)?.value?.toLongOrNull()
         if (len != null) {
             val c1 = concretizeCell(sc1, "concretization of r1 in memset", locInst)
             if (c1.getNode() == getStack()) {
@@ -3489,7 +3489,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
         }
         val c = getRegCell(Value.Reg(SbfRegister.R10_STACK_POINTER))
         check(c != null) {"r10 should point always to a cell"}
-        val topStack = c.getOffset().get() ?: return
+        val topStack = c.getOffset().toLongOrNull() ?: return
 
         // 1. Remove all dead links
         val deadLinks = mutableListOf<PTALink>()
@@ -3695,7 +3695,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
                     MemSummaryArgumentType.NUM -> {
                         val valReg = Value.Reg(reg)
                         val v = scalars.getValue(valReg)
-                        val sc1 = getRegCell(valReg, v.get(), globals, locInst)
+                        val sc1 = getRegCell(valReg, v.type(), globals, locInst)
                         check(sc1 != null) { "unexpected situation while summarizing $call" }
                         val c1 = concretizeCell(sc1, "$call (1)", locInst)
                         val c2 = c1.getNode().createCell(c1.getOffset() + offset)
@@ -3757,12 +3757,12 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
 
-        val offset = (scalars.getValue(r2).get() as? SbfType.NumType)?.value?.get() ?:
+        val offset = (scalars.getValue(r2).type() as? SbfType.NumType)?.value?.toLongOrNull() ?:
             throw PointerDomainError("cannot know statically the value of offset (r2)." +
                 "\n\t$locInst\n" +
                 "\t$this")
 
-        val baseSc = getRegCell(r1, scalars.getValue(r1).get(), globals, locInst) ?:
+        val baseSc = getRegCell(r1, scalars.getValue(r1).type(), globals, locInst) ?:
             throw PointerDomainError("CVT_alloc_size: r1 does not point to a node" +
                 "\t$locInst\n" +
                 "\t$this")
@@ -4130,7 +4130,7 @@ class PTAGraph<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(/** Global node
             }
             sb.append("Node${regToId(i)} ")
             sb.append("[shape=plaintext,fontname=Helvetica,fontsize=10,label=\"r${i}\"]\n")
-            val o = cell.getOffset().get()
+            val o = cell.getOffset().toLongOrNull()
             if (o != null) {
                 sb.append("Node${regToId(i)} -> Node${nodeToId(cell.getNode())}:f${normalizeOffset(o, cell.getNode().access)} [arrowtail=tee,arrowsize=0.3]\n")
             } else {

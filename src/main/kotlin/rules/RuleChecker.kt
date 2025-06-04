@@ -928,7 +928,7 @@ class RuleChecker(
                     isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                     isSolverResultFromCache = IsFromCache.INAPPLICABLE
                 ),
-                ruleAlerts = null,
+                ruleAlerts = emptyList(),
                 callResolutionTable = CallResolutionTableBase.Empty,
             )
         } else {
@@ -945,7 +945,7 @@ class RuleChecker(
                     isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                     isSolverResultFromCache = IsFromCache.INAPPLICABLE
                 ),
-                ruleAlerts = null,
+                ruleAlerts = emptyList(),
                 callResolutionTable = CallResolutionTableBase.Empty
             )
         }

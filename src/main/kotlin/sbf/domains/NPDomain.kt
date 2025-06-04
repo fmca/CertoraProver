@@ -248,7 +248,7 @@ data class NPDomain<D, TNum, TOffset>(private val csts: SetDomain<SbfLinearConst
 
     private fun getNum(type: SbfType<TNum, TOffset>): Long? {
         return if (type is SbfType.NumType) {
-            type.value.get()
+            type.value.toLongOrNull()
         } else {
             null
         }
@@ -331,28 +331,38 @@ data class NPDomain<D, TNum, TOffset>(private val csts: SetDomain<SbfLinearConst
         return if (dstTy is SbfType.PointerType.Stack) {
             val lenTy = registerTypes.typeAtInstruction(locatedInst, SbfRegister.R3_ARG)
             if (lenTy is SbfType.NumType) {
-                val len = lenTy.value.get()
+                val len = lenTy.value.toLongOrNull()
                     ?: throw NPDomainError("cannot analyze $solanaFunction on stack without knowing length (1)")
-                val dstStart = dstTy.offset.get()
-                    ?: throw NPDomainError("cannot analyze $solanaFunction on stack without knowing destination offset")
+                if (dstTy.offset.isTop()) {
+                    throw NPDomainError("cannot analyze $solanaFunction on stack without knowing destination offset")
+                }
 
-                // We don't need to be precise on srcStart for soundness. This is why we don't throw an exception.
+                // We don't need to be precise on `srcStart` for soundness. This is why we don't throw an exception.
                 val srcTy = registerTypes.typeAtInstruction(locatedInst, SbfRegister.R2_ARG)
                 val srcStart = if (srcTy is SbfType.PointerType.Stack) {
-                    srcTy.offset.get()
+                    srcTy.offset.toLongOrNull()
                 } else {
                     null
                 }
 
                 var newCsts = csts
-                val dstInterval = FiniteInterval.mkInterval(dstStart, len)
+
+                // We know that dstOffsets are sorted
+                val dstOffsets = dstTy.offset.toLongList()
+                check(dstOffsets.isNotEmpty()) {"destination offsets cannot be empty in analyzeMemTransfer"}
+
+                val dstInterval = FiniteInterval(dstOffsets.first(), dstOffsets.last() + len - 1)
+
+                // We don't need to be precise on `dstStart` for soundness
+                val dstStart = dstTy.offset.toLongOrNull()
+
                 // Do the transfer from source to destination
                 // Note that the transfer function goes in the other direction
                 for (cst in csts.iterator()) {
                     // If there is a constraint C over destination variables then
                     //   1. add new C' by substituting destination variables with source variables
                     //   2. remove C
-                    if (solanaFunction == SolanaFunction.SOL_MEMCPY && srcStart != null) {
+                    if (solanaFunction == SolanaFunction.SOL_MEMCPY && srcStart != null && dstStart != null) {
                         var newCst: SbfLinearConstraint? = null
                         for (dstV in cst.getVariables()) {
                             if (dstV is StackSlotVariable) {
@@ -583,7 +593,8 @@ data class NPDomain<D, TNum, TOffset>(private val csts: SetDomain<SbfLinearConst
             is SbfInstruction.Mem -> {
                 val baseTy = registerTypes.typeAtInstruction(locatedInst, inst.access.baseReg.r)
                 if (baseTy is SbfType.PointerType.Stack) {
-                    val offset = baseTy.offset.get()
+                    // For now, we are only precise if `offset` is a singleton.
+                    val offset = baseTy.offset.toLongOrNull()
                     if (offset != null) {
                         val width = inst.access.width
                         val baseV = StackSlotVariable(offset + inst.access.offset.toLong(), width, vFac)
@@ -715,7 +726,7 @@ data class NPDomain<D, TNum, TOffset>(private val csts: SetDomain<SbfLinearConst
                 // NPDomain only keeps track of the stack
                 val absType = registerTypes.typeAtInstruction(locInst, reg)
                 if (absType is SbfType.PointerType.Stack) {
-                    val baseOffset = absType.offset.get()
+                    val baseOffset = absType.offset.toLongOrNull()
                     if (baseOffset != null) {
                         val baseV = StackSlotVariable(baseOffset + offset, width.toShort(), vFac)
                         absVal = absVal.havoc(baseV)

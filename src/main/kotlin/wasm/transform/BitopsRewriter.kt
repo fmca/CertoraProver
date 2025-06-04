@@ -115,11 +115,11 @@ object BitopsRewriter {
         }.mapNotNull { here ->
             // We found a jump on condition variable b
             // we want to see if b = SignExtend(7, cond) <= SignExtend(7, 2**64 - 1)
-            val (_, cond) = comparison.queryFrom(here).toNullableResult() ?: return@mapNotNull null
+            val (cond, pos) = comparison.queryFrom(here).toNullableResult() ?: return@mapNotNull null
             // Now check cond = (X & Y) ... as in the function description
-            val maybeCheck = sameSignWithMatcher.query(cond, here.wrapped).toNullableResult() ?: return@mapNotNull null
+            val maybeCheck = sameSignWithMatcher.query(cond.second, here.wrapped).toNullableResult() ?: return@mapNotNull null
             // Finally we need to verify that the variables appear in X and Y
-            Pair(here, maybeCheck.sumWithRewrite).takeIf {
+            Triple(here, maybeCheck.sumWithRewrite, pos).takeIf {
                 val (where, carryOut) = maybeCheck.sumWithRewrite.c
                 maybeCheck.isValid
                     && zeroOrOne.query(carryOut, graph.elab(where)) is PatternMatcher.ConstLattice.Match
@@ -127,7 +127,7 @@ object BitopsRewriter {
         }
 
         return core.patching {
-            for ((condDefinition, sum) in changes) {
+            for ((condDefinition, sum, pos) in changes) {
                 val newCommands = TACExprFactUntyped {
                     val theSum = (((sum.a.asSym() add sum.b.asSym()) mod BigInteger.TWO.pow(64).asTACExpr)
                         add sum.c.second.asSym()) mod BigInteger.TWO.pow(64).asTACExpr
@@ -138,7 +138,9 @@ object BitopsRewriter {
 
                         val operandsSameSign = sum.a.asSym().isNegative() eq sum.b.asSym().isNegative()
                         val sumDifferentSign = sum.a.asSym().isNegative() neq theSum.isNegative()
-                        not(operandsSameSign and sumDifferentSign)
+                        (operandsSameSign and sumDifferentSign).letIf (!pos) {
+                            not(it)
+                        }
                     }
                 }
                 it.replaceCommand(condDefinition.ptr, newCommands)
@@ -200,7 +202,14 @@ object BitopsRewriter {
         0().toPattern()
     ) { c, _, _, _ -> c }
 
-    private val comparePattern: PatternMatcher.Pattern<Pair<LTACCmd, TACSymbol.Var>> = PatternDSL.build {
+    /**
+     * Represents a match on (signExtend([v]) <= signExtend(-1)) (or signExtend(v) < 0)
+     * If [pos] is False, then the condition is negated
+     * (i.e. it is a match on !(signExtend([v]) <= signExtend(-1)) etc)
+     */
+    private data class CompareMatch(val v: Pair<LTACCmd, TACSymbol.Var>, val pos: Boolean)
+
+    private val comparePattern: PatternMatcher.Pattern<CompareMatch> = PatternDSL.build {
 
         // SignExtend(7, x)
         val extendLhs = PatternMatcher.Pattern.FromBinOp.from(
@@ -227,8 +236,8 @@ object BitopsRewriter {
         ).toBuildable()
 
         // extendLhs s<= -1 (i.e., is it negative)
-        val compare = (extendLhs sle extendNeg1).withAction { _, v, _ -> v } lor
-            (extendLhs slt extendZero).withAction { _, v, _ -> v }
+        val compare = (extendLhs sle extendNeg1).withAction { _, v, _ -> CompareMatch(v, true) } lor
+            (extendLhs slt extendZero).withAction { _, v, _ -> (CompareMatch(v, true)) }
 
         val ite = PatternMatcher.Pattern.Ite(
             compare.toPattern(),
@@ -236,8 +245,9 @@ object BitopsRewriter {
             0().toPattern(),
         ) { _, v, _, _ -> v }.toBuildable()
 
-        (ite `==` 0()).commute.withAction { v, _ -> v } lor
-            ((ite and 1()) `==` 0()).commute.withAction { v, _ -> v.first }
+        compare lor
+            (ite `==` 0()).commute.withAction { v, _ -> v.copy(pos = false) } lor
+            ((ite and 1()) `==` 0()).commute.withAction { v, _ -> v.first.copy(pos = false) }
 
     }
 }

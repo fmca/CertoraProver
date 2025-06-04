@@ -96,13 +96,13 @@ class MemoryDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         {"$msg: pointer domain should know about r10"}
         if (c.getNode().isExactNode()) {
             // Get value for r10 in Scalars
-            val type = scalars.getValue(r10).get()
+            val type = scalars.getValue(r10).type()
             check(type is SbfType.PointerType.Stack<TNum, TOffset>)
             {"$msg: scalar domain should know that r10 is a pointer to the stack"}
             val scalarOffset = type.offset
             val pointerOffset = c.getOffset()
             // Since r10 is read-only, both subdomains should agree on the same offset for r10
-            check(scalarOffset.get() == pointerOffset.get())
+            check(scalarOffset.toLongOrNull() == pointerOffset.toLongOrNull())
             { "$msg: scalar and pointer domains should agree on r10 offset" }
         }
     }
@@ -283,12 +283,12 @@ class MemoryDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
 
         // @dstType must be obtained before the transfer function on the scalar domain takes place
         // since @dst can be overwritten to top.
-        val dstType = scalars.getValue(dst).get()
+        val dstType = scalars.getValue(dst).type()
         scalars.analyze(locInst, globals, memSummaries)
         if (scalars.isBottom()) {
             setToBottom()
         } else  {
-            val srcType = scalars.getValue(src).get()
+            val srcType = scalars.getValue(src).type()
             ptaGraph.doBin(locInst, stmt.op, dst, src, dstType, srcType, globals)
         }
     }
@@ -376,11 +376,11 @@ class MemoryDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
             // scalar domain has been executed, because it can refine the abstract value
             // of baseReg (e.g., implicit cast from an integer to a pointer)
             if (isLoad) {
-                val baseRegType = baseRegTypeBeforeKilled?.get() ?: scalars.getValue(baseReg).get()
+                val baseRegType = baseRegTypeBeforeKilled?.type() ?: scalars.getValue(baseReg).type()
                 ptaGraph.doLoad(locInst, value as Value.Reg, baseReg, offset, width, baseRegType, globals)
             } else {
-                val baseRegType = scalars.getValue(baseReg).get()
-                val valueType = scalars.getValue(value).get()
+                val baseRegType = scalars.getValue(baseReg).type()
+                val valueType = scalars.getValue(value).type()
                 ptaGraph.doStore(locInst, baseReg, offset, width, value, baseRegType, valueType, globals)
             }
         }
@@ -464,11 +464,12 @@ class MemoryDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     }
 
     override fun getAsScalarValue(value: Value) = getScalars().getAsScalarValue(value)
+    override fun getStackContent(offset: Long, width: Byte) = getScalars().getStackContent(offset, width)
 
     /** External API for TAC encoding **/
     fun getRegCell(reg: Value.Reg, globalsMap: GlobalVariableMap): PTASymCell? {
         val scalarVal = getScalars().getValue(reg)
-        return getPTAGraph().getRegCell(reg, scalarVal.get(), globalsMap, locInst = null)
+        return getPTAGraph().getRegCell(reg, scalarVal.type(), globalsMap, locInst = null)
     }
 
 

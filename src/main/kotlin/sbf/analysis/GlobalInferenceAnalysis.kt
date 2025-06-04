@@ -23,11 +23,6 @@ import sbf.SolanaConfig
 import sbf.callgraph.*
 import sbf.domains.*
 
-/**
- * Instantiation of the scalar analysis.
- * The factory can be changed without affecting the rest of the prover.
- **/
-private val sbfTypesFac = ConstantSbfTypeFactory()
 
 /**
  * Whole-program analysis that identifies global variables that were not part of the ELF symbol table.
@@ -61,7 +56,7 @@ fun runGlobalInferenceAnalysis(
 ) : SbfCallGraph {
     return prog.transformSingleEntryAndGlobals { entryCFG ->
         val newEntryCFG = entryCFG.clone(entryCFG.getName())
-        val scalarAnalysis = ScalarAnalysis(newEntryCFG, prog.getGlobals(), memSummaries, sbfTypesFac)
+        val scalarAnalysis = AdaptiveScalarAnalysis(newEntryCFG, prog.getGlobals(), memSummaries)
         val globalInferAnalysis = GlobalInferenceAnalysis(newEntryCFG, scalarAnalysis, globalsSymTable)
         Pair(newEntryCFG, globalInferAnalysis.getNewGlobalMap())
     }
@@ -73,14 +68,15 @@ fun runGlobalInferenceAnalysis(
  *
  * [cfg] is mutable because the analysis adds some metadata useful for other analyses.
  **/
-private class GlobalInferenceAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
+private class GlobalInferenceAnalysis<D, TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     private val cfg: MutableSbfCFG,
-    private val scalar: ScalarAnalysis<TNum, TOffset>,
+    private val scalar: IAnalysis<D>,
     private val globalsSymTable: IGlobalsSymbolTable
-    ) {
+    )
+    where D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset>  {
     private var id:UInt = 1U
     private val regTypes = AnalysisRegisterTypes(scalar)
-    private var newGlobals: GlobalVariableMap = scalar.globalsMap
+    private var newGlobals: GlobalVariableMap = scalar.getGlobalVariableMap()
 
     init {
         run()
@@ -134,7 +130,7 @@ private class GlobalInferenceAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TO
         val gv = inferGlobalVariable(i, strReg) ?: return null
         val sizeType = regTypes.typeAtInstruction(i, sizeReg.r)
         return if (sizeType is SbfType.NumType<TNum, TOffset>) {
-            val size = sizeType.value.get() ?: return null
+            val size = sizeType.value.toLongOrNull() ?: return null
             val strGv = globalsSymTable.getAsConstantString(gv.name, gv.address, size)
             newGlobals = newGlobals.put(gv.address, strGv)
             strGv
@@ -195,7 +191,7 @@ private class GlobalInferenceAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TO
                             // Our solution is to ask the scalar analysis for the value of operand. The only problem with this solution
                             // is that we won't know where the value is originated from an assignment or from some addition/subtraction
                             // with a constant offset and therefore, we might fail at detecting the start of the global variable.
-                            val address = (regTypes.typeAtInstruction(i, operand.r) as? SbfType.NumType<TNum, TOffset>)?.value?.get()
+                            val address = (regTypes.typeAtInstruction(i, operand.r) as? SbfType.NumType<TNum, TOffset>)?.value?.toLongOrNull()
                             if (address != null && isGlobalVariable(address.toULong())) {
                                 SbfGlobalVariable("inferred_global.${id++}", address, 0)
                             } else {
@@ -209,7 +205,7 @@ private class GlobalInferenceAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TO
 
     /** Try to find the definition of [operand] and continue the search for the global variable **/
     private fun continueInferStartOfGlobalVar(i:LocatedSbfInstruction, operand: Value.Reg, maxChainLen: Int): SbfGlobalVariable? {
-        val b = scalar.cfg.getBlock(i.label)
+        val b = scalar.getCFG().getBlock(i.label)
         check(b != null) { "GlobalInferenceAnalysis cannot find block ${i.label}" }
         val defLocInst = findDefinitionInterBlock(b, operand, i.pos)
         return if (defLocInst == null) {

@@ -36,6 +36,7 @@ enum class TreeViewReportAttribute(private val repString: String) {
     IS_RUNNING("isRunning"),
     AVAILABLE_CONTRACTS("availableContracts"),
     ERRORS("errors"),
+    HIGHEST_NOTIFICATION_LEVEL("highestNotificationLevel"),
     SEVERITY("severity"),
     GLOBAL_CALL_RESOLUTION("globalCallResolution"),
     NODE_TYPE("nodeType"),

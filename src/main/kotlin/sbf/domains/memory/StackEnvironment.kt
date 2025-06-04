@@ -64,36 +64,41 @@ class StackEnvironment<Value: StackEnvironmentValue<Value>>(
     fun isBottom() = isBot
 
     /**
-     * if strict=True then return true if [offset, offset+width) in included in [start, start+len)
-     * else then return true if [offset, offset+width) overlaps [start, start+len)
+     * Return true iff `X = [bytes.offset, bytes.offset+bytes.width)` overlaps with `Y = [start, start+len)`.
+     *
+     * If `[onlyPartial] = true` then the case where the interval `X` is included in `Y` is not considered an overlap.
      */
     @TestOnly
-    fun overlap(bytes: ByteRange, start: Long, len: Long, strict: Boolean):Boolean {
-        val offset = bytes.offset
-        val width = bytes.width.toLong()
+    fun overlap(bytes: ByteRange, start: Long, len: Long, onlyPartial: Boolean): Boolean {
         check(len >= 0) {"len argument in overlap cannot be negative"}
-        fun getMax(lb: Long, sz: Long) = lb + (sz-1)
 
-        val offsetMax= getMax(offset, width)
-        return if (strict) {
-            // [offset, offset+width) is strictly included in [start, start+len)
-            (start <= offset && offsetMax <= getMax(start, len))
+        val lbX = bytes.offset
+        val ubX = bytes.offset + bytes.width.toLong() - 1
+        val lbY = start
+        val ubY = start + len - 1
+
+        val hasOverlap =  lbY in lbX..ubX || lbX in lbY..ubY
+        val res = if (!onlyPartial) {
+            hasOverlap
         } else {
-            // [offset, offset+width) overlaps with [start, start+len)
-            (start <= offsetMax && offset <= getMax(start, len))
+            val xIncludedInY = lbX in lbY..ubY && ubX <= ubY
+            hasOverlap && !xIncludedInY
         }
+        return res
     }
 
     /**
-     * Return all entries that overlap with the range [start, start+len)
+     * Return all entries that overlap with the range `[start, start+len)`.
+     *
+     * See [overlap] to see the meaning of [onlyPartial]
      */
     @Suppress("ForbiddenComment")
     // TODO(PERFORMANCE): calling filter is expensive.
-    fun inRange(start: Long, len: Long, strict: Boolean): Map<ByteRange, Value>  {
+    fun inRange(start: Long, len: Long, onlyPartial: Boolean): Map<ByteRange, Value>  {
         if (isBottom()) {
             throw StackEnvironmentError("cannot call inRange on bottom")
         }
-        return map.filter { overlap(it.key, start, len, strict )}
+        return map.filter { overlap(it.key, start, len, onlyPartial )}
     }
 
     fun remove(bytes: ByteRange): StackEnvironment<Value> {
@@ -103,7 +108,7 @@ class StackEnvironment<Value: StackEnvironmentValue<Value>>(
         return StackEnvironment(map.remove(bytes))
     }
 
-    fun put(bytes: ByteRange, value: Value): StackEnvironment<Value> {
+    fun put(bytes: ByteRange, value: Value, isWeak: Boolean = false): StackEnvironment<Value> {
         if (isBottom()) {
             throw StackEnvironmentError("cannot set on bottom")
         }
@@ -114,7 +119,16 @@ class StackEnvironment<Value: StackEnvironmentValue<Value>>(
         val newMap = if (value.isTop()) {
             map.remove(bytes)
         } else {
-            map.put(bytes,  value)
+            if (isWeak) {
+                val weakVal = map[bytes]?.join(value)
+                if (weakVal == null || weakVal.isTop()) {
+                    map.remove(bytes)
+                } else {
+                    map.put(bytes, weakVal)
+                }
+            } else {
+                map.put(bytes, value)
+            }
         }
         return StackEnvironment(newMap)
     }

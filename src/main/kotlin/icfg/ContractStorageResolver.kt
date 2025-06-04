@@ -104,12 +104,15 @@ object ContractStorageResolver {
 
         val patching = prog.toPatchingProgram()
         prog.parallelLtacStream().filter {
-            it.cmd is TACCmd.Simple.ReturnCmd || (it.cmd is TACCmd.Simple.SummaryCmd && it.cmd.summ is CallSummary)
+            it.cmd is TACCmd.Simple.ReturnCmd
+                || it.cmd is TACCmd.Simple.ReturnSymCmd
+                || (it.cmd is TACCmd.Simple.SummaryCmd && it.cmd.summ is CallSummary)
         }.mapNotNull {
             when (it.cmd) {
+                is TACCmd.Simple.ReturnSymCmd,
                 is TACCmd.Simple.ReturnCmd -> {
                     val linking = it.cmd.meta.find(TACMeta.RETURN_LINKING) ?: return@mapNotNull null
-                    it.ptr to it.cmd.copy(meta = it.cmd.meta + (TACMeta.RETURN_LINKING to linking.copy(
+                    it.ptr to it.cmd.withMeta( it.cmd.meta + (TACMeta.RETURN_LINKING to linking.copy(
                         byOffset = linking.byOffset.mapValues {
                             it.value.tryResolve()
                         }

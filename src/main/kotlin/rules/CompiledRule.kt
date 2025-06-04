@@ -152,7 +152,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                 } else {
                     ""
                 }
-                RuleAlertReport.Info(msg = "Rule was successfully verified without running SMT solver. (All asserts were optimized away by static analysis.)$recommendation")
+                RuleAlertReport.Info(msg = "The rule result was successfully determined without running SMT solver (i.e. solely by static analysis)$recommendation")
             } else {
                 null
             }
@@ -163,7 +163,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             }
             val sanityAlerts = computeSanityAlerts(compiledRule.rule, res)
             val requireWithoutReasonAlerts = collectRequireWithoutReasonNotifications(compiledRule)
-            val alerts = RuleAlertReport(listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts + sanityAlerts)
+            val alerts = listOfNotNull(isSolverResultFromCacheAlert, isEmptyCodeAlert, isAlwaysRevertingAlert) + requireWithoutReasonAlerts + sanityAlerts
             if (generateReport && !Config.CoinbaseFeaturesMode.get()) {
                 generateSingleResult(scene, compiledRule.rule, res, time, isOptimizedRuleFromCache, isSolverResultFromCache, alerts)
             } else {
@@ -185,7 +185,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             }
         }
 
-        private fun computeSanityAlerts(rule: CVLSingleRule, res: Verifier.JoinedResult): Iterable<RuleAlertReport.Single<*>> {
+        private fun computeSanityAlerts(rule: CVLSingleRule, res: Verifier.JoinedResult): Iterable<RuleAlertReport> {
             val ruleType = rule.ruleType
             if (ruleType is SpecType.Single.GeneratedFromBasicRule.SanityRule) {
                 return listOf(SanityCheckSort(ruleType).getRuleNotificationForResult(res.finalResult))
@@ -642,7 +642,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
             verifyTime: VerifyTime,
             isOptimizedRuleFromCache: IsFromCache,
             isSolverResultFromCache: IsFromCache,
-            ruleAlerts: RuleAlertReport<RuleAlertReport.Single<*>>?,
+            ruleAlerts: List<RuleAlertReport>,
         ): RuleCheckResult.Single {
             val origProgWithAssertIdMeta = addAssertIDMetaToAsserts(vResult.simpleSimpleSSATAC, rule)
             val callResolutionTableFactory = CallResolutionTable.Factory(origProgWithAssertIdMeta, scene, rule)
@@ -677,7 +677,7 @@ open class CompiledRule protected constructor(val rule: CVLSingleRule, val tac: 
                             ruleCheckInfo = ruleCheckInfo,
                             verifyTime = verifyTime,
                             result = vResult.finalResult,
-                            ruleAlerts = ruleAlerts
+                            ruleAlerts = ruleAlerts + listOfNotNull(ruleCheckInfo.examples.head.callTrace?.alertReport)
                         )
                     } catch (e: CancellationException) {
                         // do not interfere with the coroutine cancellation mechanism

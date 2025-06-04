@@ -17,10 +17,9 @@
 
 package sbf.cfg
 
-import sbf.analysis.ScalarAnalysis
 import sbf.disassembler.*
 import datastructures.stdcollections.*
-import sbf.analysis.AnalysisRegisterTypes
+import sbf.analysis.*
 import sbf.domains.*
 
 /**
@@ -34,11 +33,6 @@ import sbf.domains.*
  */
 
 private const val NUM_ITERATIONS = 5
-/**
- * Instantiation of the scalar analysis.
- * The factory can be changed without affecting the rest of the prover.
- **/
-private val sbfTypesFac = ConstantSbfTypeFactory()
 
 fun splitWideStores(cfg: MutableSbfCFG,
                     globals: GlobalVariableMap,
@@ -48,18 +42,20 @@ fun splitWideStores(cfg: MutableSbfCFG,
     // see test03 in splitWideStores to understand why we might need to run the scalar analysis
     // multiple times
     while (change && i < NUM_ITERATIONS) {
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val scalarAnalysis = AdaptiveScalarAnalysis(cfg, globals, memSummaries)
         change = splitWideStores(cfg, scalarAnalysis)
         i++
     }
 }
 
 
-private fun <TNum, TOffset> splitWideStores(
+private fun <D, TNum, TOffset> splitWideStores(
     cfg: MutableSbfCFG,
-    scalarAnalysis: ScalarAnalysis<TNum, TOffset>): Boolean
+    scalarAnalysis: IAnalysis<D>
+): Boolean
 where TNum: INumValue<TNum>,
-      TOffset: IOffset<TOffset> {
+      TOffset: IOffset<TOffset>,
+      D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val scalarsAtInst = AnalysisRegisterTypes(scalarAnalysis)
     var change = false
     for (block in cfg.getMutableBlocks().values) {
@@ -81,11 +77,11 @@ where TNum: INumValue<TNum>,
 private fun <D, TNum, TOffset> findSplitWideStoresOf16(
     block: MutableSbfBasicBlock, // mutable because we add metadata
     scalarsAtInst: AnalysisRegisterTypes<D, TNum, TOffset>,
-    @Suppress("UNUSED_PARAMETER")scalarsAtBlock: ScalarAnalysis<TNum, TOffset>,
+    @Suppress("UNUSED_PARAMETER")scalarsAtBlock: IAnalysis<D>,
     worklist: MutableList<Triple<Int, SbfInstruction.Mem, Long>>)
 where TNum: INumValue<TNum>,
-          TOffset: IOffset<TOffset>,
-          D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
+      TOffset: IOffset<TOffset>,
+      D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     // REVISIT: based on constants found in a project
     // 256 (0000_0001_0000_0000) and 265 (0000_0001_00001001) are special:
     // the high 8 bits encodes whether error or not and the low 8 bits the value if no error.
@@ -110,7 +106,7 @@ where TNum: INumValue<TNum>,
 private fun <D, TNum, TOffset> findSplitWideStoresOf64(
     block: MutableSbfBasicBlock, // mutable because we add metadata
     scalarsAtInst: AnalysisRegisterTypes<D, TNum, TOffset>,
-    scalarsAtBlock: ScalarAnalysis<TNum, TOffset>,
+    scalarsAtBlock: IAnalysis<D>,
     worklist: MutableList<Triple<Int, SbfInstruction.Mem, Long>>)
     where TNum: INumValue<TNum>,
           TOffset: IOffset<TOffset>,
@@ -133,9 +129,9 @@ private fun <D, TNum, TOffset> findSplitWideStoresOf64(
                         /// scalar domain if at the end of each block, the corresponding stack content has stored an immediate value.
                         if (inverseSiblings.any { inverseSibling ->
                                 val post = scalarsAtBlock.getPost(inverseSibling.getLabel())
-                                val x = post?.getStackContent(stackAccess.offset, 4.toByte())?.get()
+                                val x = post?.getStackContent(stackAccess.offset, 4.toByte())?.type()
                                 // Note that we don't need to know the exact number
-                                (x != null && x is SbfType.NumType)
+                                (x != null && x is SbfType.NumType<TNum, TOffset>)
                             }) {
                             // We replace in-place the instruction to add new metadata
                             val newMetaData = inst.metaData.plus(Pair(SbfMeta.HINT_OPTIMIZED_WIDE_STORE, ""))
@@ -189,7 +185,7 @@ private fun <D, TNum, TOffset> isStoreOfImmVal(
 
     val valueType = scalarsAtInst.typeAtInstruction(locInst, (value as Value.Reg).r)
     if (valueType is SbfType.NumType) {
-        return valueType.value.get()
+        return valueType.value.toLongOrNull()
     }
 
     return null
@@ -209,7 +205,7 @@ private fun <D, TNum, TOffset> getStackAccess(
     check(inst is SbfInstruction.Mem) {"getStackAccess expects a memory instruction"}
     val typeDerefReg = scalarsAtInst.typeAtInstruction(locInst, inst.access.baseReg.r)
     if (typeDerefReg is SbfType.PointerType.Stack) {
-        val offset = typeDerefReg.offset.add(inst.access.offset.toLong()).get()
+        val offset = typeDerefReg.offset.add(inst.access.offset.toLong()).toLongOrNull()
         if (offset != null) {
             return StackAccess(offset, inst.access.width)
         }

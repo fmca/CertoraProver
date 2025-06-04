@@ -287,7 +287,7 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val np = NPAnalysis(cfg, globals, memSummaries)
         val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
         check(absValAt1 != null){"No preconditions for label 1"}
         val absValAt2 = np.getPreconditionsAtEntry(Label.Address(2))
@@ -324,7 +324,7 @@ class NPDomainTest {
 
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val np = NPAnalysis(cfg, globals, memSummaries)
         val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
         check(absValAt1 != null){"No preconditions for label 1"}
         println("$cfg")
@@ -365,7 +365,7 @@ class NPDomainTest {
         println( "$cfg")
 
         ConfigScope(SolanaConfig.SlicerBackPropagateThroughAsserts, true).use {
-            val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+            val np = NPAnalysis(cfg, globals, memSummaries)
             val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
             check(absValAt1 != null) { "No preconditions for label 1" }
             println( "Preconditions at entry of 1=$absValAt1")
@@ -411,7 +411,7 @@ class NPDomainTest {
         println("$cfg")
 
         ConfigScope(SolanaConfig.SlicerBackPropagateThroughAsserts, false).use {
-            val np = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+            val np = NPAnalysis(cfg, globals, memSummaries)
             val absValAt1 = np.getPreconditionsAtEntry(Label.Address(1))
             check(absValAt1 != null) { "No preconditions for label 1" }
             println( "Preconditions at entry of 1=$absValAt1")

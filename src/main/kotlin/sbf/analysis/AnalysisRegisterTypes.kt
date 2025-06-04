@@ -69,7 +69,7 @@ where D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
                 // the "before" callback will have already executed
                 types[locInst] = types[locInst]!!.mapValues { (r, ty) ->
                     val regVal = Value.Reg(r)
-                    post.getAsScalarValue(regVal).get().takeUnless { regVal in written } ?: ty
+                    post.getAsScalarValue(regVal).type().takeUnless { regVal in written } ?: ty
                 }
             } else if (inst is SbfInstruction.Call) {
                 val calltraceFn = CVTCalltrace.from(inst.name)
@@ -78,7 +78,7 @@ where D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
                     // We use the post-state to update only string registers
                     types[locInst] = types[locInst]!!.mapValues { (r, ty) ->
                         val regVal = Value.Reg(r)
-                        post.getAsScalarValue(regVal).get().takeUnless { !strings.contains(r) } ?: ty
+                        post.getAsScalarValue(regVal).type().takeUnless { !strings.contains(r) } ?: ty
                     }
                 }
             }
@@ -88,7 +88,7 @@ where D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
             val readRegisters = locInst.inst.readRegisters.toMutableSet()
             readRegisters.add(Value.Reg(SbfRegister.R10_STACK_POINTER))
             types[locInst] = readRegisters.map{r->r.r}.associateWith { r ->
-                pre.getAsScalarValue(Value.Reg(r)).get()
+                pre.getAsScalarValue(Value.Reg(r)).type()
             }
         }
 

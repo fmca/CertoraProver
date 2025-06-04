@@ -90,7 +90,7 @@ class TreeViewReporterTest {
             result = result,
             verifyTime = verifyTime,
             ruleCheckInfo = rci,
-            ruleAlerts = null,
+            ruleAlerts = emptyList(),
         )
     }
 

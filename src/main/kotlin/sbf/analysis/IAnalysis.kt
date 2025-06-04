@@ -23,16 +23,16 @@ import sbf.disassembler.Label
 import sbf.domains.AbstractDomain
 import sbf.domains.MemorySummaries
 
-interface IAnalysis<T> {
+interface IAnalysis<T: AbstractDomain<T>> {
     /**
      * Invariants that hold before the execution of [block]
      */
-    fun getPre(block: Label): AbstractDomain<T>?
+    fun getPre(block: Label): T?
 
     /**
      * Invariants that hold after the execution of [block]
      */
-    fun getPost(block: Label): AbstractDomain<T>?
+    fun getPost(block: Label): T?
 
     fun getCFG(): SbfCFG
     fun getMemorySummaries(): MemorySummaries

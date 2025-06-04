@@ -17,6 +17,7 @@
 
 package analysis.dataflow
 
+import algorithms.getReachable
 import analysis.*
 import com.certora.collect.*
 import datastructures.ArrayHashMap
@@ -69,9 +70,10 @@ class GlobalValueNumbering(graph: TACCommandGraph, val followIdentities: Boolean
     }
 
     private fun computeJoins(): Map<NBId, TreapSet<TACSymbol.Var>> {
-        val vars = ConcurrentHashMap<TACSymbol.Var, TreapSet<NBId>>()
+        val vars = mutableMapOf<TACSymbol.Var, TreapSet<NBId>>()
 
         // Collect variables and their defining blocks
+        @Suppress("IgnoredReturnValue")
         graph.commands.forEach {
             val c = it.cmd
             val where = it.ptr.block
@@ -93,27 +95,14 @@ class GlobalValueNumbering(graph: TACCommandGraph, val followIdentities: Boolean
         val selfDom = graph.cache.domination.calcFrontiers(true)
         val phis = ConcurrentHashMap<NBId, TreapSet<TACSymbol.Var>>()
 
+        // Add a "phi node" at the domination frontier of each def for v.
+        // This simulates DSA, where at each domination frontier we must have a new version of the variable,
+        // and should then proceed to process the new variables domination frontier (hence `getReachable`).
         vars.entries.forEach { (v, defs) ->
-            val new = mutableSetOf<NBId>()
-            // Add a "phi node" at the domination frontier of each def for v
-            for (d in defs) {
-                selfDom[d]?.forEach { frontierBlock ->
-                    phis.merge(frontierBlock, treapSetOf(v), TreapSet<TACSymbol.Var>::plus)
-                    new.add(frontierBlock)
+            getReachable(defs.flatMap { selfDom[it].orEmpty() }, selfDom::get)
+                .forEach {
+                    phis.merge(it, treapSetOf(v), TreapSet<TACSymbol.Var>::plus)
                 }
-            }
-
-            // Continue to add "phi nodes" at the domination frontier of any newly-created "phi nodes"
-            while (new.isNotEmpty()) {
-                val next = new.first()
-                new.remove(next)
-                selfDom[next]?.forEach { frontierBlock ->
-                    if (frontierBlock != next) {
-                        phis.merge(frontierBlock, treapSetOf(v), TreapSet<TACSymbol.Var>::plus)
-                        new.add(frontierBlock)
-                    }
-                }
-            }
         }
 
         return phis

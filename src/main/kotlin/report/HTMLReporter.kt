@@ -286,7 +286,7 @@ object HTMLReporter : OutputReporter {
                 singleResult.rule.declarationId,
                 "Error",
                 "?",
-                singleResult.ruleAlerts.asList.joinToString(separator = "${System.lineSeparator()}${System.lineSeparator()}") { it.msg },
+                singleResult.ruleAlerts.joinToString(separator = "${System.lineSeparator()}${System.lineSeparator()}") { it.msg },
                 "",
                 tableName,
                 singleResult.rule.ruleType,
@@ -328,7 +328,7 @@ object HTMLReporter : OutputReporter {
                     SMTResultInterpreter.getResultString(SolverResult.UNKNOWN,
                         result.rule),
                     "?",
-                    "Had an error in computing the result of the rule: ${result.ruleAlerts.asList.map {
+                    "Had an error in computing the result of the rule: ${result.ruleAlerts.map {
                         if (it.reason?.type == CertoraErrorType.TASK_TIMEOUT) {
                             "Global timeout hit, you may need to retry running Prover on this rule alone"
                         } else {

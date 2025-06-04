@@ -1036,7 +1036,7 @@ class EquivalenceChecker private constructor(
                     rule = equivalenceRule,
                     result = vcRes.finalResult,
                     verifyTime = verifyTime,
-                    ruleAlerts = null,
+                    ruleAlerts = emptyList(),
                     ruleCheckInfo = RuleCheckResult.Single.RuleCheckInfo.WithExamplesData(
                         isOptimizedRuleFromCache = IsFromCache.INAPPLICABLE,
                         isSolverResultFromCache = IsFromCache.INAPPLICABLE,
@@ -1064,7 +1064,7 @@ class EquivalenceChecker private constructor(
                 val ruleResult = RuleCheckResult.Single.Basic(
                     result = vcRes.finalResult,
                     callResolutionTable = CallResolutionTableBase.Empty,
-                    ruleAlerts = null,
+                    ruleAlerts = emptyList(),
                     rule = equivalenceRule,
                     ruleCheckInfo = RuleCheckResult.Single.RuleCheckInfo.BasicInfo(
                         isSolverResultFromCache = IsFromCache.INAPPLICABLE,

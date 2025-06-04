@@ -73,7 +73,7 @@ fun toTAC(cfg: SbfCFG,
     val sbfTypesFac = ConstantSbfTypeFactory()
     val memAnalysis = WholeProgramMemoryAnalysis(prog, memSummaries, sbfTypesFac)
     memAnalysis.inferAll()
-    return sbfCFGsToTAC(prog, memSummaries, globalsSymbolTable, memAnalysis.getResults(), sbfTypesFac)
+    return sbfCFGsToTAC(prog, memSummaries, globalsSymbolTable, memAnalysis.getResults())
 }
 
 fun verify(program: CoreTACProgram): Boolean {

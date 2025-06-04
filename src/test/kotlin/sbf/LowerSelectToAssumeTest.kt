@@ -24,8 +24,6 @@ import sbf.domains.*
 import org.junit.jupiter.api.*
 import sbf.testing.SbfTestDSL
 
-private val sbfTypesFac = ConstantSbfTypeFactory()
-
 class LowerSelectToAssumeTest {
     private fun getNumOfSelect(cfg: SbfCFG): UInt {
         var counter = 0U
@@ -51,7 +49,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
         lowerSelectToAssume(cfg, npAnalysis)
         println("After $cfg")
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 0U)
@@ -72,7 +70,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
         lowerSelectToAssume(cfg, npAnalysis)
         println("After $cfg")
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 1U)
@@ -97,7 +95,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
         lowerSelectToAssume(cfg, npAnalysis)
         println("After $cfg")
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 0U)
@@ -118,7 +116,7 @@ class LowerSelectToAssumeTest {
         cfg.verify(false)
         val globals = newGlobalVariableMap()
         val memSummaries = MemorySummaries()
-        val npAnalysis = NPAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val npAnalysis = NPAnalysis(cfg, globals, memSummaries)
         lowerSelectToAssume(cfg, npAnalysis)
         println("After $cfg")
         Assertions.assertEquals(true,  getNumOfSelect(cfg) == 1U)

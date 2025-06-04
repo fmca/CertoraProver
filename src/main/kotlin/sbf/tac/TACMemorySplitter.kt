@@ -53,7 +53,7 @@ class DummyMemSplitter<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (// S
             SolanaFunction.SOL_MEMCMP -> {
                 val lenType = regTypes.typeAtInstruction(locInst, SbfRegister.R3_ARG)
                 if (lenType is SbfType.NumType) {
-                    val len = lenType.value.get()
+                    val len = lenType.value.toLongOrNull()
                     if (len != null) {
                         TACMemSplitter.NonStackMemCmpInfo(mem as TACByteMapVariable, mem, len, SolanaConfig.WordSize.get().toByte())
                     } else {
@@ -572,7 +572,7 @@ class PTAMemSplitter<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (
             val dstSc = g.getRegCell(Value.Reg(SbfRegister.R1_ARG))
             if (dstSc != null && dstSc.isConcrete()) {
                 val dstC = dstSc.concretize()
-                val len = (scalars.getValue(Value.Reg(SbfRegister.R3_ARG)).get() as? SbfType.NumType)?.value?.get()
+                val len = (scalars.getValue(Value.Reg(SbfRegister.R3_ARG)).type() as? SbfType.NumType)?.value?.toLongOrNull()
                 if (len != null) {
                     val overwrittenFields = g.getOverwrittenFieldsByLongCopy(dstC, len)
                     if (overwrittenFields != null) {
@@ -703,9 +703,9 @@ class PTAMemSplitter<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (
                                         "memory partitioning failed because" +
                                             "cannot find a cell for $r2 ($inst) in the local graph ${locInst.label}"
                                     )
-                                val lengthVal = post.getAsScalarValue(r3).get()
+                                val lengthVal = post.getAsScalarValue(r3).type()
                                 val length = if (lengthVal is SbfType.NumType) {
-                                    lengthVal.value.get()
+                                    lengthVal.value.toLongOrNull()
                                 } else {
                                     null
                                 }
@@ -737,16 +737,16 @@ class PTAMemSplitter<TNum : INumValue<TNum>, TOffset : IOffset<TOffset>> (
                                             "cannot find a cell for $r1 ($inst) in the local graph ${locInst.label}"
                                     )
                                 // process r2
-                                val v = post.getAsScalarValue(r2).get()
+                                val v = post.getAsScalarValue(r2).type()
                                 val storedVal = if (v is SbfType.NumType) {
-                                    v.value.get()
+                                    v.value.toLongOrNull()
                                 } else {
                                     null
                                 }
                                 // process r3
-                                val lengthVal = post.getAsScalarValue(r3).get()
+                                val lengthVal = post.getAsScalarValue(r3).type()
                                 val length = if (lengthVal is SbfType.NumType) {
-                                    lengthVal.value.get()
+                                    lengthVal.value.toLongOrNull()
                                 } else {
                                     null
                                 }

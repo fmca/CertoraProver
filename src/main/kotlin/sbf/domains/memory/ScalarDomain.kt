@@ -17,6 +17,7 @@
 
 package sbf.domains
 
+import datastructures.stdcollections.*
 import sbf.disassembler.*
 import sbf.callgraph.*
 import sbf.cfg.*
@@ -30,15 +31,22 @@ import org.jetbrains.annotations.TestOnly
  * The current abstraction is very limited because it consists of mapping each register and
  * stack offset to ScalarValue which can only carry non-relational information.
  *
- * Note about soundness: the scalar domain is sound conditional to no stack pointers escape.
- * The scalar domain is not precise enough to keep track of which stack pointers might escape.
- * Instead, the soundness of the scalar domain relies on the pointer domain to check that no stack pointers escape.
- * In other words, we can think of the scalar domain adding assertions after each store and memcpy instructions,
- * and then the pointer domain checking that all assertions hold.
+ * Notes about soundness of the scalar domain:
+ *
+ * 1) the scalar domain is sound conditional to no stack pointers escape.
+ *    The scalar domain is not precise enough to keep track of which stack pointers might escape.
+ *    Instead, the soundness of the scalar domain relies on the pointer domain to check that no stack pointers escape.
+ *    In other words, we can think of the scalar domain adding assertions after each store and `memcpy` instructions,
+ *    and then the pointer domain checking that all assertions hold.
  *
  * This soundness argument is formally described in the paper
  * "Pointer Analysis, Conditional Soundness and Proving the Absence of Errors"
  * by Conway, Dams, Namjoshi, and Barret (SAS'08).
+ *
+ * 2) In a store or `memcpy` instruction if the destination is "top" then we need, in principle, to wipe out completely
+ *    the stack. The analysis optimistically assumes that if the destination is "top" then it doesn't affect the stack.
+ *    Note that this assumption is reasonable due to two main reasons: (a) we prove separately that stack pointers do
+ *    not escape and (b) it is reasonable to assume that uninitialized/external memory does not contain stack pointers.
  */
 
 /** For internal errors **/
@@ -143,14 +151,18 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     }
 
     private fun checkStackAccess(value: ScalarValue<TNum, TOffset>) {
-        val valType = value.get()
+        val valType = value.type()
         if (valType is SbfType.PointerType.Stack<TNum, TOffset>) {
-            val stackOffset = valType.offset.get()
-            if (stackOffset != null) {
-                if (stackOffset < 0) {
-                    throw SolanaError(
+            if (valType.offset.isBottom()) {
+                throw SolanaError("Stack offset is bottom and this is unexpected")
+            }
+            if (!valType.offset.isTop()) {
+                for (stackOffset in valType.offset.toLongList()) {
+                    if (stackOffset < 0) {
+                        throw SolanaError(
                         "Current stack size is ${SolanaConfig.StackFrameSize.get()} and stack offset exceeded max offset by ${-stackOffset}. " +
                             "Please increase the stack size with option \"-${SolanaConfig.StackFrameSize.name} N\" where N is a multiple of 4096.")
+                    }
                 }
             }
         }
@@ -298,7 +310,7 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     private fun analyzeUn(stmt: SbfInstruction.Un) {
         check(!isBottom()) {"cannot call analyzeUn on bottom"}
        // This transfer function is too conservative, and it can be improved.
-        val newVal: ScalarValue<TNum, TOffset>? = when (val oldVal = getRegister(stmt.dst).get()) {
+        val newVal: ScalarValue<TNum, TOffset>? = when (val oldVal = getRegister(stmt.dst).type()) {
             is SbfType.Top, is SbfType.Bottom -> null
             is SbfType.NumType -> ScalarValue(sbfTypeFac.anyNum())
             is SbfType.PointerType -> {
@@ -315,13 +327,13 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
     }
 
-    private fun doConstantPointerArithmetic(op: BinOp, dst: Value.Reg, src: Value.Imm) {
-        val dstType = getRegister(dst).get()
+    private fun doConstantPointerArithmetic(op: BinOp, dst: Value.Reg, src: SbfType.NumType<TNum, TOffset>) {
+        val dstType = getRegister(dst).type()
         if (dstType is SbfType.PointerType) {
             val dstOffset = dstType.offset
             val newVal = when (op) {
-                BinOp.ADD  -> ScalarValue(dstType.withOffset(dstOffset.add(src.v.toLong())))
-                BinOp.SUB  -> ScalarValue(dstType.withOffset(dstOffset.sub(src.v.toLong())))
+                BinOp.ADD  -> ScalarValue(dstType.withOffset(dstOffset.add(sbfTypeFac.numToOffset(src.value))))
+                BinOp.SUB  -> ScalarValue(dstType.withOffset(dstOffset.sub(sbfTypeFac.numToOffset(src.value))))
                 else -> {
                     if (enableDefensiveChecks) {
                         throw ScalarDomainError("Unexpected pointer arithmetic $dst:= $dst $op $src")
@@ -379,8 +391,8 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     }
 
     private fun doPointerArithmetic(op: BinOp, dst: Value.Reg, src: Value.Reg) {
-        val dstType = getRegister(dst).get()
-        val srcType = getRegister(src).get()
+        val dstType = getRegister(dst).type()
+        val srcType = getRegister(src).type()
 
         if (dstType is SbfType.PointerType) {
             doNormalizedPointerArithmetic(op, dst, dst, dstType, src, srcType)
@@ -429,8 +441,6 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
     }
 
-
-
     private fun analyzeBin(stmt: SbfInstruction.Bin, globals: GlobalVariableMap) {
         check(!isBottom()) {"analyzeBin cannot be called on bottom"}
         val dst = stmt.dst
@@ -450,7 +460,7 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                     })
                 }
                 else ->  {
-                    val dstType = refineType(stmt.op, getRegister(dst).get())
+                    val dstType = refineType(stmt.op, getRegister(dst).type())
                     if (dstType is SbfType.NumType) {
                         doALU(stmt.op, dst, dstType, sbfTypeFac.toNum(src.v))
                     } else {
@@ -458,7 +468,7 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                          * We don't know for sure whether dst is a pointer or not.
                          * doConstantPointerArithmetic will deal with that.
                          **/
-                        doConstantPointerArithmetic(stmt.op, dst, src)
+                        doConstantPointerArithmetic(stmt.op, dst, sbfTypeFac.toNum(src.v))
                     }
                 }
             }
@@ -469,9 +479,12 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                     /**
                      * If we know that src is the address of a global variable then we cast the destination to
                      * that global variable.
+                     *
+                     * The use of `toLongOrNull` does not lose precision because the MOV instruction has been tagged with
+                     * the metadata `SET_GLOBAL` which means that `src` is an immediate value.
                      */
                     setRegister(dst, if (stmt.metaData.getVal(SbfMeta.SET_GLOBAL) != null) {
-                        (getValue(src).get() as? SbfType.NumType<TNum, TOffset>)?.value?.get().let {
+                        (getValue(src).type() as? SbfType.NumType<TNum, TOffset>)?.value?.toLongOrNull().let {
                             if (it != null) {
                                 val gv = globals[it]
                                 if (gv != null) {
@@ -488,8 +501,8 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                     })
                 }
                 else -> {
-                    val dstType = refineType(stmt.op, getRegister(dst).get())
-                    val srcTypeBefore = getRegister(src as Value.Reg).get()
+                    val dstType = refineType(stmt.op, getRegister(dst).type())
+                    val srcTypeBefore = getRegister(src as Value.Reg).type()
                     val srcType = refineType(stmt.op, srcTypeBefore)
                     if (!srcTypeBefore.lessOrEqual(srcType)) {
                         // srcType is strictly more precise than srcTypeBefore
@@ -499,9 +512,8 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                         doALU(stmt.op, dst, dstType, srcType)
                     } else {
                         if (srcType is SbfType.NumType) {
-                            val cst = srcType.value.get()
-                            if (cst != null) {
-                                doConstantPointerArithmetic(stmt.op, dst, Value.Imm(cst.toULong()))
+                            if (!srcType.value.isTop()) {
+                                doConstantPointerArithmetic(stmt.op, dst, srcType)
                                 return
                             }
                         }
@@ -521,9 +533,11 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     }
 
     private fun removeDeadStackFields() {
-        val ty = getRegister(Value.Reg(SbfRegister.R10_STACK_POINTER)).get()
+        val ty = getRegister(Value.Reg(SbfRegister.R10_STACK_POINTER)).type()
         if (ty is SbfType.PointerType.Stack) {
-            val topStack = ty.offset.get()
+            // r10 should point to exactly one stack offset.
+            // Thus, `topStack` shouldn't be null,
+            val topStack = ty.offset.toLongOrNull()
             if (topStack != null) {
                 val deadFields = ArrayList<ByteRange>()
                 for ((k, _) in stack.iterator()) {
@@ -554,23 +568,44 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
     }
 
-    private fun killOffsets(offset: Long, len: Long) {
-        val slice = stack.inRange(offset, len, strict = false)
+    /** Helper for [analyzeMemTransfer] and [analyzeMem]**/
+    private fun killOffsets(offset: Long, len: Long, onlyPartial: Boolean, pred: (ByteRange) -> Boolean = {_->true}) {
+        val slice = stack.inRange(offset, len, onlyPartial)
         for ((k,_) in slice) {
-            stack = stack.remove(k)
+            if (pred(k)) {
+                stack = stack.remove(k)
+            }
         }
     }
 
     /**
-     * Analyze memcpy and memmove
+     *  Helper for [analyzeMemTransfer]
      *
-     * If memcpy then
-     *   1. Remove all the environment entries that might overlap with [dstOffset, dstOffset+len)
-     *   2. Copy environment entries from [srcOffset, srcOffset+len) to [dstOffset, dstOffset+len)
-     * If memmove then
-     *   Remove all the environment entries that might overlap with [dstOffset, dstOffset+len)
+     *  Copy environment entries from `[srcOffset, srcOffset+len)` to `[dstOffset, dstOffset+len)`
+     *  As a side effect, it adds in [dstFootprint] any overwritten byte at the destination.
+     **/
+    private fun memTransfer(srcOffset: Long, dstOffset: Long, len: Long, isWeak: Boolean, dstFootprint: MutableSet<ByteRange>) {
+        val delta = dstOffset - srcOffset
+        val slice = stack.inRange(srcOffset, len, onlyPartial = false)
+        for ((k, v) in slice) {
+            val offset = k.offset
+            val width = k.width
+            val dstSlice = ByteRange(offset + delta, width)
+            dstFootprint.add(dstSlice)
+            stack = stack.put(dstSlice, v, isWeak)
+        }
+    }
+
+    /**
+     * Analyze `memcpy` and `memmove`
      *
-     * Thus, the analysis of memcpy is precise but the analysis of memmove is a rough over-approximation.
+     * - If `memcpy` then
+     *   1. Remove all the environment entries that might overlap with `[dstOffset, dstOffset+len)`
+     *   2. Copy environment entries from `[srcOffset, srcOffset+len)` to `[dstOffset, dstOffset+len)`
+     * - If `memmove` then
+     *   1. Remove all the environment entries that might overlap with `[dstOffset, dstOffset+len)`
+     *
+     * Thus, the analysis of `memcpy` is precise but the analysis of `memmove` is a rough over-approximation.
      * **/
     private fun analyzeMemTransfer(locInst: LocatedSbfInstruction) {
         val stmt = locInst.inst
@@ -583,37 +618,92 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         val r1 = Value.Reg(SbfRegister.R1_ARG)
         val r2 = Value.Reg(SbfRegister.R2_ARG)
         val r3 = Value.Reg(SbfRegister.R3_ARG)
-        val dstType = getRegister(r1).get()
+        val dstType = getRegister(r1).type()
         if (dstType is SbfType.PointerType.Stack) {
-            val len = (getRegister(r3).get() as? SbfType.NumType)?.value?.get()
-                    ?: throw UnknownMemcpyLenError(DevErrorInfo(locInst, PtrExprErrReg(r3), "memcpy on stack without knowing length"))
-            val dstOffset = dstType.offset.get()
-                    ?: throw UnknownStackPointerError(DevErrorInfo(locInst, PtrExprErrReg(r1),"memcpy on stack without knowing destination offset"))
+            // For now, we use `toLongOrNull` which means that the length must be exactly known.
+            // This is something that we can improve if needed.
+            val len = (getRegister(r3).type() as? SbfType.NumType)?.value?.toLongOrNull()
+                    ?: throw UnknownMemcpyLenError(DevErrorInfo(locInst, PtrExprErrReg(r3), "memcpy on stack without knowing exact length: ${getRegister(r3).type()}"))
+            if (dstType.offset.isTop()) {
+                throw UnknownStackPointerError(DevErrorInfo(locInst, PtrExprErrReg(r1),"memcpy on stack without knowing destination offset"))
+            }
 
-            // Remove all the environment entries that might overlap with [dstOffset, dstOffset+len)
-            killOffsets(dstOffset, len)
-            if (solanaFunction == SolanaFunction.SOL_MEMCPY) {
-                val srcType = getRegister(r2).get()
-                if (srcType is SbfType.PointerType.Stack) {
-                    val srcOffset = srcType.offset.get()
-                    if (srcOffset != null) {
-                        // Copy environment entries from [srcOffset, srcOffset+len) to [dstOffset, dstOffset+len)
-                        val delta = dstOffset - srcOffset
-                        val slice = stack.inRange(srcOffset, len, strict = true)
-                        for ((k, v) in slice) {
-                            val offset = k.offset
-                            val width = k.width
-                            stack = stack.put(ByteRange(offset + delta, width), v)
+            val dstOffsets = dstType.offset.toLongList()
+            check(dstOffsets.isNotEmpty()) {"Scalar domain expects non-empty list"}
+
+            when (solanaFunction) {
+                SolanaFunction.SOL_MEMMOVE -> {
+                    // We are conservative and remove any overlapping entry at the destination
+                    dstOffsets.forEach { dstOffset->
+                        killOffsets(dstOffset, len, onlyPartial = false)
+                    }
+                }
+                SolanaFunction.SOL_MEMCPY -> {
+                    when (val srcType = getRegister(r2).type()) {
+                        is SbfType.PointerType.Stack -> {
+                            if (srcType.offset.isTop()) {
+                                // We are conservative and remove any overlapping entry at the destination
+                                dstOffsets.forEach { dstOffset->
+                                    killOffsets(dstOffset, len, onlyPartial = false)
+                                }
+                            } else {
+                                val srcOffsets = srcType.offset.toLongList()
+                                check(srcOffsets.isNotEmpty()) { "Scalar domain expects non-empty list because it is not top" }
+
+                                // Remove all the environment entries that might **partially** overlap with `[dstOffset, dstOffset+len)`
+                                // By partially, we mean any slice that overlaps with `[dstOffset, dstOffset+len)`,
+                                // but it is not included in `[dstOffset, dstOffset+len)`.
+                                //
+                                // We cannot remove directly all destination entries (i.e., `onlyPartial=false`) because we might need to do weak updates,
+                                // so we need to remember old values.
+                                dstOffsets.forEach { dstOffset ->
+                                    killOffsets(dstOffset, len, onlyPartial = true)
+                                }
+
+                                val dstFootprint = mutableSetOf<ByteRange>()
+                                if (dstOffsets.size == 1) {
+                                    val dstOffset = dstOffsets.single()
+                                    // strong update
+                                    memTransfer(srcOffsets.first(), dstOffset, len, isWeak = false, dstFootprint)
+                                    // followed by weak updates
+                                    srcOffsets.drop(1).forEach { srcOffset ->
+                                        memTransfer(srcOffset, dstOffset, len, isWeak = true, dstFootprint)
+                                    }
+                                } else {
+                                    // weak updates
+                                    srcOffsets.forEach { srcOffset ->
+                                        dstOffsets.forEach { dstOffset ->
+                                            memTransfer(srcOffset, dstOffset, len, isWeak = true, dstFootprint)
+                                        }
+                                    }
+                                }
+
+                                // Important for soundness
+                                // If a destination byte hasn't been overwritten by a source then we must "kill" it.
+                                // This is possible because the analysis might know nothing about the source so `memTransfer` can be a non-op.
+                                dstOffsets.forEach { dstOffset ->
+                                    killOffsets(dstOffset, len, onlyPartial = false) { !dstFootprint.contains(it) }
+                                }
+                            }
+                        }
+                        else -> {
+                            // We are conservative and remove any overlapping entry at the destination
+                            dstOffsets.forEach { dstOffset ->
+                                killOffsets(dstOffset, len, onlyPartial = false)
+                            }
                         }
                     }
                 }
+                else -> {
+                    /* this is unreachable */
+                    check(false) {"Only memcpy or memmove expected"}
+                }
             }
-            // memmove is not modeled precisely
         }
     }
 
     private fun castNumToString(reg: Value.Reg, globals: GlobalVariableMap) {
-        val oldType = getRegister(reg).get()
+        val oldType = getRegister(reg).type()
         if (oldType is SbfType.NumType) {
             val newType = oldType.castToPtr(sbfTypeFac, globals)
             if (newType is SbfType.PointerType.Global && newType.global is SbfConstantStringGlobalVariable) {
@@ -683,7 +773,7 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                                 CVTCore.ALLOC_SLICE -> {
                                     /// This is only used for pretty-printing
                                     /// That's why we return top in some cases rather than reporting an error
-                                    val returnedVal = when (getRegister(Value.Reg(SbfRegister.R1_ARG)).get()) {
+                                    val returnedVal = when (getRegister(Value.Reg(SbfRegister.R1_ARG)).type()) {
                                         is SbfType.PointerType.Heap -> sbfTypeFac.anyHeapPtr()
                                         is SbfType.PointerType.Input -> sbfTypeFac.anyInputPtr()
                                         is SbfType.PointerType.Global -> sbfTypeFac.anyGlobalPtr(null)
@@ -737,11 +827,14 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                                          width: Byte,
                                          @Suppress("UNUSED_PARAMETER") allocatedSpace: ULong,
                                          type: MemSummaryArgumentType) {
-                val regType = getRegister(Value.Reg(reg)).get()
+                val regType = getRegister(Value.Reg(reg)).type()
                 // We only keep track of the stack
                 if (regType is SbfType.PointerType.Stack) {
-                    val baseOffset = regType.offset.get()
-                    check(baseOffset != null) {"processArgument is accessing stack at a non-constant offset"}
+                    // It is possible that `reg` can point to more than one stack offset
+                    // (depends on the abstraction chosen for IOffset). In that case, the analysis will report a runtime error.
+                    // The alternative is to do weak updates.
+                    val baseOffset = regType.offset.toLongOrNull()
+                    check(baseOffset != null) {"processArgument is accessing stack at a non-constant offset ${regType.offset}"}
                     stack = stack.put(ByteRange(baseOffset + offset, width), getScalarValue(type))
                 }
             }
@@ -751,28 +844,26 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         memSummaries.visitSummary(locInst, vis)
     }
 
-    private fun analyzeAssumeNumNum(op: CondOp, left: Value.Reg,
-                                    leftType: SbfType.NumType<TNum, TOffset>, rightType: SbfType.NumType<TNum, TOffset>) {
-        when (op) {
-            CondOp.EQ -> {
-                // The assume operation does not modify the left operand.
-                // It only returns a TriBoolean.
-                // We use the meet operation to potentially refine the left operand.
-                // With constants there is no refinement but with intervals and other
-                // abstractions is very possible.
-                val meetVal = leftType.value.meet(rightType.value)
-                if (meetVal.isBottom()) {
-                    setToBottom()
-                } else {
-                    setRegister(left, ScalarValue(SbfType.NumType(meetVal)))
-                }
+    private fun analyzeAssumeNumNum(op: CondOp,
+                                    left: Value.Reg,
+                                    leftType: SbfType.NumType<TNum, TOffset>,
+                                    right: Value,
+                                    rightType: SbfType.NumType<TNum, TOffset>) {
+
+        val newLeftVal = leftType.value.filter(op, rightType.value)
+        if (newLeftVal.isBottom()) {
+            setToBottom()
+            return
+        }
+        setRegister(left, ScalarValue(leftType.copy(value = newLeftVal)))
+
+        if (right is Value.Reg) {
+            val newRightVal = rightType.value.filter(op.swap(), leftType.value)
+            if (newRightVal.isBottom()) {
+                setToBottom()
+                return
             }
-            else -> {
-                val res = leftType.value.assume(op, rightType.value)
-                if (res.isFalse()) {
-                    setToBottom()
-                }
-            }
+            setRegister(right, ScalarValue(rightType.copy(value = newRightVal)))
         }
     }
 
@@ -846,7 +937,7 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         val rightVal = cond.right
         check(!isBottom()) {"analyzeAssume cannot be called on bottom"}
         val leftAbsValBefore = getRegister(leftReg)
-        val leftAbsVal = ScalarValue(refineType(op,leftAbsValBefore.get()))
+        val leftAbsVal = ScalarValue(refineType(op,leftAbsValBefore.type()))
         if (!leftAbsValBefore.lessOrEqual(leftAbsVal)) {
             // leftAbsVal is strictly more precise than leftAbsValBefore
             setRegister(leftReg, leftAbsVal)
@@ -854,22 +945,24 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         check(!leftAbsVal.isBottom()) {"analyzeAssume: leftAbsVal is bottom after refinement"}
         if (rightVal is Value.Imm) {
             val rightAbsVal = ScalarValue(sbfTypeFac.toNum(rightVal.v))
-            if (leftAbsVal.get() is SbfType.NumType) {
-                analyzeAssumeNumNum(op, leftReg,
-                                    leftAbsVal.get() as SbfType.NumType,
-                                    rightAbsVal.get() as SbfType.NumType)
-            } else if (leftAbsVal.get() is SbfType.PointerType) {
+            if (leftAbsVal.type() is SbfType.NumType) {
+                analyzeAssumeNumNum(op,
+                                    leftReg,
+                                    leftAbsVal.type() as SbfType.NumType,
+                                    rightVal,
+                                    rightAbsVal.type() as SbfType.NumType)
+            } else if (leftAbsVal.type() is SbfType.PointerType) {
                 // do nothing: we can do better here if op is EQ
             } else if (leftAbsVal.isTop()) {
                 /**
                  * We assume that the left operand is a number,
                  * although we don't really know at this point.
                  **/
-                analyzeAssumeTopNonTop(op, leftReg, leftAbsVal.get(), rightAbsVal.get())
+                analyzeAssumeTopNonTop(op, leftReg, leftAbsVal.type(), rightAbsVal.type())
             }
         } else {
             val rightAbsValBefore = getRegister(rightVal as Value.Reg)
-            val rightAbsVal = ScalarValue(refineType(op, rightAbsValBefore.get()))
+            val rightAbsVal = ScalarValue(refineType(op, rightAbsValBefore.type()))
             if (!rightAbsValBefore.lessOrEqual(rightAbsVal)) {
                 // rightAbsVal is strictly more precise than rightAbsValBefore
                 setRegister(rightVal, rightAbsVal)
@@ -878,12 +971,12 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
             if (leftAbsVal.isTop() && rightAbsVal.isTop()) {
                 // do nothing
             } else if (leftAbsVal.isTop() || rightAbsVal.isTop()) {
-                analyzeAssumeTopNonTop(op, leftReg, leftAbsVal.get(), rightAbsVal.get())
+                analyzeAssumeTopNonTop(op, leftReg, leftAbsVal.type(), rightAbsVal.type())
             } else {
-                val leftType = leftAbsVal.get()
-                val rightType = rightAbsVal.get()
+                val leftType = leftAbsVal.type()
+                val rightType = rightAbsVal.type()
                 if (leftType is SbfType.NumType && rightType is SbfType.NumType) {
-                    analyzeAssumeNumNum(op, leftReg, leftType, rightType)
+                    analyzeAssumeNumNum(op, leftReg, leftType, rightVal, rightType)
                 } else if (leftType is SbfType.PointerType && rightType is SbfType.NumType) {
                     // do nothing: note that comparing pointers and numbers is perfectly fine
                 } else if (leftType is SbfType.NumType && rightType is SbfType.PointerType) {
@@ -967,7 +1060,7 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         val width = stmt.access.width
         val value = stmt.value
         val isLoad = stmt.isLoad
-        var baseRegType = getRegister(baseReg).get()
+        var baseRegType = getRegister(baseReg).type()
         val loadedAsNumForPTA = stmt.metaData.getVal(SbfMeta.LOADED_AS_NUM_FOR_PTA) != null
 
         /**
@@ -982,7 +1075,8 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
 
         if (baseRegType is SbfType.NumType) {
-            val n = baseRegType.value.get()
+            // We use `toLongOrNull` because we are interested in the case where `n` is definitely `0`
+            val n = baseRegType.value.toLongOrNull()
             if (n != null && n == 0L) {
                 /**
                  * The constant zero can represent both the number zero and the NULL pointer.
@@ -1044,26 +1138,52 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                 when (baseRegType) {
                     is SbfType.PointerType.Stack -> {
                         // We try to be precise when load/store from/to stack
-                        val stackOffset = baseRegType.offset.add(offset.toLong()).get()
-                        if (stackOffset == null) {
+                        val stackTOffsets = baseRegType.offset.add(offset.toLong())
+                        check(!stackTOffsets.isBottom())
+                        if (stackTOffsets.isTop()) {
                             if (isLoad) {
                                 forgetOrNum(value as Value.Reg, loadedAsNumForPTA)
                             } else {
                                 throw UnknownStackPointerError(DevErrorInfo(locInst, PtrExprErrReg(baseReg), "store: $stmt to unknown stack location"))
                             }
                         } else {
+                            val stackOffsets = stackTOffsets.toLongList()
                             if (isLoad) {
-                                val loadedAbsVal = stack.getSingletonOrNull(ByteRange(stackOffset, width.toByte()))
-                                if (loadedAbsVal != null) {
-                                    setRegister(value as Value.Reg, loadedAbsVal)
-                                } else {
-                                    forgetOrNum(value as Value.Reg, loadedAsNumForPTA)
-                                }
+                                setRegister(value as Value.Reg,
+                                    stackOffsets.fold(ScalarValue(sbfTypeFac.mkBottom())) { acc, stackOffset ->
+                                        val loadedAbsVal = stack.getSingletonOrNull(ByteRange(stackOffset, width.toByte()))
+                                        when {
+                                            loadedAbsVal != null -> acc.join(loadedAbsVal)
+                                            loadedAsNumForPTA -> acc.join(ScalarValue(sbfTypeFac.anyNum()))
+                                            else -> ScalarValue(sbfTypeFac.mkTop())
+                                        }
+                                    })
                             } else {
-                                // Remove first all overlapping entries
-                                killOffsets(stackOffset, width.toLong())
-                                stack = stack.put(ByteRange(stackOffset, width.toByte()), getValue(value))
+                                if (stackOffsets.size == 1) {
+                                    // Strong update:
+                                    // 1. Remove first **all** overlapping entries
+                                    // 2. Add a new entry
+                                    val stackOffset = stackOffsets.single()
+                                    val slice = ByteRange(stackOffset, width.toByte())
+                                    // onlyPartial=false means that any overlapping entry is killed
+                                    killOffsets(slice.offset, slice.width.toLong(), onlyPartial = false)
+                                    stack = stack.put(slice, getValue(value))
+                                } else {
+                                    // Weak update:
+                                    // for each possible stack offset
+                                    //    1. Remove first **partial** overlapping entries
+                                    //    2. join old value with new value
+                                    stackOffsets.forEach {
+                                        val slice = ByteRange(it, width.toByte())
+                                        // onlyPartial=true + isWeak=true means that
+                                        //   if slice is already in `stack` then its value is not removed and `stack.put` will do a weak update with `value`.
+                                        //   Any other overlapping entry will be removed by `killOffsets`
+                                        killOffsets(slice.offset, slice.width.toLong(), onlyPartial = true)
+                                        stack = stack.put(slice, getValue(value), isWeak = true)
+                                    }
+                                }
                             }
+
                         }
                     }
                     is SbfType.PointerType.Global -> {
@@ -1100,11 +1220,9 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
     }
 
-    override fun getAsScalarValue(value: Value): ScalarValue<TNum, TOffset> {
-        return getValue(value)
-    }
+    override fun getAsScalarValue(value: Value): ScalarValue<TNum, TOffset> = getValue(value)
 
-    fun getStackContent(offset: Long, width: Byte): ScalarValue<TNum, TOffset> {
+    override fun getStackContent(offset: Long, width: Byte): ScalarValue<TNum, TOffset> {
         return if (isBottom()) {
             ScalarValue(sbfTypeFac.mkBottom())
         } else {
@@ -1156,7 +1274,6 @@ class ScalarDomain<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         if (SolanaConfig.DebugSlicer.get()) {
             sbfLogger.info { "After SCALAR DOMAIN $s: $this\n" }
         }
-
     }
 
     override fun analyze(b: SbfBasicBlock,

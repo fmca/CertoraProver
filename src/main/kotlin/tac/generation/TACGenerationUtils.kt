@@ -67,10 +67,9 @@ fun (TACExprFact.() -> TACExpr).letVar(
 
 fun TACCmd.Simple.withDecls(vararg decls: TACSymbol.Var) = listOf(this).withDecls(*decls)
 
-fun assert(msg: String, subjectSym: TACSymbol? = null, cond: TACExprFact.() -> TACExpr) =
+fun assert(msg: String, cond: TACExprFact.() -> TACExpr) =
     cond.letVar("a", Tag.Bool) {
-        val meta = subjectSym?.let { MetaMap(TACCmd.Simple.AssertCmd.FORMAT_ARG1 to it) } ?: MetaMap()
-        TACCmd.Simple.AssertCmd(it.s, msg, meta).withDecls()
+        TACCmd.Simple.AssertCmd(it.s, msg).withDecls()
     }
 
 fun assume(cond: TACExprFact.() -> TACExpr) =

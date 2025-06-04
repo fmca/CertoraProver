@@ -261,14 +261,14 @@ object IntegrativeChecker {
                             isSolverResultFromCache = IsFromCache.INAPPLICABLE
                         ),
                         CallResolutionTableBase.Empty,
-                        ruleAlerts = null
+                        ruleAlerts = emptyList()
                     )
                 } else {
                     RuleCheckResult.Single.WithCounterExamples(
                         rule = assertRule,
                         result = finalResult,
                         verifyTime = VerifyTime.WithInterval(startTime, endTime),
-                        ruleAlerts = null,
+                        ruleAlerts = emptyList(),
                         ruleCheckInfo = RuleCheckResult.Single.RuleCheckInfo.WithExamplesData(
                             vcRes.examplesInfo.map { exampleInfo ->
                                 RuleCheckResult.Single.RuleCheckInfo.WithExamplesData.CounterExample(

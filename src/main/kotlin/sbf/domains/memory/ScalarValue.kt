@@ -17,8 +17,10 @@
 
 package sbf.domains
 
+import sbf.SolanaConfig
 import sbf.cfg.*
 import sbf.disassembler.*
+import datastructures.stdcollections.*
 
 /**
  * An "abstract" version of [SbfRegisterType], that extends it with top/bot elements and
@@ -68,6 +70,9 @@ sealed class SbfType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
 
     // Numerical type
     data class NumType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(val value: TNum): SbfType<TNum, TOffset>() {
+        init {
+            check(!value.isBottom()) {"Cannot create a NumType with a bottom value"}
+        }
 
         /**
          *  Cast a number to a pointer only if the number is a valid heap address or the address of a global variable.
@@ -88,7 +93,7 @@ sealed class SbfType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
                 return lb
             }
 
-            val n = value.get()
+            val n = value.toLongOrNull()
             if (n != null) {
                 if (n in SBF_HEAP_START until SBF_HEAP_END) {
                     val offset = n - SBF_HEAP_START
@@ -115,15 +120,7 @@ sealed class SbfType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
             /// in the heap.
             return null
         }
-
-
-        override fun toString(): String {
-            return if (value.isTop()) {
-                "num"
-            } else {
-                "num($value)"
-            }
-        }
+        override fun toString() = if (value.isTop()) { "num" } else { "num($value)" }
     }
 
     // Pointer type
@@ -135,25 +132,25 @@ sealed class SbfType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
         fun samePointerType(other: PointerType<TNum, TOffset>) = this::class == other::class
 
         data class Stack<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(override val offset: TOffset): PointerType<TNum, TOffset>() {
-            override fun toString(): String {
-                return "sp($offset)"
-            }
+            init { check(!offset.isBottom()) {"Cannot create a PointerType with a bottom offset"} }
+
+            override fun toString() = "sp($offset)"
             override fun withOffset(newOffset: TOffset) = Stack<TNum, TOffset>(newOffset)
             override fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = sbfTypeFac.anyStackPtr()
         }
 
         data class Input<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(override val offset: TOffset): PointerType<TNum, TOffset>() {
-            override fun toString(): String {
-                return "input($offset)"
-            }
+            init { check(!offset.isBottom()) {"Cannot create a PointerType with a bottom offset"} }
+
+            override fun toString() = if (offset.isTop()) { "input" } else { "input($offset)" }
             override fun withOffset(newOffset: TOffset) = Input<TNum, TOffset>(newOffset)
             override fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = sbfTypeFac.anyInputPtr()
         }
 
         data class Heap<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(override val offset: TOffset): PointerType<TNum, TOffset>() {
-            override fun toString(): String {
-                return "heap($offset)"
-            }
+            init { check(!offset.isBottom()) {"Cannot create a PointerType with a bottom offset"} }
+
+            override fun toString() = if (offset.isTop()) { "heap" } else { "heap($offset)" }
             override fun withOffset(newOffset: TOffset) = Heap<TNum, TOffset>(newOffset)
             override fun withTopOffset(sbfTypeFac: ISbfTypeFactory<TNum, TOffset>) = sbfTypeFac.anyHeapPtr()
         }
@@ -258,15 +255,24 @@ sealed class SbfType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
     }
 
     fun concretize(): SbfRegisterType? {
+        fun toConstantSet(xs: List<Long>): ConstantSet {
+            val maxSize = SolanaConfig.ScalarMaxVals.get().toULong()
+            return if (xs.isEmpty()) {
+                ConstantSet.mkTop(maxSize)
+            } else{
+                ConstantSet(xs.map{Constant(it)}.toSet(), maxSize)
+            }
+        }
+
         return when (this) {
             is Top, is Bottom -> null
-            is NumType -> this.value.get().let { SbfRegisterType.NumType(Constant(it)) }
+            is NumType -> this.value.toLongList().let { SbfRegisterType.NumType(toConstantSet(it)) }
             is PointerType -> {
                 when (this) {
-                    is PointerType.Stack -> this.offset.get().let { SbfRegisterType.PointerType.Stack(Constant(it)) }
-                    is PointerType.Input -> this.offset.get().let { SbfRegisterType.PointerType.Input(Constant(it)) }
-                    is PointerType.Heap -> this.offset.get().let { SbfRegisterType.PointerType.Heap(Constant(it)) }
-                    is PointerType.Global -> this.offset.get().let { SbfRegisterType.PointerType.Global(Constant(it), this.global) }
+                    is PointerType.Stack -> this.offset.toLongList().let { SbfRegisterType.PointerType.Stack(toConstantSet(it)) }
+                    is PointerType.Input -> this.offset.toLongList().let { SbfRegisterType.PointerType.Input(toConstantSet(it)) }
+                    is PointerType.Heap -> this.offset.toLongList().let { SbfRegisterType.PointerType.Heap(toConstantSet(it)) }
+                    is PointerType.Global -> this.offset.toLongList().let { SbfRegisterType.PointerType.Global(toConstantSet(it), this.global) }
                 }
             }
         }
@@ -281,7 +287,7 @@ sealed class SbfType<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
 class ScalarValue<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(private val type: SbfType<TNum, TOffset>)
     : StackEnvironmentValue<ScalarValue<TNum, TOffset>> {
 
-    fun get() = type
+    fun type() = type
     override fun isBottom() = type.isBottom()
     override fun isTop() = type.isTop()
     override fun mkTop() = ScalarValue(SbfType.top<TNum, TOffset>())

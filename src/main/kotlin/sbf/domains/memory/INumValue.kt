@@ -25,8 +25,17 @@ import sbf.cfg.CondOp
  **/
 
 interface INumValue<V> {
-    // Return null if the numerical value cannot be expressed as a signed long
-    fun get(): Long?
+    /**
+     * Attempts to convert this numeric value to a signed [Long].
+     * Returns `null` if the conversion is not possible.
+     */
+    fun toLongOrNull(): Long?
+
+    /**
+     * Returns a [List] of all possible [Long] representations of this value.
+     * Could be empty if there are no long representations.
+     */
+    fun toLongList(): List<Long>
 
     /* Numerical operations */
     fun add(other: V): V
@@ -46,6 +55,8 @@ interface INumValue<V> {
     fun rsh(other: V): V
     fun lsh(other: V): V
     fun assume(op: CondOp, other: V): TriBoolean
+    // filter the values of `this` after the execution `this op other`
+    fun filter(op: CondOp, other: V): V
     /* lattice operations */
     fun isTop(): Boolean
     fun isBottom(): Boolean

@@ -40,7 +40,7 @@ sealed interface AssertionsStructure : SanityCheckSort.FunctionDependent<RuleChe
     override val preds: List<SanityCheckNodeType> get() = assertionStructurePreds
 
     val severityLevel: SanityCheckSeverity
-    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport.Single<*> {
+    override fun getRuleNotificationForResult(solverResult: SolverResult): RuleAlertReport {
         val msg = "The assertion structure check of the `require` command at location ${assertCmd.range} ${solverResult.toSanityStatusString()}. See ${CheckedUrl.SANITY_ASSERTIONS_STRUCTURE}\""
         return if(severityLevel is SanityCheckSeverity.Critical && solverResult == SolverResult.UNSAT) {
             RuleAlertReport.Warning(msg)

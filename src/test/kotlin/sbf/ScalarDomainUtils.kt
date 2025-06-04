@@ -17,11 +17,13 @@
 
 package sbf
 
+import sbf.analysis.AdaptiveScalarAnalysis
 import sbf.analysis.ScalarAnalysis
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.domains.*
 import sbf.analysis.AnalysisRegisterTypes
+import sbf.analysis.IAnalysis
 
 data class ScalarAnalysisCheck<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         /** the assertion **/
@@ -36,21 +38,17 @@ data class ScalarAnalysisCheck<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>
     }
 }
 
-
-class  ScalarAnalysisProver<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
-        private val cfg: SbfCFG,
+class AnalysisProver<D, TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         private val vfac: ISbfTypeFactory<TNum, TOffset>,
-        private val memSummaries: MemorySummaries = MemorySummaries(),
-        private val globals: GlobalVariableMap = newGlobalVariableMap()
-) {
+        private val scalarAnalysis: IAnalysis<D>
+) where D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset>  {
     val checks = mutableListOf<ScalarAnalysisCheck<TNum, TOffset>>()
 
     init {  run() }
 
     private fun run() {
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, vfac)
         val regTypes = AnalysisRegisterTypes(scalarAnalysis)
-        for (b in cfg.getBlocks().values) {
+        for (b in scalarAnalysis.getCFG().getBlocks().values) {
             for (locInst in b.getLocatedInstructions()) {
                 val inst = locInst.inst
                 if (inst is SbfInstruction.Assert) {
@@ -88,4 +86,30 @@ class  ScalarAnalysisProver<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
         return sb.toString()
     }
+}
+
+
+class  ScalarAnalysisProver<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
+    cfg: SbfCFG,
+    vfac: ISbfTypeFactory<TNum, TOffset>,
+    memSummaries: MemorySummaries = MemorySummaries(),
+    globals: GlobalVariableMap = newGlobalVariableMap()
+) {
+    private val prover = AnalysisProver(vfac, ScalarAnalysis(cfg, globals, memSummaries, vfac))
+    fun check(locInst: LocatedSbfInstruction) = prover.check(locInst)
+    fun getChecks() = prover.checks
+    override fun toString() = prover.toString()
+}
+
+class  AdaptiveScalarAnalysisProver(
+    cfg: SbfCFG,
+    memSummaries: MemorySummaries = MemorySummaries(),
+    globals: GlobalVariableMap = newGlobalVariableMap()
+) {
+    private val scalarAnalysis = AdaptiveScalarAnalysis(cfg, globals, memSummaries)
+    private val prover = AnalysisProver(scalarAnalysis.getSbfTypesFac(), scalarAnalysis)
+
+    fun check(locInst: LocatedSbfInstruction) = prover.check(locInst)
+    fun getChecks() = prover.checks
+    override fun toString() = prover.toString()
 }

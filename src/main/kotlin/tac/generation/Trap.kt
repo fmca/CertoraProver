@@ -30,41 +30,39 @@ import vc.data.tacexprutil.*
 import java.util.stream.Collectors
 
 object Trap {
-    fun trap(reason: String, subject: TACSymbol? = null) =
+    fun trap(reason: String) =
         if (Config.TrapAsAssert.get()) {
-            trapAsAssert(TACSymbol.False, reason, subject)
+            trapAsAssert(TACSymbol.False, reason)
         } else {
-            trapRevert(reason, subject)
+            trapRevert(reason)
         }
 
     fun assert(
         reason: String,
-        subject: TACSymbol? = null,
         cond: TACExprFact.() -> TACExpr
     ): CommandWithRequiredDecls<TACCmd.Simple> {
         val condSym = TACSymbol.Var("cond", Tag.Bool).toUnique("!")
         return mergeMany(
             ExprUnfolder.unfoldTo(TACExprFactUntyped(cond), condSym).merge(condSym),
             if (Config.TrapAsAssert.get()) {
-                trapAsAssert(condSym, reason, subject)
+                trapAsAssert(condSym, reason)
             } else {
-                listOf(ConditionalTrapRevert(condSym, reason, subject).toCmd()).withDecls()
+                listOf(ConditionalTrapRevert(condSym, reason).toCmd()).withDecls()
             }
         )
     }
 
-    private fun trapAsAssert(cond: TACSymbol, reason: String, subject: TACSymbol?) =
+    private fun trapAsAssert(cond: TACSymbol, reason: String) =
         listOf(
             TACCmd.Simple.AssertCmd(
                 cond,
                 reason,
-                subject?.let { MetaMap(TACCmd.Simple.AssertCmd.FORMAT_ARG1 to it) } ?: MetaMap()
             )
         ).withDecls()
 
-    fun trapRevert(reason: String, subject: TACSymbol?) =
+    fun trapRevert(reason: String) =
         listOf(
-            TACCmd.Simple.LabelCmd(java.lang.String.format(reason, subject)),
+            TACCmd.Simple.LabelCmd(reason),
             TACCmd.Simple.RevertCmd(
                 base = TACKeyword.MEMORY.toVar(),
                 o1 = TACSymbol.lift(0), // WASM has no equivalent of EVM's revert return data
@@ -85,7 +83,6 @@ object Trap {
 data class ConditionalTrapRevert(
     val cond: TACSymbol,
     val reason: String,
-    val subject: TACSymbol?
 ) : TACSummary {
     init {
         check(!Config.TrapAsAssert.get()) {
@@ -93,13 +90,12 @@ data class ConditionalTrapRevert(
         }
     }
 
-    override val variables get() = setOfNotNull(cond as? TACSymbol.Var, subject as? TACSymbol.Var)
+    override val variables get() = setOfNotNull(cond as? TACSymbol.Var)
     override val annotationDesc get() = reason
 
     override fun transformSymbols(f: (TACSymbol.Var) -> TACSymbol.Var) = ConditionalTrapRevert(
         cond = (cond as? TACSymbol.Var)?.let { f(it) } ?: cond,
         reason = reason,
-        subject = (subject as? TACSymbol.Var)?.let { f(it) } ?: subject
     )
 
     fun toCmd(meta: MetaMap = MetaMap()) = TACCmd.Simple.SummaryCmd(this, meta)
@@ -135,7 +131,7 @@ data class ConditionalTrapRevert(
                             ...
                      */
 
-                    val (revertCmds, revertVars) = Trap.trapRevert(op.reason, op.subject)
+                    val (revertCmds, revertVars) = Trap.trapRevert(op.reason)
 
                     val continuation = patch.splitBlockAfter(ptr)
                     val revert = patch.addBlock(

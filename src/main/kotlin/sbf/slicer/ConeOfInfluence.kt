@@ -19,7 +19,6 @@ package sbf.slicer
 
 import sbf.*
 import sbf.analysis.NPAnalysis
-import sbf.analysis.ScalarAnalysis
 import sbf.callgraph.*
 import sbf.cfg.*
 import sbf.disassembler.*
@@ -33,13 +32,6 @@ import java.util.* // BitSet
 import java.io.File
 
 class SlicerError(msg: String): RuntimeException("Slicer error: $msg")
-
-/**
- * Instantiation of the scalar and np analyses used by the slicer.
- * These parameters can be changed without affecting the rest of the prover.
- **/
-private typealias NPAnalysisT = NPAnalysis<Constant, Constant>
-private val sbfTypesFac = ConstantSbfTypeFactory()
 
 /**
  * Entry point for the slicer.
@@ -124,20 +116,11 @@ fun sliceAssertions(prog: SbfCallGraph, memSummaries: MemorySummaries): Pair<Boo
         }
 
         if (SolanaConfig.DebugSlicer.get()) {
-            val fwdAnalysis = ScalarAnalysis(entrySlicedCFG, prog.getGlobals(), memSummaries, sbfTypesFac)
-            for ( (l,_) in entrySlicedCFG.getBlocks()) {
-                val absVal = fwdAnalysis.getPre(l)
-                if (absVal != null && absVal.isBottom()) {
-                    val bb = entrySlicedCFG.getMutableBlock(l)
-                    check(bb!=null)
-                    bb.add(0, mkUnreachable("UNREACHABLE"))
-                }
-            }
-            annotateWithTypes(entrySlicedCFG, fwdAnalysis)
+            annotateWithTypes(entrySlicedCFG, prog.getGlobals(), memSummaries)
             suffix = ".fwd$suffix"
             printToFile(outputBaseFilename + suffix , entrySlicedCFG.toDot())
         }
-        val np = NPAnalysis(entrySlicedCFG, prog.getGlobals(), memSummaries, sbfTypesFac)
+        val np = NPAnalysis(entrySlicedCFG, prog.getGlobals(), memSummaries)
         SemanticConeOfInfluence.transform(entrySlicedCFG, np)
         if (SolanaConfig.DebugSlicer.get()) {
             suffix = ".back$suffix"
@@ -242,7 +225,7 @@ private object ConeOfInfluence {
 private object SemanticConeOfInfluence{
 
     /// Add abort instructions whenever a block or an instruction becomes unreachable
-    fun transform(cfg: MutableSbfCFG, np: NPAnalysisT) {
+    fun transform(cfg: MutableSbfCFG, np: NPAnalysis) {
         outerloop@ for ((label, bb) in cfg.getMutableBlocks()) {
             if (bb.getInstructions().any { it.isAbort() }) {
                 continue
