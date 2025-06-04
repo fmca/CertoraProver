@@ -331,20 +331,32 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                 throw TACTranslationError("TAC encoding of 32-bit $inst not supported")
             }
             val op1 = exprBuilder.mkVar(inst.dst)
-            val op2 = exprBuilder.mkExprSym(inst.v)
-
             return if (SolanaConfig.UseTACMathInt.get() &&
                 (useMathInt || inst.metaData.getVal(SbfMeta.SAFE_MATH) != null)) {
+                // Currently, `SAFE_MATH` annotations are only used for addition/subtraction before checking for overflow.
+                // These operations must be done on MathInt.
+
                 val x = mkFreshMathIntVar()
                 val y = mkFreshMathIntVar()
                 val z = mkFreshMathIntVar()
+
                 listOf(
+                    when (inst.v) {
+                        is Value.Reg -> {
+                            promoteToMathInt(exprBuilder.mkVar(inst.v).asSym(), y)
+                        }
+                        is Value.Imm -> {
+                            // We cannot use `mkConst` because if the immediate value is a negative one it will sign extended to 256 bits,
+                            // and this is incorrect using MathInt.
+                            assign(y, TACSymbol.Const(inst.v.v.toLong().toBigInteger(), Tag.Int).asSym())
+                        }
+                    },
                     promoteToMathInt(op1.asSym(), x),
-                    promoteToMathInt(op2, y),
                     assign(z, exprBuilder.mkBinExpr(inst.op, x.asSym(), y.asSym(), useMathInt = true)),
                     narrowFromMathInt(z.asSym(), op1)
                 )
             } else {
+                val op2 = exprBuilder.mkExprSym(inst.v, useTwosComplement = true)
                 listOf(assign(op1, exprBuilder.mkBinExpr(inst.op, op1.asSym(), op2, useMathInt = false)))
             }
         }
