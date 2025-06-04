@@ -19,7 +19,6 @@ package sbf.cfg
 
 import sbf.domains.FiniteInterval
 import sbf.SolanaConfig
-import sbf.analysis.ScalarAnalysis
 import sbf.callgraph.CVTFunction
 import sbf.callgraph.SolanaFunction
 import sbf.disassembler.*
@@ -27,15 +26,12 @@ import sbf.domains.*
 import sbf.sbfLogger
 import datastructures.stdcollections.*
 import org.jetbrains.annotations.TestOnly
+import sbf.analysis.AdaptiveScalarAnalysis
 import sbf.analysis.AnalysisRegisterTypes
+import sbf.analysis.IAnalysis
 import sbf.callgraph.CVTCore
 import kotlin.math.absoluteValue
 
-/**
- * Instantiation of the scalar analysis.
- * The factory can be changed without affecting the rest of the prover.
- **/
-private val sbfTypesFac = ConstantSbfTypeFactory()
 
 /**
  *  Promote sequence of loads and stores into memcpy instructions.
@@ -44,12 +40,13 @@ private val sbfTypesFac = ConstantSbfTypeFactory()
 fun promoteStoresToMemcpy(cfg: MutableSbfCFG,
                           globals: GlobalVariableMap,
                           memSummaries: MemorySummaries) {
-    val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+    val scalarAnalysis = AdaptiveScalarAnalysis(cfg, globals, memSummaries)
     promoteStoresToMemcpy(cfg, scalarAnalysis)
 }
 
 @TestOnly
-fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> promoteStoresToMemcpy(cfg: MutableSbfCFG, scalarAnalysis: ScalarAnalysis<TNum, TOffset>) {
+fun <D, TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> promoteStoresToMemcpy(cfg: MutableSbfCFG, scalarAnalysis: IAnalysis<D>)
+    where D: AbstractDomain<D>, D: ScalarValueProvider<TNum, TOffset> {
     val scalarsAtInst = AnalysisRegisterTypes(scalarAnalysis)
     var numOfInsertedMemcpy = 0
     var callId = getMaxCallId(cfg)
@@ -317,7 +314,7 @@ private fun <D, TNum, TOffset> normalizeMemcpyOp(
     val r3 = SbfRegister.R3_ARG
     val lenTy = regTypes.typeAtInstruction(locatedInst, r3)
     val len = if (lenTy is SbfType.NumType) {
-        lenTy.value.get()
+        lenTy.value.toLongOrNull()
     } else {
         null
     }

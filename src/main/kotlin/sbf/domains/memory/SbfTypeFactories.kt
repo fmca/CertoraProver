@@ -53,3 +53,26 @@ class ConstantSbfTypeFactory: ISbfTypeFactory<Constant, Constant> {
     override fun anyGlobalPtr(gv: SbfGlobalVariable?): SbfType.PointerType.Global<Constant, Constant> = SbfType.PointerType.Global(
         Constant.makeTop(), gv)
 }
+
+
+/** Create SbfType instances where TNum=[ConstantSet] and TOffset=[ConstantSet] **/
+class ConstantSetSbfTypeFactory(private val maxNumDisjuncts: ULong): ISbfTypeFactory<ConstantSet, ConstantSet> {
+    override fun mkTop(): SbfType<ConstantSet, ConstantSet> = SbfType.top()
+    override fun mkBottom(): SbfType<ConstantSet, ConstantSet> = SbfType.bottom()
+
+    override fun numToOffset(num: ConstantSet) = num
+    override fun offsetToNum(offset: ConstantSet) = offset
+
+    override fun toNum(value: ULong) = SbfType.NumType<ConstantSet, ConstantSet>(ConstantSet(value.toLong(), maxNumDisjuncts))
+    override fun toNum(value: Long) = SbfType.NumType<ConstantSet, ConstantSet>(ConstantSet(value, maxNumDisjuncts))
+    override fun toStackPtr(offset: Long) = SbfType.PointerType.Stack<ConstantSet, ConstantSet>(ConstantSet(offset, maxNumDisjuncts))
+    override fun toHeapPtr(offset: Long) = SbfType.PointerType.Heap<ConstantSet, ConstantSet>(ConstantSet(offset, maxNumDisjuncts))
+    override fun toInputPtr(offset: Long) = SbfType.PointerType.Input<ConstantSet, ConstantSet>(ConstantSet(offset, maxNumDisjuncts))
+    override fun toGlobalPtr(offset: Long, gv: SbfGlobalVariable?) = SbfType.PointerType.Global<ConstantSet, ConstantSet>(ConstantSet(offset, maxNumDisjuncts), gv)
+
+    override fun anyNum() = SbfType.NumType<ConstantSet, ConstantSet>(ConstantSet.mkTop(maxNumDisjuncts))
+    override fun anyStackPtr() = SbfType.PointerType.Stack<ConstantSet, ConstantSet>(ConstantSet.mkTop(maxNumDisjuncts))
+    override fun anyHeapPtr() = SbfType.PointerType.Heap<ConstantSet, ConstantSet>(ConstantSet.mkTop(maxNumDisjuncts))
+    override fun anyInputPtr() = SbfType.PointerType.Input<ConstantSet, ConstantSet>(ConstantSet.mkTop(maxNumDisjuncts))
+    override fun anyGlobalPtr(gv: SbfGlobalVariable?) = SbfType.PointerType.Global<ConstantSet, ConstantSet>(ConstantSet.mkTop(maxNumDisjuncts), gv)
+}

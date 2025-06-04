@@ -17,6 +17,7 @@
 
 package sbf.domains
 
+import datastructures.stdcollections.*
 import sbf.cfg.CondOp
 
 /** An immutable class that extends a Long with bottom/top values **/
@@ -29,11 +30,19 @@ data class Constant(private val value: Long?, private val isBot: Boolean = false
         fun makeBottom() = botC
     }
 
-    override fun get(): Long? {
+    override fun toLongOrNull(): Long? {
         return if (isBottom() || isTop()) {
             null
         } else {
             value
+        }
+    }
+
+    override fun toLongList(): List<Long> {
+        return if (isBottom() || isTop()) {
+            listOf()
+        } else {
+            listOf(value!!)
         }
     }
 
@@ -216,6 +225,14 @@ data class Constant(private val value: Long?, private val isBot: Boolean = false
         }
     }
 
+    override fun filter(op: CondOp, other:Constant): Constant {
+        val res = assume(op, other)
+        return if (res.isFalse()) {
+            makeBottom()
+        } else {
+            this
+        }
+    }
     override fun assume(op: CondOp, other:Constant): TriBoolean {
         val left = this
         val right = other

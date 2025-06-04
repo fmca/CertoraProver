@@ -20,7 +20,7 @@ package sbf.cfg
 import sbf.SolanaConfig
 import sbf.disassembler.SbfConstantStringGlobalVariable
 import sbf.disassembler.SbfGlobalVariable
-import sbf.domains.Constant
+import sbf.domains.ConstantSet
 
 /**
  * A SBF (Solana Binary Format) program has access to these four pairwise disjoint regions:
@@ -65,8 +65,9 @@ const val SBF_INPUT_END = SBF_INPUT_START + (2 * MAX_SOLANA_ACCOUNTS * SOLANA_AC
 const val SBF_EXTERNAL_START = SBF_INPUT_START + (MAX_SOLANA_ACCOUNTS * SOLANA_ACCOUNT_SIZE)
 
 
+
 sealed class SbfRegisterType {
-    data class NumType(val value: Constant) : SbfRegisterType() {
+    data class NumType(val value: ConstantSet) : SbfRegisterType() {
         override fun toString() = if (value.isTop()) {
             "num"
         } else {
@@ -75,23 +76,23 @@ sealed class SbfRegisterType {
     }
 
     sealed class PointerType : SbfRegisterType() {
-        abstract val offset: Constant
+        abstract val offset: ConstantSet
 
-        data class Stack(override val offset: Constant) : PointerType() {
+        data class Stack(override val offset: ConstantSet) : PointerType() {
             override fun toString() = "sp($offset)"
         }
 
-        data class Input(override val offset: Constant) : PointerType() {
+        data class Input(override val offset: ConstantSet) : PointerType() {
             override fun toString() = "input($offset)"
         }
 
-        data class Heap(override val offset: Constant) : PointerType() {
+        data class Heap(override val offset: ConstantSet) : PointerType() {
             override fun toString() = "heap($offset)"
         }
 
         // global.address is the start address of the global variable.
         // offset is actually an absolute address between [global.address, global.address+size)
-        data class Global(override val offset: Constant, val global: SbfGlobalVariable?) : PointerType() {
+        data class Global(override val offset: ConstantSet, val global: SbfGlobalVariable?) : PointerType() {
             override fun toString(): String {
                 return if (global != null) {
                     if (global is SbfConstantStringGlobalVariable) {

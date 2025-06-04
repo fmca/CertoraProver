@@ -542,8 +542,8 @@ class MemoryTest {
         val c1 = g.getRegCell(r1)
         val c2 = g.getRegCell(r2)
         check(c1 != null && c2 != null)
-        val f1 = PTAField(c1.getOffset().get()!!, 4)
-        val f2 = PTAField(c2.getOffset().get()!!, 4)
+        val f1 = PTAField(c1.getOffset().toLongOrNull()!!, 4)
+        val f2 = PTAField(c2.getOffset().toLongOrNull()!!, 4)
         val x = c1.getNode().getSucc(f1)
         val y = c2.getNode().getSucc(f2)
         sbfLogger.warn{"$x"}
@@ -888,8 +888,8 @@ class MemoryTest {
             val c1 = g.getRegCell(r1)
             val c2 = g.getRegCell(r2)
             check(c1 != null && c2 != null)
-            val f1 = PTAField(c1.getOffset().get()!!, 8)
-            val f2 = PTAField(c2.getOffset().get()!!, 8)
+            val f1 = PTAField(c1.getOffset().toLongOrNull()!!, 8)
+            val f2 = PTAField(c2.getOffset().toLongOrNull()!!, 8)
             Assertions.assertEquals(true, c1.getNode().getSucc(f1) == c2.getNode().getSucc(f2))
         }
 

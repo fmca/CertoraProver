@@ -43,17 +43,19 @@ private fun <TNum, TOffset> lattice(): JoinLattice<NPDomainState<TNum, TOffset>>
         override fun equiv(x: NPDomainState<TNum, TOffset>, y: NPDomainState<TNum, TOffset>) = NPDomainState.equiv(x,y)
     }
 
-class NPAnalysis<TNum, TOffset>(
+private typealias TNum = TNumAdaptiveScalarAnalysis
+private typealias TOffset= TOffsetAdaptiveScalarAnalysis
+
+class NPAnalysis(
     val cfg: MutableSbfCFG,
     globalsMap: GlobalVariableMap,
-    memSummaries: MemorySummaries,
-    sbfTypesFac: ISbfTypeFactory<TNum, TOffset>) :
+    memSummaries: MemorySummaries) :
     SbfBlockDataflowAnalysis<NPDomainState<TNum, TOffset>>(
         cfg,
         lattice(),
         NPDomainState.mkBottom(),
         Direction.BACKWARD
-    )  where TNum: INumValue<TNum>, TOffset: IOffset<TOffset> {
+    )  {
 
     /** Used by the NPDomain to represent contents of stack slots **/
     private val vFac = VariableFactory()
@@ -62,7 +64,7 @@ class NPAnalysis<TNum, TOffset>(
      * stack or not. Note that we run only a scalar domain so the analysis will be
      * quite cheap but imprecise.
      **/
-    private val fwdAnalysis = ScalarAnalysis(cfg, globalsMap, memSummaries, sbfTypesFac)
+    private val fwdAnalysis = AdaptiveScalarAnalysis(cfg, globalsMap, memSummaries)
     val registerTypes = AnalysisRegisterTypes(fwdAnalysis)
     /** Exit blocks of the cfg **/
     val exits: MutableSet<Label> = mutableSetOf()

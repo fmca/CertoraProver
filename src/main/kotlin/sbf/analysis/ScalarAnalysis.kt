@@ -18,17 +18,19 @@
 package sbf.analysis
 
 import datastructures.stdcollections.*
+import sbf.SolanaConfig
 import sbf.cfg.*
 import sbf.disassembler.*
 import sbf.domains.*
 import sbf.fixpoint.WtoBasedFixpointOptions
 import sbf.fixpoint.WtoBasedFixpointSolver
+import sbf.support.UnknownStackPointerError
 
-open class ScalarAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>
+class ScalarAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>
     (val cfg: SbfCFG,
      val globalsMap: GlobalVariableMap,
      val memSummaries: MemorySummaries,
-     val sbfTypeFac : ISbfTypeFactory<TNum, TOffset>,
+     private val sbfTypeFac : ISbfTypeFactory<TNum, TOffset>,
      private val isEntryPoint:Boolean = true): IAnalysis<ScalarDomain<TNum, TOffset>> {
 
         private val preMap = mutableMapOf<Label, ScalarDomain<TNum, TOffset>>()
@@ -57,3 +59,38 @@ open class ScalarAnalysis<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>
         }
 }
 
+typealias TNumAdaptiveScalarAnalysis = ConstantSet
+typealias TOffsetAdaptiveScalarAnalysis = ConstantSet
+/**
+ *  It runs first a scalar analysis where each register and stack content is over-approximated by a single value.
+ *  Only if this analysis throws a [UnknownStackPointerError] exception then it repeats the analysis but this time by
+ *  using a set of values.
+ */
+class AdaptiveScalarAnalysis
+    (val cfg: SbfCFG,
+     val globalsMap: GlobalVariableMap,
+     val memSummaries: MemorySummaries,
+     isEntryPoint:Boolean = true
+): IAnalysis<ScalarDomain<TNumAdaptiveScalarAnalysis, TOffsetAdaptiveScalarAnalysis>> {
+    private var sbfTypesFac: ISbfTypeFactory<TNumAdaptiveScalarAnalysis, TOffsetAdaptiveScalarAnalysis>
+
+    @Suppress("SwallowedException")
+    private val scalarAnalysis: ScalarAnalysis<TNumAdaptiveScalarAnalysis, TOffsetAdaptiveScalarAnalysis> = try {
+        sbfTypesFac = ConstantSetSbfTypeFactory(1UL)
+        ScalarAnalysis(cfg, globalsMap, memSummaries, sbfTypesFac, isEntryPoint)
+    } catch (e: UnknownStackPointerError) {
+        sbf.sbfLogger.warn {
+                "Scalar analysis was configured to track only a single value per stack offset. It cannot proceed without clearing the entire stack. " +
+                "Re-running scalar analysis configured to track up to ${SolanaConfig.ScalarMaxVals.get()} values."
+        }
+        sbfTypesFac = ConstantSetSbfTypeFactory(SolanaConfig.ScalarMaxVals.get().toULong())
+        ScalarAnalysis(cfg, globalsMap, memSummaries, sbfTypesFac, isEntryPoint)
+    }
+
+    fun getSbfTypesFac() = sbfTypesFac
+    override fun getPre(block: Label) = scalarAnalysis.getPre(block)
+    override fun getPost(block: Label) = scalarAnalysis.getPost(block)
+    override fun getCFG() = cfg
+    override fun getMemorySummaries() = memSummaries
+    override fun getGlobalVariableMap() = globalsMap
+}

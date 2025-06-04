@@ -160,6 +160,16 @@ object SolanaConfig {
         )
     ) {}
 
+    val ScalarMaxVals = object : ConfigType.IntCmdLine(
+        20,
+        Option(
+            "solanaScalarMaxVals", true,
+            "Maximum number of values tracked by the scalar domain for registers and stack. [default: 20]"
+        )
+    ) {
+        override fun check(newValue: Int) = newValue >= 1
+    }
+
     val EnablePTAPseudoCanonicalize = object : ConfigType.BooleanCmdLine(
         true,
         Option(

@@ -73,8 +73,7 @@ fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> sbfCFGsToTAC(
     program: SbfCallGraph,
     memSummaries: MemorySummaries,
     globalsSymTable: IGlobalsSymbolTable,
-    globalAnalysisResults: Map<String, MemoryAnalysis<TNum, TOffset>>?,
-    sbfTypesFac: ISbfTypeFactory<TNum, TOffset>): CoreTACProgram {
+    globalAnalysisResults: Map<String, MemoryAnalysis<TNum, TOffset>>?): CoreTACProgram {
     val cfg = program.getCallGraphRootSingleOrFail()
     if (cfg.getBlocks().isEmpty()) {
         throw SolanaInternalError("The translation from SBF to TAC failed because the SBF CFG is empty")
@@ -86,7 +85,7 @@ fun <TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> sbfCFGsToTAC(
         globalAnalysisResults[cfg.getName()]
             ?: throw TACTranslationError("Not analysis results found for ${cfg.getName()}")
     }
-    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, globalsSymTable, analysis, sbfTypesFac)
+    val marshaller = SbfCFGToTAC(cfg, program.getGlobals(), memSummaries, globalsSymTable, analysis)
     return marshaller.encode()
 }
 
@@ -97,8 +96,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
            globals: GlobalVariableMap,
            private val memSummaries: MemorySummaries,
            private val globalsSymTable: IGlobalsSymbolTable,
-           private val memoryAnalysis: MemoryAnalysis<TNum, TOffset>?,
-           private val sbfTypesFac: ISbfTypeFactory<TNum, TOffset>) {
+           private val memoryAnalysis: MemoryAnalysis<TNum, TOffset>?) {
     private val blockMap: MutableMap<Label, NBId> = mutableMapOf()
     private val blockGraph = MutableBlockGraph()
     private val code: MutableMap<NBId, List<TACCmd.Simple>> = mutableMapOf()
@@ -128,14 +126,18 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     // Unsupported calls. We just keep track of them to reduce the number of user warnings
     private val unsupportedCalls: MutableSet<String> = mutableSetOf()
     private val functionArgInference = FunctionArgumentInference(cfg)
-    val regTypes: IRegisterTypes<TNum, TOffset>
+
+    // We need type information about registers and stack contents.
+    // It's much cheaper to analyze the whole cfg from scratch with a ScalarAnalysis and rebuild invariants at the
+    // instruction level than rebuilding invariants at the instruction level with [memoryAnalysis]
+    val sbfTypesFac: ISbfTypeFactory<TNumAdaptiveScalarAnalysis, TOffsetAdaptiveScalarAnalysis>
+    val regTypes: IRegisterTypes<TNumAdaptiveScalarAnalysis, TOffsetAdaptiveScalarAnalysis>
 
     init {
-        // It's much cheaper to analyze the whole cfg from scratch with ScalarAnalysis and rebuild invariants at the
-        // instruction level than rebuilding invariants at the instruction level with [memoryAnalysis] (because of
-        // the pointer domain).
-        val scalarAnalysis = ScalarAnalysis(cfg, globals, memSummaries, sbfTypesFac)
+        val scalarAnalysis = AdaptiveScalarAnalysis(cfg, globals, memSummaries)
+        sbfTypesFac = scalarAnalysis.getSbfTypesFac()
         regTypes = AnalysisRegisterTypes(scalarAnalysis)
+
         val regVars: ArrayList<TACSymbol.Var> = ArrayList(NUM_OF_SBF_REGISTERS)
         for (i in 0 until NUM_OF_SBF_REGISTERS) {
             // FIXME: the bit-width should be 8 bytes instead of 32 bytes
@@ -271,7 +273,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
      *        ----------------------------------------------------------------
      *       0x100000000    0x200000000          0x30000000     0x40000000        ?
      **/
-    fun addMemoryLayoutAssumptions(ptr: TACSymbol.Var, region: SbfType<TNum, TOffset>?): List<TACCmd.Simple> {
+    fun addMemoryLayoutAssumptions(ptr: TACSymbol.Var, region: SbfType<TNumAdaptiveScalarAnalysis, TOffsetAdaptiveScalarAnalysis>?): List<TACCmd.Simple> {
 
         if (!SolanaConfig.AddMemLayoutAssumptions.get()) {
             return listOf()
@@ -976,7 +978,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
         }
     }
 
-    private fun registerTypeFromUses(uses: Collection<LocatedSbfInstruction>, r: SbfRegister): SbfType<TNum, TOffset> {
+    private fun registerTypeFromUses(uses: Collection<LocatedSbfInstruction>, r: SbfRegister): SbfType<TNumAdaptiveScalarAnalysis, TNumAdaptiveScalarAnalysis> {
         return uses.map {
             regTypes.typeAtInstruction(it, r)
         }.fold(SbfType.bottom()) { t1, t2 ->
@@ -1012,7 +1014,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
     private fun summarizeAllocSlice(locInst: LocatedSbfInstruction): List<TACCmd.Simple> {
         val inst = locInst.inst
         check(inst is SbfInstruction.Call)
-        val offset = (regTypes.typeAtInstruction(locInst, SbfRegister.R2_ARG) as? SbfType.NumType)?.value?.get()
+        val offset = (regTypes.typeAtInstruction(locInst, SbfRegister.R2_ARG) as? SbfType.NumType)?.value?.toLongOrNull()
             ?: throw TACTranslationError("Cannot statically infer the offset (r2) in $locInst")
         if (offset < 0) {
             throw TACTranslationError("$locInst does not support negative offsets (r2) but given $offset")
@@ -1239,7 +1241,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                 unreachable(inst)
             }
         } else if (inst.isAllocFn()) {
-            val size = (regTypes.typeAtInstruction(locInst, SbfRegister.R1_ARG) as? SbfType.NumType)?.value?.get()
+            val size = (regTypes.typeAtInstruction(locInst, SbfRegister.R1_ARG) as? SbfType.NumType)?.value?.toLongOrNull()
             val sizeOrDefault = if (size != null) {
                 size
             } else {
@@ -1284,7 +1286,7 @@ internal class SbfCFGToTAC<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>>(
                                 }
                             }
                             CVTCore.NONDET_SOLANA_ACCOUNT_SPACE -> {
-                                val size = (regTypes.typeAtInstruction(locInst, SbfRegister.R1_ARG) as? SbfType.NumType)?.value?.get()
+                                val size = (regTypes.typeAtInstruction(locInst, SbfRegister.R1_ARG) as? SbfType.NumType)?.value?.toLongOrNull()
                                     ?: throw TACTranslationError("Cannot statically infer the size in $locInst")
                                 listOf(Debug.externalCall(inst)) +
                                     accountsAlloc.alloc(exprBuilder.mkVar(SbfRegister.R0_RETURN_VALUE), size) +

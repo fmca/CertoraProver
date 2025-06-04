@@ -49,7 +49,7 @@ class UnhoistMemcpyTest {
         val absValAtExit = test01(sbfTypesFac, false)
         println("Abstract value at exit=$absValAtExit")
         val r0 = Value.Reg(SbfRegister.R0_RETURN_VALUE)
-        Assertions.assertEquals(false, absValAtExit.getValue(r0).get() is SbfType.NumType)
+        Assertions.assertEquals(false, absValAtExit.getValue(r0).type() is SbfType.NumType)
     }
 
     @Test
@@ -59,7 +59,7 @@ class UnhoistMemcpyTest {
         val absValAtExit = test01(sbfTypesFac, true)
         println("Abstract value at exit=$absValAtExit")
         val r0 = Value.Reg(SbfRegister.R0_RETURN_VALUE)
-        Assertions.assertEquals(true, absValAtExit.getValue(r0).get() is SbfType.NumType)
+        Assertions.assertEquals(true, absValAtExit.getValue(r0).type() is SbfType.NumType)
     }
 
 

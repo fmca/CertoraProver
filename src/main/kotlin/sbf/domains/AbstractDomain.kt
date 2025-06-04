@@ -88,4 +88,5 @@ class DefaultInstructionListener<T>: InstructionListener<T> {
 
 interface ScalarValueProvider<TNum: INumValue<TNum>, TOffset: IOffset<TOffset>> {
     fun getAsScalarValue(value: Value): ScalarValue<TNum, TOffset>
+    fun getStackContent(offset: Long, width: Byte): ScalarValue<TNum, TOffset>
 }

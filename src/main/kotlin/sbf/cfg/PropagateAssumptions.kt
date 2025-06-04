@@ -100,7 +100,7 @@ where TNum: INumValue<TNum>,
     val width = inst.access.width
     val regType = regTypes.typeAtInstruction(locatedInst, base.r)
     return if (regType is SbfType.PointerType.Stack) {
-        val offset = regType.offset.get()
+        val offset = regType.offset.toLongOrNull()
         if (offset != null) {
             StackContentMeta(offset + inst.access.offset, width)
         } else {
