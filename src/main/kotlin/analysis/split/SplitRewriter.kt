@@ -41,14 +41,12 @@ import evm.EVM_BITWIDTH256
 import log.*
 import scene.ContractId
 import scene.ITACMethod
+import tac.MetaKey
 import tac.MetaMap
 import tac.NBId
 import tac.Tag
-import utils.ModZm.Companion.lowOnes
-import utils.containsAny
-import utils.`impossible!`
-import utils.parallelStream
 import utils.*
+import utils.ModZm.Companion.lowOnes
 import vc.data.*
 import vc.data.tacexprutil.ExprUnfolder.Companion.UnfolderResult
 import vc.data.tacexprutil.ExprUnfolder.Companion.unfoldToSingleVar
@@ -201,6 +199,8 @@ class SplitRewriter(
     }
 
     companion object {
+        val STORAGE_SPLITTER_DISCREPANCY = MetaKey.Nothing("tac.storage.split.discrepancy")
+
         /**
          * Returns the "canonical" name for a split storage variable in contract [contractId] whose representative
          * non-indexed bath is [repPath]. [equivClassSize] is the size of the equivalence class for which [repPath]
@@ -398,6 +398,10 @@ class SplitRewriter(
 
         val newIndexCmds = mutableListOf<TACCmd.Simple>()
 
+        val shouldHaveBeenSplit = cx.layout.expectedSplit(repPath).let {
+            it.size > 1 && it != split
+        }
+
         val newCmds = ranges.map { range ->
             val pathVar =
                 if (arrayRewriter.arrayWidths.isArray(repPath)) {
@@ -407,6 +411,8 @@ class SplitRewriter(
                 } else {
                     check(arrayAccess == null)
                     newStandardPathVar(repPath, range)
+                }.letIf(shouldHaveBeenSplit) {
+                    it.withMeta(STORAGE_SPLITTER_DISCREPANCY)
                 }
 
             /**
