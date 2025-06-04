@@ -23,6 +23,7 @@ import analysis.dataflow.StrictDefAnalysis
 import analysis.numeric.IntValue
 import analysis.pta.LoopCopyAnalysis
 import com.certora.collect.*
+import compiler.applyKeccak
 import evm.EVM_WORD_SIZE
 import evm.MASK_SIZE
 import scene.ITACMethod
@@ -32,6 +33,7 @@ import vc.data.tacexprutil.ExprUnfolder
 import java.math.BigInteger
 import java.util.stream.Collectors
 import datastructures.stdcollections.*
+import scene.IContractWithSource
 import scene.TACMethod
 import spec.cvlast.QualifiedMethodSignature
 import tac.*
@@ -954,6 +956,50 @@ class BufferTraceInstrumentation private constructor(
             get() = sourceOffset
     }
 
+    private class CodeCopy(
+        val codeCopyHash: BigInteger
+    ) : WriteSource, IWriteSource.Other {
+        override fun getSourceIsAlignedPredicate(): ToTACExpr {
+            return TACSymbol.True
+        }
+
+        override val sort: WriteSort
+            get() = WriteSort.STATIC_CODE_COPY
+
+        override fun getValueRepresentative(): TACExprWithRequiredCmdsAndDecls<TACCmd.Simple> {
+            return codeCopyHash.asTACExpr.lift()
+        }
+
+        override val extraContext: TACSymbol?
+            get() = null
+
+    }
+
+    private class UnknownEnvCopy(
+        val nondetVariable: TACSymbol.Var
+    ) : WriteSource, IWriteSource.Other {
+        override fun getSourceIsAlignedPredicate(): ToTACExpr {
+            return TACSymbol.False
+        }
+
+        override val sort: WriteSort
+            get() = WriteSort.UNKNOWN_COPY
+
+        override fun getValueRepresentative(): TACExprWithRequiredCmdsAndDecls<TACCmd.Simple> {
+            return TACExprWithRequiredCmdsAndDecls(
+                exp = nondetVariable.asSym(),
+                declsToAdd = listOf(nondetVariable),
+                cmdsToAdd = listOf()
+            )
+        }
+
+        override val extraContext: TACSymbol?
+            get() = null
+
+
+    }
+
+
     /**
      * Representation of the `returndatacopy` write sort. [sourceOffset] is as in [CopyFromCalldata].
      * [accumulatorVar] is a capture of the current value of [globalStateAccumulator], recording which
@@ -1126,8 +1172,9 @@ class BufferTraceInstrumentation private constructor(
         STORE_SINGLE,
         STORE,
         RETURNDATA_COPY,
+        UNKNOWN_COPY,
+        STATIC_CODE_COPY
     }
-
     /**
      * Private version of [IBufferUpdate], where the [source] field is an intersection of [IWriteSource]
      * and [WriteSource], letting it pull double duty as the private version of the type and the public version.
@@ -1321,6 +1368,7 @@ class BufferTraceInstrumentation private constructor(
                                     blc.cmd.dstBase == lc.cmd.srcBase && reach.canReach(blc.ptr, lc.ptr)
                                 } == true
                             }
+
                             /**
                              * But due to loop unrolling, there will be multiple such writes,
                              * so find the one that is dominated by all others. We probably can, and should,
@@ -1340,6 +1388,34 @@ class BufferTraceInstrumentation private constructor(
                                     sourceOffset = definingCopy.loc,
                                     sourceLength = definingCopy.length,
                                     sourceInstrumentation = shadowCopySource
+                                )
+                            )
+                        } else if(TACMeta.CODEDATA_KEY in lc.cmd.srcBase.meta) {
+                            val src = (m.getContainingContract() as? IContractWithSource)?.src
+                            val where = (lc.cmd.srcOffset as? TACSymbol.Const)?.value
+                            val length = (lc.cmd.length as? TACSymbol.Const)?.value
+                            if(src == null || where == null || length == null || ((where + length) * BigInteger.TWO).intValueExact() > src.bytecode.length) {
+                                return BufferUpdate(
+                                    where = lc.ptr,
+                                    loc = lc.cmd.dstOffset,
+                                    length = lc.cmd.length,
+                                    source = UnknownEnvCopy(
+                                        TACKeyword.TMP(Tag.Bit256, "!unknownCopy")
+                                    )
+                                )
+                            }
+                            val startIndex = where.intValueExact() * 2
+                            val len = length.intValueExact() * 2
+                            val codeKeccak = applyKeccak(hexStringToBytes(src.bytecode.substring(
+                                startIndex,
+                                startIndex + len
+                            )))
+                            return BufferUpdate(
+                                where = lc.ptr,
+                                loc = lc.cmd.dstOffset,
+                                length = lc.cmd.length,
+                                source = CodeCopy(
+                                    codeKeccak
                                 )
                             )
                         } else {
